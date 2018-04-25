@@ -481,6 +481,7 @@ namespace DataCapturer
 		}
 		#endregion
 
+		//完成Redo/Undo 的實作
 		#region Undo/Redo Buttons
 		private bool UndoButtonIsEnter = false;
 		private bool UndoButtonIsPress = false;
