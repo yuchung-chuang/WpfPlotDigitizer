@@ -85,9 +85,20 @@
       <Name>MetroFramework</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <None Include="Resources\01300543896251147062126622831_s.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Redo-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Undo-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Redo-icon%28black%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Undo-icon%28black%29.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

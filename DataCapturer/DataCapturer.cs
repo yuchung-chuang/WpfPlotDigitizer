@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MetroFramework;
+using MetroFramework.Drawing;
 using MetroFramework.Forms;
 using MetroFramework.Globals;
 
@@ -27,6 +28,7 @@ namespace DataCapturer
 		private MetroImage ImageAxis;
 		private MetroImage ImageFilterRGB;
 		private MetroImage ImageErase;
+		private List<MetroImage> ImageEraseList = new List<MetroImage>();
 		private MetroImage ImageOutput;
 		#endregion
 
@@ -103,9 +105,7 @@ namespace DataCapturer
 
 			TabControlMain.Enabled = true;
 			ButtonBrowse.Enabled = true;
-
-			Console.WriteLine(SliderAxisOffset.Parent.ToString());
-				
+							
 			Initialize();
 		}
 		#endregion
@@ -378,12 +378,24 @@ namespace DataCapturer
 		{
 			PictureBoxFilter.Image = ImageFilterRGB.Bitmap;
 
-			ImageErase = new MetroImage(ImageFilterRGB.Bitmap);
+			//ImageErase = new MetroImage(ImageFilterRGB.Bitmap);
+			ImageEraseList.Clear();
+			ImageEraseList.Add(new MetroImage(ImageFilterRGB.Bitmap));
+			EraseIdx = 0;
 			UpdateImageErase();
 		}
 		#endregion
 
 		#region Step 4: Erase
+		private int EraseIdx = 0;
+		private void UpdateImageErase()
+		{
+			//PictureBoxEraser.Image = ImageErase.Bitmap;
+			PictureBoxEraser.Image = ImageEraseList[EraseIdx].Bitmap;
+			UpdateUndoButtonColor();
+			UpdateRedoButtonColor();
+		}
+
 		private void PictureBoxEraser_MouseEnter(object sender, EventArgs e)
 		{
 			Cursor.Hide();
@@ -396,33 +408,171 @@ namespace DataCapturer
 		private void PictureBoxEraser_MouseDown(object sender, MouseEventArgs e)
 		{
 			IsErasing = true;
+			ImageEraseList.RemoveRange(EraseIdx + 1, ImageEraseList.Count - EraseIdx - 1); //清除所有原先的Redo
+			ImageEraseList.Add(new MetroImage(ImageEraseList[EraseIdx].Bitmap));//或許需要設置ImageEraseList的儲存上限
+			EraseIdx += 1;
+			
+			PictureBoxEraser_MouseMove(sender, e);
 		}
 		private void PictureBoxEraser_MouseUp(object sender, MouseEventArgs e)
 		{
 			IsErasing = false;
+			UpdateImageErase();
 		}
 		private int EraserL = 20;
 		private Graphics GraphicsEraser;
 		private void PictureBoxEraser_MouseMove(object sender, MouseEventArgs e)
 		{
-			float ScaleX = (float)ImageErase.Width / PictureBoxEraser.Width;
-			float ScaleY = (float)ImageErase.Height / PictureBoxEraser.Height;
-			Console.WriteLine("X:" + e.X.ToString() + "  Y:" + e.Y.ToString());
-			Bitmap ImageTmp = (Bitmap)ImageErase.Bitmap.Clone();
+			float ScaleX = (float)ImageEraseList[EraseIdx].Width / PictureBoxEraser.Width;
+			float ScaleY = (float)ImageEraseList[EraseIdx].Height / PictureBoxEraser.Height;
+
+			Point pos = new Point((int)(e.X * ScaleX), (int)(e.Y * ScaleY));
+			if (IsErasing)
+			{
+				EraseImage(pos);
+			}
+			DrawEraser(pos);
+		}
+
+		
+		private void DrawEraser(Point pos)
+		{
+			
+			Bitmap ImageTmp = (Bitmap)ImageEraseList[EraseIdx].Bitmap.Clone();
 			GraphicsEraser = Graphics.FromImage(ImageTmp); //DrawImage會導致畫面閃爍
 
-			GraphicsEraser.DrawRectangle(new Pen(MetroColors.Black, 5), ScaleX * e.X - EraserL / 2, ScaleY * e.Y - EraserL / 2, EraserL, EraserL);
-			GraphicsEraser.DrawRectangle(new Pen(MetroColors.Blue, 3), ScaleX * e.X - EraserL / 2, ScaleY * e.Y - EraserL / 2, EraserL, EraserL);
-			
+			GraphicsEraser.DrawRectangle(new Pen(MetroColors.Black, 5), pos.X - EraserL / 2, pos.Y - EraserL / 2, EraserL, EraserL);
+			GraphicsEraser.DrawRectangle(new Pen(MetroColors.Blue, 3), pos.X - EraserL / 2, pos.Y - EraserL / 2, EraserL, EraserL);
+
 			GraphicsEraser.Dispose();
 			PictureBoxEraser.Image = ImageTmp;
 		}
-		private void UpdateImageErase()
+		private void EraseImage(Point pos)
 		{
-			PictureBoxEraser.Image = ImageErase.Bitmap;
+			byte[] pixel = ImageEraseList[EraseIdx].Pixel;
+			int idx;
+			int x_ini = pos.X - EraserL / 2;
+			int x_fin = pos.X + EraserL / 2;
+			int y_ini = pos.Y - EraserL / 2;
+			int y_fin = pos.Y + EraserL / 2;
+			for (int x = x_ini; x < x_fin; x++)
+			{
+				for (int y = y_ini; y < y_fin; y++)
+				{
+					if (x < 0 || y < 0 || x >= ImageEraseList[EraseIdx].Width || y >= ImageEraseList[EraseIdx].Height)
+						continue;
+					idx = x * ImageEraseList[EraseIdx].Byte + y * ImageEraseList[EraseIdx].Stride;
+					pixel[idx + 3] = 0; // A
+				}
+			}
+			ImageEraseList[EraseIdx].Pixel = pixel;
+		}
+		private void Undo()
+		{
+			if (EraseIdx > 0)
+				EraseIdx -= 1;
+			UpdateImageErase();
+		}
+		private void Redo()
+		{
+			if (EraseIdx < ImageEraseList.Count - 1)
+				EraseIdx += 1;
+			UpdateImageErase();
 		}
 		#endregion
 
+		//完成Redo/Undo 的實作
+		#region Undo/Redo Buttons
+		private bool UndoButtonIsEnter = false;
+		private bool UndoButtonIsPress = false;
+		private void UndoButton_MouseEnter(object sender, EventArgs e)
+		{
+			UndoButtonIsEnter = true;
+			UpdateUndoButtonColor();
+		}
+		private void UndoButton_MouseLeave(object sender, EventArgs e)
+		{
+			UndoButtonIsEnter = false;
+			UpdateUndoButtonColor();
+		}
+		private void UndoButton_MouseDown(object sender, MouseEventArgs e)
+		{
+			UndoButtonIsPress = true;
+			UpdateUndoButtonColor();
+		}
+		private void UndoButton_MouseUp(object sender, MouseEventArgs e)
+		{
+			UndoButtonIsPress = false;
+			UpdateUndoButtonColor();
+
+			if (e.X <= UndoButton.Width && e.Y <= UndoButton.Height)
+				Undo();
+		}
+		private void UpdateUndoButtonColor()
+		{
+			if (EraseIdx == 0) //無法Undo
+			{
+				UndoButton.BackColor = Control.DefaultBackColor;
+				UndoButton.Image = Properties.Resources.Undo_icon_black_;
+			}
+			else 
+			{
+				UndoButton.Image = Properties.Resources.Undo_icon;
+				if (UndoButtonIsPress)
+					UndoButton.BackColor = MetroColors.Blue;
+				else if (UndoButtonIsEnter)
+					UndoButton.BackColor = Color.LightGray;
+				else
+					UndoButton.BackColor = Control.DefaultBackColor;
+			}
+			
+		}
+
+		private bool RedoButtonIsEnter = false;
+		private bool RedoButtonIsPress = false;
+		private void RedoButton_MouseEnter(object sender, EventArgs e)
+		{
+			RedoButtonIsEnter = true;
+			UpdateRedoButtonColor();
+		}
+		private void RedoButton_MouseLeave(object sender, EventArgs e)
+		{
+			RedoButtonIsEnter = false;
+			UpdateRedoButtonColor();
+		}
+		private void RedoButton_MouseDown(object sender, MouseEventArgs e)
+		{
+			RedoButtonIsPress = true;
+			UpdateRedoButtonColor();
+		}
+		private void RedoButton_MouseUp(object sender, MouseEventArgs e)
+		{
+			RedoButtonIsPress = false;
+			UpdateRedoButtonColor();
+
+			if (e.X <= RedoButton.Width && e.Y <= RedoButton.Height)
+				Redo();
+		}
+		private void UpdateRedoButtonColor()
+		{
+			if (EraseIdx == ImageEraseList.Count - 1) //無法Redo
+			{
+				RedoButton.BackColor = Control.DefaultBackColor;
+				RedoButton.Image = Properties.Resources.Redo_icon_black_;
+			}
+			else
+			{
+				RedoButton.Image = Properties.Resources.Redo_icon;
+				if (RedoButtonIsPress)
+					RedoButton.BackColor = MetroColors.Blue;
+				else if (RedoButtonIsEnter)
+					RedoButton.BackColor = Color.LightGray;
+				else
+					RedoButton.BackColor = Control.DefaultBackColor;
+			}
+
+		}
+		#endregion
 
 		#region Other User Activities
 		private void ButtonNext_Click(object sender, EventArgs e)
@@ -447,7 +597,7 @@ namespace DataCapturer
 		}
 		#endregion
 		
-		dajisajdoaisjdoisajdosa
+		
 		private void UpdateData()
 		{
 
@@ -523,6 +673,8 @@ namespace DataCapturer
 		private void PictureBoxEraser_LoadCompleted(object sender, AsyncCompletedEventArgs e)
 		{
 
-		}	
+		}
+
+		
 	}
 }
