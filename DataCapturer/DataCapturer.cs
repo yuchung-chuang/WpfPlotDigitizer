@@ -446,8 +446,8 @@ namespace DataCapturer
 				ButtonNext.Show();
 		}
 		#endregion
-
 		
+		dajisajdoaisjdoisajdosa
 		private void UpdateData()
 		{
 
