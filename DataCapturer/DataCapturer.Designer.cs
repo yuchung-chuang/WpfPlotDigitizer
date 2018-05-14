@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DataCapturer));
 			this.Tooltip = new MetroFramework.Components.MetroToolTip();
 			this.ButtonSave = new MetroFramework.Controls.MetroButton();
 			this.SliderAxisOffset = new MetroFramework.Controls.Slider();
@@ -63,6 +64,7 @@
 			this.XData = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.YData = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.TabPage5 = new MetroFramework.Controls.MetroTabPage();
+			this.imageViewer1 = new MetroFramework.Controls.ImageViewer();
 			this.RedoButton = new System.Windows.Forms.PictureBox();
 			this.UndoButton = new System.Windows.Forms.PictureBox();
 			this.TabPage4 = new MetroFramework.Controls.MetroTabPage();
@@ -628,6 +630,7 @@
 			// 
 			// TabPage5
 			// 
+			this.TabPage5.Controls.Add(this.imageViewer1);
 			this.TabPage5.Controls.Add(this.RedoButton);
 			this.TabPage5.Controls.Add(this.UndoButton);
 			this.TabPage5.CustomBackground = false;
@@ -647,6 +650,14 @@
 			this.TabPage5.VerticalScrollbarBarColor = true;
 			this.TabPage5.VerticalScrollbarHighlightOnWheel = false;
 			this.TabPage5.VerticalScrollbarSize = 10;
+			// 
+			// imageViewer1
+			// 
+			this.imageViewer1.Image = ((System.Drawing.Image)(resources.GetObject("imageViewer1.Image")));
+			this.imageViewer1.Location = new System.Drawing.Point(338, 100);
+			this.imageViewer1.Name = "imageViewer1";
+			this.imageViewer1.Size = new System.Drawing.Size(382, 278);
+			this.imageViewer1.TabIndex = 8;
 			// 
 			// RedoButton
 			// 
@@ -904,6 +915,7 @@
 		private MetroFramework.Controls.RangeSlider RangeSliderBlue;
 		private MetroFramework.Controls.RangeSlider RangeSliderGreen;
 		private MetroFramework.Controls.RangeSlider RangeSliderRed;
+		private MetroFramework.Controls.ImageViewer imageViewer1;
 	}
 }
 

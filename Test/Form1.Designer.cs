@@ -30,7 +30,6 @@
 		{
 			this.button1 = new System.Windows.Forms.Button();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-			this.userControl11 = new MetroFramework.Controls.ImageViewerSimple();
 			this.SuspendLayout();
 			// 
 			// button1
@@ -47,20 +46,11 @@
 			// 
 			this.openFileDialog1.FileName = "openFileDialog1";
 			// 
-			// userControl11
-			// 
-			this.userControl11.Image = null;
-			this.userControl11.Location = new System.Drawing.Point(52, 12);
-			this.userControl11.Name = "userControl11";
-			this.userControl11.Size = new System.Drawing.Size(520, 476);
-			this.userControl11.TabIndex = 1;
-			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(651, 556);
-			this.Controls.Add(this.userControl11);
 			this.Controls.Add(this.button1);
 			this.Name = "Form1";
 			this.Text = "Form1";
@@ -72,7 +62,6 @@
 		#endregion
 
 		private System.Windows.Forms.Button button1;
-		private MetroFramework.Controls.ImageViewerSimple userControl11;
 		private System.Windows.Forms.OpenFileDialog openFileDialog1;
 	}
 }

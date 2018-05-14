@@ -122,7 +122,7 @@ namespace DataCapturer
 			ImageInput = new PixelImage(new Bitmap("C:\\Users\\alex\\Dropbox (Alex)\\SMCMLAB\\matlab\\DataCapturer\\images\\19451854599_fdc0d1a8d7_c.jpg"));
 			ImageFilterW = new PixelImage(ImageInput.Size) { Pixel = FilterW(ImageInput, FilterWMax) };
 			PictureBoxInput.Image = ImageInput.Bitmap;
-			ImageViewerSetAxis.Image = ImageInput.Bitmap;
+			//ImageViewerSetAxis.Image = ImageInput.Bitmap;
 			SliderAxLengthX.BarMax = ImageInput.Bitmap.Width;
 			SliderAxLengthX.Value = SliderAxLengthX.BarMax / 2;
 			SliderAxLengthY.BarMax = ImageInput.Bitmap.Height;
@@ -389,7 +389,7 @@ namespace DataCapturer
 		private int EraseIdx = 0;
 		private void UpdateImageErase()
 		{
-			ImageEraser.Image = ImageEraseList[EraseIdx].Bitmap;
+			//ImageEraser.Image = ImageEraseList[EraseIdx].Bitmap;
 			UpdateUndoButtonColor();
 			UpdateRedoButtonColor();
 		}
@@ -425,8 +425,8 @@ namespace DataCapturer
 		private Graphics GraphicsEraser;
 		private void ImageEraser_MouseMove(object sender, MouseEventArgs e)
 		{
-			float ScaleX = (float)ImageEraseList[EraseIdx].Width / ImageEraser.Width;
-			float ScaleY = (float)ImageEraseList[EraseIdx].Height / ImageEraser.Height;
+			//float ScaleX = (float)ImageEraseList[EraseIdx].Width / ImageEraser.Width;
+			//float ScaleY = (float)ImageEraseList[EraseIdx].Height / ImageEraser.Height;
 
 			//Point pos = new Point((int)(e.X * ScaleX), (int)(e.Y * ScaleY));
 			Point pos = new Point(e.X , e.Y);
@@ -438,7 +438,7 @@ namespace DataCapturer
 		}
 		private void ImageEraser_MouseWheel(object sender, MouseEventArgs e)
 		{
-			ImageEraseList[EraseIdx] = new PixelImage(ImageEraser.Image);
+			//ImageEraseList[EraseIdx] = new PixelImage(ImageEraser.Image);
 		}
 
 		private void DrawEraser(Point pos)
@@ -451,7 +451,7 @@ namespace DataCapturer
 			GraphicsEraser.DrawRectangle(new Pen(MetroColors.Blue, 3), pos.X - EraserL / 2, pos.Y - EraserL / 2, EraserL, EraserL);
 
 			GraphicsEraser.Dispose();
-			ImageEraser.Image = ImageTmp;
+			//ImageEraser.Image = ImageTmp;
 		}
 		private void EraseImage(Point pos)
 		{
@@ -677,6 +677,9 @@ namespace DataCapturer
 
 		}
 
-		
+		private void imageViewer1_Load(object sender, EventArgs e)
+		{
+
+		}
 	}
 }

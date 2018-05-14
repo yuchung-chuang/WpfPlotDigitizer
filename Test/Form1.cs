@@ -27,7 +27,6 @@ namespace Test
 		{
 			if (openFileDialog1.ShowDialog() != DialogResult.OK)
 				return;
-			userControl11.Image = (Bitmap)Image.FromFile(openFileDialog1.FileName);
 		}
 
 		private void pictureBox1_Click(object sender, EventArgs e)
