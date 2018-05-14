@@ -28,13 +28,40 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.button1 = new System.Windows.Forms.Button();
+			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+			this.userControl11 = new MetroFramework.Controls.ImageViewerSimple();
 			this.SuspendLayout();
+			// 
+			// button1
+			// 
+			this.button1.Location = new System.Drawing.Point(274, 507);
+			this.button1.Name = "button1";
+			this.button1.Size = new System.Drawing.Size(75, 37);
+			this.button1.TabIndex = 0;
+			this.button1.Text = "button1";
+			this.button1.UseVisualStyleBackColor = true;
+			this.button1.Click += new System.EventHandler(this.button1_Click);
+			// 
+			// openFileDialog1
+			// 
+			this.openFileDialog1.FileName = "openFileDialog1";
+			// 
+			// userControl11
+			// 
+			this.userControl11.Image = null;
+			this.userControl11.Location = new System.Drawing.Point(52, 12);
+			this.userControl11.Name = "userControl11";
+			this.userControl11.Size = new System.Drawing.Size(520, 476);
+			this.userControl11.TabIndex = 1;
 			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(432, 388);
+			this.ClientSize = new System.Drawing.Size(651, 556);
+			this.Controls.Add(this.userControl11);
+			this.Controls.Add(this.button1);
 			this.Name = "Form1";
 			this.Text = "Form1";
 			this.Load += new System.EventHandler(this.Form1_Load);
@@ -43,6 +70,10 @@
 		}
 
 		#endregion
+
+		private System.Windows.Forms.Button button1;
+		private MetroFramework.Controls.ImageViewerSimple userControl11;
+		private System.Windows.Forms.OpenFileDialog openFileDialog1;
 	}
 }
 

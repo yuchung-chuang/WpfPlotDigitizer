@@ -121,6 +121,9 @@
   <data name="01300543896251147062126622831_s" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\01300543896251147062126622831_s.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="hand_drag_512_v8e_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\hand_drag_512_v8e_icon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Redo_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Redo-icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

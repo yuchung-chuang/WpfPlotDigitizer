@@ -30,12 +30,9 @@
 		{
 			this.Tooltip = new MetroFramework.Components.MetroToolTip();
 			this.ButtonSave = new MetroFramework.Controls.MetroButton();
-			this.RangeSliderBlue = new MetroFramework.Controls.MetroRangeSlider();
-			this.RangeSliderGreen = new MetroFramework.Controls.MetroRangeSlider();
-			this.RangeSliderRed = new MetroFramework.Controls.MetroRangeSlider();
-			this.SliderAxisOffset = new MetroFramework.Controls.MetroSlider();
-			this.SliderAxLengthY = new MetroFramework.Controls.MetroSlider();
-			this.SliderAxLengthX = new MetroFramework.Controls.MetroSlider();
+			this.SliderAxisOffset = new MetroFramework.Controls.Slider();
+			this.SliderAxLengthY = new MetroFramework.Controls.Slider();
+			this.SliderAxLengthX = new MetroFramework.Controls.Slider();
 			this.ButtonBrowse = new MetroFramework.Controls.MetroButton();
 			this.CheckBoxYLog = new System.Windows.Forms.CheckBox();
 			this.TextBoxYBase = new System.Windows.Forms.TextBox();
@@ -51,6 +48,14 @@
 			this.metroLabel4 = new MetroFramework.Controls.MetroLabel();
 			this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
 			this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
+			this.PictureBoxWarnGetAxis = new System.Windows.Forms.PictureBox();
+			this.PictureBoxWarnSetAxLim = new System.Windows.Forms.PictureBox();
+			this.PictureBoxGetAxis = new System.Windows.Forms.PictureBox();
+			this.PictureBoxFilter = new System.Windows.Forms.PictureBox();
+			this.PictureBoxOutput = new System.Windows.Forms.PictureBox();
+			this.RangeSliderRed = new MetroFramework.Controls.RangeSlider();
+			this.RangeSliderGreen = new MetroFramework.Controls.RangeSlider();
+			this.RangeSliderBlue = new MetroFramework.Controls.RangeSlider();
 			this.ButtonNext = new MetroFramework.Controls.MetroButton();
 			this.ButtonBack = new MetroFramework.Controls.MetroButton();
 			this.TabPage6 = new MetroFramework.Controls.MetroTabPage();
@@ -58,42 +63,31 @@
 			this.XData = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.YData = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.TabPage5 = new MetroFramework.Controls.MetroTabPage();
+			this.RedoButton = new System.Windows.Forms.PictureBox();
+			this.UndoButton = new System.Windows.Forms.PictureBox();
 			this.TabPage4 = new MetroFramework.Controls.MetroTabPage();
-			this.metroPanel1 = new MetroFramework.Controls.MetroPanel();
 			this.TabPage3 = new MetroFramework.Controls.MetroTabPage();
 			this.TabPage1 = new MetroFramework.Controls.MetroTabPage();
+			this.PictureBoxInput = new System.Windows.Forms.PictureBox();
 			this.TabControlMain = new MetroFramework.Controls.MetroTabControl();
 			this.TabPage2 = new MetroFramework.Controls.MetroTabPage();
 			this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-			this.PictureBoxWarnGetAxis = new System.Windows.Forms.PictureBox();
-			this.PictureBoxWarnSetAxLim = new System.Windows.Forms.PictureBox();
-			this.PictureBoxInput = new System.Windows.Forms.PictureBox();
-			this.PictureBoxSetAxLim = new System.Windows.Forms.PictureBox();
-			this.PictureBoxGetAxis = new System.Windows.Forms.PictureBox();
-			this.PictureBoxFilter = new System.Windows.Forms.PictureBox();
-			this.PictureBoxEraser = new System.Windows.Forms.PictureBox();
-			this.PictureBoxOutput = new System.Windows.Forms.PictureBox();
-			this.UndoButton = new System.Windows.Forms.PictureBox();
-			this.RedoButton = new System.Windows.Forms.PictureBox();
+			((System.ComponentModel.ISupportInitialize)(this.PictureBoxWarnGetAxis)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.PictureBoxWarnSetAxLim)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.PictureBoxGetAxis)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.PictureBoxFilter)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.PictureBoxOutput)).BeginInit();
 			this.TabPage6.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
 			this.TabPage5.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.RedoButton)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.UndoButton)).BeginInit();
 			this.TabPage4.SuspendLayout();
-			this.metroPanel1.SuspendLayout();
 			this.TabPage3.SuspendLayout();
 			this.TabPage1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.PictureBoxInput)).BeginInit();
 			this.TabControlMain.SuspendLayout();
 			this.TabPage2.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.PictureBoxWarnGetAxis)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.PictureBoxWarnSetAxLim)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.PictureBoxInput)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.PictureBoxSetAxLim)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.PictureBoxGetAxis)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.PictureBoxFilter)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.PictureBoxEraser)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.PictureBoxOutput)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.UndoButton)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.RedoButton)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// Tooltip
@@ -122,78 +116,6 @@
 			this.Tooltip.SetToolTip(this.ButtonSave, "Save your data.");
 			this.ButtonSave.Click += new System.EventHandler(this.ButtonSave_Click);
 			// 
-			// RangeSliderBlue
-			// 
-			this.RangeSliderBlue.ArrowChange = ((uint)(1u));
-			this.RangeSliderBlue.BackColor = System.Drawing.Color.Transparent;
-			this.RangeSliderBlue.BarMax = 255;
-			this.RangeSliderBlue.BarMin = 0;
-			this.RangeSliderBlue.CustomBackground = false;
-			this.RangeSliderBlue.Location = new System.Drawing.Point(177, 25);
-			this.RangeSliderBlue.Name = "RangeSliderBlue";
-			this.RangeSliderBlue.Orientation = MetroFramework.MetroOrientation.Vertical;
-			this.RangeSliderBlue.PageChange = ((uint)(5u));
-			this.RangeSliderBlue.RangeMax = 255;
-			this.RangeSliderBlue.RangeMin = 0;
-			this.RangeSliderBlue.Reverse = true;
-			this.RangeSliderBlue.ScrollChange = ((uint)(10u));
-			this.RangeSliderBlue.Size = new System.Drawing.Size(69, 500);
-			this.RangeSliderBlue.Style = MetroFramework.MetroColorStyle.Blue;
-			this.RangeSliderBlue.StyleManager = null;
-			this.RangeSliderBlue.TabIndex = 5;
-			this.RangeSliderBlue.Text = "metroRangeSlider3";
-			this.RangeSliderBlue.Theme = MetroFramework.MetroThemeStyle.Light;
-			this.Tooltip.SetToolTip(this.RangeSliderBlue, "Image filter of blue color.");
-			this.RangeSliderBlue.Scroll += new System.EventHandler(this.RangeSliderBlue_Scroll);
-			// 
-			// RangeSliderGreen
-			// 
-			this.RangeSliderGreen.ArrowChange = ((uint)(1u));
-			this.RangeSliderGreen.BackColor = System.Drawing.Color.Transparent;
-			this.RangeSliderGreen.BarMax = 255;
-			this.RangeSliderGreen.BarMin = 0;
-			this.RangeSliderGreen.CustomBackground = false;
-			this.RangeSliderGreen.Location = new System.Drawing.Point(102, 25);
-			this.RangeSliderGreen.Name = "RangeSliderGreen";
-			this.RangeSliderGreen.Orientation = MetroFramework.MetroOrientation.Vertical;
-			this.RangeSliderGreen.PageChange = ((uint)(5u));
-			this.RangeSliderGreen.RangeMax = 255;
-			this.RangeSliderGreen.RangeMin = 0;
-			this.RangeSliderGreen.Reverse = true;
-			this.RangeSliderGreen.ScrollChange = ((uint)(10u));
-			this.RangeSliderGreen.Size = new System.Drawing.Size(69, 500);
-			this.RangeSliderGreen.Style = MetroFramework.MetroColorStyle.Green;
-			this.RangeSliderGreen.StyleManager = null;
-			this.RangeSliderGreen.TabIndex = 4;
-			this.RangeSliderGreen.Text = "metroRangeSlider2";
-			this.RangeSliderGreen.Theme = MetroFramework.MetroThemeStyle.Light;
-			this.Tooltip.SetToolTip(this.RangeSliderGreen, "Image filter of green color.");
-			this.RangeSliderGreen.Scroll += new System.EventHandler(this.RangeSliderGreen_Scroll);
-			// 
-			// RangeSliderRed
-			// 
-			this.RangeSliderRed.ArrowChange = ((uint)(1u));
-			this.RangeSliderRed.BackColor = System.Drawing.Color.Transparent;
-			this.RangeSliderRed.BarMax = 255;
-			this.RangeSliderRed.BarMin = 0;
-			this.RangeSliderRed.CustomBackground = false;
-			this.RangeSliderRed.Location = new System.Drawing.Point(27, 25);
-			this.RangeSliderRed.Name = "RangeSliderRed";
-			this.RangeSliderRed.Orientation = MetroFramework.MetroOrientation.Vertical;
-			this.RangeSliderRed.PageChange = ((uint)(5u));
-			this.RangeSliderRed.RangeMax = 255;
-			this.RangeSliderRed.RangeMin = 0;
-			this.RangeSliderRed.Reverse = true;
-			this.RangeSliderRed.ScrollChange = ((uint)(10u));
-			this.RangeSliderRed.Size = new System.Drawing.Size(69, 500);
-			this.RangeSliderRed.Style = MetroFramework.MetroColorStyle.Red;
-			this.RangeSliderRed.StyleManager = null;
-			this.RangeSliderRed.TabIndex = 3;
-			this.RangeSliderRed.Text = "metroRangeSlider1";
-			this.RangeSliderRed.Theme = MetroFramework.MetroThemeStyle.Light;
-			this.Tooltip.SetToolTip(this.RangeSliderRed, "Image filter of red color.");
-			this.RangeSliderRed.Scroll += new System.EventHandler(this.RangeSliderRed_Scroll);
-			// 
 			// SliderAxisOffset
 			// 
 			this.SliderAxisOffset.ArrowChange = ((uint)(1u));
@@ -201,13 +123,13 @@
 			this.SliderAxisOffset.BarMax = 100;
 			this.SliderAxisOffset.BarMin = 0;
 			this.SliderAxisOffset.CustomBackground = false;
-			this.SliderAxisOffset.Location = new System.Drawing.Point(785, 510);
+			this.SliderAxisOffset.Location = new System.Drawing.Point(665, 510);
 			this.SliderAxisOffset.Name = "SliderAxisOffset";
-			this.SliderAxisOffset.Orientation = MetroFramework.MetroOrientation.Up;
+			this.SliderAxisOffset.Orientation = MetroFramework.SliderOrientation.Up;
 			this.SliderAxisOffset.PageChange = ((uint)(5u));
 			this.SliderAxisOffset.Reverse = true;
 			this.SliderAxisOffset.ScrollChange = ((uint)(10u));
-			this.SliderAxisOffset.Size = new System.Drawing.Size(152, 58);
+			this.SliderAxisOffset.Size = new System.Drawing.Size(194, 58);
 			this.SliderAxisOffset.Style = MetroFramework.MetroColorStyle.Yellow;
 			this.SliderAxisOffset.StyleManager = null;
 			this.SliderAxisOffset.TabIndex = 5;
@@ -224,13 +146,13 @@
 			this.SliderAxLengthY.BarMax = 100;
 			this.SliderAxLengthY.BarMin = 0;
 			this.SliderAxLengthY.CustomBackground = false;
-			this.SliderAxLengthY.Location = new System.Drawing.Point(3, 70);
+			this.SliderAxLengthY.Location = new System.Drawing.Point(85, 70);
 			this.SliderAxLengthY.Name = "SliderAxLengthY";
-			this.SliderAxLengthY.Orientation = MetroFramework.MetroOrientation.Right;
+			this.SliderAxLengthY.Orientation = MetroFramework.SliderOrientation.Right;
 			this.SliderAxLengthY.PageChange = ((uint)(5u));
 			this.SliderAxLengthY.Reverse = false;
 			this.SliderAxLengthY.ScrollChange = ((uint)(10u));
-			this.SliderAxLengthY.Size = new System.Drawing.Size(60, 480);
+			this.SliderAxLengthY.Size = new System.Drawing.Size(60, 450);
 			this.SliderAxLengthY.Style = MetroFramework.MetroColorStyle.Teal;
 			this.SliderAxLengthY.StyleManager = null;
 			this.SliderAxLengthY.TabIndex = 6;
@@ -247,13 +169,13 @@
 			this.SliderAxLengthX.BarMax = 100;
 			this.SliderAxLengthX.BarMin = 0;
 			this.SliderAxLengthX.CustomBackground = false;
-			this.SliderAxLengthX.Location = new System.Drawing.Point(64, 12);
+			this.SliderAxLengthX.Location = new System.Drawing.Point(142, 13);
 			this.SliderAxLengthX.Name = "SliderAxLengthX";
-			this.SliderAxLengthX.Orientation = MetroFramework.MetroOrientation.Down;
+			this.SliderAxLengthX.Orientation = MetroFramework.SliderOrientation.Down;
 			this.SliderAxLengthX.PageChange = ((uint)(5u));
 			this.SliderAxLengthX.Reverse = false;
 			this.SliderAxLengthX.ScrollChange = ((uint)(10u));
-			this.SliderAxLengthX.Size = new System.Drawing.Size(855, 60);
+			this.SliderAxLengthX.Size = new System.Drawing.Size(700, 60);
 			this.SliderAxLengthX.Style = MetroFramework.MetroColorStyle.Teal;
 			this.SliderAxLengthX.StyleManager = null;
 			this.SliderAxLengthX.TabIndex = 4;
@@ -494,6 +416,137 @@
 			this.Tooltip.SetToolTip(this.metroLabel1, "Set the minimum value of the X axis.");
 			this.metroLabel1.UseStyleColors = false;
 			// 
+			// PictureBoxWarnGetAxis
+			// 
+			this.PictureBoxWarnGetAxis.BackColor = System.Drawing.Color.Transparent;
+			this.PictureBoxWarnGetAxis.Image = global::DataCapturer.Properties.Resources._01300543896251147062126622831_s;
+			this.PictureBoxWarnGetAxis.Location = new System.Drawing.Point(365, 53);
+			this.PictureBoxWarnGetAxis.Name = "PictureBoxWarnGetAxis";
+			this.PictureBoxWarnGetAxis.Size = new System.Drawing.Size(40, 40);
+			this.PictureBoxWarnGetAxis.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.PictureBoxWarnGetAxis.TabIndex = 7;
+			this.PictureBoxWarnGetAxis.TabStop = false;
+			this.Tooltip.SetToolTip(this.PictureBoxWarnGetAxis, "Can\'t capture appropriate axis!");
+			this.PictureBoxWarnGetAxis.Visible = false;
+			// 
+			// PictureBoxWarnSetAxLim
+			// 
+			this.PictureBoxWarnSetAxLim.BackColor = System.Drawing.Color.Transparent;
+			this.PictureBoxWarnSetAxLim.Image = global::DataCapturer.Properties.Resources._01300543896251147062126622831_s;
+			this.PictureBoxWarnSetAxLim.Location = new System.Drawing.Point(213, 53);
+			this.PictureBoxWarnSetAxLim.Name = "PictureBoxWarnSetAxLim";
+			this.PictureBoxWarnSetAxLim.Size = new System.Drawing.Size(40, 40);
+			this.PictureBoxWarnSetAxLim.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.PictureBoxWarnSetAxLim.TabIndex = 6;
+			this.PictureBoxWarnSetAxLim.TabStop = false;
+			this.Tooltip.SetToolTip(this.PictureBoxWarnSetAxLim, "Not all axis limits have been set!");
+			this.PictureBoxWarnSetAxLim.Visible = false;
+			// 
+			// PictureBoxGetAxis
+			// 
+			this.PictureBoxGetAxis.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.PictureBoxGetAxis.Location = new System.Drawing.Point(142, 70);
+			this.PictureBoxGetAxis.Name = "PictureBoxGetAxis";
+			this.PictureBoxGetAxis.Size = new System.Drawing.Size(700, 450);
+			this.PictureBoxGetAxis.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.PictureBoxGetAxis.TabIndex = 3;
+			this.PictureBoxGetAxis.TabStop = false;
+			this.Tooltip.SetToolTip(this.PictureBoxGetAxis, "Scroll the sliders to adjust the axis.");
+			// 
+			// PictureBoxFilter
+			// 
+			this.PictureBoxFilter.Location = new System.Drawing.Point(59, 93);
+			this.PictureBoxFilter.Name = "PictureBoxFilter";
+			this.PictureBoxFilter.Size = new System.Drawing.Size(622, 400);
+			this.PictureBoxFilter.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.PictureBoxFilter.TabIndex = 6;
+			this.PictureBoxFilter.TabStop = false;
+			this.Tooltip.SetToolTip(this.PictureBoxFilter, "Scroll the range sliders to filter the image.");
+			// 
+			// PictureBoxOutput
+			// 
+			this.PictureBoxOutput.Location = new System.Drawing.Point(3, 17);
+			this.PictureBoxOutput.Name = "PictureBoxOutput";
+			this.PictureBoxOutput.Size = new System.Drawing.Size(709, 470);
+			this.PictureBoxOutput.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.PictureBoxOutput.TabIndex = 6;
+			this.PictureBoxOutput.TabStop = false;
+			this.Tooltip.SetToolTip(this.PictureBoxOutput, "The captured data.");
+			// 
+			// RangeSliderRed
+			// 
+			this.RangeSliderRed.ArrowChange = ((uint)(1u));
+			this.RangeSliderRed.BackColor = System.Drawing.Color.Transparent;
+			this.RangeSliderRed.BarMax = 255;
+			this.RangeSliderRed.BarMin = 0;
+			this.RangeSliderRed.CustomBackground = false;
+			this.RangeSliderRed.Location = new System.Drawing.Point(707, 43);
+			this.RangeSliderRed.Name = "RangeSliderRed";
+			this.RangeSliderRed.Orientation = MetroFramework.SliderOrientation.Vertical;
+			this.RangeSliderRed.PageChange = ((uint)(5u));
+			this.RangeSliderRed.RangeMax = 255;
+			this.RangeSliderRed.RangeMin = 0;
+			this.RangeSliderRed.Reverse = true;
+			this.RangeSliderRed.ScrollChange = ((uint)(10u));
+			this.RangeSliderRed.Size = new System.Drawing.Size(69, 500);
+			this.RangeSliderRed.Style = MetroFramework.MetroColorStyle.Red;
+			this.RangeSliderRed.StyleManager = null;
+			this.RangeSliderRed.TabIndex = 3;
+			this.RangeSliderRed.Text = "metroRangeSlider1";
+			this.RangeSliderRed.Theme = MetroFramework.MetroThemeStyle.Light;
+			this.Tooltip.SetToolTip(this.RangeSliderRed, "Image filter of red color.");
+			this.RangeSliderRed.Scroll += new System.EventHandler(this.RangeSliderRed_Scroll);
+			// 
+			// RangeSliderGreen
+			// 
+			this.RangeSliderGreen.ArrowChange = ((uint)(1u));
+			this.RangeSliderGreen.BackColor = System.Drawing.Color.Transparent;
+			this.RangeSliderGreen.BarMax = 255;
+			this.RangeSliderGreen.BarMin = 0;
+			this.RangeSliderGreen.CustomBackground = false;
+			this.RangeSliderGreen.Location = new System.Drawing.Point(776, 43);
+			this.RangeSliderGreen.Name = "RangeSliderGreen";
+			this.RangeSliderGreen.Orientation = MetroFramework.SliderOrientation.Vertical;
+			this.RangeSliderGreen.PageChange = ((uint)(5u));
+			this.RangeSliderGreen.RangeMax = 255;
+			this.RangeSliderGreen.RangeMin = 0;
+			this.RangeSliderGreen.Reverse = true;
+			this.RangeSliderGreen.ScrollChange = ((uint)(10u));
+			this.RangeSliderGreen.Size = new System.Drawing.Size(69, 500);
+			this.RangeSliderGreen.Style = MetroFramework.MetroColorStyle.Green;
+			this.RangeSliderGreen.StyleManager = null;
+			this.RangeSliderGreen.TabIndex = 4;
+			this.RangeSliderGreen.Text = "metroRangeSlider2";
+			this.RangeSliderGreen.Theme = MetroFramework.MetroThemeStyle.Light;
+			this.Tooltip.SetToolTip(this.RangeSliderGreen, "Image filter of green color.");
+			this.RangeSliderGreen.Scroll += new System.EventHandler(this.RangeSliderGreen_Scroll);
+			// 
+			// RangeSliderBlue
+			// 
+			this.RangeSliderBlue.ArrowChange = ((uint)(1u));
+			this.RangeSliderBlue.BackColor = System.Drawing.Color.Transparent;
+			this.RangeSliderBlue.BarMax = 255;
+			this.RangeSliderBlue.BarMin = 0;
+			this.RangeSliderBlue.CustomBackground = false;
+			this.RangeSliderBlue.Location = new System.Drawing.Point(845, 43);
+			this.RangeSliderBlue.Name = "RangeSliderBlue";
+			this.RangeSliderBlue.Orientation = MetroFramework.SliderOrientation.Vertical;
+			this.RangeSliderBlue.PageChange = ((uint)(5u));
+			this.RangeSliderBlue.RangeMax = 255;
+			this.RangeSliderBlue.RangeMin = 0;
+			this.RangeSliderBlue.Reverse = true;
+			this.RangeSliderBlue.ScrollChange = ((uint)(10u));
+			this.RangeSliderBlue.Size = new System.Drawing.Size(69, 500);
+			this.RangeSliderBlue.Style = MetroFramework.MetroColorStyle.Blue;
+			this.RangeSliderBlue.StyleManager = null;
+			this.RangeSliderBlue.TabIndex = 5;
+			this.RangeSliderBlue.Text = "metroRangeSlider3";
+			this.RangeSliderBlue.Theme = MetroFramework.MetroThemeStyle.Light;
+			this.Tooltip.SetToolTip(this.RangeSliderBlue, "Image filter of blue color.");
+			this.RangeSliderBlue.Scroll += new System.EventHandler(this.RangeSliderBlue_Scroll);
+			// 
 			// ButtonNext
 			// 
 			this.ButtonNext.Highlight = true;
@@ -577,7 +630,6 @@
 			// 
 			this.TabPage5.Controls.Add(this.RedoButton);
 			this.TabPage5.Controls.Add(this.UndoButton);
-			this.TabPage5.Controls.Add(this.PictureBoxEraser);
 			this.TabPage5.CustomBackground = false;
 			this.TabPage5.HorizontalScrollbar = false;
 			this.TabPage5.HorizontalScrollbarBarColor = true;
@@ -596,10 +648,40 @@
 			this.TabPage5.VerticalScrollbarHighlightOnWheel = false;
 			this.TabPage5.VerticalScrollbarSize = 10;
 			// 
+			// RedoButton
+			// 
+			this.RedoButton.Image = global::DataCapturer.Properties.Resources.Redo_icon;
+			this.RedoButton.Location = new System.Drawing.Point(15, 354);
+			this.RedoButton.Name = "RedoButton";
+			this.RedoButton.Size = new System.Drawing.Size(60, 60);
+			this.RedoButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.RedoButton.TabIndex = 7;
+			this.RedoButton.TabStop = false;
+			this.RedoButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RedoButton_MouseDown);
+			this.RedoButton.MouseEnter += new System.EventHandler(this.RedoButton_MouseEnter);
+			this.RedoButton.MouseLeave += new System.EventHandler(this.RedoButton_MouseLeave);
+			this.RedoButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.RedoButton_MouseUp);
+			// 
+			// UndoButton
+			// 
+			this.UndoButton.Image = global::DataCapturer.Properties.Resources.Undo_icon;
+			this.UndoButton.Location = new System.Drawing.Point(15, 157);
+			this.UndoButton.Name = "UndoButton";
+			this.UndoButton.Size = new System.Drawing.Size(60, 60);
+			this.UndoButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.UndoButton.TabIndex = 6;
+			this.UndoButton.TabStop = false;
+			this.UndoButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.UndoButton_MouseDown);
+			this.UndoButton.MouseEnter += new System.EventHandler(this.UndoButton_MouseEnter);
+			this.UndoButton.MouseLeave += new System.EventHandler(this.UndoButton_MouseLeave);
+			this.UndoButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.UndoButton_MouseUp);
+			// 
 			// TabPage4
 			// 
+			this.TabPage4.Controls.Add(this.RangeSliderBlue);
 			this.TabPage4.Controls.Add(this.PictureBoxFilter);
-			this.TabPage4.Controls.Add(this.metroPanel1);
+			this.TabPage4.Controls.Add(this.RangeSliderGreen);
+			this.TabPage4.Controls.Add(this.RangeSliderRed);
 			this.TabPage4.CustomBackground = false;
 			this.TabPage4.HorizontalScrollbar = false;
 			this.TabPage4.HorizontalScrollbarBarColor = true;
@@ -617,28 +699,6 @@
 			this.TabPage4.VerticalScrollbarBarColor = true;
 			this.TabPage4.VerticalScrollbarHighlightOnWheel = false;
 			this.TabPage4.VerticalScrollbarSize = 10;
-			// 
-			// metroPanel1
-			// 
-			this.metroPanel1.Controls.Add(this.RangeSliderBlue);
-			this.metroPanel1.Controls.Add(this.RangeSliderGreen);
-			this.metroPanel1.Controls.Add(this.RangeSliderRed);
-			this.metroPanel1.CustomBackground = false;
-			this.metroPanel1.HorizontalScrollbar = false;
-			this.metroPanel1.HorizontalScrollbarBarColor = true;
-			this.metroPanel1.HorizontalScrollbarHighlightOnWheel = false;
-			this.metroPanel1.HorizontalScrollbarSize = 10;
-			this.metroPanel1.Location = new System.Drawing.Point(686, 17);
-			this.metroPanel1.Name = "metroPanel1";
-			this.metroPanel1.Size = new System.Drawing.Size(272, 539);
-			this.metroPanel1.Style = MetroFramework.MetroColorStyle.Blue;
-			this.metroPanel1.StyleManager = null;
-			this.metroPanel1.TabIndex = 5;
-			this.metroPanel1.Theme = MetroFramework.MetroThemeStyle.Light;
-			this.metroPanel1.VerticalScrollbar = false;
-			this.metroPanel1.VerticalScrollbarBarColor = true;
-			this.metroPanel1.VerticalScrollbarHighlightOnWheel = false;
-			this.metroPanel1.VerticalScrollbarSize = 10;
 			// 
 			// TabPage3
 			// 
@@ -686,6 +746,18 @@
 			this.TabPage1.VerticalScrollbarHighlightOnWheel = false;
 			this.TabPage1.VerticalScrollbarSize = 10;
 			// 
+			// PictureBoxInput
+			// 
+			this.PictureBoxInput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.PictureBoxInput.Location = new System.Drawing.Point(125, 40);
+			this.PictureBoxInput.Name = "PictureBoxInput";
+			this.PictureBoxInput.Size = new System.Drawing.Size(700, 450);
+			this.PictureBoxInput.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.PictureBoxInput.TabIndex = 2;
+			this.PictureBoxInput.TabStop = false;
+			// 
 			// TabControlMain
 			// 
 			this.TabControlMain.Controls.Add(this.TabPage1);
@@ -724,7 +796,6 @@
 			this.TabPage2.Controls.Add(this.metroLabel2);
 			this.TabPage2.Controls.Add(this.TextBoxXlo);
 			this.TabPage2.Controls.Add(this.metroLabel1);
-			this.TabPage2.Controls.Add(this.PictureBoxSetAxLim);
 			this.TabPage2.CustomBackground = false;
 			this.TabPage2.HorizontalScrollbar = false;
 			this.TabPage2.HorizontalScrollbarBarColor = true;
@@ -747,138 +818,6 @@
 			// 
 			this.openFileDialog.Filter = "Images (*.jpg; *.png; *.bmp)|*.jpg;*.png;*.bmp";
 			// 
-			// PictureBoxWarnGetAxis
-			// 
-			this.PictureBoxWarnGetAxis.BackColor = System.Drawing.Color.Transparent;
-			this.PictureBoxWarnGetAxis.Image = global::DataCapturer.Properties.Resources._01300543896251147062126622831_s;
-			this.PictureBoxWarnGetAxis.Location = new System.Drawing.Point(365, 53);
-			this.PictureBoxWarnGetAxis.Name = "PictureBoxWarnGetAxis";
-			this.PictureBoxWarnGetAxis.Size = new System.Drawing.Size(40, 40);
-			this.PictureBoxWarnGetAxis.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.PictureBoxWarnGetAxis.TabIndex = 7;
-			this.PictureBoxWarnGetAxis.TabStop = false;
-			this.Tooltip.SetToolTip(this.PictureBoxWarnGetAxis, "Can\'t capture appropriate axis!");
-			this.PictureBoxWarnGetAxis.Visible = false;
-			// 
-			// PictureBoxWarnSetAxLim
-			// 
-			this.PictureBoxWarnSetAxLim.BackColor = System.Drawing.Color.Transparent;
-			this.PictureBoxWarnSetAxLim.Image = global::DataCapturer.Properties.Resources._01300543896251147062126622831_s;
-			this.PictureBoxWarnSetAxLim.Location = new System.Drawing.Point(213, 53);
-			this.PictureBoxWarnSetAxLim.Name = "PictureBoxWarnSetAxLim";
-			this.PictureBoxWarnSetAxLim.Size = new System.Drawing.Size(40, 40);
-			this.PictureBoxWarnSetAxLim.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.PictureBoxWarnSetAxLim.TabIndex = 6;
-			this.PictureBoxWarnSetAxLim.TabStop = false;
-			this.Tooltip.SetToolTip(this.PictureBoxWarnSetAxLim, "Not all axis limits have been set!");
-			this.PictureBoxWarnSetAxLim.Visible = false;
-			// 
-			// PictureBoxInput
-			// 
-			this.PictureBoxInput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.PictureBoxInput.Location = new System.Drawing.Point(50, 50);
-			this.PictureBoxInput.Name = "PictureBoxInput";
-			this.PictureBoxInput.Size = new System.Drawing.Size(850, 440);
-			this.PictureBoxInput.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.PictureBoxInput.TabIndex = 2;
-			this.PictureBoxInput.TabStop = false;
-			// 
-			// PictureBoxSetAxLim
-			// 
-			this.PictureBoxSetAxLim.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.PictureBoxSetAxLim.Location = new System.Drawing.Point(245, 50);
-			this.PictureBoxSetAxLim.Name = "PictureBoxSetAxLim";
-			this.PictureBoxSetAxLim.Size = new System.Drawing.Size(666, 416);
-			this.PictureBoxSetAxLim.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.PictureBoxSetAxLim.TabIndex = 3;
-			this.PictureBoxSetAxLim.TabStop = false;
-			this.Tooltip.SetToolTip(this.PictureBoxSetAxLim, "Type in the axis limits in this image.");
-			// 
-			// PictureBoxGetAxis
-			// 
-			this.PictureBoxGetAxis.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.PictureBoxGetAxis.Location = new System.Drawing.Point(64, 70);
-			this.PictureBoxGetAxis.Name = "PictureBoxGetAxis";
-			this.PictureBoxGetAxis.Size = new System.Drawing.Size(855, 480);
-			this.PictureBoxGetAxis.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.PictureBoxGetAxis.TabIndex = 3;
-			this.PictureBoxGetAxis.TabStop = false;
-			this.Tooltip.SetToolTip(this.PictureBoxGetAxis, "Scroll the sliders to adjust the axis.");
-			// 
-			// PictureBoxFilter
-			// 
-			this.PictureBoxFilter.Location = new System.Drawing.Point(3, 17);
-			this.PictureBoxFilter.Name = "PictureBoxFilter";
-			this.PictureBoxFilter.Size = new System.Drawing.Size(677, 539);
-			this.PictureBoxFilter.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.PictureBoxFilter.TabIndex = 6;
-			this.PictureBoxFilter.TabStop = false;
-			this.Tooltip.SetToolTip(this.PictureBoxFilter, "Scroll the range sliders to filter the image.");
-			// 
-			// PictureBoxEraser
-			// 
-			this.PictureBoxEraser.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.PictureBoxEraser.Cursor = System.Windows.Forms.Cursors.Default;
-			this.PictureBoxEraser.Location = new System.Drawing.Point(97, 18);
-			this.PictureBoxEraser.Name = "PictureBoxEraser";
-			this.PictureBoxEraser.Size = new System.Drawing.Size(828, 550);
-			this.PictureBoxEraser.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.PictureBoxEraser.TabIndex = 5;
-			this.PictureBoxEraser.TabStop = false;
-			this.Tooltip.SetToolTip(this.PictureBoxEraser, "Click on the image to erase the stain.");
-			this.PictureBoxEraser.LoadCompleted += new System.ComponentModel.AsyncCompletedEventHandler(this.PictureBoxEraser_LoadCompleted);
-			this.PictureBoxEraser.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PictureBoxEraser_MouseDown);
-			this.PictureBoxEraser.MouseEnter += new System.EventHandler(this.PictureBoxEraser_MouseEnter);
-			this.PictureBoxEraser.MouseLeave += new System.EventHandler(this.PictureBoxEraser_MouseLeave);
-			this.PictureBoxEraser.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PictureBoxEraser_MouseMove);
-			this.PictureBoxEraser.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBoxEraser_MouseUp);
-			// 
-			// PictureBoxOutput
-			// 
-			this.PictureBoxOutput.Location = new System.Drawing.Point(3, 17);
-			this.PictureBoxOutput.Name = "PictureBoxOutput";
-			this.PictureBoxOutput.Size = new System.Drawing.Size(709, 470);
-			this.PictureBoxOutput.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.PictureBoxOutput.TabIndex = 6;
-			this.PictureBoxOutput.TabStop = false;
-			this.Tooltip.SetToolTip(this.PictureBoxOutput, "The captured data.");
-			// 
-			// UndoButton
-			// 
-			this.UndoButton.Image = global::DataCapturer.Properties.Resources.Undo_icon;
-			this.UndoButton.Location = new System.Drawing.Point(15, 157);
-			this.UndoButton.Name = "UndoButton";
-			this.UndoButton.Size = new System.Drawing.Size(60, 60);
-			this.UndoButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.UndoButton.TabIndex = 6;
-			this.UndoButton.TabStop = false;
-			this.UndoButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.UndoButton_MouseDown);
-			this.UndoButton.MouseEnter += new System.EventHandler(this.UndoButton_MouseEnter);
-			this.UndoButton.MouseLeave += new System.EventHandler(this.UndoButton_MouseLeave);
-			this.UndoButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.UndoButton_MouseUp);
-			// 
-			// RedoButton
-			// 
-			this.RedoButton.Image = global::DataCapturer.Properties.Resources.Redo_icon;
-			this.RedoButton.Location = new System.Drawing.Point(15, 354);
-			this.RedoButton.Name = "RedoButton";
-			this.RedoButton.Size = new System.Drawing.Size(60, 60);
-			this.RedoButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.RedoButton.TabIndex = 7;
-			this.RedoButton.TabStop = false;
-			this.RedoButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RedoButton_MouseDown);
-			this.RedoButton.MouseEnter += new System.EventHandler(this.RedoButton_MouseEnter);
-			this.RedoButton.MouseLeave += new System.EventHandler(this.RedoButton_MouseLeave);
-			this.RedoButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.RedoButton_MouseUp);
-			// 
 			// DataCapturer
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
@@ -890,29 +829,28 @@
 			this.Controls.Add(this.ButtonNext);
 			this.Controls.Add(this.TabControlMain);
 			this.Location = new System.Drawing.Point(0, 0);
-			this.MetroFont = new System.Drawing.Font("Segoe UI Light", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.MetroFont = new System.Drawing.Font("Segoe UI Light", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Name = "DataCapturer";
+			this.Resizable = false;
+			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
 			this.Text = "Data Capturer";
+			((System.ComponentModel.ISupportInitialize)(this.PictureBoxWarnGetAxis)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.PictureBoxWarnSetAxLim)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.PictureBoxGetAxis)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.PictureBoxFilter)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.PictureBoxOutput)).EndInit();
 			this.TabPage6.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
 			this.TabPage5.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.RedoButton)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.UndoButton)).EndInit();
 			this.TabPage4.ResumeLayout(false);
-			this.metroPanel1.ResumeLayout(false);
 			this.TabPage3.ResumeLayout(false);
 			this.TabPage1.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.PictureBoxInput)).EndInit();
 			this.TabControlMain.ResumeLayout(false);
 			this.TabPage2.ResumeLayout(false);
 			this.TabPage2.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.PictureBoxWarnGetAxis)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.PictureBoxWarnSetAxLim)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.PictureBoxInput)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.PictureBoxSetAxLim)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.PictureBoxGetAxis)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.PictureBoxFilter)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.PictureBoxEraser)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.PictureBoxOutput)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.UndoButton)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.RedoButton)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -920,7 +858,6 @@
 		#endregion
 
 		#region Useless
-		private MetroFramework.Controls.MetroPanel metroPanel1;
 		private MetroFramework.Controls.MetroLabel metroLabel1;
 		private MetroFramework.Controls.MetroLabel metroLabel2;
 		private MetroFramework.Controls.MetroLabel metroLabel4;
@@ -942,14 +879,9 @@
 		private MetroFramework.Controls.MetroTabPage TabPage2;
 		private MetroFramework.Controls.MetroTabPage TabPage1;
 		private MetroFramework.Controls.MetroTabControl TabControlMain;
-		private MetroFramework.Controls.MetroSlider SliderAxisOffset;
-		private MetroFramework.Controls.MetroSlider SliderAxLengthX;
-		private MetroFramework.Controls.MetroRangeSlider RangeSliderBlue;
-		private MetroFramework.Controls.MetroRangeSlider RangeSliderGreen;
-		private MetroFramework.Controls.MetroRangeSlider RangeSliderRed;
-		private System.Windows.Forms.PictureBox PictureBoxSetAxLim;
+		private MetroFramework.Controls.Slider SliderAxisOffset;
+		private MetroFramework.Controls.Slider SliderAxLengthX;
 		private System.Windows.Forms.PictureBox PictureBoxOutput;
-		private System.Windows.Forms.PictureBox PictureBoxEraser;
 		private System.Windows.Forms.PictureBox PictureBoxGetAxis;
 		private System.Windows.Forms.PictureBox PictureBoxInput;
 		private System.Windows.Forms.PictureBox PictureBoxFilter;
@@ -966,9 +898,12 @@
 		private System.Windows.Forms.TextBox  TextBoxYBase;
 		private System.Windows.Forms.CheckBox CheckBoxXLog;
 		private System.Windows.Forms.CheckBox CheckBoxYLog;
-		private MetroFramework.Controls.MetroSlider SliderAxLengthY;
+		private MetroFramework.Controls.Slider SliderAxLengthY;
 		private System.Windows.Forms.PictureBox RedoButton;
 		private System.Windows.Forms.PictureBox UndoButton;
+		private MetroFramework.Controls.RangeSlider RangeSliderBlue;
+		private MetroFramework.Controls.RangeSlider RangeSliderGreen;
+		private MetroFramework.Controls.RangeSlider RangeSliderRed;
 	}
 }
 

@@ -100,5 +100,14 @@
   <ItemGroup>
     <None Include="Resources\Undo-icon%28black%29.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Drag Cursor.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\hand_drag-512.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\hand_drag_512_v8e_icon.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
