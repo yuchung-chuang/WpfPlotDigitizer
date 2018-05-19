@@ -71,6 +71,16 @@ namespace DataCapturer.Properties {
         }
         
         /// <summary>
+        ///   查詢類似 (圖示) 的類型 System.Drawing.Icon 當地語系化資源。
+        /// </summary>
+        internal static System.Drawing.Icon hand_drag_512_v8e_icon {
+            get {
+                object obj = ResourceManager.GetObject("hand_drag_512_v8e_icon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   查詢類型 System.Drawing.Bitmap 的當地語系化資源。
         /// </summary>
         internal static System.Drawing.Bitmap Redo_icon {

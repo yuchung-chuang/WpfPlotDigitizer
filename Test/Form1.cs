@@ -19,15 +19,24 @@ namespace Test
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
-			LayerControl lc1 = new LayerControl(100, 100);
-			lc1.Location = new Point(20, 20);
-			lc1.DrawRectangle();
-			LayerControl lc2 = new LayerControl(100, 100);
-			lc2.Location = new Point(10, 10);
-			lc2.DrawCircles();
-			this.Controls.Add(lc1);
-			this.Controls.Add(lc2);
-			this.Controls.Remove(lc2);
+			
+			
+		}
+
+		private void button1_Click(object sender, EventArgs e)
+		{
+			if (openFileDialog1.ShowDialog() != DialogResult.OK)
+				return;
+		}
+
+		private void pictureBox1_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
+		{
+
 		}
 	}
 }
