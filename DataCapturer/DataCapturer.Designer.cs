@@ -1,4 +1,6 @@
-﻿namespace DataCapturer
+﻿using MetroFramework;
+
+namespace DataCapturer
 {
 	partial class DataCapturer
 	{
@@ -30,12 +32,12 @@
 		{
 			this.Tooltip = new MetroFramework.Components.MetroToolTip();
 			this.ButtonSave = new MetroFramework.Controls.MetroButton();
-			this.RangeSliderBlue = new MetroFramework.Controls.MetroRangeSlider();
-			this.RangeSliderGreen = new MetroFramework.Controls.MetroRangeSlider();
-			this.RangeSliderRed = new MetroFramework.Controls.MetroRangeSlider();
-			this.SliderAxisOffset = new MetroFramework.Controls.MetroSlider();
-			this.SliderAxLengthY = new MetroFramework.Controls.MetroSlider();
-			this.SliderAxLengthX = new MetroFramework.Controls.MetroSlider();
+			this.RangeSliderBlue = new MetroFramework.Controls.RangeSlider();
+			this.RangeSliderGreen = new MetroFramework.Controls.RangeSlider();
+			this.RangeSliderRed = new MetroFramework.Controls.RangeSlider();
+			this.SliderAxisOffset = new MetroFramework.Controls.Slider();
+			this.SliderAxLengthY = new MetroFramework.Controls.Slider();
+			this.SliderAxLengthX = new MetroFramework.Controls.Slider();
 			this.ButtonBrowse = new MetroFramework.Controls.MetroButton();
 			this.CheckBoxYLog = new System.Windows.Forms.CheckBox();
 			this.TextBoxYBase = new System.Windows.Forms.TextBox();
@@ -131,7 +133,7 @@
 			this.RangeSliderBlue.CustomBackground = false;
 			this.RangeSliderBlue.Location = new System.Drawing.Point(177, 25);
 			this.RangeSliderBlue.Name = "RangeSliderBlue";
-			this.RangeSliderBlue.Orientation = MetroFramework.MetroOrientation.Vertical;
+			this.RangeSliderBlue.Orientation = SliderOrientation.Vertical;
 			this.RangeSliderBlue.PageChange = ((uint)(5u));
 			this.RangeSliderBlue.RangeMax = 255;
 			this.RangeSliderBlue.RangeMin = 0;
@@ -155,7 +157,7 @@
 			this.RangeSliderGreen.CustomBackground = false;
 			this.RangeSliderGreen.Location = new System.Drawing.Point(102, 25);
 			this.RangeSliderGreen.Name = "RangeSliderGreen";
-			this.RangeSliderGreen.Orientation = MetroFramework.MetroOrientation.Vertical;
+			this.RangeSliderGreen.Orientation = SliderOrientation.Vertical;
 			this.RangeSliderGreen.PageChange = ((uint)(5u));
 			this.RangeSliderGreen.RangeMax = 255;
 			this.RangeSliderGreen.RangeMin = 0;
@@ -179,7 +181,7 @@
 			this.RangeSliderRed.CustomBackground = false;
 			this.RangeSliderRed.Location = new System.Drawing.Point(27, 25);
 			this.RangeSliderRed.Name = "RangeSliderRed";
-			this.RangeSliderRed.Orientation = MetroFramework.MetroOrientation.Vertical;
+			this.RangeSliderRed.Orientation = SliderOrientation.Vertical;
 			this.RangeSliderRed.PageChange = ((uint)(5u));
 			this.RangeSliderRed.RangeMax = 255;
 			this.RangeSliderRed.RangeMin = 0;
@@ -203,7 +205,7 @@
 			this.SliderAxisOffset.CustomBackground = false;
 			this.SliderAxisOffset.Location = new System.Drawing.Point(785, 510);
 			this.SliderAxisOffset.Name = "SliderAxisOffset";
-			this.SliderAxisOffset.Orientation = MetroFramework.MetroOrientation.Up;
+			this.SliderAxisOffset.Orientation = SliderOrientation.Up;
 			this.SliderAxisOffset.PageChange = ((uint)(5u));
 			this.SliderAxisOffset.Reverse = true;
 			this.SliderAxisOffset.ScrollChange = ((uint)(10u));
@@ -226,7 +228,7 @@
 			this.SliderAxLengthY.CustomBackground = false;
 			this.SliderAxLengthY.Location = new System.Drawing.Point(3, 70);
 			this.SliderAxLengthY.Name = "SliderAxLengthY";
-			this.SliderAxLengthY.Orientation = MetroFramework.MetroOrientation.Right;
+			this.SliderAxLengthY.Orientation = SliderOrientation.Right;
 			this.SliderAxLengthY.PageChange = ((uint)(5u));
 			this.SliderAxLengthY.Reverse = false;
 			this.SliderAxLengthY.ScrollChange = ((uint)(10u));
@@ -249,7 +251,7 @@
 			this.SliderAxLengthX.CustomBackground = false;
 			this.SliderAxLengthX.Location = new System.Drawing.Point(64, 12);
 			this.SliderAxLengthX.Name = "SliderAxLengthX";
-			this.SliderAxLengthX.Orientation = MetroFramework.MetroOrientation.Down;
+			this.SliderAxLengthX.Orientation = SliderOrientation.Down;
 			this.SliderAxLengthX.PageChange = ((uint)(5u));
 			this.SliderAxLengthX.Reverse = false;
 			this.SliderAxLengthX.ScrollChange = ((uint)(10u));
@@ -942,11 +944,11 @@
 		private MetroFramework.Controls.MetroTabPage TabPage2;
 		private MetroFramework.Controls.MetroTabPage TabPage1;
 		private MetroFramework.Controls.MetroTabControl TabControlMain;
-		private MetroFramework.Controls.MetroSlider SliderAxisOffset;
-		private MetroFramework.Controls.MetroSlider SliderAxLengthX;
-		private MetroFramework.Controls.MetroRangeSlider RangeSliderBlue;
-		private MetroFramework.Controls.MetroRangeSlider RangeSliderGreen;
-		private MetroFramework.Controls.MetroRangeSlider RangeSliderRed;
+		private MetroFramework.Controls.Slider SliderAxisOffset;
+		private MetroFramework.Controls.Slider SliderAxLengthX;
+		private MetroFramework.Controls.RangeSlider RangeSliderBlue;
+		private MetroFramework.Controls.RangeSlider RangeSliderGreen;
+		private MetroFramework.Controls.RangeSlider RangeSliderRed;
 		private System.Windows.Forms.PictureBox PictureBoxSetAxLim;
 		private System.Windows.Forms.PictureBox PictureBoxOutput;
 		private System.Windows.Forms.PictureBox PictureBoxEraser;
@@ -966,7 +968,7 @@
 		private System.Windows.Forms.TextBox  TextBoxYBase;
 		private System.Windows.Forms.CheckBox CheckBoxXLog;
 		private System.Windows.Forms.CheckBox CheckBoxYLog;
-		private MetroFramework.Controls.MetroSlider SliderAxLengthY;
+		private MetroFramework.Controls.Slider SliderAxLengthY;
 		private System.Windows.Forms.PictureBox RedoButton;
 		private System.Windows.Forms.PictureBox UndoButton;
 	}
