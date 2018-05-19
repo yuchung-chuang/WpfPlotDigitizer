@@ -655,7 +655,6 @@
 			// 
 			// imageViewer2
 			// 
-			this.imageViewer2.BarStyle = MetroFramework.ScrollBarStyle.Round;
 			this.imageViewer2.Image = ((System.Drawing.Image)(resources.GetObject("imageViewer2.Image")));
 			this.imageViewer2.Location = new System.Drawing.Point(639, 131);
 			this.imageViewer2.Name = "imageViewer2";
@@ -664,7 +663,6 @@
 			// 
 			// imageViewer1
 			// 
-			this.imageViewer1.BarStyle = MetroFramework.ScrollBarStyle.Round;
 			this.imageViewer1.Image = ((System.Drawing.Image)(resources.GetObject("imageViewer1.Image")));
 			this.imageViewer1.Location = new System.Drawing.Point(221, 82);
 			this.imageViewer1.Name = "imageViewer1";
