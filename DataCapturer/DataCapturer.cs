@@ -583,11 +583,11 @@ namespace DataCapturer
 		#region Other User Activities
 		private void ButtonNext_Click(object sender, EventArgs e)
 		{
-			TabControlMain.SelectTab(CustomMethods.clamp(TabControlMain.SelectedIndex + 1, TabControlMain.TabCount - 1, 0));
+			TabControlMain.SelectTab(CustomMethods.Clamp(TabControlMain.SelectedIndex + 1, TabControlMain.TabCount - 1, 0));
 		}
 		private void ButtonBack_Click(object sender, EventArgs e)
 		{
-			TabControlMain.SelectTab(CustomMethods.clamp(TabControlMain.SelectedIndex - 1, TabControlMain.TabCount - 1, 0));
+			TabControlMain.SelectTab(CustomMethods.Clamp(TabControlMain.SelectedIndex - 1, TabControlMain.TabCount - 1, 0));
 		}
 		private void TabControl_SelectedIndexChanged(object sender, EventArgs e)
 		{

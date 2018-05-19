@@ -95,7 +95,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\GoogleDrive\CSharp\examples\winforms-modernui-master\MetroFramework\MetroFramework.csproj">
+    <ProjectReference Include="..\..\..\..\GoogleDrive\CSharp\MetroFramework\MetroFramework\MetroFramework.csproj">
       <Project>{BB41AC8B-CBED-4387-A7E0-4567EDB3F57F}</Project>
       <Name>MetroFramework</Name>
     </ProjectReference>

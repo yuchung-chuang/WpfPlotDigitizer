@@ -64,6 +64,7 @@
 			this.XData = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.YData = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.TabPage5 = new MetroFramework.Controls.MetroTabPage();
+			this.imageViewer2 = new MetroFramework.Controls.ImageViewer();
 			this.imageViewer1 = new MetroFramework.Controls.ImageViewer();
 			this.RedoButton = new System.Windows.Forms.PictureBox();
 			this.UndoButton = new System.Windows.Forms.PictureBox();
@@ -630,6 +631,7 @@
 			// 
 			// TabPage5
 			// 
+			this.TabPage5.Controls.Add(this.imageViewer2);
 			this.TabPage5.Controls.Add(this.imageViewer1);
 			this.TabPage5.Controls.Add(this.RedoButton);
 			this.TabPage5.Controls.Add(this.UndoButton);
@@ -651,12 +653,22 @@
 			this.TabPage5.VerticalScrollbarHighlightOnWheel = false;
 			this.TabPage5.VerticalScrollbarSize = 10;
 			// 
+			// imageViewer2
+			// 
+			this.imageViewer2.BarStyle = MetroFramework.ScrollBarStyle.Round;
+			this.imageViewer2.Image = ((System.Drawing.Image)(resources.GetObject("imageViewer2.Image")));
+			this.imageViewer2.Location = new System.Drawing.Point(639, 131);
+			this.imageViewer2.Name = "imageViewer2";
+			this.imageViewer2.Size = new System.Drawing.Size(213, 190);
+			this.imageViewer2.TabIndex = 10;
+			// 
 			// imageViewer1
 			// 
+			this.imageViewer1.BarStyle = MetroFramework.ScrollBarStyle.Round;
 			this.imageViewer1.Image = ((System.Drawing.Image)(resources.GetObject("imageViewer1.Image")));
-			this.imageViewer1.Location = new System.Drawing.Point(338, 100);
+			this.imageViewer1.Location = new System.Drawing.Point(221, 82);
 			this.imageViewer1.Name = "imageViewer1";
-			this.imageViewer1.Size = new System.Drawing.Size(382, 278);
+			this.imageViewer1.Size = new System.Drawing.Size(316, 239);
 			this.imageViewer1.TabIndex = 8;
 			// 
 			// RedoButton
@@ -916,6 +928,7 @@
 		private MetroFramework.Controls.RangeSlider RangeSliderGreen;
 		private MetroFramework.Controls.RangeSlider RangeSliderRed;
 		private MetroFramework.Controls.ImageViewer imageViewer1;
+		private MetroFramework.Controls.ImageViewer imageViewer2;
 	}
 }
 

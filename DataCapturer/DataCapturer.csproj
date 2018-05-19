@@ -80,12 +80,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\GoogleDrive\CSharp\examples\winforms-modernui-master\MetroFramework\MetroFramework.csproj">
-      <Project>{bb41ac8b-cbed-4387-a7e0-4567edb3f57f}</Project>
-      <Name>MetroFramework</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\01300543896251147062126622831_s.png" />
   </ItemGroup>
   <ItemGroup>
@@ -108,6 +102,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\hand_drag_512_v8e_icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\GoogleDrive\CSharp\MetroFramework\MetroFramework\MetroFramework.csproj">
+      <Project>{bb41ac8b-cbed-4387-a7e0-4567edb3f57f}</Project>
+      <Name>MetroFramework</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
