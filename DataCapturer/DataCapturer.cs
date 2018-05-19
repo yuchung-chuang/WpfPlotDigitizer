@@ -13,7 +13,7 @@ using System.Windows.Forms;
 using MetroFramework;
 using MetroFramework.Drawing;
 using MetroFramework.Forms;
-using MetroFramework.Globals;
+
 
 namespace DataCapturer
 {
@@ -23,13 +23,13 @@ namespace DataCapturer
 		private bool IsSetAxLim = true;
 
 		#region Images
-		private MetroImage ImageInput;
-		private MetroImage ImageFilterW;
-		private MetroImage ImageAxis;
-		private MetroImage ImageFilterRGB;
-		private MetroImage ImageErase;
-		private List<MetroImage> ImageEraseList = new List<MetroImage>();
-		private MetroImage ImageOutput;
+		private PixelImage ImageInput;
+		private PixelImage ImageFilterW;
+		private PixelImage ImageAxis;
+		private PixelImage ImageFilterRGB;
+		private PixelImage ImageErase;
+		private List<PixelImage> ImageEraseList = new List<PixelImage>();
+		private PixelImage ImageOutput;
 		#endregion
 
 		#region Component Properties
@@ -119,9 +119,9 @@ namespace DataCapturer
 		}
 		private void Initialize()
 		{
-			//ImageInput = new MetroImage(new Bitmap(openFileDialog.FileName));
-			ImageInput = new MetroImage(new Bitmap("C:\\Users\\alex\\Dropbox (Alex)\\SMCMLAB\\matlab\\DataCapturer\\images\\19451854599_fdc0d1a8d7_c.jpg"));
-			ImageFilterW = new MetroImage(ImageInput.Size) { Pixel = FilterW(ImageInput, FilterWMax) };
+			//ImageInput = new PixelImage(new Bitmap(openFileDialog.FileName));
+			ImageInput = new PixelImage(new Bitmap("C:\\Users\\alex\\Dropbox (Alex)\\SMCMLAB\\matlab\\DataCapturer\\images\\19451854599_fdc0d1a8d7_c.jpg"));
+			ImageFilterW = new PixelImage(ImageInput.Size) { Pixel = FilterW(ImageInput, FilterWMax) };
 			PictureBoxInput.Image = ImageInput.Bitmap;
 			PictureBoxSetAxLim.Image = ImageInput.Bitmap;
 			SliderAxLengthX.BarMax = ImageInput.Bitmap.Width;
@@ -158,7 +158,7 @@ namespace DataCapturer
 		private Size OffsetSize = new Size();
 		private bool IsGetAxis { get => (AxSize.Width > 0 && AxSize.Height > 0) ? true : false; }
 		private bool IsOffset { get => (OffsetSize.Width > 0 && OffsetSize.Height > 0) ? true : false; }
-		private byte[] FilterW(MetroImage iptImage, int white = 200)
+		private byte[] FilterW(PixelImage iptImage, int white = 200)
 		{
 			byte blue, green, red;
 			byte[] optPixel = (byte[])iptImage.Pixel.Clone(); // 複製值
@@ -175,7 +175,7 @@ namespace DataCapturer
 		{
 			return pixel[i + 3] != 0;  //A 
 		}
-		private void GetAxis(MetroImage image)
+		private void GetAxis(PixelImage image)
 		{
 			int L = 0, xTmp = 0, yTmp = 0, idx;
 			AxSize.Width = 0;
@@ -267,14 +267,14 @@ namespace DataCapturer
 		private void Crop()
 		{
 			Rectangle rect = new Rectangle(OffsetPos, OffsetSize);
-			ImageAxis = new MetroImage(ImageInput.Bitmap.Clone(rect, MetroImage.PixelFormat));
+			ImageAxis = new PixelImage(ImageInput.Bitmap.Clone(rect, PixelImage.PixelFormat));
 		}
 		private void UpdateImageAxis()
 		{
 			Crop(); //Crop ImageAxis
 			PictureBoxGetAxis.Image = ImageAxis.Bitmap;
 
-			ImageFilterRGB = new MetroImage(ImageAxis.Bitmap); //預先設定ImageFilterRGB
+			ImageFilterRGB = new PixelImage(ImageAxis.Bitmap); //預先設定ImageFilterRGB
 			UpdateImageFilter();
 		}
 		#endregion
@@ -302,7 +302,7 @@ namespace DataCapturer
 						G <= FilterGMax && G >= FilterGMin &&
 							B <= FilterBMax && B >= FilterBMin) ? true : false;
 		}
-		private byte[] FilterR(MetroImage iptImage)
+		private byte[] FilterR(PixelImage iptImage)
 		{
 			byte R, G, B;
 			byte[] optPixel = (byte[])iptImage.Pixel.Clone(); // 複製值
@@ -326,7 +326,7 @@ namespace DataCapturer
 			}
 			return optPixel;
 		}
-		private byte[] FilterG(MetroImage iptImage)
+		private byte[] FilterG(PixelImage iptImage)
 		{
 			byte R, G, B;
 			byte[] optPixel = (byte[])iptImage.Pixel.Clone(); // 複製值
@@ -350,7 +350,7 @@ namespace DataCapturer
 			}
 			return optPixel;
 		}
-		private byte[] FilterB(MetroImage iptImage)
+		private byte[] FilterB(PixelImage iptImage)
 		{
 			byte R, G, B;
 			byte[] optPixel = (byte[])iptImage.Pixel.Clone(); // 複製值
@@ -378,9 +378,9 @@ namespace DataCapturer
 		{
 			PictureBoxFilter.Image = ImageFilterRGB.Bitmap;
 
-			//ImageErase = new MetroImage(ImageFilterRGB.Bitmap);
+			//ImageErase = new PixelImage(ImageFilterRGB.Bitmap);
 			ImageEraseList.Clear();
-			ImageEraseList.Add(new MetroImage(ImageFilterRGB.Bitmap));
+			ImageEraseList.Add(new PixelImage(ImageFilterRGB.Bitmap));
 			EraseIdx = 0;
 			UpdateImageErase();
 		}
@@ -409,7 +409,7 @@ namespace DataCapturer
 		{
 			IsErasing = true;
 			ImageEraseList.RemoveRange(EraseIdx + 1, ImageEraseList.Count - EraseIdx - 1); //清除所有原先的Redo
-			ImageEraseList.Add(new MetroImage(ImageEraseList[EraseIdx].Bitmap));//或許需要設置ImageEraseList的儲存上限
+			ImageEraseList.Add(new PixelImage(ImageEraseList[EraseIdx].Bitmap));//或許需要設置ImageEraseList的儲存上限
 			EraseIdx += 1;
 			
 			PictureBoxEraser_MouseMove(sender, e);
@@ -577,11 +577,11 @@ namespace DataCapturer
 		#region Other User Activities
 		private void ButtonNext_Click(object sender, EventArgs e)
 		{
-			TabControlMain.SelectTab(MetroMethods.clamp(TabControlMain.SelectedIndex + 1, TabControlMain.TabCount - 1, 0));
+			TabControlMain.SelectTab(CustomMethods.Clamp(TabControlMain.SelectedIndex + 1, TabControlMain.TabCount - 1, 0));
 		}
 		private void ButtonBack_Click(object sender, EventArgs e)
 		{
-			TabControlMain.SelectTab(MetroMethods.clamp(TabControlMain.SelectedIndex - 1, TabControlMain.TabCount - 1, 0));
+			TabControlMain.SelectTab(CustomMethods.Clamp(TabControlMain.SelectedIndex - 1, TabControlMain.TabCount - 1, 0));
 		}
 		private void TabControl_SelectedIndexChanged(object sender, EventArgs e)
 		{
