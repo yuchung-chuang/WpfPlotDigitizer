@@ -123,7 +123,7 @@ namespace DataCapturer
 			ImageInput = new PixelImage(new Bitmap("C:\\Users\\alex\\Dropbox (Alex)\\SMCMLAB\\matlab\\DataCapturer\\images\\19451854599_fdc0d1a8d7_c.jpg"));
 			ImageFilterW = new PixelImage(ImageInput.Size) { Pixel = FilterW(ImageInput, FilterWMax) };
 			PictureBoxInput.Image = ImageInput.Bitmap;
-			PictureBoxSetAxLim.Image = ImageInput.Bitmap;
+			ImageViewerSetAxLim.Image = ImageInput.Bitmap;
 			SliderAxLengthX.BarMax = ImageInput.Bitmap.Width;
 			SliderAxLengthX.Value = SliderAxLengthX.BarMax / 2;
 			SliderAxLengthY.BarMax = ImageInput.Bitmap.Height;
@@ -156,8 +156,8 @@ namespace DataCapturer
 		private Size AxSize = new Size();
 		private Point OffsetPos = new Point();
 		private Size OffsetSize = new Size();
-		private bool IsGetAxis { get => (AxSize.Width > 0 && AxSize.Height > 0) ? true : false; }
-		private bool IsOffset { get => (OffsetSize.Width > 0 && OffsetSize.Height > 0) ? true : false; }
+		private bool IsGetAxis => (AxSize.Width > 0 && AxSize.Height > 0) ? true : false; 
+		private bool IsOffset => (OffsetSize.Width > 0 && OffsetSize.Height > 0) ? true : false; 
 		private byte[] FilterW(PixelImage iptImage, int white = 200)
 		{
 			byte blue, green, red;
@@ -674,7 +674,5 @@ namespace DataCapturer
 		{
 
 		}
-
-		
 	}
 }

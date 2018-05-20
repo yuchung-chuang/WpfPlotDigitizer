@@ -28,41 +28,41 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.button1 = new System.Windows.Forms.Button();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+			this.imageViewer1 = new MetroFramework.Controls.ImageViewer();
 			this.SuspendLayout();
-			// 
-			// button1
-			// 
-			this.button1.Location = new System.Drawing.Point(274, 507);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(75, 37);
-			this.button1.TabIndex = 0;
-			this.button1.Text = "button1";
-			this.button1.UseVisualStyleBackColor = true;
-			this.button1.Click += new System.EventHandler(this.button1_Click);
 			// 
 			// openFileDialog1
 			// 
 			this.openFileDialog1.FileName = "openFileDialog1";
 			// 
+			// imageViewer1
+			// 
+			this.imageViewer1.Image = ((System.Drawing.Image)(resources.GetObject("imageViewer1.Image")));
+			this.imageViewer1.Location = new System.Drawing.Point(73, 93);
+			this.imageViewer1.Name = "imageViewer1";
+			this.imageViewer1.Size = new System.Drawing.Size(334, 282);
+			this.imageViewer1.TabIndex = 1;
+			// 
 			// Form1
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
 			this.ClientSize = new System.Drawing.Size(651, 556);
-			this.Controls.Add(this.button1);
+			this.Controls.Add(this.imageViewer1);
+			this.DoubleBuffered = true;
 			this.Name = "Form1";
 			this.Text = "Form1";
 			this.Load += new System.EventHandler(this.Form1_Load);
+			this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
 			this.ResumeLayout(false);
 
 		}
 
 		#endregion
-
-		private System.Windows.Forms.Button button1;
 		private System.Windows.Forms.OpenFileDialog openFileDialog1;
+		private MetroFramework.Controls.ImageViewer imageViewer1;
 	}
 }
 

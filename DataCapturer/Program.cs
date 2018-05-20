@@ -10,18 +10,17 @@ namespace DataCapturer
 	{
 		[System.Runtime.InteropServices.DllImport("user32.dll")]
 		private static extern bool SetProcessDPIAware();
-		public static DataCapturer Form;
 		/// <summary>
 		/// 應用程式的主要進入點。
 		/// </summary>
 		[STAThread]
 		static void Main()
 		{
-			if (System.Environment.OSVersion.Version.Major >= 6) { SetProcessDPIAware(); }
+			if (System.Environment.OSVersion.Version.Major >= 6)
+				SetProcessDPIAware(); 
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Form = new DataCapturer();
-			Application.Run(Form);
+			Application.Run(new DataCapturer());
 		}
 	}
 }

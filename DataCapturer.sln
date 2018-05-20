@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataCapturer", "DataCapture
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageProcessing", "..\..\..\GoogleDrive\CSharp\ImageProcessing\ImageProcessing\ImageProcessing.csproj", "{60378AB0-D090-40B2-A483-D7644A285B71}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{702926A1-9424-4F4D-8A2A-FDDE40AAF376}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoResizeControls", "Test\AutoResizeControls.csproj", "{702926A1-9424-4F4D-8A2A-FDDE40AAF376}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetroFramework", "..\..\..\GoogleDrive\CSharp\MetroFramework\MetroFramework\MetroFramework.csproj", "{BB41AC8B-CBED-4387-A7E0-4567EDB3F57F}"
 EndProject
