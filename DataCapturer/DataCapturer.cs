@@ -19,7 +19,6 @@ namespace DataCapturer
 {
 	public partial class DataCapturer : MetroForm
 	{
-		private delegate void Code(); //方便包裝程式碼片段
 		private bool IsSetAxLim = true;
 
 		#region Images
@@ -282,8 +281,8 @@ namespace DataCapturer
 		#region Step 3: Filter
 		private void RangeSliderRed_Scroll(object sender, EventArgs e)
 		{
-			Code code = () => { ImageFilterRGB.Pixel = FilterR(ImageFilterRGB); };
-			TimeIt(code);
+			//Code code = () => { ImageFilterRGB.Pixel = FilterR(ImageFilterRGB); };
+			//TimeIt(code);
 			UpdateImageFilter();
 		}
 		private void RangeSliderGreen_Scroll(object sender, EventArgs e)
@@ -614,8 +613,8 @@ namespace DataCapturer
 			PictureBoxWarnGetAxis.Visible = (IsGetAxis) ? false : true;
 		}
 
-
-
+		//Code code = () => { ImageFilterRGB.Pixel = FilterR(ImageFilterRGB); };
+		private delegate void Code(); //方便包裝程式碼片段
 		private void TimeIt(Code code)
 		{
 			Stopwatch sw = new Stopwatch();//引用stopwatch物件
