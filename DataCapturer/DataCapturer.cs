@@ -13,7 +13,8 @@ using System.Windows.Forms;
 using MetroFramework;
 using MetroFramework.Drawing;
 using MetroFramework.Forms;
-
+using MyLibrary;
+using static MyLibrary.MyMethods;
 
 namespace DataCapturer
 {
@@ -32,44 +33,25 @@ namespace DataCapturer
 		#endregion
 
 		#region Component Properties
-		private double Xlo { get => double.Parse(TextBoxXlo.Text); }
-		private double Xhi { get => double.Parse(TextBoxXhi.Text); }
-		private double Ylo { get => double.Parse(TextBoxYlo.Text); }
-		private double Yhi { get => double.Parse(TextBoxYhi.Text); }
-		private double Xbase { get => double.Parse(TextBoxXBase.Text); }
-		private double Ybase { get => double.Parse(TextBoxYBase.Text); }
-		private int AxisLengthX { get => SliderAxLengthX.Value; }
-		private int AxisLengthY { get => SliderAxLengthY.Value; }
-		private int AxisOffset { get => SliderAxisOffset.Value; }
-		private int FilterRMax { get => RangeSliderRed.RangeMax; }
-		private int FilterRMin { get => RangeSliderRed.RangeMin; }
-		private int FilterGMax { get => RangeSliderGreen.RangeMax; }
-		private int FilterGMin { get => RangeSliderGreen.RangeMin; }
-		private int FilterBMax { get => RangeSliderBlue.RangeMax; }
-		private int FilterBMin { get => RangeSliderBlue.RangeMin; }
+		private double Xlo => double.Parse(TextBoxXlo.Text);
+		private double Xhi => double.Parse(TextBoxXhi.Text);
+		private double Ylo => double.Parse(TextBoxYlo.Text);
+		private double Yhi => double.Parse(TextBoxYhi.Text);
+		private double Xbase => double.Parse(TextBoxXBase.Text);
+		private double Ybase => double.Parse(TextBoxYBase.Text);
+		private int AxisLengthX => SliderAxLengthX.Value;
+		private int AxisLengthY => SliderAxLengthY.Value;
+		private int AxisOffset => SliderAxisOffset.Value;
+		private int FilterRMax => RangeSliderRed.RangeMax;
+		private int FilterRMin => RangeSliderRed.RangeMin;
+		private int FilterGMax => RangeSliderGreen.RangeMax;
+		private int FilterGMin => RangeSliderGreen.RangeMin;
+		private int FilterBMax => RangeSliderBlue.RangeMax;
+		private int FilterBMin => RangeSliderBlue.RangeMin;
 		#endregion
 
 		#region Enter Point
 		private List<Control> AllControls = new List<Control>();
-		private static List<Control> GetAllControls(Control.ControlCollection controls)
-		{
-			List<Control> controlList = new List<Control>(); //初始化List
-			foreach (Control control in controls)
-				controlList.Add(control); // 將controls轉型成List				
-			List<Control> allControls = GetAllControls(controlList); //真正開始getAllControls
-			return allControls;
-		}
-		private static List<Control> GetAllControls(List<Control> controlList)
-		{
-			List<Control> opt = new List<Control>(); //不能opt = controlList!!! 會複製到參考型別!!!
-			opt.AddRange(controlList);
-			IEnumerable<Control> groupControls = from control in controlList
-																					 where control is GroupBox | control is TabControl | control is Panel
-																					 select control; //選出controls中的groupControls
-			foreach (Control groupControl in groupControls)
-				opt.AddRange(GetAllControls(groupControl.Controls)); //遞迴加入groupControls中的控制項
-			return opt;
-		}
 		private string StringArrow(string direction)
 		{
 			switch (direction)
@@ -92,7 +74,7 @@ namespace DataCapturer
 			ButtonNext.Text = "Next" + " " + StringArrow("right");
 			ButtonBack.Text = StringArrow("left") + " " + "Back";
 
-			AllControls = GetAllControls(this.Controls);
+			AllControls = MyMethods.RecursiveGetControls(this);
 			foreach (Control control in AllControls)
 				control.Enabled = false;
 
@@ -104,7 +86,7 @@ namespace DataCapturer
 
 			TabControlMain.Enabled = true;
 			ButtonBrowse.Enabled = true;
-							
+
 			Initialize();
 		}
 		#endregion
@@ -155,8 +137,8 @@ namespace DataCapturer
 		private Size AxSize = new Size();
 		private Point OffsetPos = new Point();
 		private Size OffsetSize = new Size();
-		private bool IsGetAxis => (AxSize.Width > 0 && AxSize.Height > 0) ? true : false; 
-		private bool IsOffset => (OffsetSize.Width > 0 && OffsetSize.Height > 0) ? true : false; 
+		private bool IsGetAxis => (AxSize.Width > 0 && AxSize.Height > 0) ? true : false;
+		private bool IsOffset => (OffsetSize.Width > 0 && OffsetSize.Height > 0) ? true : false;
 		private byte[] FilterW(PixelImage iptImage, int white = 200)
 		{
 			byte blue, green, red;
@@ -410,7 +392,7 @@ namespace DataCapturer
 			ImageEraseList.RemoveRange(EraseIdx + 1, ImageEraseList.Count - EraseIdx - 1); //清除所有原先的Redo
 			ImageEraseList.Add(new PixelImage(ImageEraseList[EraseIdx].Bitmap));//或許需要設置ImageEraseList的儲存上限
 			EraseIdx += 1;
-			
+
 			PictureBoxEraser_MouseMove(sender, e);
 		}
 		private void PictureBoxEraser_MouseUp(object sender, MouseEventArgs e)
@@ -433,10 +415,10 @@ namespace DataCapturer
 			DrawEraser(pos);
 		}
 
-		
+
 		private void DrawEraser(Point pos)
 		{
-			
+
 			Bitmap ImageTmp = (Bitmap)ImageEraseList[EraseIdx].Bitmap.Clone();
 			GraphicsEraser = Graphics.FromImage(ImageTmp); //DrawImage會導致畫面閃爍
 
@@ -480,7 +462,6 @@ namespace DataCapturer
 		}
 		#endregion
 
-		//完成Redo/Undo 的實作
 		#region Undo/Redo Buttons
 		private bool UndoButtonIsEnter = false;
 		private bool UndoButtonIsPress = false;
@@ -514,7 +495,7 @@ namespace DataCapturer
 				UndoButton.BackColor = Control.DefaultBackColor;
 				UndoButton.Image = Properties.Resources.Undo_icon_black_;
 			}
-			else 
+			else
 			{
 				UndoButton.Image = Properties.Resources.Undo_icon;
 				if (UndoButtonIsPress)
@@ -524,7 +505,7 @@ namespace DataCapturer
 				else
 					UndoButton.BackColor = Control.DefaultBackColor;
 			}
-			
+
 		}
 
 		private bool RedoButtonIsEnter = false;
@@ -595,8 +576,8 @@ namespace DataCapturer
 				ButtonNext.Show();
 		}
 		#endregion
-		
-		
+
+
 		private void UpdateData()
 		{
 
@@ -613,20 +594,6 @@ namespace DataCapturer
 			PictureBoxWarnGetAxis.Visible = (IsGetAxis) ? false : true;
 		}
 
-		//Code code = () => { ImageFilterRGB.Pixel = FilterR(ImageFilterRGB); };
-		private delegate void Code(); //方便包裝程式碼片段
-		private void TimeIt(Code code)
-		{
-			Stopwatch sw = new Stopwatch();//引用stopwatch物件
-			sw.Reset();//碼表歸零
-			sw.Start();//碼表開始計時
-								 //-----目標程式-----//
-			code.Invoke();
-			//-----目標程式-----//
-			sw.Stop();//碼錶停止
-			string result = sw.Elapsed.TotalMilliseconds.ToString();
-			Console.WriteLine(result);
-		}
 
 
 		private void CheckBoxXLog_CheckedChanged(object sender, EventArgs e)
@@ -673,5 +640,40 @@ namespace DataCapturer
 		{
 
 		}
+
+		#region AutoResizeControls
+		private void DataCapturer_Load(object sender, EventArgs e)
+		{
+			this.Tag = new MyClasses()
+			{
+				Height = this.Height,
+				Width = this.Width
+			};
+			foreach (Control control in AllControls)
+			{
+				control.Tag = new MyClasses()
+				{
+					Top = control.Top,
+					Left = control.Left,
+					Height = control.Height,
+					Width = control.Width,
+				};
+			}
+		}
+		private void DataCapturer_Resize(object sender, EventArgs e)
+		{
+			MyClasses formAnchor = (MyClasses)this.Tag;
+			float WidthRatio = (float)this.Width / formAnchor.Width;
+			float HeightRatio = (float)this.Height / formAnchor.Height;
+			foreach (Control control in AllControls)
+			{
+				MyClasses controlAnchor = (MyClasses)control.Tag;
+				control.Width = (int)(controlAnchor.Width * WidthRatio);
+				control.Height = (int)(controlAnchor.Height * HeightRatio);
+				control.Left = (int)(controlAnchor.Left * WidthRatio);
+				control.Top = (int)(controlAnchor.Top * HeightRatio);
+			}
+		}
+		#endregion
 	}
 }

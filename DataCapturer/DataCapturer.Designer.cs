@@ -59,6 +59,7 @@ namespace DataCapturer
 			this.PictureBoxFilter = new System.Windows.Forms.PictureBox();
 			this.PictureBoxEraser = new System.Windows.Forms.PictureBox();
 			this.PictureBoxOutput = new System.Windows.Forms.PictureBox();
+			this.ImageViewerSetAxLim = new MetroFramework.Controls.ImageViewer();
 			this.ButtonNext = new MetroFramework.Controls.MetroButton();
 			this.ButtonBack = new MetroFramework.Controls.MetroButton();
 			this.TabPage6 = new MetroFramework.Controls.MetroTabPage();
@@ -76,7 +77,6 @@ namespace DataCapturer
 			this.TabControlMain = new MetroFramework.Controls.MetroTabControl();
 			this.TabPage2 = new MetroFramework.Controls.MetroTabPage();
 			this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-			this.ImageViewerSetAxLim = new MetroFramework.Controls.ImageViewer();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxWarnGetAxis)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxWarnSetAxLim)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxGetAxis)).BeginInit();
@@ -574,6 +574,15 @@ namespace DataCapturer
 			this.PictureBoxOutput.TabStop = false;
 			this.Tooltip.SetToolTip(this.PictureBoxOutput, "The captured data.");
 			// 
+			// ImageViewerSetAxLim
+			// 
+			this.ImageViewerSetAxLim.Image = null;
+			this.ImageViewerSetAxLim.Location = new System.Drawing.Point(266, 50);
+			this.ImageViewerSetAxLim.Name = "ImageViewerSetAxLim";
+			this.ImageViewerSetAxLim.Size = new System.Drawing.Size(645, 395);
+			this.ImageViewerSetAxLim.TabIndex = 20;
+			this.Tooltip.SetToolTip(this.ImageViewerSetAxLim, "Input the axis limits into the textboxes.\r\n");
+			// 
 			// ButtonNext
 			// 
 			this.ButtonNext.Highlight = true;
@@ -867,15 +876,6 @@ namespace DataCapturer
 			// 
 			this.openFileDialog.Filter = "Images (*.jpg; *.png; *.bmp)|*.jpg;*.png;*.bmp";
 			// 
-			// ImageViewerSetAxLim
-			// 
-			this.ImageViewerSetAxLim.Image = null;
-			this.ImageViewerSetAxLim.Location = new System.Drawing.Point(266, 50);
-			this.ImageViewerSetAxLim.Name = "ImageViewerSetAxLim";
-			this.ImageViewerSetAxLim.Size = new System.Drawing.Size(645, 395);
-			this.ImageViewerSetAxLim.TabIndex = 20;
-			this.Tooltip.SetToolTip(this.ImageViewerSetAxLim, "Input the axis limits into the textboxes.\r\n");
-			// 
 			// DataCapturer
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
@@ -890,6 +890,8 @@ namespace DataCapturer
 			this.MetroFont = new System.Drawing.Font("Segoe UI Light", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Name = "DataCapturer";
 			this.Text = "Data Capturer";
+			this.Load += new System.EventHandler(this.DataCapturer_Load);
+			this.Resize += new System.EventHandler(this.DataCapturer_Resize);
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxWarnGetAxis)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxWarnSetAxLim)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxGetAxis)).EndInit();

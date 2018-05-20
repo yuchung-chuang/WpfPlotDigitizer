@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataCapturer", "DataCapture
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetroFramework", "..\..\..\GoogleDrive\CSharp\MetroFramework\MetroFramework\MetroFramework.csproj", "{BB41AC8B-CBED-4387-A7E0-4567EDB3F57F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyLibrary", "..\..\..\GoogleDrive\CSharp\MyLibrary\MyLibrary\MyLibrary.csproj", "{AA4B8910-6E55-4F05-8037-0EE24933F1B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{BB41AC8B-CBED-4387-A7E0-4567EDB3F57F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB41AC8B-CBED-4387-A7E0-4567EDB3F57F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB41AC8B-CBED-4387-A7E0-4567EDB3F57F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA4B8910-6E55-4F05-8037-0EE24933F1B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA4B8910-6E55-4F05-8037-0EE24933F1B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA4B8910-6E55-4F05-8037-0EE24933F1B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA4B8910-6E55-4F05-8037-0EE24933F1B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
