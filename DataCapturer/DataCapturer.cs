@@ -27,7 +27,7 @@ namespace DataCapturer
 		private PixelImage ImageFilterW;
 		private PixelImage ImageAxis;
 		private PixelImage ImageFilterRGB;
-		private PixelImage ImageErase;
+		private PixelImage ImageErase => ImageEraseList[EraseIdx];
 		private List<PixelImage> ImageEraseList = new List<PixelImage>();
 		private PixelImage ImageOutput;
 		#endregion
@@ -359,7 +359,6 @@ namespace DataCapturer
 		{
 			PictureBoxFilter.Image = ImageFilterRGB.Bitmap;
 
-			//ImageErase = new PixelImage(ImageFilterRGB.Bitmap);
 			ImageEraseList.Clear();
 			ImageEraseList.Add(new PixelImage(ImageFilterRGB.Bitmap));
 			EraseIdx = 0;
@@ -369,15 +368,8 @@ namespace DataCapturer
 
 		#region Step 4: Erase
 		private int EraseIdx = 0;
-		private PixelImage ImageEraseCurrent => ImageEraseList[EraseIdx];
 		private int EraserL = 20;
 		private bool IsErasing = false;
-		private void UpdateImageErase()
-		{
-			ImageViewerErase.Image = ImageEraseCurrent.Bitmap;
-			UpdateUndoButtonColor();
-			UpdateRedoButtonColor();
-		}
 		private Bitmap DrawEraser(PixelImage image, Point pos)
 		{
 			Bitmap ImageTmp = (Bitmap)image.Bitmap.Clone();
@@ -390,7 +382,7 @@ namespace DataCapturer
 		}
 		private void EraseImage(Point pos)
 		{
-			byte[] pixel = ImageEraseCurrent.Pixel;
+			byte[] pixel = ImageErase.Pixel;
 			int idx;
 			int x_ini = pos.X - EraserL / 2;
 			int x_fin = pos.X + EraserL / 2;
@@ -400,13 +392,13 @@ namespace DataCapturer
 			{
 				for (int y = y_ini; y < y_fin; y++)
 				{
-					if (x < 0 || y < 0 || x >= ImageEraseCurrent.Width || y >= ImageEraseCurrent.Height)
+					if (x < 0 || y < 0 || x >= ImageErase.Width || y >= ImageErase.Height)
 						continue;
-					idx = x * ImageEraseCurrent.Byte + y * ImageEraseCurrent.Stride;
+					idx = x * ImageErase.Byte + y * ImageErase.Stride;
 					pixel[idx + 3] = 0; // A
 				}
 			}
-			ImageEraseCurrent.Pixel = pixel;
+			ImageErase.Pixel = pixel;
 		}
 		private void Undo()
 		{
@@ -420,28 +412,28 @@ namespace DataCapturer
 				EraseIdx += 1;
 			UpdateImageErase();
 		}
-		private void imageViewer1_MouseDown(object sender, MouseEventArgs e)
+		private void ImageViewerErase_MouseDown(object sender, MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
 			{
 				IsErasing = true;
 				ImageEraseList.RemoveRange(EraseIdx + 1, ImageEraseList.Count - EraseIdx - 1); //清除所有原先的Redo
-				ImageEraseList.Add(new PixelImage(ImageEraseCurrent.Bitmap));//或許需要設置ImageEraseList的儲存上限
+				ImageEraseList.Add(new PixelImage(ImageErase.Bitmap));//或許需要設置ImageEraseList的儲存上限
 				EraseIdx += 1;
 
-				imageViewer1_MouseLeave(sender, e);
+				ImageViewerErase_MouseLeave(sender, e);
 			}
 		}
-		private void imageViewer1_MouseMove(object sender, MouseEventArgs e)
+		private void ImageViewerErase_MouseMove(object sender, MouseEventArgs e)
 		{
 			Point EffectiveMouseLocation = ImageViewerErase.GetEffectiveMouseLocation(e.Location);
 			Point pos = new Point(ImageViewerErase.ImageBoxPos.X + EffectiveMouseLocation.X, ImageViewerErase.ImageBoxPos.Y + EffectiveMouseLocation.Y);
 			if (IsErasing)
 				EraseImage(pos);
-			ImageViewerErase.Image = DrawEraser(ImageEraseCurrent, pos);
+			ImageViewerErase.Image = DrawEraser(ImageErase, pos);
 			Console.WriteLine("{0},{1}",pos.X,pos.Y);
 		}
-		private void imageViewer1_MouseUp(object sender, MouseEventArgs e)
+		private void ImageViewerErase_MouseUp(object sender, MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
 			{
@@ -449,15 +441,84 @@ namespace DataCapturer
 				UpdateImageErase();
 			}
 		}
-		private void imageViewer1_MouseEnter(object sender, EventArgs e)
+		private void ImageViewerErase_MouseEnter(object sender, EventArgs e)
 		{
 			Cursor.Hide();
 		}
-		private void imageViewer1_MouseLeave(object sender, EventArgs e)
+		private void ImageViewerErase_MouseLeave(object sender, EventArgs e)
 		{
 			Cursor.Show();
 		}
+		private void UpdateImageErase()
+		{
+			ImageViewerErase.Image = ImageErase.Bitmap;
+			UpdateUndoButtonColor();
+			UpdateRedoButtonColor();
+
+			ImageOutput = new PixelImage(ImageErase.Bitmap);
+			UpdateImageOutput();
+		}
 		#endregion
+
+		#region
+		private void UpdateImageOutput()
+		{
+			PictureBoxOutput.Image = ImageOutput.Bitmap;
+
+			UpdateData();
+		}
+
+
+		private void CheckBoxXLog_CheckedChanged(object sender, EventArgs e)
+		{
+			TextBoxXBase.Enabled = (CheckBoxXLog.Checked) ? true : false;
+		}
+		private void CheckBoxYLog_CheckedChanged(object sender, EventArgs e)
+		{
+			TextBoxYBase.Enabled = (CheckBoxYLog.Checked) ? true : false;
+		}
+		private void TextBoxXhi_TextChanged(object sender, EventArgs e)
+		{
+			UpdateData();
+		}
+		private void TextBoxXlo_TextChanged(object sender, EventArgs e)
+		{
+			UpdateData();
+		}
+		private void TextBoxYlo_TextChanged(object sender, EventArgs e)
+		{
+			UpdateData();
+		}
+		private void TextBoxYhi_TextChanged(object sender, EventArgs e)
+		{
+			UpdateData();
+		}
+		private void TextBoxXBase_TextChanged(object sender, EventArgs e)
+		{
+			UpdateData();
+		}
+		private void TextBoxYBase_TextChanged(object sender, EventArgs e)
+		{
+			UpdateData();
+		}
+		private void UpdateData()
+		{
+
+		}
+
+
+		private void ButtonSave_Click(object sender, EventArgs e)
+		{
+
+		}
+		#endregion
+
+		private void UpdateWarning()
+		{
+			PictureBoxWarnSetAxLim.Visible = (IsSetAxLim) ? false : true;
+			PictureBoxWarnGetAxis.Visible = (IsGetAxis) ? false : true;
+		}
+
 
 		#region Undo/Redo Buttons
 		private bool UndoButtonIsEnter = false;
@@ -574,70 +635,6 @@ namespace DataCapturer
 		}
 		#endregion
 
-
-		private void UpdateData()
-		{
-
-		}
-
-		private void UpdateImageOutput()
-		{
-
-		}
-
-		private void UpdateWarning()
-		{
-			PictureBoxWarnSetAxLim.Visible = (IsSetAxLim) ? false : true;
-			PictureBoxWarnGetAxis.Visible = (IsGetAxis) ? false : true;
-		}
-
-
-
-		private void CheckBoxXLog_CheckedChanged(object sender, EventArgs e)
-		{
-			TextBoxXBase.Enabled = (CheckBoxXLog.Checked) ? true : false;
-		}
-		private void CheckBoxYLog_CheckedChanged(object sender, EventArgs e)
-		{
-			TextBoxYBase.Enabled = (CheckBoxYLog.Checked) ? true : false;
-		}
-		private void ButtonSave_Click(object sender, EventArgs e)
-		{
-
-		}
-		private void TextBoxXhi_TextChanged(object sender, EventArgs e)
-		{
-			UpdateData();
-		}
-		private void TextBoxXlo_TextChanged(object sender, EventArgs e)
-		{
-			UpdateData();
-		}
-		private void TextBoxYlo_TextChanged(object sender, EventArgs e)
-		{
-			UpdateData();
-		}
-		private void TextBoxYhi_TextChanged(object sender, EventArgs e)
-		{
-			UpdateData();
-		}
-		private void TextBoxXBase_TextChanged(object sender, EventArgs e)
-		{
-			UpdateData();
-		}
-		private void TextBoxYBase_TextChanged(object sender, EventArgs e)
-		{
-			UpdateData();
-		}
-		private void Tooltip_Popup(object sender, PopupEventArgs e)
-		{
-
-		}
-		private void PictureBoxEraser_LoadCompleted(object sender, AsyncCompletedEventArgs e)
-		{
-
-		}
-
 		#region AutoResizeControls
 		private void DataCapturer_Load(object sender, EventArgs e)
 		{
@@ -671,8 +668,6 @@ namespace DataCapturer
 				control.Top = (int)(controlAnchor.Top * HeightRatio);
 			}
 		}
-		#endregion
-
-		
+		#endregion	
 	}
 }

@@ -105,7 +105,6 @@ namespace DataCapturer
 			this.Tooltip.Style = MetroFramework.MetroColorStyle.Blue;
 			this.Tooltip.StyleManager = null;
 			this.Tooltip.Theme = MetroFramework.MetroThemeStyle.Light;
-			this.Tooltip.Popup += new System.Windows.Forms.PopupEventHandler(this.Tooltip_Popup);
 			// 
 			// ButtonSave
 			// 
@@ -283,7 +282,7 @@ namespace DataCapturer
 			this.CheckBoxYLog.AutoSize = true;
 			this.CheckBoxYLog.BackColor = System.Drawing.SystemColors.ControlLightLight;
 			this.CheckBoxYLog.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.CheckBoxYLog.Location = new System.Drawing.Point(48, 229);
+			this.CheckBoxYLog.Location = new System.Drawing.Point(49, 278);
 			this.CheckBoxYLog.Name = "CheckBoxYLog";
 			this.CheckBoxYLog.Size = new System.Drawing.Size(190, 36);
 			this.CheckBoxYLog.TabIndex = 19;
@@ -297,7 +296,7 @@ namespace DataCapturer
 			this.TextBoxYBase.BackColor = System.Drawing.SystemColors.Control;
 			this.TextBoxYBase.Enabled = false;
 			this.TextBoxYBase.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.TextBoxYBase.Location = new System.Drawing.Point(112, 273);
+			this.TextBoxYBase.Location = new System.Drawing.Point(112, 223);
 			this.TextBoxYBase.Name = "TextBoxYBase";
 			this.TextBoxYBase.Size = new System.Drawing.Size(127, 39);
 			this.TextBoxYBase.TabIndex = 18;
@@ -311,7 +310,7 @@ namespace DataCapturer
 			this.CheckBoxXLog.AutoSize = true;
 			this.CheckBoxXLog.BackColor = System.Drawing.SystemColors.ControlLightLight;
 			this.CheckBoxXLog.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.CheckBoxXLog.Location = new System.Drawing.Point(493, 472);
+			this.CheckBoxXLog.Location = new System.Drawing.Point(481, 532);
 			this.CheckBoxXLog.Name = "CheckBoxXLog";
 			this.CheckBoxXLog.Size = new System.Drawing.Size(191, 36);
 			this.CheckBoxXLog.TabIndex = 16;
@@ -325,7 +324,7 @@ namespace DataCapturer
 			this.TextBoxXBase.BackColor = System.Drawing.SystemColors.Control;
 			this.TextBoxXBase.Enabled = false;
 			this.TextBoxXBase.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.TextBoxXBase.Location = new System.Drawing.Point(557, 517);
+			this.TextBoxXBase.Location = new System.Drawing.Point(545, 474);
 			this.TextBoxXBase.Name = "TextBoxXBase";
 			this.TextBoxXBase.Size = new System.Drawing.Size(127, 39);
 			this.TextBoxXBase.TabIndex = 15;
@@ -338,7 +337,7 @@ namespace DataCapturer
 			// 
 			this.TextBoxYlo.BackColor = System.Drawing.SystemColors.Control;
 			this.TextBoxYlo.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.TextBoxYlo.Location = new System.Drawing.Point(112, 427);
+			this.TextBoxYlo.Location = new System.Drawing.Point(112, 402);
 			this.TextBoxYlo.Name = "TextBoxYlo";
 			this.TextBoxYlo.Size = new System.Drawing.Size(127, 39);
 			this.TextBoxYlo.TabIndex = 11;
@@ -377,7 +376,7 @@ namespace DataCapturer
 			// 
 			this.TextBoxXlo.BackColor = System.Drawing.SystemColors.Control;
 			this.TextBoxXlo.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.TextBoxXlo.Location = new System.Drawing.Point(312, 472);
+			this.TextBoxXlo.Location = new System.Drawing.Point(270, 472);
 			this.TextBoxXlo.Name = "TextBoxXlo";
 			this.TextBoxXlo.Size = new System.Drawing.Size(127, 39);
 			this.TextBoxXlo.TabIndex = 5;
@@ -392,7 +391,7 @@ namespace DataCapturer
 			this.metroLabel7.AutoSize = true;
 			this.metroLabel7.CustomBackground = false;
 			this.metroLabel7.LabelMode = MetroFramework.Controls.MetroLabelMode.Default;
-			this.metroLabel7.Location = new System.Drawing.Point(15, 275);
+			this.metroLabel7.Location = new System.Drawing.Point(15, 225);
 			this.metroLabel7.MetroFont = new System.Drawing.Font("Segoe UI Light", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
 			this.metroLabel7.Name = "metroLabel7";
 			this.metroLabel7.Size = new System.Drawing.Size(91, 35);
@@ -410,7 +409,7 @@ namespace DataCapturer
 			this.metroLabel6.AutoSize = true;
 			this.metroLabel6.CustomBackground = false;
 			this.metroLabel6.LabelMode = MetroFramework.Controls.MetroLabelMode.Default;
-			this.metroLabel6.Location = new System.Drawing.Point(460, 519);
+			this.metroLabel6.Location = new System.Drawing.Point(448, 476);
 			this.metroLabel6.MetroFont = new System.Drawing.Font("Segoe UI Light", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
 			this.metroLabel6.Name = "metroLabel6";
 			this.metroLabel6.Size = new System.Drawing.Size(91, 35);
@@ -428,7 +427,7 @@ namespace DataCapturer
 			this.metroLabel5.AutoSize = true;
 			this.metroLabel5.CustomBackground = false;
 			this.metroLabel5.LabelMode = MetroFramework.Controls.MetroLabelMode.Default;
-			this.metroLabel5.Location = new System.Drawing.Point(45, 429);
+			this.metroLabel5.Location = new System.Drawing.Point(45, 404);
 			this.metroLabel5.MetroFont = new System.Drawing.Font("Segoe UI Light", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
 			this.metroLabel5.Name = "metroLabel5";
 			this.metroLabel5.Size = new System.Drawing.Size(61, 35);
@@ -482,7 +481,7 @@ namespace DataCapturer
 			this.metroLabel1.AutoSize = true;
 			this.metroLabel1.CustomBackground = false;
 			this.metroLabel1.LabelMode = MetroFramework.Controls.MetroLabelMode.Default;
-			this.metroLabel1.Location = new System.Drawing.Point(245, 474);
+			this.metroLabel1.Location = new System.Drawing.Point(203, 474);
 			this.metroLabel1.MetroFont = new System.Drawing.Font("Segoe UI Light", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
 			this.metroLabel1.Name = "metroLabel1";
 			this.metroLabel1.Size = new System.Drawing.Size(61, 35);
@@ -671,11 +670,11 @@ namespace DataCapturer
 			this.ImageViewerErase.Name = "ImageViewerErase";
 			this.ImageViewerErase.Size = new System.Drawing.Size(757, 475);
 			this.ImageViewerErase.TabIndex = 8;
-			this.ImageViewerErase.MouseDown += new System.Windows.Forms.MouseEventHandler(this.imageViewer1_MouseDown);
-			this.ImageViewerErase.MouseEnter += new System.EventHandler(this.imageViewer1_MouseEnter);
-			this.ImageViewerErase.MouseLeave += new System.EventHandler(this.imageViewer1_MouseLeave);
-			this.ImageViewerErase.MouseMove += new System.Windows.Forms.MouseEventHandler(this.imageViewer1_MouseMove);
-			this.ImageViewerErase.MouseUp += new System.Windows.Forms.MouseEventHandler(this.imageViewer1_MouseUp);
+			this.ImageViewerErase.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ImageViewerErase_MouseDown);
+			this.ImageViewerErase.MouseEnter += new System.EventHandler(this.ImageViewerErase_MouseEnter);
+			this.ImageViewerErase.MouseLeave += new System.EventHandler(this.ImageViewerErase_MouseLeave);
+			this.ImageViewerErase.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ImageViewerErase_MouseMove);
+			this.ImageViewerErase.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ImageViewerErase_MouseUp);
 			// 
 			// RedoButton
 			// 
