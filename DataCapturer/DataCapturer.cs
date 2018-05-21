@@ -369,68 +369,28 @@ namespace DataCapturer
 
 		#region Step 4: Erase
 		private int EraseIdx = 0;
+		private PixelImage ImageEraseCurrent => ImageEraseList[EraseIdx];
+		private int EraserL = 20;
+		private bool IsErasing = false;
 		private void UpdateImageErase()
 		{
-			//PictureBoxEraser.Image = ImageErase.Bitmap;
-			PictureBoxEraser.Image = ImageEraseList[EraseIdx].Bitmap;
+			ImageViewerErase.Image = ImageEraseCurrent.Bitmap;
 			UpdateUndoButtonColor();
 			UpdateRedoButtonColor();
 		}
-
-		private void PictureBoxEraser_MouseEnter(object sender, EventArgs e)
+		private Bitmap DrawEraser(PixelImage image, Point pos)
 		{
-			Cursor.Hide();
-		}
-		private void PictureBoxEraser_MouseLeave(object sender, EventArgs e)
-		{
-			Cursor.Show();
-		}
-		private bool IsErasing = false;
-		private void PictureBoxEraser_MouseDown(object sender, MouseEventArgs e)
-		{
-			IsErasing = true;
-			ImageEraseList.RemoveRange(EraseIdx + 1, ImageEraseList.Count - EraseIdx - 1); //清除所有原先的Redo
-			ImageEraseList.Add(new PixelImage(ImageEraseList[EraseIdx].Bitmap));//或許需要設置ImageEraseList的儲存上限
-			EraseIdx += 1;
-
-			PictureBoxEraser_MouseMove(sender, e);
-		}
-		private void PictureBoxEraser_MouseUp(object sender, MouseEventArgs e)
-		{
-			IsErasing = false;
-			UpdateImageErase();
-		}
-		private int EraserL = 20;
-		private Graphics GraphicsEraser;
-		private void PictureBoxEraser_MouseMove(object sender, MouseEventArgs e)
-		{
-			float ScaleX = (float)ImageEraseList[EraseIdx].Width / PictureBoxEraser.Width;
-			float ScaleY = (float)ImageEraseList[EraseIdx].Height / PictureBoxEraser.Height;
-
-			Point pos = new Point((int)(e.X * ScaleX), (int)(e.Y * ScaleY));
-			if (IsErasing)
+			Bitmap ImageTmp = (Bitmap)image.Bitmap.Clone();
+			using (Graphics graphics = Graphics.FromImage(ImageTmp))//DrawImage會導致畫面閃爍
 			{
-				EraseImage(pos);
-			}
-			DrawEraser(pos);
-		}
-
-
-		private void DrawEraser(Point pos)
-		{
-
-			Bitmap ImageTmp = (Bitmap)ImageEraseList[EraseIdx].Bitmap.Clone();
-			GraphicsEraser = Graphics.FromImage(ImageTmp); //DrawImage會導致畫面閃爍
-
-			GraphicsEraser.DrawRectangle(new Pen(MetroColors.Black, 5), pos.X - EraserL / 2, pos.Y - EraserL / 2, EraserL, EraserL);
-			GraphicsEraser.DrawRectangle(new Pen(MetroColors.Blue, 3), pos.X - EraserL / 2, pos.Y - EraserL / 2, EraserL, EraserL);
-
-			GraphicsEraser.Dispose();
-			PictureBoxEraser.Image = ImageTmp;
+				graphics.DrawRectangle(new Pen(MetroColors.Black, 5), pos.X - EraserL / 2, pos.Y - EraserL / 2, EraserL, EraserL);
+				graphics.DrawRectangle(new Pen(MetroColors.Blue, 3), pos.X - EraserL / 2, pos.Y - EraserL / 2, EraserL, EraserL);
+			};
+			return ImageTmp;
 		}
 		private void EraseImage(Point pos)
 		{
-			byte[] pixel = ImageEraseList[EraseIdx].Pixel;
+			byte[] pixel = ImageEraseCurrent.Pixel;
 			int idx;
 			int x_ini = pos.X - EraserL / 2;
 			int x_fin = pos.X + EraserL / 2;
@@ -440,13 +400,13 @@ namespace DataCapturer
 			{
 				for (int y = y_ini; y < y_fin; y++)
 				{
-					if (x < 0 || y < 0 || x >= ImageEraseList[EraseIdx].Width || y >= ImageEraseList[EraseIdx].Height)
+					if (x < 0 || y < 0 || x >= ImageEraseCurrent.Width || y >= ImageEraseCurrent.Height)
 						continue;
-					idx = x * ImageEraseList[EraseIdx].Byte + y * ImageEraseList[EraseIdx].Stride;
+					idx = x * ImageEraseCurrent.Byte + y * ImageEraseCurrent.Stride;
 					pixel[idx + 3] = 0; // A
 				}
 			}
-			ImageEraseList[EraseIdx].Pixel = pixel;
+			ImageEraseCurrent.Pixel = pixel;
 		}
 		private void Undo()
 		{
@@ -459,6 +419,43 @@ namespace DataCapturer
 			if (EraseIdx < ImageEraseList.Count - 1)
 				EraseIdx += 1;
 			UpdateImageErase();
+		}
+		private void imageViewer1_MouseDown(object sender, MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Left)
+			{
+				IsErasing = true;
+				ImageEraseList.RemoveRange(EraseIdx + 1, ImageEraseList.Count - EraseIdx - 1); //清除所有原先的Redo
+				ImageEraseList.Add(new PixelImage(ImageEraseCurrent.Bitmap));//或許需要設置ImageEraseList的儲存上限
+				EraseIdx += 1;
+
+				imageViewer1_MouseLeave(sender, e);
+			}
+		}
+		private void imageViewer1_MouseMove(object sender, MouseEventArgs e)
+		{
+			Point EffectiveMouseLocation = ImageViewerErase.GetEffectiveMouseLocation(e.Location);
+			Point pos = new Point(ImageViewerErase.ImageBoxPos.X + EffectiveMouseLocation.X, ImageViewerErase.ImageBoxPos.Y + EffectiveMouseLocation.Y);
+			if (IsErasing)
+				EraseImage(pos);
+			ImageViewerErase.Image = DrawEraser(ImageEraseCurrent, pos);
+			Console.WriteLine("{0},{1}",pos.X,pos.Y);
+		}
+		private void imageViewer1_MouseUp(object sender, MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Left)
+			{
+				IsErasing = false;
+				UpdateImageErase();
+			}
+		}
+		private void imageViewer1_MouseEnter(object sender, EventArgs e)
+		{
+			Cursor.Hide();
+		}
+		private void imageViewer1_MouseLeave(object sender, EventArgs e)
+		{
+			Cursor.Show();
 		}
 		#endregion
 
@@ -644,14 +641,14 @@ namespace DataCapturer
 		#region AutoResizeControls
 		private void DataCapturer_Load(object sender, EventArgs e)
 		{
-			this.Tag = new MyClasses()
+			this.Tag = new ControlAnchor()
 			{
 				Height = this.Height,
 				Width = this.Width
 			};
 			foreach (Control control in AllControls)
 			{
-				control.Tag = new MyClasses()
+				control.Tag = new ControlAnchor()
 				{
 					Top = control.Top,
 					Left = control.Left,
@@ -662,12 +659,12 @@ namespace DataCapturer
 		}
 		private void DataCapturer_Resize(object sender, EventArgs e)
 		{
-			MyClasses formAnchor = (MyClasses)this.Tag;
+			ControlAnchor formAnchor = (ControlAnchor)this.Tag;
 			float WidthRatio = (float)this.Width / formAnchor.Width;
 			float HeightRatio = (float)this.Height / formAnchor.Height;
 			foreach (Control control in AllControls)
 			{
-				MyClasses controlAnchor = (MyClasses)control.Tag;
+				ControlAnchor controlAnchor = (ControlAnchor)control.Tag;
 				control.Width = (int)(controlAnchor.Width * WidthRatio);
 				control.Height = (int)(controlAnchor.Height * HeightRatio);
 				control.Left = (int)(controlAnchor.Left * WidthRatio);
@@ -675,5 +672,7 @@ namespace DataCapturer
 			}
 		}
 		#endregion
+
+		
 	}
 }

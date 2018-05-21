@@ -57,7 +57,6 @@ namespace DataCapturer
 			this.PictureBoxWarnSetAxLim = new System.Windows.Forms.PictureBox();
 			this.PictureBoxGetAxis = new System.Windows.Forms.PictureBox();
 			this.PictureBoxFilter = new System.Windows.Forms.PictureBox();
-			this.PictureBoxEraser = new System.Windows.Forms.PictureBox();
 			this.PictureBoxOutput = new System.Windows.Forms.PictureBox();
 			this.ImageViewerSetAxLim = new MetroFramework.Controls.ImageViewer();
 			this.ButtonNext = new MetroFramework.Controls.MetroButton();
@@ -67,6 +66,7 @@ namespace DataCapturer
 			this.XData = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.YData = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.TabPage5 = new MetroFramework.Controls.MetroTabPage();
+			this.ImageViewerErase = new MetroFramework.Controls.ImageViewer();
 			this.RedoButton = new System.Windows.Forms.PictureBox();
 			this.UndoButton = new System.Windows.Forms.PictureBox();
 			this.TabPage4 = new MetroFramework.Controls.MetroTabPage();
@@ -81,7 +81,6 @@ namespace DataCapturer
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxWarnSetAxLim)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxGetAxis)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxFilter)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.PictureBoxEraser)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxOutput)).BeginInit();
 			this.TabPage6.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -544,26 +543,6 @@ namespace DataCapturer
 			this.PictureBoxFilter.TabStop = false;
 			this.Tooltip.SetToolTip(this.PictureBoxFilter, "Scroll the range sliders to filter the image.");
 			// 
-			// PictureBoxEraser
-			// 
-			this.PictureBoxEraser.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.PictureBoxEraser.Cursor = System.Windows.Forms.Cursors.Default;
-			this.PictureBoxEraser.Location = new System.Drawing.Point(97, 18);
-			this.PictureBoxEraser.Name = "PictureBoxEraser";
-			this.PictureBoxEraser.Size = new System.Drawing.Size(828, 550);
-			this.PictureBoxEraser.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.PictureBoxEraser.TabIndex = 5;
-			this.PictureBoxEraser.TabStop = false;
-			this.Tooltip.SetToolTip(this.PictureBoxEraser, "Click on the image to erase the stain.");
-			this.PictureBoxEraser.LoadCompleted += new System.ComponentModel.AsyncCompletedEventHandler(this.PictureBoxEraser_LoadCompleted);
-			this.PictureBoxEraser.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PictureBoxEraser_MouseDown);
-			this.PictureBoxEraser.MouseEnter += new System.EventHandler(this.PictureBoxEraser_MouseEnter);
-			this.PictureBoxEraser.MouseLeave += new System.EventHandler(this.PictureBoxEraser_MouseLeave);
-			this.PictureBoxEraser.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PictureBoxEraser_MouseMove);
-			this.PictureBoxEraser.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBoxEraser_MouseUp);
-			// 
 			// PictureBoxOutput
 			// 
 			this.PictureBoxOutput.Location = new System.Drawing.Point(3, 17);
@@ -664,9 +643,9 @@ namespace DataCapturer
 			// 
 			// TabPage5
 			// 
+			this.TabPage5.Controls.Add(this.ImageViewerErase);
 			this.TabPage5.Controls.Add(this.RedoButton);
 			this.TabPage5.Controls.Add(this.UndoButton);
-			this.TabPage5.Controls.Add(this.PictureBoxEraser);
 			this.TabPage5.CustomBackground = false;
 			this.TabPage5.HorizontalScrollbar = false;
 			this.TabPage5.HorizontalScrollbarBarColor = true;
@@ -684,6 +663,19 @@ namespace DataCapturer
 			this.TabPage5.VerticalScrollbarBarColor = true;
 			this.TabPage5.VerticalScrollbarHighlightOnWheel = false;
 			this.TabPage5.VerticalScrollbarSize = 10;
+			// 
+			// ImageViewerErase
+			// 
+			this.ImageViewerErase.Image = null;
+			this.ImageViewerErase.Location = new System.Drawing.Point(121, 52);
+			this.ImageViewerErase.Name = "ImageViewerErase";
+			this.ImageViewerErase.Size = new System.Drawing.Size(757, 475);
+			this.ImageViewerErase.TabIndex = 8;
+			this.ImageViewerErase.MouseDown += new System.Windows.Forms.MouseEventHandler(this.imageViewer1_MouseDown);
+			this.ImageViewerErase.MouseEnter += new System.EventHandler(this.imageViewer1_MouseEnter);
+			this.ImageViewerErase.MouseLeave += new System.EventHandler(this.imageViewer1_MouseLeave);
+			this.ImageViewerErase.MouseMove += new System.Windows.Forms.MouseEventHandler(this.imageViewer1_MouseMove);
+			this.ImageViewerErase.MouseUp += new System.Windows.Forms.MouseEventHandler(this.imageViewer1_MouseUp);
 			// 
 			// RedoButton
 			// 
@@ -896,7 +888,6 @@ namespace DataCapturer
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxWarnSetAxLim)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxGetAxis)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxFilter)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.PictureBoxEraser)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxOutput)).EndInit();
 			this.TabPage6.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
@@ -946,7 +937,6 @@ namespace DataCapturer
 		private MetroFramework.Controls.RangeSlider RangeSliderGreen;
 		private MetroFramework.Controls.RangeSlider RangeSliderRed;
 		private System.Windows.Forms.PictureBox PictureBoxOutput;
-		private System.Windows.Forms.PictureBox PictureBoxEraser;
 		private System.Windows.Forms.PictureBox PictureBoxGetAxis;
 		private System.Windows.Forms.PictureBox PictureBoxInput;
 		private System.Windows.Forms.PictureBox PictureBoxFilter;
@@ -967,6 +957,7 @@ namespace DataCapturer
 		private System.Windows.Forms.PictureBox RedoButton;
 		private System.Windows.Forms.PictureBox UndoButton;
 		private MetroFramework.Controls.ImageViewer ImageViewerSetAxLim;
+		private MetroFramework.Controls.ImageViewer ImageViewerErase;
 	}
 }
 
