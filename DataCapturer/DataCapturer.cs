@@ -74,7 +74,7 @@ namespace DataCapturer
 			ButtonNext.Text = "Next" + " " + StringArrow("right");
 			ButtonBack.Text = StringArrow("left") + " " + "Back";
 
-			AllControls = MyMethods.RecursiveGetControls(this);
+			AllControls = RecursiveGetControls(this);
 			foreach (Control control in AllControls)
 				control.Enabled = false;
 
@@ -102,35 +102,39 @@ namespace DataCapturer
 		{
 			//ImageInput = new PixelImage(new Bitmap(openFileDialog.FileName));
 			ImageInput = new PixelImage(new Bitmap("C:\\Users\\alex\\Dropbox (Alex)\\SMCMLAB\\matlab\\DataCapturer\\images\\19451854599_fdc0d1a8d7_c.jpg"));
-			ImageFilterW = new PixelImage(ImageInput.Size) { Pixel = FilterW(ImageInput, FilterWMax) };
 			PictureBoxInput.Image = ImageInput.Bitmap;
-			ImageViewerSetAxLim.Image = ImageInput.Bitmap;
-			SliderAxLengthX.BarMax = ImageInput.Bitmap.Width;
-			SliderAxLengthX.Value = SliderAxLengthX.BarMax / 2;
-			SliderAxLengthY.BarMax = ImageInput.Bitmap.Height;
-			SliderAxLengthY.Value = SliderAxLengthY.BarMax / 2;
 
+			//Enable Constrols
 			foreach (Control control in AllControls)
 				control.Enabled = true;
 			TextBoxXBase.Enabled = false;
 			TextBoxYBase.Enabled = false;
-
-			UpdateAxis();
 		}
 		#endregion
-
-		#region Step 2: Set Axis
+		#region Step 2: Get Frame
 		private void SliderAxLengthY_Scroll(object sender, ScrollEventArgs e)
 		{
-			UpdateAxis();
+			if (IsUpdateImageAxisDone)
+			{
+				IsUpdateImageAxisDone = false;
+				GetAxis();
+			}
 		}
 		private void SliderAxLengthX_Scroll(object sender, ScrollEventArgs e)
 		{
-			UpdateAxis();
+			if (IsUpdateImageAxisDone)
+			{
+				IsUpdateImageAxisDone = false;
+				GetAxis();
+			}
 		}
 		private void SliderAxisOffset_Scroll(object sender, ScrollEventArgs e)
 		{
-			UpdateOffset();
+			if (IsUpdateImageAxisDone)
+			{
+				IsUpdateImageAxisDone = false;
+				OffsetAxis();
+			}
 		}
 		private int FilterWMax = 200;
 		private Point AxPos = new Point();
@@ -139,6 +143,11 @@ namespace DataCapturer
 		private Size OffsetSize = new Size();
 		private bool IsGetAxis => (AxSize.Width > 0 && AxSize.Height > 0) ? true : false;
 		private bool IsOffset => (OffsetSize.Width > 0 && OffsetSize.Height > 0) ? true : false;
+		private bool IsUpdateImageAxisDone = true;
+		private bool IsColor(byte[] pixel, int i)
+		{
+			return pixel[i + 3] != 0;  //A 
+		}
 		private byte[] FilterW(PixelImage iptImage, int white = 200)
 		{
 			byte blue, green, red;
@@ -152,24 +161,19 @@ namespace DataCapturer
 			}
 			return optPixel;
 		}
-		private bool IsColor(byte[] pixel, int i)
-		{
-			return pixel[i + 3] != 0;  //A 
-		}
-		private void GetAxis(PixelImage image)
+		private void GetAxis()
 		{
 			int L = 0, xTmp = 0, yTmp = 0, idx;
 			AxSize.Width = 0;
 			AxSize.Height = 0; //歸零
-
-			for (int x = 0; x < image.Bitmap.Width; x++)
+			for (int x = 0; x < ImageFilterW.Bitmap.Width; x++)
 			{
 				L = 0; yTmp = 0;
-				for (int y = 0; y < image.Bitmap.Height; y++)
+				for (int y = 0; y < ImageFilterW.Bitmap.Height; y++)
 				{
 					//右移x個像素(*一個字節的長度)下移y個像素(*一整行字節的長度)
-					idx = x * image.Byte + y * image.Stride;
-					if (IsColor(image.Pixel, idx))
+					idx = x * ImageFilterW.Byte + y * ImageFilterW.Stride;
+					if (IsColor(ImageFilterW.Pixel, idx))
 					{
 						if (L == 0) //如果長度歸零
 							yTmp = y; //更新lo索引
@@ -188,14 +192,14 @@ namespace DataCapturer
 				if (AxSize.Height > AxisLengthY)
 					break;
 			}
-			for (int y = 0; y < image.Bitmap.Height; y++)
+			for (int y = 0; y < ImageFilterW.Bitmap.Height; y++)
 			{
 				L = 0; xTmp = 0;
-				for (int x = 0; x < image.Bitmap.Width; x++)
+				for (int x = 0; x < ImageFilterW.Bitmap.Width; x++)
 				{
 					// 右移x個像素(*一個字節的長度)下移y個像素(*一整行字節的長度)
-					idx = x * image.Byte + y * image.Stride;
-					if (IsColor(image.Pixel, idx)) //繼續記錄
+					idx = x * ImageFilterW.Byte + y * ImageFilterW.Stride;
+					if (IsColor(ImageFilterW.Pixel, idx)) //繼續記錄
 					{
 						if (L == 0) //如果長度歸零
 							xTmp = x; //更新lo索引
@@ -214,17 +218,14 @@ namespace DataCapturer
 				if (AxSize.Width > AxisLengthX)
 					break;
 			}
-		}
-		private void UpdateAxis()
-		{
-			GetAxis(ImageFilterW); // get AxPos, AxSize
+
 			if (!IsGetAxis)
 			{
 				PictureBoxGetAxis.Image = null;
 				Console.WriteLine("GetAxis Error!");
 				return;
 			}
-			UpdateOffset();
+			OffsetAxis();
 		}
 		private void OffsetAxis()
 		{
@@ -232,10 +233,6 @@ namespace DataCapturer
 			OffsetPos.Y = AxPos.Y + AxisOffset;
 			OffsetSize.Width = AxSize.Width - AxisOffset * 2;
 			OffsetSize.Height = AxSize.Height - AxisOffset * 2;
-		}
-		private void UpdateOffset()
-		{
-			OffsetAxis();
 			if (!IsOffset)
 			{
 				PictureBoxGetAxis.Image = null;
@@ -245,37 +242,42 @@ namespace DataCapturer
 
 			UpdateImageAxis();
 		}
-		private void Crop()
-		{
-			Rectangle rect = new Rectangle(OffsetPos, OffsetSize);
-			ImageAxis = new PixelImage(ImageInput.Bitmap.Clone(rect, PixelImage.PixelFormat));
-		}
 		private void UpdateImageAxis()
 		{
-			Crop(); //Crop ImageAxis
+			ImageAxis = new PixelImage(Crop(ImageInput.Bitmap, new Rectangle(OffsetPos, OffsetSize)));
 			PictureBoxGetAxis.Image = ImageAxis.Bitmap;
-
-			ImageFilterRGB = new PixelImage(ImageAxis.Bitmap); //預先設定ImageFilterRGB
-			UpdateImageFilter();
+			IsUpdateImageAxisDone = true;
 		}
 		#endregion
 
 		#region Step 3: Filter
+		private bool IsUpdateImageFilterDone = true;
 		private void RangeSliderRed_Scroll(object sender, EventArgs e)
 		{
-			//Code code = () => { ImageFilterRGB.Pixel = FilterR(ImageFilterRGB); };
-			//TimeIt(code);
-			UpdateImageFilter();
+			if (IsUpdateImageFilterDone)
+			{
+				IsUpdateImageAxisDone = false;
+				ImageFilterRGB.Pixel = FilterR(ImageFilterRGB);
+				UpdateImageFilter();
+			}
 		}
 		private void RangeSliderGreen_Scroll(object sender, EventArgs e)
 		{
-			ImageFilterRGB.Pixel = FilterG(ImageFilterRGB);
-			UpdateImageFilter();
+			if (IsUpdateImageFilterDone)
+			{
+				IsUpdateImageAxisDone = false;
+				ImageFilterRGB.Pixel = FilterG(ImageFilterRGB);
+				UpdateImageFilter();
+			}
 		}
 		private void RangeSliderBlue_Scroll(object sender, EventArgs e)
 		{
-			ImageFilterRGB.Pixel = FilterB(ImageFilterRGB);
-			UpdateImageFilter();
+			if (IsUpdateImageFilterDone)
+			{
+				IsUpdateImageAxisDone = false;
+				ImageFilterRGB.Pixel = FilterB(ImageFilterRGB);
+				UpdateImageFilter();
+			}
 		}
 		private bool IsRGBFilted(byte R, byte G, byte B)
 		{
@@ -358,11 +360,7 @@ namespace DataCapturer
 		private void UpdateImageFilter()
 		{
 			PictureBoxFilter.Image = ImageFilterRGB.Bitmap;
-
-			ImageEraseList.Clear();
-			ImageEraseList.Add(new PixelImage(ImageFilterRGB.Bitmap));
-			EraseIdx = 0;
-			UpdateImageErase();
+			IsUpdateImageFilterDone = true;
 		}
 		#endregion
 
@@ -421,7 +419,7 @@ namespace DataCapturer
 				ImageEraseList.Add(new PixelImage(ImageErase.Bitmap));//或許需要設置ImageEraseList的儲存上限
 				EraseIdx += 1;
 
-				ImageViewerErase_MouseLeave(sender, e);
+				ImageViewerErase_MouseMove(sender, e);
 			}
 		}
 		private void ImageViewerErase_MouseMove(object sender, MouseEventArgs e)
@@ -431,7 +429,6 @@ namespace DataCapturer
 			if (IsErasing)
 				EraseImage(pos);
 			ImageViewerErase.Image = DrawEraser(ImageErase, pos);
-			Console.WriteLine("{0},{1}",pos.X,pos.Y);
 		}
 		private void ImageViewerErase_MouseUp(object sender, MouseEventArgs e)
 		{
@@ -454,9 +451,6 @@ namespace DataCapturer
 			ImageViewerErase.Image = ImageErase.Bitmap;
 			UpdateUndoButtonColor();
 			UpdateRedoButtonColor();
-
-			ImageOutput = new PixelImage(ImageErase.Bitmap);
-			UpdateImageOutput();
 		}
 		#endregion
 
@@ -519,6 +513,72 @@ namespace DataCapturer
 			PictureBoxWarnGetAxis.Visible = (IsGetAxis) ? false : true;
 		}
 
+		#region Other User Activities
+		private void TabControl_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			switch (TabControlMain.SelectedIndex)
+			{
+				case 1:
+					{
+						ImageViewerSetAxLim.Image = ImageInput.Bitmap;
+						break;
+					}
+				case 2:
+					{
+						//PreSet ImageFilterW
+						ImageFilterW = new PixelImage(ImageInput.Size) { Pixel = FilterW(ImageInput, FilterWMax) };
+
+						//SetSlider
+						SliderAxLengthX.BarMax = ImageInput.Bitmap.Width;
+						SliderAxLengthX.Value = SliderAxLengthX.BarMax / 2;
+						SliderAxLengthY.BarMax = ImageInput.Bitmap.Height;
+						SliderAxLengthY.Value = SliderAxLengthY.BarMax / 2;
+
+						GetAxis();
+						break;
+					}
+				case 3:
+					{
+						ImageFilterRGB = new PixelImage(ImageAxis.Bitmap); //預先設定ImageFilterRGB
+						UpdateImageFilter();
+						break;
+					}
+				case 4:
+					{
+						ImageEraseList.Clear();
+						ImageEraseList.Add(new PixelImage(ImageFilterRGB.Bitmap));
+						EraseIdx = 0;
+						UpdateImageErase();
+						break;
+					}
+				case 5:
+					{
+						//CalculateData();
+						ImageOutput = new PixelImage(ImageErase.Bitmap);
+						UpdateImageOutput();
+						break;
+					}
+				default:
+					break;
+			}
+			if (TabControlMain.SelectedIndex == 0)
+				ButtonBack.Hide();
+			else
+				ButtonBack.Show();
+			if (TabControlMain.SelectedIndex == TabControlMain.TabCount - 1)
+				ButtonNext.Hide();
+			else
+				ButtonNext.Show();
+		}
+		private void ButtonNext_Click(object sender, EventArgs e)
+		{
+			TabControlMain.SelectTab(CustomMethods.Clamp(TabControlMain.SelectedIndex + 1, TabControlMain.TabCount - 1, 0));
+		}
+		private void ButtonBack_Click(object sender, EventArgs e)
+		{
+			TabControlMain.SelectTab(CustomMethods.Clamp(TabControlMain.SelectedIndex - 1, TabControlMain.TabCount - 1, 0));
+		}
+		#endregion
 
 		#region Undo/Redo Buttons
 		private bool UndoButtonIsEnter = false;
@@ -612,29 +672,6 @@ namespace DataCapturer
 		}
 		#endregion
 
-		#region Other User Activities
-		private void ButtonNext_Click(object sender, EventArgs e)
-		{
-			TabControlMain.SelectTab(CustomMethods.Clamp(TabControlMain.SelectedIndex + 1, TabControlMain.TabCount - 1, 0));
-		}
-		private void ButtonBack_Click(object sender, EventArgs e)
-		{
-			TabControlMain.SelectTab(CustomMethods.Clamp(TabControlMain.SelectedIndex - 1, TabControlMain.TabCount - 1, 0));
-		}
-		private void TabControl_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			if (TabControlMain.SelectedIndex == 0)
-				ButtonBack.Hide();
-			else
-				ButtonBack.Show();
-
-			if (TabControlMain.SelectedIndex == TabControlMain.TabCount - 1)
-				ButtonNext.Hide();
-			else
-				ButtonNext.Show();
-		}
-		#endregion
-
 		#region AutoResizeControls
 		private void DataCapturer_Load(object sender, EventArgs e)
 		{
@@ -668,6 +705,6 @@ namespace DataCapturer
 				control.Top = (int)(controlAnchor.Top * HeightRatio);
 			}
 		}
-		#endregion	
+		#endregion
 	}
 }
