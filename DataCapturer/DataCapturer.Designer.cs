@@ -818,7 +818,7 @@ namespace DataCapturer
 			this.TabControlMain.Location = new System.Drawing.Point(23, 83);
 			this.TabControlMain.MetroFont = new System.Drawing.Font("Segoe UI Light", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
 			this.TabControlMain.Name = "TabControlMain";
-			this.TabControlMain.SelectedIndex = 2;
+			this.TabControlMain.SelectedIndex = 0;
 			this.TabControlMain.Size = new System.Drawing.Size(969, 615);
 			this.TabControlMain.Style = MetroFramework.MetroColorStyle.Blue;
 			this.TabControlMain.StyleManager = null;

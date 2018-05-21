@@ -516,51 +516,31 @@ namespace DataCapturer
 		#region Other User Activities
 		private void TabControl_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			switch (TabControlMain.SelectedIndex)
-			{
-				case 1:
-					{
-						ImageViewerSetAxLim.Image = ImageInput.Bitmap;
-						break;
-					}
-				case 2:
-					{
-						//PreSet ImageFilterW
-						ImageFilterW = new PixelImage(ImageInput.Size) { Pixel = FilterW(ImageInput, FilterWMax) };
+			ImageViewerSetAxLim.Image = ImageInput.Bitmap;
 
-						//SetSlider
-						SliderAxLengthX.BarMax = ImageInput.Bitmap.Width;
-						SliderAxLengthX.Value = SliderAxLengthX.BarMax / 2;
-						SliderAxLengthY.BarMax = ImageInput.Bitmap.Height;
-						SliderAxLengthY.Value = SliderAxLengthY.BarMax / 2;
+			//PreSet ImageFilterW
+			ImageFilterW = new PixelImage(ImageInput.Size) { Pixel = FilterW(ImageInput, FilterWMax) };
 
-						GetAxis();
-						break;
-					}
-				case 3:
-					{
-						ImageFilterRGB = new PixelImage(ImageAxis.Bitmap); //預先設定ImageFilterRGB
-						UpdateImageFilter();
-						break;
-					}
-				case 4:
-					{
-						ImageEraseList.Clear();
-						ImageEraseList.Add(new PixelImage(ImageFilterRGB.Bitmap));
-						EraseIdx = 0;
-						UpdateImageErase();
-						break;
-					}
-				case 5:
-					{
-						//CalculateData();
-						ImageOutput = new PixelImage(ImageErase.Bitmap);
-						UpdateImageOutput();
-						break;
-					}
-				default:
-					break;
-			}
+			//SetSlider
+			SliderAxLengthX.BarMax = ImageInput.Bitmap.Width;
+			SliderAxLengthX.Value = SliderAxLengthX.BarMax / 2;
+			SliderAxLengthY.BarMax = ImageInput.Bitmap.Height;
+			SliderAxLengthY.Value = SliderAxLengthY.BarMax / 2;
+
+			GetAxis();
+
+			ImageFilterRGB = new PixelImage(ImageAxis.Bitmap); //預先設定ImageFilterRGB
+			UpdateImageFilter();
+
+			ImageEraseList.Clear();
+			ImageEraseList.Add(new PixelImage(ImageFilterRGB.Bitmap));
+			EraseIdx = 0;
+			UpdateImageErase();
+
+			//CalculateData();
+			ImageOutput = new PixelImage(ImageErase.Bitmap);
+			UpdateImageOutput();
+
 			if (TabControlMain.SelectedIndex == 0)
 				ButtonBack.Hide();
 			else
