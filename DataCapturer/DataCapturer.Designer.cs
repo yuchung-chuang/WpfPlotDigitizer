@@ -75,6 +75,7 @@ namespace DataCapturer
 			this.TabControlMain = new MetroFramework.Controls.MetroTabControl();
 			this.TabPage2 = new MetroFramework.Controls.MetroTabPage();
 			this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+			this.BackgroundWorker = new System.ComponentModel.BackgroundWorker();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxGetAxis)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxFilter)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxOutput)).BeginInit();
@@ -788,7 +789,7 @@ namespace DataCapturer
 			this.TabControlMain.Location = new System.Drawing.Point(23, 83);
 			this.TabControlMain.MetroFont = new System.Drawing.Font("Segoe UI Light", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
 			this.TabControlMain.Name = "TabControlMain";
-			this.TabControlMain.SelectedIndex = 1;
+			this.TabControlMain.SelectedIndex = 2;
 			this.TabControlMain.Size = new System.Drawing.Size(969, 615);
 			this.TabControlMain.Style = MetroFramework.MetroColorStyle.Blue;
 			this.TabControlMain.StyleManager = null;
@@ -836,6 +837,12 @@ namespace DataCapturer
 			// openFileDialog
 			// 
 			this.openFileDialog.Filter = "Images (*.jpg; *.png; *.bmp)|*.jpg;*.png;*.bmp";
+			// 
+			// BackgroundWorker
+			// 
+			this.BackgroundWorker.WorkerReportsProgress = true;
+			this.BackgroundWorker.WorkerSupportsCancellation = true;
+			this.BackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorker_DoWork);
 			// 
 			// DataCapturer
 			// 
@@ -921,6 +928,7 @@ namespace DataCapturer
 		private System.Windows.Forms.PictureBox UndoButton;
 		private MetroFramework.Controls.ImageViewer ImageViewerSetAxLim;
 		private MetroFramework.Controls.ImageViewer ImageViewerErase;
+		private System.ComponentModel.BackgroundWorker BackgroundWorker;
 	}
 }
 

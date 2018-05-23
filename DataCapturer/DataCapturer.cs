@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MetroFramework;
+using MetroFramework.Controls;
 using MetroFramework.Drawing;
 using MetroFramework.Forms;
 using MyLibrary;
@@ -51,7 +52,7 @@ namespace DataCapturer
 		private int FilterBMin => RangeSliderBlue.RangeMin;
 		#endregion
 
-		#region Enter Point
+		#region Constructor
 		private List<Control> AllControls = new List<Control>();
 		private string StringArrow(string direction)
 		{
@@ -69,12 +70,8 @@ namespace DataCapturer
 					return null;
 			}
 		}
-		public DataCapturer()
+		private void UnableControl()
 		{
-			InitializeComponent();
-			ButtonNext.Text = "Next" + " " + StringArrow("right");
-			ButtonBack.Text = StringArrow("left") + " " + "Back";
-
 			AllControls = RecursiveGetControls(this);
 			foreach (Control control in AllControls)
 				control.Enabled = false;
@@ -87,35 +84,75 @@ namespace DataCapturer
 
 			TabControlMain.Enabled = true;
 			ButtonBrowse.Enabled = true;
+		}
+		public DataCapturer()
+		{
+			InitializeComponent();
 
-			Initialize();
+			ButtonNext.Text = "Next" + " " + StringArrow("right");
+			ButtonBack.Text = StringArrow("left") + " " + "Back";
+
+			UnableControl();
+
+			UpdateImageInput();
 		}
 		#endregion
 
 		#region Step 1: Browse
 		private void ButtonBrowse_Click(object sender, EventArgs e)
 		{
-			DialogResult result = openFileDialog.ShowDialog();
-			if (result != DialogResult.OK) { return; }
-			Initialize();
+			if (openFileDialog.ShowDialog() != DialogResult.OK)
+				return; 
+			UpdateImageInput();
 		}
-		private void Initialize()
+		private void UpdateImageInput()
 		{
 			//ImageInput = new PixelImage(new Bitmap(openFileDialog.FileName));
 			ImageInput = new PixelImage(new Bitmap("C:\\Users\\alex\\Dropbox (Alex)\\SMCMLAB\\matlab\\DataCapturer\\images\\19451854599_fdc0d1a8d7_c.jpg"));
 			PictureBoxInput.Image = ImageInput.Bitmap;
 
-			//Enable Constrols
+			EnableControls();
+
+			UpdateImageSetAxLim();
+		}
+		//Background Work
+		private void EnableControls()
+		{
 			foreach (Control control in AllControls)
 				control.Enabled = true;
 			TextBoxXBase.Enabled = false;
 			TextBoxYBase.Enabled = false;
+		}
+		private byte[] FilterW(PixelImage iptImage, int white = 200)
+		{
+			byte blue, green, red;
+			byte[] optPixel = (byte[])iptImage.Pixel.Clone(); // 複製值
+			for (int i = 0; i < iptImage.Pixel.Length; i += iptImage.Byte)
+			{
+				blue = iptImage.Pixel[i];   //B
+				green = iptImage.Pixel[i + 1]; //G
+				red = iptImage.Pixel[i + 2];  //R
+				optPixel[i + 3] = (red < white || green < white || blue < white) ? (byte)255 : (byte)0; //A
+			}
+			return optPixel;
+		}
+		private void UpdateImageSetAxLim()
+		{
+			ImageViewerSetAxLim.Image = ImageInput.Bitmap;
 
-			UpdateImageSetAxLim();
+			SliderAxLengthX.BarMax = ImageInput.Bitmap.Width;
+			SliderAxLengthX.Value = SliderAxLengthX.BarMax / 2;
+			SliderAxLengthY.BarMax = ImageInput.Bitmap.Height;
+			SliderAxLengthY.Value = SliderAxLengthY.BarMax / 2;
+
+			byte[] Pixel = FilterW(ImageInput, FilterWMax);
+			ImageFilterW = new PixelImage(Pixel, ImageInput.Size);
+			GetAxis(ImageFilterW);
 		}
 		#endregion
 
 		#region Step 2: Set Axis Limits
+		//Entry Point
 		private void CheckBoxXLog_CheckedChanged(object sender, EventArgs e)
 		{
 			TextBoxXBase.Enabled = (CheckBoxXLog.Checked) ? true : false;
@@ -166,18 +203,33 @@ namespace DataCapturer
 			else
 				this.BackColor = Color.LightPink;
 		}
-		private void UpdateImageSetAxLim()
+		#endregion
+
+		#region Background Work
+		private bool IsUpdateDone = true;
+		Thread BackgroundThread;
+		private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
 		{
-			ImageViewerSetAxLim.Image = ImageInput.Bitmap;
+			if (e.Argument == SliderAxLengthX || e.Argument == SliderAxLengthY)
+				GetAxis(ImageFilterW);
+			else if (e.Argument == SliderAxisOffset)
+				OffsetAxis();
+			else if (e.Argument == RangeSliderRed)
+			{
+				ImageFilterRGB.Pixel = FilterR(ImageFilterRGB);
+				UpdateImageFilter(ImageFilterRGB, ImageAxis);
+			}
+			else if (e.Argument == RangeSliderGreen)
+			{
+				ImageFilterRGB.Pixel = FilterG(ImageFilterRGB);
+				UpdateImageFilter(ImageFilterRGB, ImageAxis);
+			}
+			else if	(e.Argument == RangeSliderBlue)
+			{
+				ImageFilterRGB.Pixel = FilterB(ImageFilterRGB);
+				UpdateImageFilter(ImageFilterRGB, ImageAxis);
+			}
 
-			SliderAxLengthX.BarMax = ImageInput.Bitmap.Width;
-			SliderAxLengthX.Value = SliderAxLengthX.BarMax / 2;
-			SliderAxLengthY.BarMax = ImageInput.Bitmap.Height;
-			SliderAxLengthY.Value = SliderAxLengthY.BarMax / 2;
-
-			byte[] Pixel = FilterW(ImageInput, FilterWMax);
-			ImageFilterW = new PixelImage(Pixel, ImageInput.Size);
-			GetAxis(ImageFilterW, AxPos, out AxPos, out AxSize);
 		}
 		#endregion
 
@@ -189,49 +241,35 @@ namespace DataCapturer
 		private Size OffsetSize = new Size();
 		private bool IsGetAxis => (AxSize.Width > 0 && AxSize.Height > 0) ? true : false;
 		private bool IsOffset => (OffsetSize.Width > 0 && OffsetSize.Height > 0) ? true : false;
-		private bool IsColor(byte[] pixel, int i)
-		{
-			return pixel[i + 3] != 0;  //A 
-		}
-		private byte[] FilterW(PixelImage iptImage, int white = 200)
-		{
-			byte blue, green, red;
-			byte[] optPixel = (byte[])iptImage.Pixel.Clone(); // 複製值
-			for (int i = 0; i < iptImage.Pixel.Length; i += iptImage.Byte)
-			{
-				blue = iptImage.Pixel[i];   //B
-				green = iptImage.Pixel[i + 1]; //G
-				red = iptImage.Pixel[i + 2];  //R
-				optPixel[i + 3] = (red < white || green < white || blue < white) ? (byte)255 : (byte)0; //A
-			}
-			return optPixel;
-		}
+		private bool IsColor(byte[] pixel, int i) => pixel[i + 3] != 0;
+		
+		//Entry Point
 		private void SliderAxLengthY_Scroll(object sender, ScrollEventArgs e)
 		{
-			GetAxis(ImageFilterW, AxPos, out AxPos, out AxSize);
+			if (BackgroundWorker.IsBusy != true)
+			{
+				BackgroundWorker.RunWorkerAsync(sender);
+			}
 		}
 		private void SliderAxLengthX_Scroll(object sender, ScrollEventArgs e)
 		{
-			if (!IsUpdateDone)
+			if (BackgroundWorker.IsBusy != true)
 			{
-				return;
+				BackgroundWorker.RunWorkerAsync(sender);
 			}
-			IsUpdateDone = false;
-			Thread t1 = new Thread(() => GetAxis(ImageFilterW, AxPos, out AxPos, out AxSize));
-			t1.IsBackground = true;
-			t1.Start();
-			//GetAxis(ImageFilterW, AxPos, out AxPos, out AxSize);
 		}
 		private void SliderAxisOffset_Scroll(object sender, ScrollEventArgs e)
 		{
-			OffsetAxis(AxPos, AxSize, out OffsetPos, out OffsetSize);
+			if (BackgroundWorker.IsBusy != true)
+			{
+				BackgroundWorker.RunWorkerAsync(sender);
+			}
 		}
-		private bool IsUpdateDone = true;
-		private void GetAxis(PixelImage ImageFilterW, Point AxPosOld, out Point AxPos, out Size AxSize)
+		//Background Work			
+		private void GetAxis(PixelImage ImageFilterW)
 		{
 			int L = 0, xTmp = 0, yTmp = 0, idx;
 			AxSize = new Size(0, 0);
-			AxPos = AxPosOld;
 			for (int x = 0; x < ImageFilterW.Bitmap.Width; x++)
 			{
 				L = 0; yTmp = 0;
@@ -256,7 +294,9 @@ namespace DataCapturer
 					}
 				}
 				if (AxSize.Height > AxisLengthY)
+				{
 					break;
+				}	
 			}
 			for (int y = 0; y < ImageFilterW.Bitmap.Height; y++)
 			{
@@ -282,55 +322,69 @@ namespace DataCapturer
 					}
 				}
 				if (AxSize.Width > AxisLengthX)
+				{
 					break;
+				}
 			}
 
 			if (!IsGetAxis)
 			{
 				PictureBoxGetAxis.Image = null;
 				Console.WriteLine("GetAxis Error!");
+				IsUpdateDone = true;
 				return;
 			}
-			OffsetAxis(AxPos, AxSize, out OffsetPos, out OffsetSize);
+			OffsetAxis();
 		}
-		private void OffsetAxis(Point AxPos, Size AxSize, out Point OffsetPos, out Size OffsetSize)
+		private void OffsetAxis()
 		{
 			OffsetPos = new Point(AxPos.X + AxisOffset, AxPos.Y + AxisOffset);
 			OffsetSize = new Size(AxSize.Width - AxisOffset * 2, AxSize.Height - AxisOffset * 2);
+
 			if (!IsOffset)
 			{
 				PictureBoxGetAxis.Image = null;
 				Console.WriteLine("GetAxis Error!");
+				IsUpdateDone = true;
 				return;
 			}
 
-			UpdateImageAxis(out ImageAxis,(PixelImage)ImageInput.Clone(), OffsetPos, OffsetSize);
+			UpdateImageAxis(out ImageAxis, out ImageFilterRGB, ImageInput);
 		}
-		private void UpdateImageAxis(out PixelImage ImageAxis, PixelImage ImageInput, Point OffsetPos, Size OffsetSize)
+		private void UpdateImageAxis(out PixelImage ImageAxis, out PixelImage ImageFilterRGB, PixelImage ImageInput)
 		{
 			ImageAxis = new PixelImage(Crop(ImageInput.Bitmap, new Rectangle(OffsetPos, OffsetSize)));
 			PictureBoxGetAxis.Image = ImageAxis.Bitmap;
-			IsUpdateDone = true;
-			//ImageFilterRGB = new PixelImage(ImageAxis.Bitmap);
-			//UpdateImageFilter();
+
+			ImageFilterRGB = new PixelImage((Bitmap)ImageAxis.Bitmap.Clone());
+			ImageFilterRGB.Pixel = FilterR(ImageFilterRGB);
+			ImageFilterRGB.Pixel = FilterG(ImageFilterRGB);
+			ImageFilterRGB.Pixel = FilterB(ImageFilterRGB);
+			UpdateImageFilter(ImageFilterRGB, ImageAxis);
 		}
 		#endregion
 
 		#region Step 4: Filter
 		private void RangeSliderRed_Scroll(object sender, EventArgs e)
 		{
-			ImageFilterRGB.Pixel = FilterR(ImageFilterRGB);
-			UpdateImageFilter();
+			if (BackgroundWorker.IsBusy != true)
+			{
+				BackgroundWorker.RunWorkerAsync(sender);
+			}
 		}
 		private void RangeSliderGreen_Scroll(object sender, EventArgs e)
 		{
-			ImageFilterRGB.Pixel = FilterG(ImageFilterRGB);
-			UpdateImageFilter();
+			if (BackgroundWorker.IsBusy != true)
+			{
+				BackgroundWorker.RunWorkerAsync(sender);
+			}
 		}
 		private void RangeSliderBlue_Scroll(object sender, EventArgs e)
 		{
-			ImageFilterRGB.Pixel = FilterB(ImageFilterRGB);
-			UpdateImageFilter();
+			if (BackgroundWorker.IsBusy != true)
+			{
+				BackgroundWorker.RunWorkerAsync(sender);
+			}
 		}
 		private bool IsRGBFilted(byte R, byte G, byte B)
 		{
@@ -345,20 +399,13 @@ namespace DataCapturer
 
 			for (int i = 0; i < iptImage.Pixel.Length; i += iptImage.Byte)
 			{
-				if (IsColor(optPixel, i))
-				{
-					R = iptImage.Pixel[i + 2];  //R
-					if (!(R <= FilterRMax && R >= FilterRMin))
-						optPixel[i + 3] = 0; //A
-				}
-				else
-				{
-					B = iptImage.Pixel[i];
-					G = iptImage.Pixel[i + 1];
-					R = iptImage.Pixel[i + 2];
-					if (IsRGBFilted(R, G, B))
-						optPixel[i + 3] = 255; //A
-				}
+				B = optPixel[i];
+				G = optPixel[i + 1];
+				R = optPixel[i + 2];
+				if (IsColor(optPixel, i) && (R > FilterRMax || R < FilterRMin))
+					optPixel[i + 3] = 0; //A
+				else if (IsRGBFilted(R, G, B))
+					optPixel[i + 3] = 255; //A
 			}
 			return optPixel;
 		}
@@ -369,20 +416,13 @@ namespace DataCapturer
 
 			for (int i = 0; i < iptImage.Pixel.Length; i += iptImage.Byte)
 			{
-				if (IsColor(optPixel, i))
-				{
-					G = iptImage.Pixel[i + 1]; //G
-					if (!(G <= FilterGMax && G >= FilterGMin))
-						optPixel[i + 3] = 0; //A
-				}
-				else
-				{
-					B = iptImage.Pixel[i];
-					G = iptImage.Pixel[i + 1];
-					R = iptImage.Pixel[i + 2];
-					if (IsRGBFilted(R, G, B))
-						optPixel[i + 3] = 255; //A
-				}
+				B = optPixel[i];
+				G = optPixel[i + 1];
+				R = optPixel[i + 2];
+				if (IsColor(optPixel, i) && (G > FilterGMax || G < FilterGMin))
+					optPixel[i + 3] = 0; //A
+				else if (IsRGBFilted(R, G, B))
+					optPixel[i + 3] = 255; //A
 			}
 			return optPixel;
 		}
@@ -393,31 +433,24 @@ namespace DataCapturer
 
 			for (int i = 0; i < iptImage.Pixel.Length; i += iptImage.Byte)
 			{
-				if (IsColor(optPixel, i))
-				{
-					B = iptImage.Pixel[i]; //B
-					if (!(B <= FilterBMax && B >= FilterBMin))
-						optPixel[i + 3] = 0; //A
-				}
-				else
-				{
-					B = iptImage.Pixel[i];
-					G = iptImage.Pixel[i + 1];
-					R = iptImage.Pixel[i + 2];
-					if (IsRGBFilted(R, G, B))
-						optPixel[i + 3] = 255; //A
-				}
+				B = optPixel[i];
+				G = optPixel[i + 1];
+				R = optPixel[i + 2];
+				if (IsColor(optPixel, i) && (B > FilterBMax || B < FilterBMin))
+					optPixel[i + 3] = 0; //A
+				else if (IsRGBFilted(R, G, B))
+					optPixel[i + 3] = 255; //A
 			}
 			return optPixel;
 		}
-		private void UpdateImageFilter()
-		{ 	
+		private void UpdateImageFilter(PixelImage ImageFilterRGB, PixelImage ImageAxis)
+		{
 			PictureBoxFilter.Image = ImageFilterRGB.Bitmap;
 
-			ImageEraseList.Clear();
-			ImageEraseList.Add(new PixelImage(ImageFilterRGB.Bitmap));
-			EraseIdx = 0;
-			UpdateImageErase();
+			//ImageEraseList.Clear();
+			//ImageEraseList.Add(new PixelImage(ImageFilterRGB.Bitmap));
+			//EraseIdx = 0;
+			//UpdateImageErase();
 		}
 		#endregion
 
@@ -704,8 +737,8 @@ namespace DataCapturer
 				control.Top = (int)(controlAnchor.Top * HeightRatio);
 			}
 		}
-		#endregion
 
-		
+
+		#endregion
 	}
 }
