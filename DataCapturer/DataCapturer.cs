@@ -216,17 +216,17 @@ namespace DataCapturer
 				OffsetAxis();
 			else if (e.Argument == RangeSliderRed)
 			{
-				ImageFilterRGB.Pixel = FilterR(ImageFilterRGB);
+				ImageFilterRGB.Pixel = FilterRGB(ImageFilterRGB, "R");
 				UpdateImageFilter(ImageFilterRGB, ImageAxis);
 			}
 			else if (e.Argument == RangeSliderGreen)
 			{
-				ImageFilterRGB.Pixel = FilterG(ImageFilterRGB);
+				ImageFilterRGB.Pixel = FilterRGB(ImageFilterRGB, "G");
 				UpdateImageFilter(ImageFilterRGB, ImageAxis);
 			}
 			else if	(e.Argument == RangeSliderBlue)
 			{
-				ImageFilterRGB.Pixel = FilterB(ImageFilterRGB);
+				ImageFilterRGB.Pixel = FilterRGB(ImageFilterRGB, "B");
 				UpdateImageFilter(ImageFilterRGB, ImageAxis);
 			}
 
@@ -357,9 +357,9 @@ namespace DataCapturer
 			PictureBoxGetAxis.Image = ImageAxis.Bitmap;
 
 			ImageFilterRGB = new PixelImage((Bitmap)ImageAxis.Bitmap.Clone());
-			ImageFilterRGB.Pixel = FilterR(ImageFilterRGB);
-			ImageFilterRGB.Pixel = FilterG(ImageFilterRGB);
-			ImageFilterRGB.Pixel = FilterB(ImageFilterRGB);
+			ImageFilterRGB.Pixel = FilterRGB(ImageFilterRGB, "R");
+			ImageFilterRGB.Pixel = FilterRGB(ImageFilterRGB, "G");
+			ImageFilterRGB.Pixel = FilterRGB(ImageFilterRGB, "B");
 			UpdateImageFilter(ImageFilterRGB, ImageAxis);
 		}
 		#endregion
@@ -392,51 +392,36 @@ namespace DataCapturer
 						G <= FilterGMax && G >= FilterGMin &&
 							B <= FilterBMax && B >= FilterBMin) ? true : false;
 		}
-		private byte[] FilterR(PixelImage iptImage)
+		private byte[] FilterRGB(PixelImage iptImage, string type)
 		{
-			byte R, G, B;
+			byte R, G, B, color;
 			byte[] optPixel = (byte[])iptImage.Pixel.Clone(); // 複製值
-
-			for (int i = 0; i < iptImage.Pixel.Length; i += iptImage.Byte)
+			int typeN = 2, FilterMax = FilterRMax, FilterMin = FilterRMin;
+			switch (type)
 			{
-				B = optPixel[i];
-				G = optPixel[i + 1];
-				R = optPixel[i + 2];
-				if (IsColor(optPixel, i) && (R > FilterRMax || R < FilterRMin))
-					optPixel[i + 3] = 0; //A
-				else if (IsRGBFilted(R, G, B))
-					optPixel[i + 3] = 255; //A
+				case "R":
+					break;
+				case "G":
+					typeN = 1;
+					FilterMax = FilterGMax;
+					FilterMin = FilterGMin;
+					break;
+				case "B":
+					typeN = 0;
+					FilterMax = FilterBMax;
+					FilterMin = FilterBMin;
+					break;
+				default:
+					break;
 			}
-			return optPixel;
-		}
-		private byte[] FilterG(PixelImage iptImage)
-		{
-			byte R, G, B;
-			byte[] optPixel = (byte[])iptImage.Pixel.Clone(); // 複製值
 
 			for (int i = 0; i < iptImage.Pixel.Length; i += iptImage.Byte)
 			{
 				B = optPixel[i];
 				G = optPixel[i + 1];
 				R = optPixel[i + 2];
-				if (IsColor(optPixel, i) && (G > FilterGMax || G < FilterGMin))
-					optPixel[i + 3] = 0; //A
-				else if (IsRGBFilted(R, G, B))
-					optPixel[i + 3] = 255; //A
-			}
-			return optPixel;
-		}
-		private byte[] FilterB(PixelImage iptImage)
-		{
-			byte R, G, B;
-			byte[] optPixel = (byte[])iptImage.Pixel.Clone(); // 複製值
-
-			for (int i = 0; i < iptImage.Pixel.Length; i += iptImage.Byte)
-			{
-				B = optPixel[i];
-				G = optPixel[i + 1];
-				R = optPixel[i + 2];
-				if (IsColor(optPixel, i) && (B > FilterBMax || B < FilterBMin))
+				color = optPixel[i + typeN];
+				if (IsColor(optPixel, i) && (!IsIn<int>(color, FilterMax ,FilterMin)))
 					optPixel[i + 3] = 0; //A
 				else if (IsRGBFilted(R, G, B))
 					optPixel[i + 3] = 255; //A
