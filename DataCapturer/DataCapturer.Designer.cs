@@ -843,6 +843,7 @@ namespace DataCapturer
 			this.BackgroundWorker.WorkerReportsProgress = true;
 			this.BackgroundWorker.WorkerSupportsCancellation = true;
 			this.BackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorker_DoWork);
+			this.BackgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorker_RunWorkerCompleted);
 			// 
 			// DataCapturer
 			// 
