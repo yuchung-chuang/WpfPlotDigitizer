@@ -53,8 +53,6 @@ namespace DataCapturer
 			this.metroLabel4 = new MetroFramework.Controls.MetroLabel();
 			this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
 			this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
-			this.PictureBoxWarnGetAxis = new System.Windows.Forms.PictureBox();
-			this.PictureBoxWarnSetAxLim = new System.Windows.Forms.PictureBox();
 			this.PictureBoxGetAxis = new System.Windows.Forms.PictureBox();
 			this.PictureBoxFilter = new System.Windows.Forms.PictureBox();
 			this.PictureBoxOutput = new System.Windows.Forms.PictureBox();
@@ -62,7 +60,7 @@ namespace DataCapturer
 			this.ButtonNext = new MetroFramework.Controls.MetroButton();
 			this.ButtonBack = new MetroFramework.Controls.MetroButton();
 			this.TabPage6 = new MetroFramework.Controls.MetroTabPage();
-			this.dataGridView1 = new System.Windows.Forms.DataGridView();
+			this.DataGridView = new System.Windows.Forms.DataGridView();
 			this.XData = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.YData = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.TabPage5 = new MetroFramework.Controls.MetroTabPage();
@@ -77,13 +75,11 @@ namespace DataCapturer
 			this.TabControlMain = new MetroFramework.Controls.MetroTabControl();
 			this.TabPage2 = new MetroFramework.Controls.MetroTabPage();
 			this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-			((System.ComponentModel.ISupportInitialize)(this.PictureBoxWarnGetAxis)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.PictureBoxWarnSetAxLim)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxGetAxis)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxFilter)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxOutput)).BeginInit();
 			this.TabPage6.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.DataGridView)).BeginInit();
 			this.TabPage5.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.RedoButton)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.UndoButton)).BeginInit();
@@ -493,32 +489,6 @@ namespace DataCapturer
 			this.Tooltip.SetToolTip(this.metroLabel1, "Set the minimum value of the X axis.");
 			this.metroLabel1.UseStyleColors = false;
 			// 
-			// PictureBoxWarnGetAxis
-			// 
-			this.PictureBoxWarnGetAxis.BackColor = System.Drawing.Color.Transparent;
-			this.PictureBoxWarnGetAxis.Image = global::DataCapturer.Properties.Resources._01300543896251147062126622831_s;
-			this.PictureBoxWarnGetAxis.Location = new System.Drawing.Point(365, 53);
-			this.PictureBoxWarnGetAxis.Name = "PictureBoxWarnGetAxis";
-			this.PictureBoxWarnGetAxis.Size = new System.Drawing.Size(40, 40);
-			this.PictureBoxWarnGetAxis.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.PictureBoxWarnGetAxis.TabIndex = 7;
-			this.PictureBoxWarnGetAxis.TabStop = false;
-			this.Tooltip.SetToolTip(this.PictureBoxWarnGetAxis, "Can\'t capture appropriate axis!");
-			this.PictureBoxWarnGetAxis.Visible = false;
-			// 
-			// PictureBoxWarnSetAxLim
-			// 
-			this.PictureBoxWarnSetAxLim.BackColor = System.Drawing.Color.Transparent;
-			this.PictureBoxWarnSetAxLim.Image = global::DataCapturer.Properties.Resources._01300543896251147062126622831_s;
-			this.PictureBoxWarnSetAxLim.Location = new System.Drawing.Point(213, 53);
-			this.PictureBoxWarnSetAxLim.Name = "PictureBoxWarnSetAxLim";
-			this.PictureBoxWarnSetAxLim.Size = new System.Drawing.Size(40, 40);
-			this.PictureBoxWarnSetAxLim.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.PictureBoxWarnSetAxLim.TabIndex = 6;
-			this.PictureBoxWarnSetAxLim.TabStop = false;
-			this.Tooltip.SetToolTip(this.PictureBoxWarnSetAxLim, "Not all axis limits have been set!");
-			this.PictureBoxWarnSetAxLim.Visible = false;
-			// 
 			// PictureBoxGetAxis
 			// 
 			this.PictureBoxGetAxis.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -592,7 +562,7 @@ namespace DataCapturer
 			// 
 			// TabPage6
 			// 
-			this.TabPage6.Controls.Add(this.dataGridView1);
+			this.TabPage6.Controls.Add(this.DataGridView);
 			this.TabPage6.Controls.Add(this.ButtonSave);
 			this.TabPage6.Controls.Add(this.PictureBoxOutput);
 			this.TabPage6.CustomBackground = false;
@@ -613,20 +583,20 @@ namespace DataCapturer
 			this.TabPage6.VerticalScrollbarHighlightOnWheel = false;
 			this.TabPage6.VerticalScrollbarSize = 10;
 			// 
-			// dataGridView1
+			// DataGridView
 			// 
-			this.dataGridView1.AllowUserToAddRows = false;
-			this.dataGridView1.AllowUserToDeleteRows = false;
-			this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+			this.DataGridView.AllowUserToAddRows = false;
+			this.DataGridView.AllowUserToDeleteRows = false;
+			this.DataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.DataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.XData,
             this.YData});
-			this.dataGridView1.Location = new System.Drawing.Point(718, 17);
-			this.dataGridView1.Name = "dataGridView1";
-			this.dataGridView1.ReadOnly = true;
-			this.dataGridView1.RowTemplate.Height = 31;
-			this.dataGridView1.Size = new System.Drawing.Size(240, 470);
-			this.dataGridView1.TabIndex = 13;
+			this.DataGridView.Location = new System.Drawing.Point(718, 17);
+			this.DataGridView.Name = "DataGridView";
+			this.DataGridView.ReadOnly = true;
+			this.DataGridView.RowTemplate.Height = 31;
+			this.DataGridView.Size = new System.Drawing.Size(240, 470);
+			this.DataGridView.TabIndex = 13;
 			// 
 			// XData
 			// 
@@ -818,7 +788,7 @@ namespace DataCapturer
 			this.TabControlMain.Location = new System.Drawing.Point(23, 83);
 			this.TabControlMain.MetroFont = new System.Drawing.Font("Segoe UI Light", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
 			this.TabControlMain.Name = "TabControlMain";
-			this.TabControlMain.SelectedIndex = 0;
+			this.TabControlMain.SelectedIndex = 1;
 			this.TabControlMain.Size = new System.Drawing.Size(969, 615);
 			this.TabControlMain.Style = MetroFramework.MetroColorStyle.Blue;
 			this.TabControlMain.StyleManager = null;
@@ -872,8 +842,6 @@ namespace DataCapturer
 			this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
 			this.ClientSize = new System.Drawing.Size(1015, 776);
-			this.Controls.Add(this.PictureBoxWarnGetAxis);
-			this.Controls.Add(this.PictureBoxWarnSetAxLim);
 			this.Controls.Add(this.ButtonBack);
 			this.Controls.Add(this.ButtonNext);
 			this.Controls.Add(this.TabControlMain);
@@ -883,13 +851,11 @@ namespace DataCapturer
 			this.Text = "Data Capturer";
 			this.Load += new System.EventHandler(this.DataCapturer_Load);
 			this.Resize += new System.EventHandler(this.DataCapturer_Resize);
-			((System.ComponentModel.ISupportInitialize)(this.PictureBoxWarnGetAxis)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.PictureBoxWarnSetAxLim)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxGetAxis)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxFilter)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxOutput)).EndInit();
 			this.TabPage6.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.DataGridView)).EndInit();
 			this.TabPage5.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.RedoButton)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.UndoButton)).EndInit();
@@ -915,7 +881,7 @@ namespace DataCapturer
 		private MetroFramework.Controls.MetroLabel metroLabel5;
 		private MetroFramework.Controls.MetroLabel metroLabel6;
 		private MetroFramework.Controls.MetroLabel metroLabel7;
-		private System.Windows.Forms.DataGridView dataGridView1;
+		private System.Windows.Forms.DataGridView DataGridView;
 		#endregion
 
 		private MetroFramework.Components.MetroToolTip Tooltip;
@@ -939,8 +905,6 @@ namespace DataCapturer
 		private System.Windows.Forms.PictureBox PictureBoxGetAxis;
 		private System.Windows.Forms.PictureBox PictureBoxInput;
 		private System.Windows.Forms.PictureBox PictureBoxFilter;
-		private System.Windows.Forms.PictureBox PictureBoxWarnSetAxLim;
-		private System.Windows.Forms.PictureBox PictureBoxWarnGetAxis;
 		private System.Windows.Forms.OpenFileDialog openFileDialog;
 		private System.Windows.Forms.DataGridViewTextBoxColumn XData;
 		private System.Windows.Forms.DataGridViewTextBoxColumn YData;

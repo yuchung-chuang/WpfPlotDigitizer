@@ -8,6 +8,7 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MetroFramework;
@@ -109,33 +110,78 @@ namespace DataCapturer
 				control.Enabled = true;
 			TextBoxXBase.Enabled = false;
 			TextBoxYBase.Enabled = false;
+
+			UpdateImageSetAxLim();
 		}
 		#endregion
-		#region Step 2: Get Frame
-		private void SliderAxLengthY_Scroll(object sender, ScrollEventArgs e)
+
+		#region Step 2: Set Axis Limits
+		private void CheckBoxXLog_CheckedChanged(object sender, EventArgs e)
 		{
-			if (IsUpdateImageAxisDone)
-			{
-				IsUpdateImageAxisDone = false;
-				GetAxis();
-			}
+			TextBoxXBase.Enabled = (CheckBoxXLog.Checked) ? true : false;
 		}
-		private void SliderAxLengthX_Scroll(object sender, ScrollEventArgs e)
+		private void CheckBoxYLog_CheckedChanged(object sender, EventArgs e)
 		{
-			if (IsUpdateImageAxisDone)
-			{
-				IsUpdateImageAxisDone = false;
-				GetAxis();
-			}
+			TextBoxYBase.Enabled = (CheckBoxYLog.Checked) ? true : false;
 		}
-		private void SliderAxisOffset_Scroll(object sender, ScrollEventArgs e)
+		private void TextBoxXhi_TextChanged(object sender, EventArgs e)
 		{
-			if (IsUpdateImageAxisDone)
-			{
-				IsUpdateImageAxisDone = false;
-				OffsetAxis();
-			}
+			if (this.Text != null)
+				this.BackColor = DefaultBackColor;
+			else
+				this.BackColor = Color.LightPink;
 		}
+		private void TextBoxXlo_TextChanged(object sender, EventArgs e)
+		{
+			if (this.Text != null)
+				this.BackColor = DefaultBackColor;
+			else
+				this.BackColor = Color.LightPink;
+		}
+		private void TextBoxYlo_TextChanged(object sender, EventArgs e)
+		{
+			if (this.Text != null)
+				this.BackColor = DefaultBackColor;
+			else
+				this.BackColor = Color.LightPink;
+		}
+		private void TextBoxYhi_TextChanged(object sender, EventArgs e)
+		{
+			if (this.Text != null)
+				this.BackColor = DefaultBackColor;
+			else
+				this.BackColor = Color.LightPink;
+		}
+		private void TextBoxXBase_TextChanged(object sender, EventArgs e)
+		{
+			if (this.Text != null)
+				this.BackColor = DefaultBackColor;
+			else
+				this.BackColor = Color.LightPink;
+		}
+		private void TextBoxYBase_TextChanged(object sender, EventArgs e)
+		{
+			if (this.Text != null)
+				this.BackColor = DefaultBackColor;
+			else
+				this.BackColor = Color.LightPink;
+		}
+		private void UpdateImageSetAxLim()
+		{
+			ImageViewerSetAxLim.Image = ImageInput.Bitmap;
+
+			SliderAxLengthX.BarMax = ImageInput.Bitmap.Width;
+			SliderAxLengthX.Value = SliderAxLengthX.BarMax / 2;
+			SliderAxLengthY.BarMax = ImageInput.Bitmap.Height;
+			SliderAxLengthY.Value = SliderAxLengthY.BarMax / 2;
+
+			byte[] Pixel = FilterW(ImageInput, FilterWMax);
+			ImageFilterW = new PixelImage(Pixel, ImageInput.Size);
+			GetAxis(ImageFilterW, AxPos, out AxPos, out AxSize);
+		}
+		#endregion
+
+		#region Step 3: Get Frame
 		private int FilterWMax = 200;
 		private Point AxPos = new Point();
 		private Size AxSize = new Size();
@@ -143,7 +189,6 @@ namespace DataCapturer
 		private Size OffsetSize = new Size();
 		private bool IsGetAxis => (AxSize.Width > 0 && AxSize.Height > 0) ? true : false;
 		private bool IsOffset => (OffsetSize.Width > 0 && OffsetSize.Height > 0) ? true : false;
-		private bool IsUpdateImageAxisDone = true;
 		private bool IsColor(byte[] pixel, int i)
 		{
 			return pixel[i + 3] != 0;  //A 
@@ -161,11 +206,32 @@ namespace DataCapturer
 			}
 			return optPixel;
 		}
-		private void GetAxis()
+		private void SliderAxLengthY_Scroll(object sender, ScrollEventArgs e)
+		{
+			GetAxis(ImageFilterW, AxPos, out AxPos, out AxSize);
+		}
+		private void SliderAxLengthX_Scroll(object sender, ScrollEventArgs e)
+		{
+			if (!IsUpdateDone)
+			{
+				return;
+			}
+			IsUpdateDone = false;
+			Thread t1 = new Thread(() => GetAxis(ImageFilterW, AxPos, out AxPos, out AxSize));
+			t1.IsBackground = true;
+			t1.Start();
+			//GetAxis(ImageFilterW, AxPos, out AxPos, out AxSize);
+		}
+		private void SliderAxisOffset_Scroll(object sender, ScrollEventArgs e)
+		{
+			OffsetAxis(AxPos, AxSize, out OffsetPos, out OffsetSize);
+		}
+		private bool IsUpdateDone = true;
+		private void GetAxis(PixelImage ImageFilterW, Point AxPosOld, out Point AxPos, out Size AxSize)
 		{
 			int L = 0, xTmp = 0, yTmp = 0, idx;
-			AxSize.Width = 0;
-			AxSize.Height = 0; //歸零
+			AxSize = new Size(0, 0);
+			AxPos = AxPosOld;
 			for (int x = 0; x < ImageFilterW.Bitmap.Width; x++)
 			{
 				L = 0; yTmp = 0;
@@ -225,14 +291,12 @@ namespace DataCapturer
 				Console.WriteLine("GetAxis Error!");
 				return;
 			}
-			OffsetAxis();
+			OffsetAxis(AxPos, AxSize, out OffsetPos, out OffsetSize);
 		}
-		private void OffsetAxis()
+		private void OffsetAxis(Point AxPos, Size AxSize, out Point OffsetPos, out Size OffsetSize)
 		{
-			OffsetPos.X = AxPos.X + AxisOffset;
-			OffsetPos.Y = AxPos.Y + AxisOffset;
-			OffsetSize.Width = AxSize.Width - AxisOffset * 2;
-			OffsetSize.Height = AxSize.Height - AxisOffset * 2;
+			OffsetPos = new Point(AxPos.X + AxisOffset, AxPos.Y + AxisOffset);
+			OffsetSize = new Size(AxSize.Width - AxisOffset * 2, AxSize.Height - AxisOffset * 2);
 			if (!IsOffset)
 			{
 				PictureBoxGetAxis.Image = null;
@@ -240,44 +304,33 @@ namespace DataCapturer
 				return;
 			}
 
-			UpdateImageAxis();
+			UpdateImageAxis(out ImageAxis,(PixelImage)ImageInput.Clone(), OffsetPos, OffsetSize);
 		}
-		private void UpdateImageAxis()
+		private void UpdateImageAxis(out PixelImage ImageAxis, PixelImage ImageInput, Point OffsetPos, Size OffsetSize)
 		{
 			ImageAxis = new PixelImage(Crop(ImageInput.Bitmap, new Rectangle(OffsetPos, OffsetSize)));
 			PictureBoxGetAxis.Image = ImageAxis.Bitmap;
-			IsUpdateImageAxisDone = true;
+			IsUpdateDone = true;
+			//ImageFilterRGB = new PixelImage(ImageAxis.Bitmap);
+			//UpdateImageFilter();
 		}
 		#endregion
 
-		#region Step 3: Filter
-		private bool IsUpdateImageFilterDone = true;
+		#region Step 4: Filter
 		private void RangeSliderRed_Scroll(object sender, EventArgs e)
 		{
-			if (IsUpdateImageFilterDone)
-			{
-				IsUpdateImageAxisDone = false;
-				ImageFilterRGB.Pixel = FilterR(ImageFilterRGB);
-				UpdateImageFilter();
-			}
+			ImageFilterRGB.Pixel = FilterR(ImageFilterRGB);
+			UpdateImageFilter();
 		}
 		private void RangeSliderGreen_Scroll(object sender, EventArgs e)
 		{
-			if (IsUpdateImageFilterDone)
-			{
-				IsUpdateImageAxisDone = false;
-				ImageFilterRGB.Pixel = FilterG(ImageFilterRGB);
-				UpdateImageFilter();
-			}
+			ImageFilterRGB.Pixel = FilterG(ImageFilterRGB);
+			UpdateImageFilter();
 		}
 		private void RangeSliderBlue_Scroll(object sender, EventArgs e)
 		{
-			if (IsUpdateImageFilterDone)
-			{
-				IsUpdateImageAxisDone = false;
-				ImageFilterRGB.Pixel = FilterB(ImageFilterRGB);
-				UpdateImageFilter();
-			}
+			ImageFilterRGB.Pixel = FilterB(ImageFilterRGB);
+			UpdateImageFilter();
 		}
 		private bool IsRGBFilted(byte R, byte G, byte B)
 		{
@@ -358,13 +411,17 @@ namespace DataCapturer
 			return optPixel;
 		}
 		private void UpdateImageFilter()
-		{
+		{ 	
 			PictureBoxFilter.Image = ImageFilterRGB.Bitmap;
-			IsUpdateImageFilterDone = true;
+
+			ImageEraseList.Clear();
+			ImageEraseList.Add(new PixelImage(ImageFilterRGB.Bitmap));
+			EraseIdx = 0;
+			UpdateImageErase();
 		}
 		#endregion
 
-		#region Step 4: Erase
+		#region Step 5: Erase
 		private int EraseIdx = 0;
 		private int EraserL = 20;
 		private bool IsErasing = false;
@@ -451,10 +508,13 @@ namespace DataCapturer
 			ImageViewerErase.Image = ImageErase.Bitmap;
 			UpdateUndoButtonColor();
 			UpdateRedoButtonColor();
+
+			ImageOutput = new PixelImage(ImageErase.Bitmap);
+			UpdateImageOutput();
 		}
 		#endregion
 
-		#region
+		#region 
 		private void UpdateImageOutput()
 		{
 			PictureBoxOutput.Image = ImageOutput.Bitmap;
@@ -462,40 +522,30 @@ namespace DataCapturer
 			UpdateData();
 		}
 
-
-		private void CheckBoxXLog_CheckedChanged(object sender, EventArgs e)
+		private bool IsDataOK()
 		{
-			TextBoxXBase.Enabled = (CheckBoxXLog.Checked) ? true : false;
-		}
-		private void CheckBoxYLog_CheckedChanged(object sender, EventArgs e)
-		{
-			TextBoxYBase.Enabled = (CheckBoxYLog.Checked) ? true : false;
-		}
-		private void TextBoxXhi_TextChanged(object sender, EventArgs e)
-		{
-			UpdateData();
-		}
-		private void TextBoxXlo_TextChanged(object sender, EventArgs e)
-		{
-			UpdateData();
-		}
-		private void TextBoxYlo_TextChanged(object sender, EventArgs e)
-		{
-			UpdateData();
-		}
-		private void TextBoxYhi_TextChanged(object sender, EventArgs e)
-		{
-			UpdateData();
-		}
-		private void TextBoxXBase_TextChanged(object sender, EventArgs e)
-		{
-			UpdateData();
-		}
-		private void TextBoxYBase_TextChanged(object sender, EventArgs e)
-		{
-			UpdateData();
+			if (TextBoxXlo.Text == null || TextBoxYlo.Text == null || TextBoxXhi.Text == null || TextBoxYhi.Text == null || (CheckBoxXLog.Checked && TextBoxXBase.Text == null) || (CheckBoxYLog.Checked && TextBoxYBase.Text == null))
+			{
+				TabControlMain.SelectedIndex = 1;
+				MessageBox.Show("Please fill in all the axis limits.");
+				return false;
+			}
+			if (!IsGetAxis || !IsOffset)
+			{
+				TabControlMain.SelectedIndex = 2;
+				MessageBox.Show("Please adjust the scrollbars to capture axis properly.");
+				return false;
+			}
+			return true;
 		}
 		private void UpdateData()
+		{
+			if (!IsDataOK())
+				return;
+
+		}
+
+		private void Warning()
 		{
 
 		}
@@ -507,40 +557,9 @@ namespace DataCapturer
 		}
 		#endregion
 
-		private void UpdateWarning()
-		{
-			PictureBoxWarnSetAxLim.Visible = (IsSetAxLim) ? false : true;
-			PictureBoxWarnGetAxis.Visible = (IsGetAxis) ? false : true;
-		}
-
 		#region Other User Activities
 		private void TabControl_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			ImageViewerSetAxLim.Image = ImageInput.Bitmap;
-
-			//PreSet ImageFilterW
-			ImageFilterW = new PixelImage(ImageInput.Size) { Pixel = FilterW(ImageInput, FilterWMax) };
-
-			//SetSlider
-			SliderAxLengthX.BarMax = ImageInput.Bitmap.Width;
-			SliderAxLengthX.Value = SliderAxLengthX.BarMax / 2;
-			SliderAxLengthY.BarMax = ImageInput.Bitmap.Height;
-			SliderAxLengthY.Value = SliderAxLengthY.BarMax / 2;
-
-			GetAxis();
-
-			ImageFilterRGB = new PixelImage(ImageAxis.Bitmap); //預先設定ImageFilterRGB
-			UpdateImageFilter();
-
-			ImageEraseList.Clear();
-			ImageEraseList.Add(new PixelImage(ImageFilterRGB.Bitmap));
-			EraseIdx = 0;
-			UpdateImageErase();
-
-			//CalculateData();
-			ImageOutput = new PixelImage(ImageErase.Bitmap);
-			UpdateImageOutput();
-
 			if (TabControlMain.SelectedIndex == 0)
 				ButtonBack.Hide();
 			else
@@ -686,5 +705,7 @@ namespace DataCapturer
 			}
 		}
 		#endregion
+
+		
 	}
 }
