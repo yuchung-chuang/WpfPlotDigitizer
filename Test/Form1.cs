@@ -21,19 +21,25 @@ namespace Test
 {
 	public partial class Form1 : Form
 	{
+		Bitmap image, newImage, cloneImage;
 		public Form1()
 		{
 			InitializeComponent();
+			image = new Bitmap("C:\\Users\\alex\\Dropbox (Alex)\\SMCMLAB\\matlab\\DataCapturer\\images\\19451854599_fdc0d1a8d7_c.jpg");
+			newImage = new Bitmap(image);
+			cloneImage = (Bitmap)image.Clone();
+			image = DrawEraser(image, new Point(10,10));
+			
 		}
-
-		public void Run()
+		private Bitmap DrawEraser(Bitmap ImageTmp, Point pos)
 		{
-
-		}
-
-		private void Form1_Load(object sender, EventArgs e)
-		{
-
+			int EraserL = 30;
+			using (Graphics graphics = Graphics.FromImage(ImageTmp))//DrawImage會導致畫面閃爍
+			{
+				graphics.DrawRectangle(new Pen(Color.Black, 5), pos.X - EraserL / 2, pos.Y - EraserL / 2, EraserL, EraserL);
+				graphics.DrawRectangle(new Pen(Color.Blue, 3), pos.X - EraserL / 2, pos.Y - EraserL / 2, EraserL, EraserL);
+			};
+			return ImageTmp;
 		}
 
 		private void button1_Click(object sender, EventArgs e)
@@ -65,6 +71,32 @@ namespace Test
 		private void BackgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
 			ProgressBar1.Value = 100;
+		}
+
+		private int i = 0;
+		private void pictureBox1_Click(object sender, EventArgs e)
+		{
+			if (i == 0)
+			{
+				pictureBox1.Image = image;
+
+			}
+			else if (i == 1)
+			{
+				pictureBox1.Image = newImage;
+
+			}
+			else
+			{
+				pictureBox1.Image = cloneImage;
+
+			}
+			i++;
+		}
+
+		private void Form1_Load(object sender, EventArgs e)
+		{
+			
 		}
 	}
 }

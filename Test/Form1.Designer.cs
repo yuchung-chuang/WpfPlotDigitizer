@@ -32,12 +32,10 @@
 			this.trackBar1 = new System.Windows.Forms.TrackBar();
 			this.BackgroundWorker1 = new System.ComponentModel.BackgroundWorker();
 			this.button1 = new System.Windows.Forms.Button();
-			this.Label1 = new System.Windows.Forms.Label();
-			this.Label2 = new System.Windows.Forms.Label();
-			this.Label3 = new System.Windows.Forms.Label();
-			this.Label4 = new System.Windows.Forms.Label();
 			this.ProgressBar1 = new System.Windows.Forms.ProgressBar();
+			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// openFileDialog1
@@ -68,42 +66,6 @@
 			this.button1.UseVisualStyleBackColor = true;
 			this.button1.Click += new System.EventHandler(this.button1_Click);
 			// 
-			// Label1
-			// 
-			this.Label1.AutoSize = true;
-			this.Label1.Location = new System.Drawing.Point(106, 139);
-			this.Label1.Name = "Label1";
-			this.Label1.Size = new System.Drawing.Size(50, 18);
-			this.Label1.TabIndex = 3;
-			this.Label1.Text = "label1";
-			// 
-			// Label2
-			// 
-			this.Label2.AutoSize = true;
-			this.Label2.Location = new System.Drawing.Point(106, 195);
-			this.Label2.Name = "Label2";
-			this.Label2.Size = new System.Drawing.Size(50, 18);
-			this.Label2.TabIndex = 4;
-			this.Label2.Text = "label2";
-			// 
-			// Label3
-			// 
-			this.Label3.AutoSize = true;
-			this.Label3.Location = new System.Drawing.Point(106, 264);
-			this.Label3.Name = "Label3";
-			this.Label3.Size = new System.Drawing.Size(50, 18);
-			this.Label3.TabIndex = 5;
-			this.Label3.Text = "label3";
-			// 
-			// Label4
-			// 
-			this.Label4.AutoSize = true;
-			this.Label4.Location = new System.Drawing.Point(106, 313);
-			this.Label4.Name = "Label4";
-			this.Label4.Size = new System.Drawing.Size(50, 18);
-			this.Label4.TabIndex = 6;
-			this.Label4.Text = "label4";
-			// 
 			// ProgressBar1
 			// 
 			this.ProgressBar1.Location = new System.Drawing.Point(203, 391);
@@ -111,22 +73,29 @@
 			this.ProgressBar1.Size = new System.Drawing.Size(305, 40);
 			this.ProgressBar1.TabIndex = 7;
 			// 
+			// pictureBox1
+			// 
+			this.pictureBox1.Location = new System.Drawing.Point(68, 109);
+			this.pictureBox1.Name = "pictureBox1";
+			this.pictureBox1.Size = new System.Drawing.Size(237, 155);
+			this.pictureBox1.TabIndex = 8;
+			this.pictureBox1.TabStop = false;
+			this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(550, 463);
+			this.Controls.Add(this.pictureBox1);
 			this.Controls.Add(this.ProgressBar1);
-			this.Controls.Add(this.Label4);
-			this.Controls.Add(this.Label3);
-			this.Controls.Add(this.Label2);
-			this.Controls.Add(this.Label1);
 			this.Controls.Add(this.button1);
 			this.Controls.Add(this.trackBar1);
 			this.Name = "Form1";
 			this.Text = "Form1";
 			this.Load += new System.EventHandler(this.Form1_Load);
 			((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -137,11 +106,8 @@
 		private System.Windows.Forms.TrackBar trackBar1;
 		private System.ComponentModel.BackgroundWorker BackgroundWorker1;
 		private System.Windows.Forms.Button button1;
-		private System.Windows.Forms.Label Label1;
-		private System.Windows.Forms.Label Label2;
-		private System.Windows.Forms.Label Label3;
-		private System.Windows.Forms.Label Label4;
 		private System.Windows.Forms.ProgressBar ProgressBar1;
+		private System.Windows.Forms.PictureBox pictureBox1;
 	}
 }
 

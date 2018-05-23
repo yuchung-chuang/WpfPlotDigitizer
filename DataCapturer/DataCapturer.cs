@@ -217,17 +217,17 @@ namespace DataCapturer
 			else if (e.Argument == RangeSliderRed)
 			{
 				ImageFilterRGB.Pixel = FilterRGB(ImageFilterRGB, "R");
-				UpdateImageFilter(ImageFilterRGB, ImageAxis);
+				UpdateImageFilter(ImageFilterRGB, ImageAxis, out ImageEraseList);
 			}
 			else if (e.Argument == RangeSliderGreen)
 			{
 				ImageFilterRGB.Pixel = FilterRGB(ImageFilterRGB, "G");
-				UpdateImageFilter(ImageFilterRGB, ImageAxis);
+				UpdateImageFilter(ImageFilterRGB, ImageAxis, out ImageEraseList);
 			}
 			else if	(e.Argument == RangeSliderBlue)
 			{
 				ImageFilterRGB.Pixel = FilterRGB(ImageFilterRGB, "B");
-				UpdateImageFilter(ImageFilterRGB, ImageAxis);
+				UpdateImageFilter(ImageFilterRGB, ImageAxis, out ImageEraseList);
 			}
 
 		}
@@ -360,7 +360,7 @@ namespace DataCapturer
 			ImageFilterRGB.Pixel = FilterRGB(ImageFilterRGB, "R");
 			ImageFilterRGB.Pixel = FilterRGB(ImageFilterRGB, "G");
 			ImageFilterRGB.Pixel = FilterRGB(ImageFilterRGB, "B");
-			UpdateImageFilter(ImageFilterRGB, ImageAxis);
+			UpdateImageFilter(ImageFilterRGB, ImageAxis, out ImageEraseList);
 		}
 		#endregion
 
@@ -428,14 +428,14 @@ namespace DataCapturer
 			}
 			return optPixel;
 		}
-		private void UpdateImageFilter(PixelImage ImageFilterRGB, PixelImage ImageAxis)
+		private void UpdateImageFilter(PixelImage ImageFilterRGB, PixelImage ImageAxis, out List<PixelImage> ImageEraseList)
 		{
 			PictureBoxFilter.Image = ImageFilterRGB.Bitmap;
 
-			//ImageEraseList.Clear();
-			//ImageEraseList.Add(new PixelImage(ImageFilterRGB.Bitmap));
-			//EraseIdx = 0;
-			//UpdateImageErase();
+			ImageEraseList = new List<PixelImage>();
+			ImageEraseList.Add(new PixelImage((Bitmap)ImageFilterRGB.Bitmap.Clone()));
+			EraseIdx = 0;
+			UpdateImageErase(out ImageOutput, ImageErase);
 		}
 		#endregion
 
@@ -477,13 +477,13 @@ namespace DataCapturer
 		{
 			if (EraseIdx > 0)
 				EraseIdx -= 1;
-			UpdateImageErase();
+			UpdateImageErase(out ImageOutput, ImageErase);
 		}
 		private void Redo()
 		{
 			if (EraseIdx < ImageEraseList.Count - 1)
 				EraseIdx += 1;
-			UpdateImageErase();
+			UpdateImageErase(out ImageOutput, ImageErase);
 		}
 		private void ImageViewerErase_MouseDown(object sender, MouseEventArgs e)
 		{
@@ -510,7 +510,7 @@ namespace DataCapturer
 			if (e.Button == MouseButtons.Left)
 			{
 				IsErasing = false;
-				UpdateImageErase();
+				UpdateImageErase(out ImageOutput, ImageErase);
 			}
 		}
 		private void ImageViewerErase_MouseEnter(object sender, EventArgs e)
@@ -521,14 +521,14 @@ namespace DataCapturer
 		{
 			Cursor.Show();
 		}
-		private void UpdateImageErase()
+		private void UpdateImageErase(out PixelImage ImageOutput, PixelImage ImageErase)
 		{
 			ImageViewerErase.Image = ImageErase.Bitmap;
 			UpdateUndoButtonColor();
 			UpdateRedoButtonColor();
 
-			ImageOutput = new PixelImage(ImageErase.Bitmap);
-			UpdateImageOutput();
+			ImageOutput = new PixelImage((Bitmap)ImageErase.Bitmap.Clone());
+			//UpdateImageOutput();
 		}
 		#endregion
 
