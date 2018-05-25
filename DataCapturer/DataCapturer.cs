@@ -159,9 +159,9 @@ namespace DataCapturer
 		}
 		private void UpdateAllControls()
 		{
-			PictureBoxGetAxis.Image = new Bitmap(ImageAxis.Bitmap);
-			PictureBoxFilter.Image = new Bitmap(ImageFilterRGB.Bitmap);
-			ImageViewerErase.Image = new Bitmap(ImageEraseTmp.Bitmap); //使用背景工作時，顯示Bitmap時一定要用new Bitmap!!!!
+			PictureBoxGetAxis.Image = (Bitmap)ImageAxis.Bitmap.Clone();
+			PictureBoxFilter.Image = (Bitmap)ImageFilterRGB.Bitmap.Clone();
+			ImageViewerErase.Image = (Bitmap)ImageEraseTmp.Bitmap.Clone(); //使用背景工作時，顯示Bitmap時一定要Clone!!!!
 		}
 		#endregion
 
@@ -480,7 +480,7 @@ namespace DataCapturer
 			set
 			{
 				_EraseIdx = value;
-				ImageEraseTmp.Bitmap = new Bitmap(ImageErase.Bitmap);
+				ImageEraseTmp.Bitmap = (Bitmap)ImageErase.Bitmap.Clone();
 			}
 		}
 		private int EraserL = 20;
