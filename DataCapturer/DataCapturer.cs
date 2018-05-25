@@ -33,10 +33,9 @@ namespace DataCapturer
 			set
 			{
 				ImageEraseList[EraseIdx] = value;
-				ImageEraseTmp.Bitmap = (Bitmap)ImageErase.Bitmap.Clone();
 			}
 		}
-		private PixelImage ImageEraseTmp;
+		private PixelImage ImageEraseTmp = new PixelImage();
 		private List<PixelImage> ImageEraseList = new List<PixelImage>();
 		private PixelImage ImageOutput;
 		#endregion
@@ -154,15 +153,15 @@ namespace DataCapturer
 
 			byte[] Pixel = FilterW(ImageInput, FilterWMax);
 			ImageFilterW = new PixelImage(Pixel, ImageInput.Size);
-			GetAxis(ImageFilterW);
+			GetAxis();
 
 			UpdateAllControls(); //Initialize
 		}
 		private void UpdateAllControls()
 		{
-			PictureBoxGetAxis.Image = ImageAxis.Bitmap;
-			PictureBoxFilter.Image = ImageFilterRGB.Bitmap;
-			ImageViewerErase.Image = ImageEraseTmp.Bitmap;
+			PictureBoxGetAxis.Image = new Bitmap(ImageAxis.Bitmap);
+			PictureBoxFilter.Image = new Bitmap(ImageFilterRGB.Bitmap);
+			ImageViewerErase.Image = new Bitmap(ImageEraseTmp.Bitmap); //使用背景工作時，顯示Bitmap時一定要用new Bitmap!!!!
 		}
 		#endregion
 
@@ -253,7 +252,7 @@ namespace DataCapturer
 			}
 		}
 		//Background Work			
-		private void GetAxis(PixelImage ImageFilterW)
+		private void GetAxis()
 		{
 			int L = 0, xTmp = 0, yTmp = 0, idx;
 			AxSize = new Size(0, 0);
@@ -334,22 +333,22 @@ namespace DataCapturer
 				return;
 			}
 
-			UpdateImageAxisFilterRGB(out ImageAxis, ImageInput);
+			SetImageAxis();
 		}
-		private void UpdateImageAxisFilterRGB(out PixelImage ImageAxis, PixelImage ImageInput)
+		private void SetImageAxis()
 		{
 			ImageAxis = new PixelImage(Crop(ImageInput.Bitmap, new Rectangle(OffsetPos, OffsetSize)));
 
-			UpdateImageFilterRGB(out ImageFilterRGB, ImageAxis);
+			SetImageFilterRGB();
 		}
-		private void UpdateImageFilterRGB(out PixelImage ImageFilterRGB, PixelImage ImageAxis)
+		private void SetImageFilterRGB()
 		{
-			ImageFilterRGB = new PixelImage((Bitmap)ImageAxis.Bitmap.Clone());
+			ImageFilterRGB = (PixelImage)ImageAxis.Clone();
 			ImageFilterRGB.Pixel = FilterRGB(ImageFilterRGB, "R");
 			ImageFilterRGB.Pixel = FilterRGB(ImageFilterRGB, "G");
 			ImageFilterRGB.Pixel = FilterRGB(ImageFilterRGB, "B");
 
-			UpdateImageErase(ImageFilterRGB, out ImageEraseList);
+			SetImageErase();
 		}
 		#endregion
 
@@ -417,23 +416,22 @@ namespace DataCapturer
 			}
 			return optPixel;
 		}
-		private void UpdateImageErase(PixelImage ImageFilterRGB, out List<PixelImage> ImageEraseList)
+		private void SetImageErase()
 		{
-			ImageEraseList = new List<PixelImage>();
-			ImageEraseList.Add(new PixelImage((Bitmap)ImageFilterRGB.Bitmap.Clone()));
+			ImageEraseList.Clear();
+			ImageEraseList.Add((PixelImage)ImageFilterRGB.Clone());
 			EraseIdx = 0;
-			ImageEraseTmp = new PixelImage((Bitmap)ImageErase.Bitmap.Clone());
-			UpdateUndoRedoButton(out ImageOutput, ImageErase);
+			SetImageOutput();
 		}
 		#endregion
 
 		#region Background Work
-		private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+		private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs DoWork_e)
 		{
-			BackgroundArgs arg = (BackgroundArgs)e.Argument;
+			BackgroundArgs arg = (BackgroundArgs)DoWork_e.Argument;
 			if (arg.sender == SliderAxLengthX || arg.sender == SliderAxLengthY)
 			{
-				GetAxis(ImageFilterW);
+				GetAxis();
 			}
 			else if (arg.sender == SliderAxisOffset)
 			{
@@ -442,25 +440,29 @@ namespace DataCapturer
 			else if (arg.sender == RangeSliderRed)
 			{
 				ImageFilterRGB.Pixel = FilterRGB(ImageFilterRGB, "R");
-				UpdateImageErase(ImageFilterRGB, out ImageEraseList);
+				SetImageErase();
 			}
 			else if (arg.sender == RangeSliderGreen)
 			{
 				ImageFilterRGB.Pixel = FilterRGB(ImageFilterRGB, "G");
-				UpdateImageErase(ImageFilterRGB, out ImageEraseList);
+				SetImageErase();
 			}
 			else if (arg.sender == RangeSliderBlue)
 			{
 				ImageFilterRGB.Pixel = FilterRGB(ImageFilterRGB, "B");
-				UpdateImageErase(ImageFilterRGB, out ImageEraseList);
+				SetImageErase();
 			}
-			else if (arg.sender == ImageViewerErase && arg.tag == "MouseMove")
+			else if (arg.sender == ImageViewerErase)
 			{
-				EffectiveMouseLocation = ImageViewerErase.GetEffectiveMouseLocation(arg.e.Location);
-				EffectiveMousePos = new Point(ImageViewerErase.ImageBoxPos.X + EffectiveMouseLocation.X, ImageViewerErase.ImageBoxPos.Y + EffectiveMouseLocation.Y);
-				if (IsErasing)
-					ImageErase = EraseImage(EffectiveMousePos, ImageErase);
-				ImageEraseTmp = new PixelImage(DrawEraser(ImageErase, EffectiveMousePos));
+				MouseEventArgs e = arg.e as MouseEventArgs;
+				if (e.Delta == 0)
+				{
+					EffectiveMouseLocation = ImageViewerErase.GetEffectiveMouseLocation(e.Location);
+					EffectiveMousePos = new Point(ImageViewerErase.ImageBoxPos.X + EffectiveMouseLocation.X, ImageViewerErase.ImageBoxPos.Y + EffectiveMouseLocation.Y);
+					if (e.Button == MouseButtons.Left) //IsErasing
+						ImageErase = EraseImage(EffectiveMousePos, ImageErase);
+					ImageEraseTmp.Bitmap = DrawEraser(ImageErase, EffectiveMousePos);
+				} //Moving
 			}
 		}
 
@@ -471,9 +473,17 @@ namespace DataCapturer
 		#endregion
 
 		#region Step 5: Erase
-		private int EraseIdx = 0;
+		private int _EraseIdx = 0;
+		private int EraseIdx
+		{
+			get => _EraseIdx;
+			set
+			{
+				_EraseIdx = value;
+				ImageEraseTmp.Bitmap = new Bitmap(ImageErase.Bitmap);
+			}
+		}
 		private int EraserL = 20;
-		private bool IsErasing = false;
 		private Point EffectiveMouseLocation;
 		private Point EffectiveMousePos;
 		//entry
@@ -482,7 +492,7 @@ namespace DataCapturer
 			UndoButtonIsPress = false;
 			UpdateUndoButtonColor();
 
-			if (e.X <= UndoButton.Width && e.Y <= UndoButton.Height)
+			if (UndoButton.ClientRectangle.Contains(e.Location))
 				Undo();
 		}
 		private void RedoButton_MouseUp(object sender, MouseEventArgs e)
@@ -490,35 +500,49 @@ namespace DataCapturer
 			RedoButtonIsPress = false;
 			UpdateRedoButtonColor();
 
-			if (e.X <= RedoButton.Width && e.Y <= RedoButton.Height)
+			if (RedoButton.ClientRectangle.Contains(e.Location))
 				Redo();
 		}
-
-		private void ImageViewerErase_MouseDown(object sender, MouseEventArgs e)
+		private void Undo()
 		{
-			if (e.Button == MouseButtons.Left)
-			{
-				IsErasing = true;
-				ImageEraseList.RemoveRange(EraseIdx + 1, ImageEraseList.Count - EraseIdx - 1); //清除所有原先的Redo
-				ImageEraseList.Add(new PixelImage(ImageErase.Bitmap));//或許需要設置ImageEraseList的儲存上限
+			if (EraseIdx > 0)
+				EraseIdx -= 1;
+
+			UpdateAllControls();
+			SetImageOutput();
+		}
+		private void Redo()
+		{
+			if (EraseIdx < ImageEraseList.Count - 1)
 				EraseIdx += 1;
 
-				ImageViewerErase_MouseMove(sender, e);
-			}
+			UpdateAllControls();
+			SetImageOutput();
 		}
+
 		private void ImageViewerErase_MouseMove(object sender, MouseEventArgs e)
 		{
 			if (BackgroundWorker.IsBusy != true)
 			{
-				BackgroundWorker.RunWorkerAsync(new BackgroundArgs(sender, e) { tag = "MouseMove" });
+				BackgroundWorker.RunWorkerAsync(new BackgroundArgs(sender, e));
+			}
+		}
+		private void ImageViewerErase_MouseDown(object sender, MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Left)
+			{
+				ImageEraseList.RemoveRange(EraseIdx + 1, ImageEraseList.Count - EraseIdx - 1); //清除所有原先的Redo
+				ImageEraseList.Add((PixelImage)ImageErase.Clone());//或許需要設置ImageEraseList的儲存上限
+				EraseIdx += 1;
+
+				ImageViewerErase_MouseMove(sender, e);
 			}
 		}
 		private void ImageViewerErase_MouseUp(object sender, MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
 			{
-				IsErasing = false;
-				UpdateUndoRedoButton(out ImageOutput, ImageErase);
+				SetImageOutput();
 			}
 		}
 		private void ImageViewerErase_MouseEnter(object sender, EventArgs e)
@@ -561,24 +585,13 @@ namespace DataCapturer
 			ImageErase.Pixel = pixel;
 			return ImageErase;
 		}
-		private void Undo()
-		{
-			if (EraseIdx > 0)
-				EraseIdx -= 1;
-			UpdateUndoRedoButton(out ImageOutput, ImageErase);
-		}
-		private void Redo()
-		{
-			if (EraseIdx < ImageEraseList.Count - 1)
-				EraseIdx += 1;
-			UpdateUndoRedoButton(out ImageOutput, ImageErase);
-		}
-		private void UpdateUndoRedoButton(out PixelImage ImageOutput, PixelImage ImageErase)
+		
+		private void SetImageOutput()
 		{
 			UpdateUndoButtonColor();
 			UpdateRedoButtonColor();
 
-			ImageOutput = new PixelImage((Bitmap)ImageErase.Bitmap.Clone());
+			ImageOutput = (PixelImage)ImageErase.Clone();
 			//UpdateImageOutput();
 		}
 		#endregion
@@ -640,11 +653,11 @@ namespace DataCapturer
 		}
 		private void ButtonNext_Click(object sender, EventArgs e)
 		{
-			TabControlMain.SelectTab(CustomMethods.Clamp(TabControlMain.SelectedIndex + 1, TabControlMain.TabCount - 1, 0));
+			TabControlMain.SelectTab(MyMethods.Clamp(TabControlMain.SelectedIndex + 1, TabControlMain.TabCount - 1, 0));
 		}
 		private void ButtonBack_Click(object sender, EventArgs e)
 		{
-			TabControlMain.SelectTab(CustomMethods.Clamp(TabControlMain.SelectedIndex - 1, TabControlMain.TabCount - 1, 0));
+			TabControlMain.SelectTab(MyMethods.Clamp(TabControlMain.SelectedIndex - 1, TabControlMain.TabCount - 1, 0));
 		}
 		#endregion
 
