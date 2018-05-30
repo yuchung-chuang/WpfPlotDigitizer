@@ -30,14 +30,9 @@ namespace DataCapturer
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DataCapturer));
 			this.Tooltip = new MetroFramework.Components.MetroToolTip();
 			this.ButtonSave = new MetroFramework.Controls.MetroButton();
-			this.RangeSliderBlue = new MyLibrary.Controls.RangeSlider();
-			this.RangeSliderGreen = new MyLibrary.Controls.RangeSlider();
-			this.RangeSliderRed = new MyLibrary.Controls.RangeSlider();
-			this.SliderAxisOffset = new MyLibrary.Controls.Slider();
-			this.SliderAxLengthY = new MyLibrary.Controls.Slider();
-			this.SliderAxLengthX = new MyLibrary.Controls.Slider();
 			this.ButtonBrowse = new MetroFramework.Controls.MetroButton();
 			this.CheckBoxYLog = new System.Windows.Forms.CheckBox();
 			this.TextBoxYBase = new System.Windows.Forms.TextBox();
@@ -56,15 +51,11 @@ namespace DataCapturer
 			this.PictureBoxGetAxis = new System.Windows.Forms.PictureBox();
 			this.PictureBoxFilter = new System.Windows.Forms.PictureBox();
 			this.PictureBoxOutput = new System.Windows.Forms.PictureBox();
-			this.ImageViewerSetAxLim = new MyLibrary.Controls.ImageViewer();
 			this.ButtonNext = new MetroFramework.Controls.MetroButton();
 			this.ButtonBack = new MetroFramework.Controls.MetroButton();
 			this.TabPage6 = new MetroFramework.Controls.MetroTabPage();
 			this.DataGridView = new System.Windows.Forms.DataGridView();
-			this.XData = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.YData = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.TabPage5 = new MetroFramework.Controls.MetroTabPage();
-			this.ImageViewerErase = new MyLibrary.Controls.ImageViewer();
 			this.RedoButton = new System.Windows.Forms.PictureBox();
 			this.UndoButton = new System.Windows.Forms.PictureBox();
 			this.TabPage4 = new MetroFramework.Controls.MetroTabPage();
@@ -76,6 +67,14 @@ namespace DataCapturer
 			this.TabPage2 = new MetroFramework.Controls.MetroTabPage();
 			this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this.BackgroundWorker = new System.ComponentModel.BackgroundWorker();
+			this.ImageViewerSetAxLim = new MyLibrary.Controls.ImageViewer();
+			this.SliderAxisOffset = new MyLibrary.Controls.Slider();
+			this.SliderAxLengthY = new MyLibrary.Controls.Slider();
+			this.SliderAxLengthX = new MyLibrary.Controls.Slider();
+			this.RangeSliderBlue = new MyLibrary.Controls.RangeSlider();
+			this.RangeSliderGreen = new MyLibrary.Controls.RangeSlider();
+			this.RangeSliderRed = new MyLibrary.Controls.RangeSlider();
+			this.ImageViewerErase = new MyLibrary.Controls.ImageViewer();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxGetAxis)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxFilter)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxOutput)).BeginInit();
@@ -117,147 +116,6 @@ namespace DataCapturer
 			this.ButtonSave.Theme = MetroFramework.MetroThemeStyle.Light;
 			this.Tooltip.SetToolTip(this.ButtonSave, "Save your data.");
 			this.ButtonSave.Click += new System.EventHandler(this.ButtonSave_Click);
-			// 
-			// RangeSliderBlue
-			// 
-			this.RangeSliderBlue.ArrowChange = ((uint)(1u));
-			this.RangeSliderBlue.BackColor = System.Drawing.Color.Transparent;
-			this.RangeSliderBlue.BarMax = 255;
-			this.RangeSliderBlue.BarMin = 0;
-			this.RangeSliderBlue.CustomBackground = false;
-			this.RangeSliderBlue.Location = new System.Drawing.Point(177, 25);
-			this.RangeSliderBlue.Name = "RangeSliderBlue";
-			this.RangeSliderBlue.Orientation = MyLibrary.SliderOrientation.Vertical;
-			this.RangeSliderBlue.PageChange = ((uint)(5u));
-			this.RangeSliderBlue.RangeMax = 255;
-			this.RangeSliderBlue.RangeMin = 0;
-			this.RangeSliderBlue.Reverse = true;
-			this.RangeSliderBlue.ScrollChange = ((uint)(10u));
-			this.RangeSliderBlue.Size = new System.Drawing.Size(69, 500);
-			this.RangeSliderBlue.Style = MetroFramework.MetroColorStyle.Blue;
-			this.RangeSliderBlue.StyleManager = null;
-			this.RangeSliderBlue.TabIndex = 5;
-			this.RangeSliderBlue.Text = "metroRangeSlider3";
-			this.RangeSliderBlue.Theme = MetroFramework.MetroThemeStyle.Light;
-			this.Tooltip.SetToolTip(this.RangeSliderBlue, "Image filter of blue color.");
-			this.RangeSliderBlue.Scroll += new System.EventHandler(this.RangeSliderBlue_Scroll);
-			// 
-			// RangeSliderGreen
-			// 
-			this.RangeSliderGreen.ArrowChange = ((uint)(1u));
-			this.RangeSliderGreen.BackColor = System.Drawing.Color.Transparent;
-			this.RangeSliderGreen.BarMax = 255;
-			this.RangeSliderGreen.BarMin = 0;
-			this.RangeSliderGreen.CustomBackground = false;
-			this.RangeSliderGreen.Location = new System.Drawing.Point(102, 25);
-			this.RangeSliderGreen.Name = "RangeSliderGreen";
-			this.RangeSliderGreen.Orientation = MyLibrary.SliderOrientation.Vertical;
-			this.RangeSliderGreen.PageChange = ((uint)(5u));
-			this.RangeSliderGreen.RangeMax = 255;
-			this.RangeSliderGreen.RangeMin = 0;
-			this.RangeSliderGreen.Reverse = true;
-			this.RangeSliderGreen.ScrollChange = ((uint)(10u));
-			this.RangeSliderGreen.Size = new System.Drawing.Size(69, 500);
-			this.RangeSliderGreen.Style = MetroFramework.MetroColorStyle.Green;
-			this.RangeSliderGreen.StyleManager = null;
-			this.RangeSliderGreen.TabIndex = 4;
-			this.RangeSliderGreen.Text = "metroRangeSlider2";
-			this.RangeSliderGreen.Theme = MetroFramework.MetroThemeStyle.Light;
-			this.Tooltip.SetToolTip(this.RangeSliderGreen, "Image filter of green color.");
-			this.RangeSliderGreen.Scroll += new System.EventHandler(this.RangeSliderGreen_Scroll);
-			// 
-			// RangeSliderRed
-			// 
-			this.RangeSliderRed.ArrowChange = ((uint)(1u));
-			this.RangeSliderRed.BackColor = System.Drawing.Color.Transparent;
-			this.RangeSliderRed.BarMax = 255;
-			this.RangeSliderRed.BarMin = 0;
-			this.RangeSliderRed.CustomBackground = false;
-			this.RangeSliderRed.Location = new System.Drawing.Point(27, 25);
-			this.RangeSliderRed.Name = "RangeSliderRed";
-			this.RangeSliderRed.Orientation = MyLibrary.SliderOrientation.Vertical;
-			this.RangeSliderRed.PageChange = ((uint)(5u));
-			this.RangeSliderRed.RangeMax = 255;
-			this.RangeSliderRed.RangeMin = 0;
-			this.RangeSliderRed.Reverse = true;
-			this.RangeSliderRed.ScrollChange = ((uint)(10u));
-			this.RangeSliderRed.Size = new System.Drawing.Size(69, 500);
-			this.RangeSliderRed.Style = MetroFramework.MetroColorStyle.Red;
-			this.RangeSliderRed.StyleManager = null;
-			this.RangeSliderRed.TabIndex = 3;
-			this.RangeSliderRed.Text = "metroRangeSlider1";
-			this.RangeSliderRed.Theme = MetroFramework.MetroThemeStyle.Light;
-			this.Tooltip.SetToolTip(this.RangeSliderRed, "Image filter of red color.");
-			this.RangeSliderRed.Scroll += new System.EventHandler(this.RangeSliderRed_Scroll);
-			// 
-			// SliderAxisOffset
-			// 
-			this.SliderAxisOffset.ArrowChange = ((uint)(1u));
-			this.SliderAxisOffset.BackColor = System.Drawing.Color.Transparent;
-			this.SliderAxisOffset.BarMax = 100;
-			this.SliderAxisOffset.BarMin = 0;
-			this.SliderAxisOffset.CustomBackground = false;
-			this.SliderAxisOffset.Location = new System.Drawing.Point(785, 510);
-			this.SliderAxisOffset.Name = "SliderAxisOffset";
-			this.SliderAxisOffset.Orientation = MyLibrary.SliderOrientation.Up;
-			this.SliderAxisOffset.PageChange = ((uint)(5u));
-			this.SliderAxisOffset.Reverse = true;
-			this.SliderAxisOffset.ScrollChange = ((uint)(10u));
-			this.SliderAxisOffset.Size = new System.Drawing.Size(152, 58);
-			this.SliderAxisOffset.Style = MetroFramework.MetroColorStyle.Yellow;
-			this.SliderAxisOffset.StyleManager = null;
-			this.SliderAxisOffset.TabIndex = 5;
-			this.SliderAxisOffset.Text = "metroSlider2";
-			this.SliderAxisOffset.Theme = MetroFramework.MetroThemeStyle.Light;
-			this.Tooltip.SetToolTip(this.SliderAxisOffset, "Adjust the offset of the image.");
-			this.SliderAxisOffset.Value = 0;
-			this.SliderAxisOffset.Scroll += new System.Windows.Forms.ScrollEventHandler(this.SliderAxisOffset_Scroll);
-			// 
-			// SliderAxLengthY
-			// 
-			this.SliderAxLengthY.ArrowChange = ((uint)(1u));
-			this.SliderAxLengthY.BackColor = System.Drawing.Color.Transparent;
-			this.SliderAxLengthY.BarMax = 100;
-			this.SliderAxLengthY.BarMin = 0;
-			this.SliderAxLengthY.CustomBackground = false;
-			this.SliderAxLengthY.Location = new System.Drawing.Point(3, 70);
-			this.SliderAxLengthY.Name = "SliderAxLengthY";
-			this.SliderAxLengthY.Orientation = MyLibrary.SliderOrientation.Right;
-			this.SliderAxLengthY.PageChange = ((uint)(5u));
-			this.SliderAxLengthY.Reverse = false;
-			this.SliderAxLengthY.ScrollChange = ((uint)(10u));
-			this.SliderAxLengthY.Size = new System.Drawing.Size(60, 480);
-			this.SliderAxLengthY.Style = MetroFramework.MetroColorStyle.Teal;
-			this.SliderAxLengthY.StyleManager = null;
-			this.SliderAxLengthY.TabIndex = 6;
-			this.SliderAxLengthY.Text = "metroSlider1";
-			this.SliderAxLengthY.Theme = MetroFramework.MetroThemeStyle.Light;
-			this.Tooltip.SetToolTip(this.SliderAxLengthY, "Adjust the length of Y axis.");
-			this.SliderAxLengthY.Value = 25;
-			this.SliderAxLengthY.Scroll += new System.Windows.Forms.ScrollEventHandler(this.SliderAxLengthY_Scroll);
-			// 
-			// SliderAxLengthX
-			// 
-			this.SliderAxLengthX.ArrowChange = ((uint)(1u));
-			this.SliderAxLengthX.BackColor = System.Drawing.Color.Transparent;
-			this.SliderAxLengthX.BarMax = 100;
-			this.SliderAxLengthX.BarMin = 0;
-			this.SliderAxLengthX.CustomBackground = false;
-			this.SliderAxLengthX.Location = new System.Drawing.Point(64, 12);
-			this.SliderAxLengthX.Name = "SliderAxLengthX";
-			this.SliderAxLengthX.Orientation = MyLibrary.SliderOrientation.Down;
-			this.SliderAxLengthX.PageChange = ((uint)(5u));
-			this.SliderAxLengthX.Reverse = false;
-			this.SliderAxLengthX.ScrollChange = ((uint)(10u));
-			this.SliderAxLengthX.Size = new System.Drawing.Size(855, 60);
-			this.SliderAxLengthX.Style = MetroFramework.MetroColorStyle.Teal;
-			this.SliderAxLengthX.StyleManager = null;
-			this.SliderAxLengthX.TabIndex = 4;
-			this.SliderAxLengthX.Text = "metroSlider1";
-			this.SliderAxLengthX.Theme = MetroFramework.MetroThemeStyle.Light;
-			this.Tooltip.SetToolTip(this.SliderAxLengthX, "Adjust the length of X axis.");
-			this.SliderAxLengthX.Value = 25;
-			this.SliderAxLengthX.Scroll += new System.Windows.Forms.ScrollEventHandler(this.SliderAxLengthX_Scroll);
 			// 
 			// ButtonBrowse
 			// 
@@ -523,15 +381,6 @@ namespace DataCapturer
 			this.PictureBoxOutput.TabStop = false;
 			this.Tooltip.SetToolTip(this.PictureBoxOutput, "The captured data.");
 			// 
-			// ImageViewerSetAxLim
-			// 
-			this.ImageViewerSetAxLim.Image = null;
-			this.ImageViewerSetAxLim.Location = new System.Drawing.Point(266, 50);
-			this.ImageViewerSetAxLim.Name = "ImageViewerSetAxLim";
-			this.ImageViewerSetAxLim.Size = new System.Drawing.Size(645, 395);
-			this.ImageViewerSetAxLim.TabIndex = 20;
-			this.Tooltip.SetToolTip(this.ImageViewerSetAxLim, "Input the axis limits into the textboxes.\r\n");
-			// 
 			// ButtonNext
 			// 
 			this.ButtonNext.Highlight = true;
@@ -589,27 +438,12 @@ namespace DataCapturer
 			this.DataGridView.AllowUserToAddRows = false;
 			this.DataGridView.AllowUserToDeleteRows = false;
 			this.DataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.DataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.XData,
-            this.YData});
 			this.DataGridView.Location = new System.Drawing.Point(718, 17);
 			this.DataGridView.Name = "DataGridView";
 			this.DataGridView.ReadOnly = true;
 			this.DataGridView.RowTemplate.Height = 31;
 			this.DataGridView.Size = new System.Drawing.Size(240, 470);
 			this.DataGridView.TabIndex = 13;
-			// 
-			// XData
-			// 
-			this.XData.HeaderText = "X Data";
-			this.XData.Name = "XData";
-			this.XData.ReadOnly = true;
-			// 
-			// YData
-			// 
-			this.YData.HeaderText = "Y Data";
-			this.YData.Name = "YData";
-			this.YData.ReadOnly = true;
 			// 
 			// TabPage5
 			// 
@@ -633,19 +467,6 @@ namespace DataCapturer
 			this.TabPage5.VerticalScrollbarBarColor = true;
 			this.TabPage5.VerticalScrollbarHighlightOnWheel = false;
 			this.TabPage5.VerticalScrollbarSize = 10;
-			// 
-			// ImageViewerErase
-			// 
-			this.ImageViewerErase.Image = null;
-			this.ImageViewerErase.Location = new System.Drawing.Point(121, 52);
-			this.ImageViewerErase.Name = "ImageViewerErase";
-			this.ImageViewerErase.Size = new System.Drawing.Size(757, 475);
-			this.ImageViewerErase.TabIndex = 8;
-			this.ImageViewerErase.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ImageViewerErase_MouseDown);
-			this.ImageViewerErase.MouseEnter += new System.EventHandler(this.ImageViewerErase_MouseEnter);
-			this.ImageViewerErase.MouseLeave += new System.EventHandler(this.ImageViewerErase_MouseLeave);
-			this.ImageViewerErase.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ImageViewerErase_MouseMove);
-			this.ImageViewerErase.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ImageViewerErase_MouseUp);
 			// 
 			// RedoButton
 			// 
@@ -789,7 +610,7 @@ namespace DataCapturer
 			this.TabControlMain.Location = new System.Drawing.Point(23, 83);
 			this.TabControlMain.MetroFont = new System.Drawing.Font("Segoe UI Light", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
 			this.TabControlMain.Name = "TabControlMain";
-			this.TabControlMain.SelectedIndex = 2;
+			this.TabControlMain.SelectedIndex = 1;
 			this.TabControlMain.Size = new System.Drawing.Size(969, 615);
 			this.TabControlMain.Style = MetroFramework.MetroColorStyle.Blue;
 			this.TabControlMain.StyleManager = null;
@@ -844,6 +665,169 @@ namespace DataCapturer
 			this.BackgroundWorker.WorkerSupportsCancellation = true;
 			this.BackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorker_DoWork);
 			this.BackgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorker_RunWorkerCompleted);
+			// 
+			// ImageViewerSetAxLim
+			// 
+			this.ImageViewerSetAxLim.Image = ((System.Drawing.Image)(resources.GetObject("ImageViewerSetAxLim.Image")));
+			this.ImageViewerSetAxLim.Location = new System.Drawing.Point(266, 50);
+			this.ImageViewerSetAxLim.Name = "ImageViewerSetAxLim";
+			this.ImageViewerSetAxLim.Size = new System.Drawing.Size(645, 395);
+			this.ImageViewerSetAxLim.TabIndex = 20;
+			this.Tooltip.SetToolTip(this.ImageViewerSetAxLim, "Input the axis limits into the textboxes.\r\n");
+			// 
+			// SliderAxisOffset
+			// 
+			this.SliderAxisOffset.ArrowChange = ((uint)(1u));
+			this.SliderAxisOffset.BackColor = System.Drawing.Color.Transparent;
+			this.SliderAxisOffset.BarMax = 100;
+			this.SliderAxisOffset.BarMin = 0;
+			this.SliderAxisOffset.CustomBackground = false;
+			this.SliderAxisOffset.Location = new System.Drawing.Point(785, 510);
+			this.SliderAxisOffset.Name = "SliderAxisOffset";
+			this.SliderAxisOffset.Orientation = MyLibrary.SliderOrientation.Up;
+			this.SliderAxisOffset.PageChange = ((uint)(5u));
+			this.SliderAxisOffset.Reverse = true;
+			this.SliderAxisOffset.ScrollChange = ((uint)(10u));
+			this.SliderAxisOffset.Size = new System.Drawing.Size(152, 58);
+			this.SliderAxisOffset.Style = MetroFramework.MetroColorStyle.Yellow;
+			this.SliderAxisOffset.StyleManager = null;
+			this.SliderAxisOffset.TabIndex = 5;
+			this.SliderAxisOffset.Text = "metroSlider2";
+			this.SliderAxisOffset.Theme = MetroFramework.MetroThemeStyle.Light;
+			this.Tooltip.SetToolTip(this.SliderAxisOffset, "Adjust the offset of the image.");
+			this.SliderAxisOffset.Value = 0;
+			this.SliderAxisOffset.Scroll += new System.Windows.Forms.ScrollEventHandler(this.SliderAxisOffset_Scroll);
+			// 
+			// SliderAxLengthY
+			// 
+			this.SliderAxLengthY.ArrowChange = ((uint)(1u));
+			this.SliderAxLengthY.BackColor = System.Drawing.Color.Transparent;
+			this.SliderAxLengthY.BarMax = 100;
+			this.SliderAxLengthY.BarMin = 0;
+			this.SliderAxLengthY.CustomBackground = false;
+			this.SliderAxLengthY.Location = new System.Drawing.Point(3, 70);
+			this.SliderAxLengthY.Name = "SliderAxLengthY";
+			this.SliderAxLengthY.Orientation = MyLibrary.SliderOrientation.Right;
+			this.SliderAxLengthY.PageChange = ((uint)(5u));
+			this.SliderAxLengthY.Reverse = false;
+			this.SliderAxLengthY.ScrollChange = ((uint)(10u));
+			this.SliderAxLengthY.Size = new System.Drawing.Size(60, 480);
+			this.SliderAxLengthY.Style = MetroFramework.MetroColorStyle.Teal;
+			this.SliderAxLengthY.StyleManager = null;
+			this.SliderAxLengthY.TabIndex = 6;
+			this.SliderAxLengthY.Text = "metroSlider1";
+			this.SliderAxLengthY.Theme = MetroFramework.MetroThemeStyle.Light;
+			this.Tooltip.SetToolTip(this.SliderAxLengthY, "Adjust the length of Y axis.");
+			this.SliderAxLengthY.Value = 25;
+			this.SliderAxLengthY.Scroll += new System.Windows.Forms.ScrollEventHandler(this.SliderAxLengthY_Scroll);
+			// 
+			// SliderAxLengthX
+			// 
+			this.SliderAxLengthX.ArrowChange = ((uint)(1u));
+			this.SliderAxLengthX.BackColor = System.Drawing.Color.Transparent;
+			this.SliderAxLengthX.BarMax = 100;
+			this.SliderAxLengthX.BarMin = 0;
+			this.SliderAxLengthX.CustomBackground = false;
+			this.SliderAxLengthX.Location = new System.Drawing.Point(64, 12);
+			this.SliderAxLengthX.Name = "SliderAxLengthX";
+			this.SliderAxLengthX.Orientation = MyLibrary.SliderOrientation.Down;
+			this.SliderAxLengthX.PageChange = ((uint)(5u));
+			this.SliderAxLengthX.Reverse = false;
+			this.SliderAxLengthX.ScrollChange = ((uint)(10u));
+			this.SliderAxLengthX.Size = new System.Drawing.Size(855, 60);
+			this.SliderAxLengthX.Style = MetroFramework.MetroColorStyle.Teal;
+			this.SliderAxLengthX.StyleManager = null;
+			this.SliderAxLengthX.TabIndex = 4;
+			this.SliderAxLengthX.Text = "metroSlider1";
+			this.SliderAxLengthX.Theme = MetroFramework.MetroThemeStyle.Light;
+			this.Tooltip.SetToolTip(this.SliderAxLengthX, "Adjust the length of X axis.");
+			this.SliderAxLengthX.Value = 25;
+			this.SliderAxLengthX.Scroll += new System.Windows.Forms.ScrollEventHandler(this.SliderAxLengthX_Scroll);
+			// 
+			// RangeSliderBlue
+			// 
+			this.RangeSliderBlue.ArrowChange = ((uint)(1u));
+			this.RangeSliderBlue.BackColor = System.Drawing.Color.Transparent;
+			this.RangeSliderBlue.BarMax = 255;
+			this.RangeSliderBlue.BarMin = 0;
+			this.RangeSliderBlue.CustomBackground = false;
+			this.RangeSliderBlue.Location = new System.Drawing.Point(177, 25);
+			this.RangeSliderBlue.Name = "RangeSliderBlue";
+			this.RangeSliderBlue.Orientation = MyLibrary.SliderOrientation.Vertical;
+			this.RangeSliderBlue.PageChange = ((uint)(5u));
+			this.RangeSliderBlue.RangeMax = 255;
+			this.RangeSliderBlue.RangeMin = 0;
+			this.RangeSliderBlue.Reverse = true;
+			this.RangeSliderBlue.ScrollChange = ((uint)(10u));
+			this.RangeSliderBlue.Size = new System.Drawing.Size(69, 500);
+			this.RangeSliderBlue.Style = MetroFramework.MetroColorStyle.Blue;
+			this.RangeSliderBlue.StyleManager = null;
+			this.RangeSliderBlue.TabIndex = 5;
+			this.RangeSliderBlue.Text = "metroRangeSlider3";
+			this.RangeSliderBlue.Theme = MetroFramework.MetroThemeStyle.Light;
+			this.Tooltip.SetToolTip(this.RangeSliderBlue, "Image filter of blue color.");
+			this.RangeSliderBlue.Scroll += new System.EventHandler(this.RangeSliderBlue_Scroll);
+			// 
+			// RangeSliderGreen
+			// 
+			this.RangeSliderGreen.ArrowChange = ((uint)(1u));
+			this.RangeSliderGreen.BackColor = System.Drawing.Color.Transparent;
+			this.RangeSliderGreen.BarMax = 255;
+			this.RangeSliderGreen.BarMin = 0;
+			this.RangeSliderGreen.CustomBackground = false;
+			this.RangeSliderGreen.Location = new System.Drawing.Point(102, 25);
+			this.RangeSliderGreen.Name = "RangeSliderGreen";
+			this.RangeSliderGreen.Orientation = MyLibrary.SliderOrientation.Vertical;
+			this.RangeSliderGreen.PageChange = ((uint)(5u));
+			this.RangeSliderGreen.RangeMax = 255;
+			this.RangeSliderGreen.RangeMin = 0;
+			this.RangeSliderGreen.Reverse = true;
+			this.RangeSliderGreen.ScrollChange = ((uint)(10u));
+			this.RangeSliderGreen.Size = new System.Drawing.Size(69, 500);
+			this.RangeSliderGreen.Style = MetroFramework.MetroColorStyle.Green;
+			this.RangeSliderGreen.StyleManager = null;
+			this.RangeSliderGreen.TabIndex = 4;
+			this.RangeSliderGreen.Text = "metroRangeSlider2";
+			this.RangeSliderGreen.Theme = MetroFramework.MetroThemeStyle.Light;
+			this.Tooltip.SetToolTip(this.RangeSliderGreen, "Image filter of green color.");
+			this.RangeSliderGreen.Scroll += new System.EventHandler(this.RangeSliderGreen_Scroll);
+			// 
+			// RangeSliderRed
+			// 
+			this.RangeSliderRed.ArrowChange = ((uint)(1u));
+			this.RangeSliderRed.BackColor = System.Drawing.Color.Transparent;
+			this.RangeSliderRed.BarMax = 255;
+			this.RangeSliderRed.BarMin = 0;
+			this.RangeSliderRed.CustomBackground = false;
+			this.RangeSliderRed.Location = new System.Drawing.Point(27, 25);
+			this.RangeSliderRed.Name = "RangeSliderRed";
+			this.RangeSliderRed.Orientation = MyLibrary.SliderOrientation.Vertical;
+			this.RangeSliderRed.PageChange = ((uint)(5u));
+			this.RangeSliderRed.RangeMax = 255;
+			this.RangeSliderRed.RangeMin = 0;
+			this.RangeSliderRed.Reverse = true;
+			this.RangeSliderRed.ScrollChange = ((uint)(10u));
+			this.RangeSliderRed.Size = new System.Drawing.Size(69, 500);
+			this.RangeSliderRed.Style = MetroFramework.MetroColorStyle.Red;
+			this.RangeSliderRed.StyleManager = null;
+			this.RangeSliderRed.TabIndex = 3;
+			this.RangeSliderRed.Text = "metroRangeSlider1";
+			this.RangeSliderRed.Theme = MetroFramework.MetroThemeStyle.Light;
+			this.Tooltip.SetToolTip(this.RangeSliderRed, "Image filter of red color.");
+			this.RangeSliderRed.Scroll += new System.EventHandler(this.RangeSliderRed_Scroll);
+			// 
+			// ImageViewerErase
+			// 
+			this.ImageViewerErase.Image = ((System.Drawing.Image)(resources.GetObject("ImageViewerErase.Image")));
+			this.ImageViewerErase.Location = new System.Drawing.Point(121, 52);
+			this.ImageViewerErase.Name = "ImageViewerErase";
+			this.ImageViewerErase.Size = new System.Drawing.Size(757, 475);
+			this.ImageViewerErase.TabIndex = 8;
+			this.ImageViewerErase.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ImageViewerErase_MouseDown);
+			this.ImageViewerErase.MouseEnter += new System.EventHandler(this.ImageViewerErase_MouseEnter);
+			this.ImageViewerErase.MouseLeave += new System.EventHandler(this.ImageViewerErase_MouseLeave);
+			this.ImageViewerErase.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ImageViewerErase_MouseMove);
+			this.ImageViewerErase.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ImageViewerErase_MouseUp);
 			// 
 			// DataCapturer
 			// 
@@ -914,8 +898,6 @@ namespace DataCapturer
 		private System.Windows.Forms.PictureBox PictureBoxInput;
 		private System.Windows.Forms.PictureBox PictureBoxFilter;
 		private System.Windows.Forms.OpenFileDialog openFileDialog;
-		private System.Windows.Forms.DataGridViewTextBoxColumn XData;
-		private System.Windows.Forms.DataGridViewTextBoxColumn YData;
 		private System.Windows.Forms.TextBox  TextBoxYlo;
 		private System.Windows.Forms.TextBox  TextBoxYhi;
 		private System.Windows.Forms.TextBox  TextBoxXhi;

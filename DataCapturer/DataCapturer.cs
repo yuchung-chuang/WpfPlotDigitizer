@@ -2,21 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using MetroFramework;
-using MetroFramework.Controls;
-using MetroFramework.Drawing;
 using MetroFramework.Forms;
 using MyLibrary;
 using static MyLibrary.MyMethods;
+using static System.Math;
 
 namespace DataCapturer
 {
@@ -76,7 +69,7 @@ namespace DataCapturer
 					return null;
 			}
 		}
-		private void UnableControl()
+		private void UnableControls()
 		{
 			AllControls = RecursiveGetControls(this);
 			foreach (Control control in AllControls)
@@ -98,9 +91,10 @@ namespace DataCapturer
 			ButtonNext.Text = "Next" + " " + StringArrow("right");
 			ButtonBack.Text = StringArrow("left") + " " + "Back";
 
-			UnableControl();
+			UnableControls();
+			EnableControls();
 
-			UpdateImageInput();
+			UpdateImageInput(); // 測試用
 		}
 		#endregion
 
@@ -109,7 +103,7 @@ namespace DataCapturer
 		private void ButtonBrowse_Click(object sender, EventArgs e)
 		{
 			if (openFileDialog.ShowDialog() != DialogResult.OK)
-				return; 
+				return;
 			UpdateImageInput();
 		}
 		//Works
@@ -228,7 +222,7 @@ namespace DataCapturer
 		private bool IsGetAxis => (AxSize.Width > 0 && AxSize.Height > 0) ? true : false;
 		private bool IsOffset => (OffsetSize.Width > 0 && OffsetSize.Height > 0) ? true : false;
 		private bool IsColor(byte[] pixel, int i) => pixel[i + 3] != 0;
-		
+
 		//Entry Point
 		private void SliderAxLengthY_Scroll(object sender, ScrollEventArgs e)
 		{
@@ -256,10 +250,10 @@ namespace DataCapturer
 		{
 			int L = 0, xTmp = 0, yTmp = 0, idx;
 			AxSize = new Size(0, 0);
-			for (int x = 0; x < ImageFilterW.Bitmap.Width; x++)
+			for (int x = 0; x < ImageFilterW.Width; x++)
 			{
 				L = 0; yTmp = 0;
-				for (int y = 0; y < ImageFilterW.Bitmap.Height; y++)
+				for (int y = 0; y < ImageFilterW.Height; y++)
 				{
 					//右移x個像素(*一個字節的長度)下移y個像素(*一整行字節的長度)
 					idx = x * ImageFilterW.Byte + y * ImageFilterW.Stride;
@@ -282,12 +276,12 @@ namespace DataCapturer
 				if (AxSize.Height > AxisLengthY)
 				{
 					break;
-				}	
+				}
 			}
-			for (int y = 0; y < ImageFilterW.Bitmap.Height; y++)
+			for (int y = 0; y < ImageFilterW.Height; y++)
 			{
 				L = 0; xTmp = 0;
-				for (int x = 0; x < ImageFilterW.Bitmap.Width; x++)
+				for (int x = 0; x < ImageFilterW.Width; x++)
 				{
 					// 右移x個像素(*一個字節的長度)下移y個像素(*一整行字節的長度)
 					idx = x * ImageFilterW.Byte + y * ImageFilterW.Stride;
@@ -409,7 +403,7 @@ namespace DataCapturer
 				G = optPixel[i + 1];
 				R = optPixel[i + 2];
 				color = optPixel[i + typeN];
-				if (IsColor(optPixel, i) && (!IsIn<int>(color, FilterMax ,FilterMin)))
+				if (IsColor(optPixel, i) && (!IsIn<int>(color, FilterMax, FilterMin)))
 					optPixel[i + 3] = 0; //A
 				else if (IsRGBFilted(R, G, B))
 					optPixel[i + 3] = 255; //A
@@ -585,23 +579,21 @@ namespace DataCapturer
 			ImageErase.Pixel = pixel;
 			return ImageErase;
 		}
-		
+
 		private void SetImageOutput()
 		{
 			UpdateUndoButtonColor();
 			UpdateRedoButtonColor();
 
 			ImageOutput = (PixelImage)ImageErase.Clone();
-			//UpdateImageOutput();
+			UpdateImageOutput();
 		}
 		#endregion
 
-		#region 
+		#region Step 6: Output Check
 		private void UpdateImageOutput()
 		{
 			PictureBoxOutput.Image = ImageOutput.Bitmap;
-
-			UpdateData();
 		}
 
 		private bool IsDataOK()
@@ -620,11 +612,49 @@ namespace DataCapturer
 			}
 			return true;
 		}
+		private List<PointF> GetData()
+		{
+			int idx, ImageAxis_x, ImageAxis_y;
+			float DataAxis_x, DataAxis_y;
+			float xlo = float.Parse(TextBoxXlo.Text);
+			float xhi = float.Parse(TextBoxXhi.Text);
+			float ylo = float.Parse(TextBoxYlo.Text);
+			float yhi = float.Parse(TextBoxYhi.Text);
+			float xbase = float.Parse(TextBoxXBase.Text);
+			float ybase = float.Parse(TextBoxYBase.Text);
+			List<PointF> optPoints = new List<PointF>();
+
+			for (int x = 0; x < ImageOutput.Width; x++)
+			{
+				for (int y = 0; y < ImageOutput.Height; y++)
+				{
+					//右移x個像素(*一個字節的長度)下移y個像素(*一整行字節的長度)
+					idx = x * ImageOutput.Byte + y * ImageOutput.Stride;
+					if (!IsColor(ImageOutput.Pixel, idx))
+						continue;
+
+					ImageAxis_x = x;
+					ImageAxis_y = ImageOutput.Height - y;
+
+					DataAxis_x = LinConvert(ImageAxis_x, ImageOutput.Width, 0, xhi, xlo);
+					DataAxis_y = LinConvert(ImageAxis_y, ImageOutput.Height, 0, yhi, ylo);
+
+					if (CheckBoxXLog.Checked)
+						DataAxis_x = (float)Pow(xbase, LinConvert(DataAxis_x, xlo, xhi, LogBase(xbase, xlo), LogBase(xbase, xhi))); /////???????
+					if (CheckBoxYLog.Checked)
+						DataAxis_y = (float)Pow(ybase, LinConvert(DataAxis_y, ylo, yhi, LogBase(ybase, ylo), LogBase(ybase, yhi)));
+					
+					optPoints.Add(new PointF(DataAxis_x, DataAxis_y));
+				}
+			}
+			return optPoints;
+		}
 		private void UpdateData()
 		{
 			if (!IsDataOK())
 				return;
-
+			List<PointF> Data = GetData();
+			DataGridView.DataSource = Data;
 		}
 
 		private void Warning()
@@ -642,6 +672,11 @@ namespace DataCapturer
 		#region Other User Activities
 		private void TabControl_SelectedIndexChanged(object sender, EventArgs e)
 		{
+			if (TabControlMain.SelectedIndex == TabControlMain.TabCount - 1)
+			{
+				UpdateData();
+			}
+
 			if (TabControlMain.SelectedIndex == 0)
 				ButtonBack.Hide();
 			else
@@ -653,11 +688,11 @@ namespace DataCapturer
 		}
 		private void ButtonNext_Click(object sender, EventArgs e)
 		{
-			TabControlMain.SelectTab(MyMethods.Clamp(TabControlMain.SelectedIndex + 1, TabControlMain.TabCount - 1, 0));
+			TabControlMain.SelectTab(Clamp(TabControlMain.SelectedIndex + 1, TabControlMain.TabCount - 1, 0));
 		}
 		private void ButtonBack_Click(object sender, EventArgs e)
 		{
-			TabControlMain.SelectTab(MyMethods.Clamp(TabControlMain.SelectedIndex - 1, TabControlMain.TabCount - 1, 0));
+			TabControlMain.SelectTab(Clamp(TabControlMain.SelectedIndex - 1, TabControlMain.TabCount - 1, 0));
 		}
 		#endregion
 
@@ -770,10 +805,6 @@ namespace DataCapturer
 				control.Top = (int)(controlAnchor.Top * HeightRatio);
 			}
 		}
-
-
 		#endregion
-
-		
 	}
 }
