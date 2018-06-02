@@ -449,11 +449,14 @@ namespace DataCapturer
 				MouseEventArgs e = arg.e as MouseEventArgs;
 				if (e.Delta == 0)
 				{
+					PixelImage ImageErase = (PixelImage)arg.parameters[0];
+					PixelImage ImageEraseDisplay = (PixelImage)arg.parameters[1];
+
 					EffectiveMouseLocation = ImageViewerErase.GetEffectiveMouseLocation(e.Location);
 					EffectiveMousePos = new Point(ImageViewerErase.ImageBoxPos.X + EffectiveMouseLocation.X, ImageViewerErase.ImageBoxPos.Y + EffectiveMouseLocation.Y);
 					if (e.Button == MouseButtons.Left) //IsErasing
 						ImageErase = EraseImage(EffectiveMousePos, ImageErase);
-					ImageEraseTmp.Bitmap = DrawEraser(ImageErase, EffectiveMousePos);
+					ImageEraseDisplay.Bitmap = DrawEraser(ImageErase, EffectiveMousePos);
 				} //Moving
 			}
 		}
@@ -464,9 +467,9 @@ namespace DataCapturer
 			{
 				return;
 			}
-			PictureBoxGetAxis.Image = (Bitmap)ImageAxis.Bitmap.Clone();
-			PictureBoxFilter.Image = (Bitmap)ImageFilterRGB.Bitmap.Clone();
-			ImageViewerErase.Image = (Bitmap)ImageEraseTmp.Bitmap.Clone(); //使用背景工作時，顯示Bitmap時一定要Clone!!!!
+			PictureBoxGetAxis.Image = ImageAxis.Bitmap;
+			PictureBoxFilter.Image = ImageFilterRGB.Bitmap;
+			ImageViewerErase.Image = ImageEraseTmp.Bitmap; //使用背景工作時，顯示Bitmap時一定要Clone!!!!
 		}
 		private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
@@ -526,7 +529,8 @@ namespace DataCapturer
 		{
 			if (BackgroundWorker.IsBusy != true && e.Button != MouseButtons.Right) //右鍵留給drag，就不會有兩個backgroundWorker同時並行
 			{
-				BackgroundWorker.RunWorkerAsync(new BackgroundArgs(sender, e));
+				object[] parameters = { ImageErase, ImageEraseTmp };
+				BackgroundWorker.RunWorkerAsync(new BackgroundArgs(sender, e, parameters));
 			}
 		}
 		private void ImageViewerErase_MouseDown(object sender, MouseEventArgs e)
@@ -561,8 +565,14 @@ namespace DataCapturer
 			Bitmap imageTmp = (Bitmap)ImageErase.Bitmap.Clone();
 			using (Graphics graphics = Graphics.FromImage(imageTmp))//DrawImage會導致畫面閃爍
 			{
-				graphics.DrawRectangle(new Pen(MetroColors.Black, 5), pos.X - EraserL / 2, pos.Y - EraserL / 2, EraserL, EraserL);
-				graphics.DrawRectangle(new Pen(MetroColors.Blue, 3), pos.X - EraserL / 2, pos.Y - EraserL / 2, EraserL, EraserL);
+				using (Pen pen = new Pen(MetroColors.Black, 5))
+				{
+					graphics.DrawRectangle(pen, pos.X - EraserL / 2, pos.Y - EraserL / 2, EraserL, EraserL);
+				}
+				using (Pen pen = new Pen(MetroColors.Blue, 3))
+				{
+					graphics.DrawRectangle(pen , pos.X - EraserL / 2, pos.Y - EraserL / 2, EraserL, EraserL);
+				}
 			};
 			return imageTmp;
 		}
