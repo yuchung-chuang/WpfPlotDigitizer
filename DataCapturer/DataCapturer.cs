@@ -151,12 +151,6 @@ namespace DataCapturer
 
 			UpdateAllControls(); //Initialize
 		}
-		private void UpdateAllControls()
-		{
-			PictureBoxGetAxis.Image = (Bitmap)ImageAxis.Bitmap.Clone();
-			PictureBoxFilter.Image = (Bitmap)ImageFilterRGB.Bitmap.Clone();
-			ImageViewerErase.Image = (Bitmap)ImageEraseTmp.Bitmap.Clone(); //使用背景工作時，顯示Bitmap時一定要Clone!!!!
-		}
 		#endregion
 
 		#region Step 2: Set Axis Limits
@@ -403,7 +397,7 @@ namespace DataCapturer
 				G = optPixel[i + 1];
 				R = optPixel[i + 2];
 				color = optPixel[i + typeN];
-				if (IsColor(optPixel, i) && (!IsIn<int>(color, FilterMax, FilterMin)))
+				if (IsColor(optPixel, i) && (!IsIn(color, FilterMax, FilterMin)))
 					optPixel[i + 3] = 0; //A
 				else if (IsRGBFilted(R, G, B))
 					optPixel[i + 3] = 255; //A
@@ -422,6 +416,10 @@ namespace DataCapturer
 		#region Background Work
 		private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs DoWork_e)
 		{
+			if (ImageInput == null)
+			{
+				return;
+			}
 			BackgroundArgs arg = (BackgroundArgs)DoWork_e.Argument;
 			if (arg.sender == SliderAxLengthX || arg.sender == SliderAxLengthY)
 			{
@@ -460,6 +458,16 @@ namespace DataCapturer
 			}
 		}
 
+		private void UpdateAllControls()
+		{
+			if (ImageInput == null)
+			{
+				return;
+			}
+			PictureBoxGetAxis.Image = (Bitmap)ImageAxis.Bitmap.Clone();
+			PictureBoxFilter.Image = (Bitmap)ImageFilterRGB.Bitmap.Clone();
+			ImageViewerErase.Image = (Bitmap)ImageEraseTmp.Bitmap.Clone(); //使用背景工作時，顯示Bitmap時一定要Clone!!!!
+		}
 		private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
 			UpdateAllControls();
@@ -516,7 +524,7 @@ namespace DataCapturer
 
 		private void ImageViewerErase_MouseMove(object sender, MouseEventArgs e)
 		{
-			if (BackgroundWorker.IsBusy != true)
+			if (BackgroundWorker.IsBusy != true && e.Button != MouseButtons.Right) //右鍵留給drag，就不會有兩個backgroundWorker同時並行
 			{
 				BackgroundWorker.RunWorkerAsync(new BackgroundArgs(sender, e));
 			}
@@ -640,7 +648,7 @@ namespace DataCapturer
 					DataAxis_y = LinConvert(ImageAxis_y, ImageOutput.Height, 0, yhi, ylo);
 
 					if (CheckBoxXLog.Checked)
-						DataAxis_x = (float)Pow(xbase, LinConvert(DataAxis_x, xlo, xhi, LogBase(xbase, xlo), LogBase(xbase, xhi))); /////???????
+						DataAxis_x = (float)Pow(xbase, LinConvert(DataAxis_x, xlo, xhi, LogBase(xbase, xlo), LogBase(xbase, xhi))); 
 					if (CheckBoxYLog.Checked)
 						DataAxis_y = (float)Pow(ybase, LinConvert(DataAxis_y, ylo, yhi, LogBase(ybase, ylo), LogBase(ybase, yhi)));
 					
