@@ -8,7 +8,10 @@ using System.Windows.Forms;
 using MetroFramework;
 using MetroFramework.Forms;
 using MyLibrary;
-using static MyLibrary.MyMethods;
+using static MyLibrary.Methods.Math;
+using static MyLibrary.Methods.Drawing;
+using static MyLibrary.Methods.System;
+using MyLibrary.Classes;
 using static System.Math;
 
 namespace DataCapturer
@@ -71,7 +74,7 @@ namespace DataCapturer
 		}
 		private void UnableControls()
 		{
-			AllControls = RecursiveGetControls(this);
+			AllControls = GetAllControls(this);
 			foreach (Control control in AllControls)
 				control.Enabled = false;
 
@@ -140,10 +143,10 @@ namespace DataCapturer
 		{
 			ImageViewerSetAxLim.Image = ImageInput.Bitmap;
 
-			SliderAxLengthX.BarMax = ImageInput.Bitmap.Width;
-			SliderAxLengthX.Value = SliderAxLengthX.BarMax / 2;
-			SliderAxLengthY.BarMax = ImageInput.Bitmap.Height;
-			SliderAxLengthY.Value = SliderAxLengthY.BarMax / 2;
+			SliderAxLengthX.Maximum = ImageInput.Bitmap.Width;
+			SliderAxLengthX.Value = SliderAxLengthX.Maximum / 2;
+			SliderAxLengthY.Maximum = ImageInput.Bitmap.Height;
+			SliderAxLengthY.Value = SliderAxLengthY.Maximum / 2;
 
 			byte[] Pixel = FilterW(ImageInput, FilterWMax);
 			ImageFilterW = new PixelImage(Pixel, ImageInput.Size);
@@ -469,7 +472,7 @@ namespace DataCapturer
 			}
 			PictureBoxGetAxis.Image = ImageAxis.Bitmap;
 			PictureBoxFilter.Image = ImageFilterRGB.Bitmap;
-			ImageViewerErase.Image = ImageEraseTmp.Bitmap; //使用背景工作時，顯示Bitmap時一定要Clone!!!!
+			ImageViewerErase.Image = ImageEraseTmp.Bitmap; 
 		}
 		private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
@@ -823,6 +826,6 @@ namespace DataCapturer
 				control.Top = (int)(controlAnchor.Top * HeightRatio);
 			}
 		}
-		#endregion
-	}
+    #endregion
+  }
 }
