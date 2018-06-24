@@ -31,5 +31,19 @@ namespace example
       }
       image.Pixel = pixel;
     }
+
+    private void button1_Click(object sender, System.EventArgs e)
+    {
+      Form2 form2 = new Form2();
+      this.Hide();
+      if (form2.ShowDialog() == DialogResult.Yes)
+      {
+        this.Show();
+      }
+      else
+      {
+        this.Close();
+      }
+    }
   }
 }

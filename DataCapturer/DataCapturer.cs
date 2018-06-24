@@ -74,7 +74,7 @@ namespace DataCapturer
 		}
 		private void UnableControls()
 		{
-			AllControls = GetAllControls(this);
+      AllControls = GetAllControls(this);
 			foreach (Control control in AllControls)
 				control.Enabled = false;
 
@@ -96,12 +96,13 @@ namespace DataCapturer
 
 			UnableControls();
 			EnableControls();
-
-			UpdateImageInput(); // 測試用
+#if DEBUG
+      UpdateImageInput(); // 測試用
+#endif
 		}
-		#endregion
+#endregion
 
-		#region Step 1: Browse
+#region Step 1: Browse
 		//Entry
 		private void ButtonBrowse_Click(object sender, EventArgs e)
 		{
@@ -132,9 +133,12 @@ namespace DataCapturer
 		}
 		private void UpdateImageInput()
 		{
-			//ImageInput = new PixelImage(new Bitmap(openFileDialog.FileName));
-			ImageInput = new PixelImage(new Bitmap("C:\\Users\\alex\\Dropbox (Alex)\\SMCMLAB\\matlab\\DataCapturer\\images\\19451854599_fdc0d1a8d7_c.jpg"));
-			PictureBoxInput.Image = ImageInput.Bitmap;
+#if DEBUG
+      ImageInput = new PixelImage(new Bitmap("C:\\Users\\alex\\Dropbox (Alex)\\SMCMLAB\\matlab\\DataCapturer\\images\\19451854599_fdc0d1a8d7_c.jpg"));
+#else      
+      ImageInput = new PixelImage(new Bitmap(openFileDialog.FileName));
+#endif
+      PictureBoxInput.Image = ImageInput.Bitmap;
 
 			EnableControls();
 			UpdateImageSetAxLim();
@@ -154,9 +158,9 @@ namespace DataCapturer
 
 			UpdateAllControls(); //Initialize
 		}
-		#endregion
+#endregion
 
-		#region Step 2: Set Axis Limits
+#region Step 2: Set Axis Limits
 		//Entry Point
 		private void CheckBoxXLog_CheckedChanged(object sender, EventArgs e)
 		{
@@ -208,9 +212,9 @@ namespace DataCapturer
 			else
 				this.BackColor = Color.LightPink;
 		}
-		#endregion
+#endregion
 
-		#region Step 3: Get Frame
+#region Step 3: Get Frame
 		private int FilterWMax = 200;
 		private Point AxPos = new Point();
 		private Size AxSize = new Size();
@@ -341,9 +345,9 @@ namespace DataCapturer
 
 			SetImageErase();
 		}
-		#endregion
+#endregion
 
-		#region Step 4: Filter
+#region Step 4: Filter
 		private void RangeSliderRed_Scroll(object sender, EventArgs e)
 		{
 			if (BackgroundWorker.IsBusy != true)
@@ -414,9 +418,9 @@ namespace DataCapturer
 			EraseIdx = 0;
 			SetImageOutput();
 		}
-		#endregion
+#endregion
 
-		#region Background Work
+#region Background Work
 		private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs DoWork_e)
 		{
 			if (ImageInput == null)
@@ -478,9 +482,9 @@ namespace DataCapturer
 		{
 			UpdateAllControls();
 		}
-		#endregion
+#endregion
 
-		#region Step 5: Erase
+#region Step 5: Erase
 		private int _EraseIdx = 0;
 		private int EraseIdx
 		{
@@ -609,9 +613,9 @@ namespace DataCapturer
 			ImageOutput = (PixelImage)ImageErase.Clone();
 			UpdateImageOutput();
 		}
-		#endregion
+#endregion
 
-		#region Step 6: Output Check
+#region Step 6: Output Check
 		private void UpdateImageOutput()
 		{
 			PictureBoxOutput.Image = ImageOutput.Bitmap;
@@ -688,9 +692,9 @@ namespace DataCapturer
 		{
 
 		}
-		#endregion
+#endregion
 
-		#region Other User Activities
+#region Other User Activities
 		private void TabControl_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (TabControlMain.SelectedIndex == TabControlMain.TabCount - 1)
@@ -715,9 +719,9 @@ namespace DataCapturer
 		{
 			TabControlMain.SelectTab(Clamp(TabControlMain.SelectedIndex - 1, TabControlMain.TabCount - 1, 0));
 		}
-		#endregion
+#endregion
 
-		#region Undo/Redo Buttons
+#region Undo/Redo Buttons
 		private bool UndoButtonIsEnter = false;
 		private bool UndoButtonIsPress = false;
 		private void UndoButton_MouseEnter(object sender, EventArgs e)
@@ -791,9 +795,9 @@ namespace DataCapturer
 			}
 
 		}
-		#endregion
+#endregion
 
-		#region AutoResizeControls
+#region AutoResizeControls
 		private void DataCapturer_Load(object sender, EventArgs e)
 		{
 			this.Tag = new ControlAnchor()
@@ -826,6 +830,6 @@ namespace DataCapturer
 				control.Top = (int)(controlAnchor.Top * HeightRatio);
 			}
 		}
-    #endregion
+#endregion
   }
 }
