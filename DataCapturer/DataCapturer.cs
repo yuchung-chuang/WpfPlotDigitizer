@@ -474,9 +474,9 @@ namespace DataCapturer
 			{
 				return;
 			}
-			PictureBoxGetAxis.Image = ImageAxis.Bitmap;
-			PictureBoxFilter.Image = ImageFilterRGB.Bitmap;
-			ImageViewerErase.Image = ImageEraseTmp.Bitmap; 
+			PictureBoxGetAxis.Image = (Bitmap)ImageAxis.Bitmap.Clone();
+			PictureBoxFilter.Image = (Bitmap)ImageFilterRGB.Bitmap.Clone();
+			ImageViewerErase.Image = (Bitmap)ImageEraseTmp.Bitmap.Clone(); 
 		}
 		private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
