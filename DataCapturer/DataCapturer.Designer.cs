@@ -76,6 +76,8 @@ namespace DataCapturer
       this.TabPage2 = new MetroFramework.Controls.MetroTabPage();
       this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
       this.BackgroundWorker = new System.ComponentModel.BackgroundWorker();
+      this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+      this.pictureBox1 = new System.Windows.Forms.PictureBox();
       ((System.ComponentModel.ISupportInitialize)(this.PictureBoxGetAxis)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.PictureBoxFilter)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.PictureBoxOutput)).BeginInit();
@@ -91,6 +93,7 @@ namespace DataCapturer
       ((System.ComponentModel.ISupportInitialize)(this.PictureBoxInput)).BeginInit();
       this.TabControlMain.SuspendLayout();
       this.TabPage2.SuspendLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
       this.SuspendLayout();
       // 
       // Tooltip
@@ -112,7 +115,7 @@ namespace DataCapturer
       this.ButtonSave.Size = new System.Drawing.Size(129, 46);
       this.ButtonSave.Style = MetroFramework.MetroColorStyle.Blue;
       this.ButtonSave.StyleManager = null;
-      this.ButtonSave.TabIndex = 5;
+      this.ButtonSave.TabIndex = 1;
       this.ButtonSave.Text = "Save";
       this.ButtonSave.Theme = MetroFramework.MetroThemeStyle.Light;
       this.Tooltip.SetToolTip(this.ButtonSave, "Save your data.");
@@ -127,7 +130,7 @@ namespace DataCapturer
       this.ButtonBrowse.Size = new System.Drawing.Size(129, 46);
       this.ButtonBrowse.Style = MetroFramework.MetroColorStyle.Blue;
       this.ButtonBrowse.StyleManager = null;
-      this.ButtonBrowse.TabIndex = 5;
+      this.ButtonBrowse.TabIndex = 0;
       this.ButtonBrowse.Text = "Browse";
       this.ButtonBrowse.Theme = MetroFramework.MetroThemeStyle.Light;
       this.Tooltip.SetToolTip(this.ButtonBrowse, "Browse the image to capture its data.\r\n");
@@ -141,7 +144,7 @@ namespace DataCapturer
       this.CheckBoxYLog.Location = new System.Drawing.Point(49, 278);
       this.CheckBoxYLog.Name = "CheckBoxYLog";
       this.CheckBoxYLog.Size = new System.Drawing.Size(190, 36);
-      this.CheckBoxYLog.TabIndex = 19;
+      this.CheckBoxYLog.TabIndex = 3;
       this.CheckBoxYLog.Text = "    Y Log Scale";
       this.Tooltip.SetToolTip(this.CheckBoxYLog, "Check if the Y axis is in logarithmic scale.");
       this.CheckBoxYLog.UseVisualStyleBackColor = false;
@@ -155,7 +158,7 @@ namespace DataCapturer
       this.TextBoxYBase.Location = new System.Drawing.Point(112, 223);
       this.TextBoxYBase.Name = "TextBoxYBase";
       this.TextBoxYBase.Size = new System.Drawing.Size(127, 39);
-      this.TextBoxYBase.TabIndex = 18;
+      this.TextBoxYBase.TabIndex = 4;
       this.TextBoxYBase.Text = "10";
       this.TextBoxYBase.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
       this.Tooltip.SetToolTip(this.TextBoxYBase, "Set the base number of Y axis.");
@@ -169,7 +172,7 @@ namespace DataCapturer
       this.CheckBoxXLog.Location = new System.Drawing.Point(481, 532);
       this.CheckBoxXLog.Name = "CheckBoxXLog";
       this.CheckBoxXLog.Size = new System.Drawing.Size(191, 36);
-      this.CheckBoxXLog.TabIndex = 16;
+      this.CheckBoxXLog.TabIndex = 7;
       this.CheckBoxXLog.Text = "    X Log Scale";
       this.Tooltip.SetToolTip(this.CheckBoxXLog, "Check if the X axis is in logarithmic scale.");
       this.CheckBoxXLog.UseVisualStyleBackColor = false;
@@ -183,7 +186,7 @@ namespace DataCapturer
       this.TextBoxXBase.Location = new System.Drawing.Point(545, 474);
       this.TextBoxXBase.Name = "TextBoxXBase";
       this.TextBoxXBase.Size = new System.Drawing.Size(127, 39);
-      this.TextBoxXBase.TabIndex = 15;
+      this.TextBoxXBase.TabIndex = 8;
       this.TextBoxXBase.Text = "10";
       this.TextBoxXBase.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
       this.Tooltip.SetToolTip(this.TextBoxXBase, "Set the base number of X axis.");
@@ -196,7 +199,7 @@ namespace DataCapturer
       this.TextBoxYlo.Location = new System.Drawing.Point(112, 402);
       this.TextBoxYlo.Name = "TextBoxYlo";
       this.TextBoxYlo.Size = new System.Drawing.Size(127, 39);
-      this.TextBoxYlo.TabIndex = 11;
+      this.TextBoxYlo.TabIndex = 2;
       this.TextBoxYlo.Text = "0";
       this.TextBoxYlo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
       this.Tooltip.SetToolTip(this.TextBoxYlo, "Set the minimum value of the Y axis.");
@@ -209,7 +212,7 @@ namespace DataCapturer
       this.TextBoxYhi.Location = new System.Drawing.Point(112, 50);
       this.TextBoxYhi.Name = "TextBoxYhi";
       this.TextBoxYhi.Size = new System.Drawing.Size(127, 39);
-      this.TextBoxYhi.TabIndex = 9;
+      this.TextBoxYhi.TabIndex = 1;
       this.TextBoxYhi.Text = "1";
       this.TextBoxYhi.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
       this.Tooltip.SetToolTip(this.TextBoxYhi, "Set the maximum value of the Y axis.");
@@ -222,7 +225,7 @@ namespace DataCapturer
       this.TextBoxXhi.Location = new System.Drawing.Point(784, 472);
       this.TextBoxXhi.Name = "TextBoxXhi";
       this.TextBoxXhi.Size = new System.Drawing.Size(127, 39);
-      this.TextBoxXhi.TabIndex = 7;
+      this.TextBoxXhi.TabIndex = 6;
       this.TextBoxXhi.Text = "1";
       this.TextBoxXhi.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
       this.Tooltip.SetToolTip(this.TextBoxXhi, "Set the maximum value of the X axis.");
@@ -400,10 +403,10 @@ namespace DataCapturer
       this.SliderAxisOffset.Maximum = 100;
       this.SliderAxisOffset.Minimum = 0;
       this.SliderAxisOffset.Name = "SliderAxisOffset";
-      this.SliderAxisOffset.Orientation = UDLROrientation.Up;
+      this.SliderAxisOffset.Orientation = MyLibrary.Classes.UDLROrientation.Up;
       this.SliderAxisOffset.Reverse = true;
       this.SliderAxisOffset.Size = new System.Drawing.Size(152, 58);
-      this.SliderAxisOffset.TabIndex = 5;
+      this.SliderAxisOffset.TabIndex = 3;
       this.SliderAxisOffset.Text = "metroSlider2";
       this.Tooltip.SetToolTip(this.SliderAxisOffset, "Adjust the offset of the image.");
       this.SliderAxisOffset.Value = 0;
@@ -418,10 +421,10 @@ namespace DataCapturer
       this.SliderAxLengthY.Maximum = 100;
       this.SliderAxLengthY.Minimum = 0;
       this.SliderAxLengthY.Name = "SliderAxLengthY";
-      this.SliderAxLengthY.Orientation = UDLROrientation.Right;
+      this.SliderAxLengthY.Orientation = MyLibrary.Classes.UDLROrientation.Right;
       this.SliderAxLengthY.Reverse = false;
       this.SliderAxLengthY.Size = new System.Drawing.Size(60, 480);
-      this.SliderAxLengthY.TabIndex = 6;
+      this.SliderAxLengthY.TabIndex = 2;
       this.SliderAxLengthY.Text = "metroSlider1";
       this.Tooltip.SetToolTip(this.SliderAxLengthY, "Adjust the length of Y axis.");
       this.SliderAxLengthY.Value = 25;
@@ -436,10 +439,10 @@ namespace DataCapturer
       this.SliderAxLengthX.Maximum = 100;
       this.SliderAxLengthX.Minimum = 0;
       this.SliderAxLengthX.Name = "SliderAxLengthX";
-      this.SliderAxLengthX.Orientation = UDLROrientation.Down;
+      this.SliderAxLengthX.Orientation = MyLibrary.Classes.UDLROrientation.Down;
       this.SliderAxLengthX.Reverse = false;
       this.SliderAxLengthX.Size = new System.Drawing.Size(855, 60);
-      this.SliderAxLengthX.TabIndex = 4;
+      this.SliderAxLengthX.TabIndex = 1;
       this.SliderAxLengthX.Text = "metroSlider1";
       this.Tooltip.SetToolTip(this.SliderAxLengthX, "Adjust the length of X axis.");
       this.SliderAxLengthX.Value = 25;
@@ -450,16 +453,16 @@ namespace DataCapturer
       this.RangeSliderBlue.BackColor = System.Drawing.SystemColors.ControlLightLight;
       this.RangeSliderBlue.BarMax = 255;
       this.RangeSliderBlue.BarMin = 0;
-      this.RangeSliderBlue.Color = EMyColors.Blue;
+      this.RangeSliderBlue.Color = MyLibrary.Classes.EMyColors.Blue;
       this.RangeSliderBlue.CustomBackground = true;
       this.RangeSliderBlue.Location = new System.Drawing.Point(177, 25);
       this.RangeSliderBlue.Name = "RangeSliderBlue";
-      this.RangeSliderBlue.Orientation = HVOrientation.Vertical;
+      this.RangeSliderBlue.Orientation = MyLibrary.Classes.HVOrientation.Vertical;
       this.RangeSliderBlue.RangeMax = 255;
       this.RangeSliderBlue.RangeMin = 0;
       this.RangeSliderBlue.Reverse = true;
       this.RangeSliderBlue.Size = new System.Drawing.Size(69, 500);
-      this.RangeSliderBlue.TabIndex = 5;
+      this.RangeSliderBlue.TabIndex = 3;
       this.RangeSliderBlue.Text = "metroRangeSlider3";
       this.Tooltip.SetToolTip(this.RangeSliderBlue, "Image filter of blue color.");
       this.RangeSliderBlue.Scroll += new System.EventHandler(this.RangeSliderBlue_Scroll);
@@ -469,17 +472,17 @@ namespace DataCapturer
       this.RangeSliderGreen.BackColor = System.Drawing.SystemColors.ControlLightLight;
       this.RangeSliderGreen.BarMax = 255;
       this.RangeSliderGreen.BarMin = 0;
-      this.RangeSliderGreen.Color = EMyColors.Green;
+      this.RangeSliderGreen.Color = MyLibrary.Classes.EMyColors.Green;
       this.RangeSliderGreen.Cursor = System.Windows.Forms.Cursors.Default;
       this.RangeSliderGreen.CustomBackground = true;
       this.RangeSliderGreen.Location = new System.Drawing.Point(102, 25);
       this.RangeSliderGreen.Name = "RangeSliderGreen";
-      this.RangeSliderGreen.Orientation = HVOrientation.Vertical;
+      this.RangeSliderGreen.Orientation = MyLibrary.Classes.HVOrientation.Vertical;
       this.RangeSliderGreen.RangeMax = 255;
       this.RangeSliderGreen.RangeMin = 0;
       this.RangeSliderGreen.Reverse = true;
       this.RangeSliderGreen.Size = new System.Drawing.Size(69, 500);
-      this.RangeSliderGreen.TabIndex = 4;
+      this.RangeSliderGreen.TabIndex = 2;
       this.RangeSliderGreen.Text = "metroRangeSlider2";
       this.Tooltip.SetToolTip(this.RangeSliderGreen, "Image filter of green color.");
       this.RangeSliderGreen.Scroll += new System.EventHandler(this.RangeSliderGreen_Scroll);
@@ -489,16 +492,16 @@ namespace DataCapturer
       this.RangeSliderRed.BackColor = System.Drawing.SystemColors.ControlLightLight;
       this.RangeSliderRed.BarMax = 255;
       this.RangeSliderRed.BarMin = 0;
-      this.RangeSliderRed.Color = EMyColors.Red;
+      this.RangeSliderRed.Color = MyLibrary.Classes.EMyColors.Red;
       this.RangeSliderRed.CustomBackground = true;
       this.RangeSliderRed.Location = new System.Drawing.Point(27, 25);
       this.RangeSliderRed.Name = "RangeSliderRed";
-      this.RangeSliderRed.Orientation = HVOrientation.Vertical;
+      this.RangeSliderRed.Orientation = MyLibrary.Classes.HVOrientation.Vertical;
       this.RangeSliderRed.RangeMax = 255;
       this.RangeSliderRed.RangeMin = 0;
       this.RangeSliderRed.Reverse = true;
       this.RangeSliderRed.Size = new System.Drawing.Size(69, 500);
-      this.RangeSliderRed.TabIndex = 3;
+      this.RangeSliderRed.TabIndex = 1;
       this.RangeSliderRed.Text = "metroRangeSlider1";
       this.Tooltip.SetToolTip(this.RangeSliderRed, "Image filter of red color.");
       this.RangeSliderRed.Scroll += new System.EventHandler(this.RangeSliderRed_Scroll);
@@ -512,7 +515,7 @@ namespace DataCapturer
       this.ButtonNext.Size = new System.Drawing.Size(129, 61);
       this.ButtonNext.Style = MetroFramework.MetroColorStyle.Blue;
       this.ButtonNext.StyleManager = null;
-      this.ButtonNext.TabIndex = 3;
+      this.ButtonNext.TabIndex = 1;
       this.ButtonNext.Text = "Next";
       this.ButtonNext.Theme = MetroFramework.MetroThemeStyle.Light;
       this.ButtonNext.Click += new System.EventHandler(this.ButtonNext_Click);
@@ -526,7 +529,7 @@ namespace DataCapturer
       this.ButtonBack.Size = new System.Drawing.Size(129, 61);
       this.ButtonBack.Style = MetroFramework.MetroColorStyle.Blue;
       this.ButtonBack.StyleManager = null;
-      this.ButtonBack.TabIndex = 4;
+      this.ButtonBack.TabIndex = 2;
       this.ButtonBack.Text = "Back";
       this.ButtonBack.Theme = MetroFramework.MetroThemeStyle.Light;
       this.ButtonBack.Visible = false;
@@ -565,7 +568,7 @@ namespace DataCapturer
       this.DataGridView.ReadOnly = true;
       this.DataGridView.RowTemplate.Height = 31;
       this.DataGridView.Size = new System.Drawing.Size(240, 470);
-      this.DataGridView.TabIndex = 13;
+      this.DataGridView.TabIndex = 2;
       // 
       // TabPage5
       // 
@@ -596,7 +599,7 @@ namespace DataCapturer
       this.ImageViewerErase.Location = new System.Drawing.Point(121, 52);
       this.ImageViewerErase.Name = "ImageViewerErase";
       this.ImageViewerErase.Size = new System.Drawing.Size(757, 475);
-      this.ImageViewerErase.TabIndex = 8;
+      this.ImageViewerErase.TabIndex = 1;
       this.ImageViewerErase.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ImageViewerErase_MouseDown);
       this.ImageViewerErase.MouseEnter += new System.EventHandler(this.ImageViewerErase_MouseEnter);
       this.ImageViewerErase.MouseLeave += new System.EventHandler(this.ImageViewerErase_MouseLeave);
@@ -801,18 +804,29 @@ namespace DataCapturer
       this.BackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorker_DoWork);
       this.BackgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorker_RunWorkerCompleted);
       // 
+      // pictureBox1
+      // 
+      this.pictureBox1.Image = global::DataCapturer.Properties.Resources.icon5;
+      this.pictureBox1.Location = new System.Drawing.Point(6, 18);
+      this.pictureBox1.Name = "pictureBox1";
+      this.pictureBox1.Size = new System.Drawing.Size(50, 50);
+      this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+      this.pictureBox1.TabIndex = 3;
+      this.pictureBox1.TabStop = false;
+      // 
       // DataCapturer
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
       this.ClientSize = new System.Drawing.Size(1015, 776);
+      this.Controls.Add(this.pictureBox1);
       this.Controls.Add(this.ButtonBack);
       this.Controls.Add(this.ButtonNext);
       this.Controls.Add(this.TabControlMain);
       this.Location = new System.Drawing.Point(0, 0);
       this.MetroFont = new System.Drawing.Font("Segoe UI Light", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.Name = "DataCapturer";
-      this.Text = "Data Capturer";
+      this.Text = "    Data Capturer";
       this.Load += new System.EventHandler(this.DataCapturer_Load);
       this.Resize += new System.EventHandler(this.DataCapturer_Resize);
       ((System.ComponentModel.ISupportInitialize)(this.PictureBoxGetAxis)).EndInit();
@@ -831,6 +845,7 @@ namespace DataCapturer
       this.TabControlMain.ResumeLayout(false);
       this.TabPage2.ResumeLayout(false);
       this.TabPage2.PerformLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
       this.ResumeLayout(false);
 
 		}
@@ -884,6 +899,8 @@ namespace DataCapturer
 		private MyLibrary.Controls.ImageViewer ImageViewerSetAxLim;
 		private MyLibrary.Controls.ImageViewer ImageViewerErase;
 		private System.ComponentModel.BackgroundWorker BackgroundWorker;
+    private System.Windows.Forms.SaveFileDialog saveFileDialog;
+    private System.Windows.Forms.PictureBox pictureBox1;
   }
 }
 
