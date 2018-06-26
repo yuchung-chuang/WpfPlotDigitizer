@@ -12,6 +12,7 @@ using MyLibrary.Classes;
 using System.Diagnostics;
 using MyLibrary.Methods;
 using System.Threading;
+using System.Media;
 
 namespace DataCapturer
 {
@@ -30,6 +31,10 @@ namespace DataCapturer
     private PixelImage display;
     private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
     {
+      System.Reflection.Assembly a = System.Reflection.Assembly.GetExecutingAssembly();
+      System.IO.Stream s = a.GetManifestResourceStream("<AssemblyName>.chimes.wav");
+      SoundPlayer player = new SoundPlayer(s);
+      player.Play();
       while (moviePercentage < 1)
       {
         display = Drawing.Fade(image, moviePercentage);
