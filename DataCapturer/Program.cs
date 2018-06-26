@@ -11,6 +11,10 @@ namespace DataCapturer
   {
     [System.Runtime.InteropServices.DllImport("user32.dll")]
     private static extern bool SetProcessDPIAware();
+
+    [System.Runtime.InteropServices.DllImport("user32.dll")]
+    private static extern bool SetProcessDPIAwareness();
+
     /// <summary>
     /// 應用程式的主要進入點。
     /// </summary>
@@ -19,7 +23,10 @@ namespace DataCapturer
     {
 
       if (System.Environment.OSVersion.Version.Major >= 6)
+      {
         SetProcessDPIAware();
+        //SetProcessDPIAwareness();
+      }
       Application.EnableVisualStyles();
       Application.SetCompatibleTextRenderingDefault(false);
 

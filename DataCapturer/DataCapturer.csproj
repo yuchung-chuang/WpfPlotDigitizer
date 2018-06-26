@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\MSBuild.AutoILMerge.Task.1.1.1\build\MSBuild.AutoILMerge.Task.props" Condition="Exists('..\packages\MSBuild.AutoILMerge.Task.1.1.1\build\MSBuild.AutoILMerge.Task.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -28,6 +29,8 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -67,6 +70,9 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MSBuild.AutoILMerge.Task, Version=1.0.0.0, Culture=en-US, processorArchitecture=MSIL">
+      <HintPath>..\packages\MSBuild.AutoILMerge.Task.1.1.1\lib\net40\MSBuild.AutoILMerge.Task.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
@@ -113,6 +119,8 @@
       <DependentUpon>StartMovie.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="DataCapturer_TemporaryKey.pfx" />
+    <None Include="ILMerge.props" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -193,6 +201,9 @@
     <None Include="Resources\icon4.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="content\ILMergeOrder.txt" />
+    <Content Include="ILMergeInternalizeExcludeList.txt" />
+    <Content Include="ILMergeOrder.txt" />
     <Content Include="Resources\icon5.ico" />
     <None Include="Resources\icon6.png" />
     <None Include="Resources\startSound.wav" />
@@ -213,4 +224,16 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>此專案參考這部電腦上所缺少的 NuGet 封裝。請啟用 NuGet 封裝還原，以下載該封裝。如需詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的檔案是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\MSBuild.AutoILMerge.Task.1.1.1\build\MSBuild.AutoILMerge.Task.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSBuild.AutoILMerge.Task.1.1.1\build\MSBuild.AutoILMerge.Task.props'))" />
+    <Error Condition="!Exists('..\packages\MSBuild.AutoILMerge.Task.1.1.1\build\MSBuild.AutoILMerge.Task.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSBuild.AutoILMerge.Task.1.1.1\build\MSBuild.AutoILMerge.Task.targets'))" />
+  </Target>
+  <Import Project="..\packages\MSBuild.AutoILMerge.Task.1.1.1\build\MSBuild.AutoILMerge.Task.targets" Condition="Exists('..\packages\MSBuild.AutoILMerge.Task.1.1.1\build\MSBuild.AutoILMerge.Task.targets')" />
 </Project>
