@@ -194,6 +194,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\icon5.ico" />
+    <None Include="Resources\icon6.png" />
     <None Include="Resources\startSound.wav" />
     <None Include="Resources\startSound.mp3" />
     <None Include="Resources\startLogo.png" />

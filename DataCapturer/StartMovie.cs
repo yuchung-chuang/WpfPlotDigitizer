@@ -30,7 +30,7 @@ namespace DataCapturer
     }
 
     private float moviePercentage = 0;
-    private PixelImage image = new PixelImage(Properties.Resources.icon5);
+    private PixelImage image = new PixelImage(Properties.Resources.icon6);
     private PixelImage display;
     private void FadeStartLogo()
     {

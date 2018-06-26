@@ -109,11 +109,12 @@ namespace DataCapturer
       ButtonBack.Text = StringArrow("left") + " " + "Back";
 
       UnableControls();
-      EnableControls();
+
 
       this.Icon = Icon.FromHandle(Properties.Resources.icon5.GetHicon());
 #if DEBUG
-      UpdateImageInput(); // 測試用
+      //EnableControls();
+      //UpdateImageInput(); // 測試用
 #endif
     }
     #endregion
@@ -466,7 +467,7 @@ namespace DataCapturer
       {
         SetImageOutput();
       }
-      
+
     }
     private void ImageViewerErase_MouseDown(object sender, MouseEventArgs e)
     {
@@ -942,16 +943,27 @@ namespace DataCapturer
       UndoButtonIsPress = true;
       UpdateUndoButtonColor();
     }
+    private void UndoButton_EnabledChanged(object sender, EventArgs e)
+    {
+      if (UndoButton.Enabled)
+      {
+        UndoButton.Image = Properties.Resources.Undo_icon;
+      }
+      else
+      {
+        //UndoButton.BackColor = Control.DefaultBackColor;
+        UndoButton.Image = Properties.Resources.Undo_icon_black_;
+      }
+    }
     private void UpdateUndoButtonColor()
     {
       if (EraseIdx == 0) //無法Undo
       {
-        UndoButton.BackColor = Control.DefaultBackColor;
-        UndoButton.Image = Properties.Resources.Undo_icon_black_;
+        UndoButton.Enabled = false;
       }
       else
       {
-        UndoButton.Image = Properties.Resources.Undo_icon;
+        UndoButton.Enabled = true;
         if (UndoButtonIsPress)
           UndoButton.BackColor = MetroColors.Blue;
         else if (UndoButtonIsEnter)
@@ -979,16 +991,30 @@ namespace DataCapturer
       RedoButtonIsPress = true;
       UpdateRedoButtonColor();
     }
+    private void RedoButton_EnabledChanged(object sender, EventArgs e)
+    {
+      if (RedoButton.Enabled)
+      {
+        RedoButton.Image = Properties.Resources.Redo_icon;
+
+      }
+      else
+      {
+        //RedoButton.BackColor = Control.DefaultBackColor;
+
+        RedoButton.Image = Properties.Resources.Redo_icon_black_;
+      }
+
+    }
     private void UpdateRedoButtonColor()
     {
       if (EraseIdx == ImageEraseList.Count - 1) //無法Redo
       {
-        RedoButton.BackColor = Control.DefaultBackColor;
-        RedoButton.Image = Properties.Resources.Redo_icon_black_;
+        RedoButton.Enabled = false;
       }
       else
       {
-        RedoButton.Image = Properties.Resources.Redo_icon;
+        RedoButton.Enabled = true;
         if (RedoButtonIsPress)
           RedoButton.BackColor = MetroColors.Blue;
         else if (RedoButtonIsEnter)
@@ -1038,9 +1064,10 @@ namespace DataCapturer
       }
     }
 
+
+
     #endregion
 
 
-    
   }
 }

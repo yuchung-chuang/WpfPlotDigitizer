@@ -531,6 +531,7 @@ namespace DataCapturer
       this.RedoButton.TabIndex = 7;
       this.RedoButton.TabStop = false;
       this.Tooltip.SetToolTip(this.RedoButton, "Redo");
+      this.RedoButton.EnabledChanged += new System.EventHandler(this.RedoButton_EnabledChanged);
       this.RedoButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RedoButton_MouseDown);
       this.RedoButton.MouseEnter += new System.EventHandler(this.RedoButton_MouseEnter);
       this.RedoButton.MouseLeave += new System.EventHandler(this.RedoButton_MouseLeave);
@@ -546,6 +547,7 @@ namespace DataCapturer
       this.UndoButton.TabIndex = 6;
       this.UndoButton.TabStop = false;
       this.Tooltip.SetToolTip(this.UndoButton, "Redo");
+      this.UndoButton.EnabledChanged += new System.EventHandler(this.UndoButton_EnabledChanged);
       this.UndoButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.UndoButton_MouseDown);
       this.UndoButton.MouseEnter += new System.EventHandler(this.UndoButton_MouseEnter);
       this.UndoButton.MouseLeave += new System.EventHandler(this.UndoButton_MouseLeave);
@@ -813,7 +815,7 @@ namespace DataCapturer
       // 
       // pictureBox1
       // 
-      this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+      this.pictureBox1.Image = global::DataCapturer.Properties.Resources.icon6;
       this.pictureBox1.Location = new System.Drawing.Point(6, 18);
       this.pictureBox1.Name = "pictureBox1";
       this.pictureBox1.Size = new System.Drawing.Size(50, 50);
