@@ -23,8 +23,11 @@ namespace DataCapturer
       Application.EnableVisualStyles();
       Application.SetCompatibleTextRenderingDefault(false);
 
-      //Application.Run(new DataCapturer());
+#if DEBUG
+      Application.Run(new DataCapturer());
+#else
       Application.Run(new StartMovie());
+#endif
     }
   }
 }

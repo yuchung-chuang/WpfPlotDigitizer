@@ -113,7 +113,7 @@ namespace DataCapturer
 
       this.Icon = Icon.FromHandle(Properties.Resources.icon5.GetHicon());
 #if DEBUG
-      //UpdateImageInput(); // 測試用
+      UpdateImageInput(); // 測試用
 #endif
     }
     #endregion
@@ -452,7 +452,41 @@ namespace DataCapturer
     private int EraserL = 20;
     private Point EffectiveMouseLocation;
     private Point EffectiveMousePos;
+    private void ImageViewerErase_MouseMove(object sender, MouseEventArgs e)
+    {
+      if (BackgroundWorker.IsBusy != true && e.Button != MouseButtons.Right) //右鍵留給drag，就不會有兩個backgroundWorker同時並行
+      {
+        object[] parameters = { ImageErase, ImageEraseTmp };
+        BackgroundWorker.RunWorkerAsync(new BackgroundArgs(sender, e, parameters));
+      }
+    }
+    private void ImageViewerErase_MouseUp(object sender, MouseEventArgs e)
+    {
+      if (e.Button == MouseButtons.Left)
+      {
+        SetImageOutput();
+      }
+      
+    }
+    private void ImageViewerErase_MouseDown(object sender, MouseEventArgs e)
+    {
+      if (e.Button == MouseButtons.Left)
+      {
+        ImageEraseList.RemoveRange(EraseIdx + 1, ImageEraseList.Count - EraseIdx - 1); //清除所有原先的Redo
+        ImageEraseList.Add((PixelImage)ImageErase.Clone());//或許需要設置ImageEraseList的儲存上限
+        EraseIdx += 1;
 
+        ImageViewerErase_MouseMove(sender, e);
+      }
+    }
+    private void ImageViewerErase_MouseEnter(object sender, EventArgs e)
+    {
+      Cursor.Hide();
+    }
+    private void ImageViewerErase_MouseLeave(object sender, EventArgs e)
+    {
+      Cursor.Show();
+    }
 
     // undo/redo
     private void UndoButton_MouseUp(object sender, MouseEventArgs e)
@@ -1006,33 +1040,7 @@ namespace DataCapturer
 
     #endregion
 
-    private void ImageViewerErase_MouseEnter(object sender, EventArgs e)
-    {
-      Cursor.Hide();
-    }
 
-    private void ImageViewerErase_MouseDown(object sender, MouseEventArgs e)
-    {
-
-    }
-
-    private void ImageViewerErase_MouseLeave(object sender, EventArgs e)
-    {
-      Cursor.Show();
-    }
-
-    private void ImageViewerErase_MouseMove(object sender, MouseEventArgs e)
-    {
-      if (BackgroundWorker.IsBusy != true && e.Button != MouseButtons.Right) //右鍵留給drag，就不會有兩個backgroundWorker同時並行
-      {
-        object[] parameters = { ImageErase, ImageEraseTmp };
-        BackgroundWorker.RunWorkerAsync(new BackgroundArgs(sender, e, parameters));
-      }
-    }
-
-    private void ImageViewerErase_MouseUp(object sender, MouseEventArgs e)
-    {
-
-    }
+    
   }
 }
