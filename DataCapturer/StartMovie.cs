@@ -13,6 +13,7 @@ using System.Diagnostics;
 using MyLibrary.Methods;
 using System.Threading;
 using System.Media;
+using System.IO;
 
 namespace DataCapturer
 {
@@ -21,35 +22,50 @@ namespace DataCapturer
 
     public StartMovie()
     {
-      InitializeComponent();
-
-      backgroundWorker1.RunWorkerAsync();
+      InitializeComponent();   
+    }
+    private void StartMovie_Load(object sender, EventArgs e)
+    {
+      Task Start = Task.Run(() => StartAsync());
     }
 
     private float moviePercentage = 0;
     private PixelImage image = new PixelImage(Properties.Resources.icon5);
     private PixelImage display;
-    private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+    private void FadeStartLogo()
     {
-      System.Reflection.Assembly a = System.Reflection.Assembly.GetExecutingAssembly();
-      System.IO.Stream s = a.GetManifestResourceStream("<AssemblyName>.chimes.wav");
-      SoundPlayer player = new SoundPlayer(s);
-      player.Play();
       while (moviePercentage < 1)
       {
         display = Drawing.Fade(image, moviePercentage);
-        pictureBox1.InvokeIfRequired(new Action(() => { pictureBox1.Image = display.Bitmap; }));
+        pictureBox1.InvokeIfRequired(() => pictureBox1.Image = display.Bitmap);
         moviePercentage += 0.01f;
+        Thread.Sleep(10);
       }
-      Thread.Sleep(500);
     }
-    private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+    private void StartSoundAsync()
     {
-      this.Hide();
-      var dataCapturer = new DataCapturer();
-      dataCapturer.BringToFront();
-      dataCapturer.ShowDialog(this);
-      this.Close();
+      SoundPlayer soundPlayer = new SoundPlayer(Properties.Resources.startSound);
+      soundPlayer.PlaySync();
     }
+    private void StartMainForm()
+    {
+      this.InvokeIfRequired(() =>
+      {
+        this.Hide();
+        var dataCapturer = new DataCapturer();
+        dataCapturer.BringToFront();
+        dataCapturer.ShowDialog(this);
+        this.Close();
+      });
+
+    }
+    private void StartAsync()
+    {
+      Task StartSound = Task.Run(() => StartSoundAsync());
+      FadeStartLogo();
+      StartSound.Wait();
+      StartMainForm();
+    }
+
   }
 }

@@ -630,18 +630,31 @@ namespace DataCapturer
       PictureBoxOutput.Image = ImageOutput.Bitmap;
     }
 
+    private bool IsSetAxisLim
+    {
+      get
+      {
+        return TextBoxXlo.Text == string.Empty || TextBoxYlo.Text == string.Empty || TextBoxXhi.Text == string.Empty || TextBoxYhi.Text == string.Empty || (CheckBoxXLog.Checked && TextBoxXBase.Text == string.Empty) || (CheckBoxYLog.Checked && TextBoxYBase.Text == string.Empty);
+      }
+    }
     private bool IsDataOK()
     {
-      if (TextBoxXlo.Text == string.Empty || TextBoxYlo.Text == string.Empty || TextBoxXhi.Text == string.Empty || TextBoxYhi.Text == string.Empty || (CheckBoxXLog.Checked && TextBoxXBase.Text == string.Empty) || (CheckBoxYLog.Checked && TextBoxYBase.Text == string.Empty))
+      if (ImageInput == null)
       {
-        TabControlMain.SelectedIndex = 1;
-        MessageBox.Show("Please fill in all the axis limits.");
+        TabControlMain.SelectedIndex = 0;
+        MessageBox.Show("Please browse an image to capture the data.", "Data Capturer Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
         return false;
       }
-      if (!IsGetAxis || !IsOffset)
+      else if (IsSetAxisLim)
+      {
+        TabControlMain.SelectedIndex = 1;
+        MessageBox.Show("Please fill in all the axis limits.", "Data Capturer Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        return false;
+      }
+      else if (!IsGetAxis || !IsOffset)
       {
         TabControlMain.SelectedIndex = 2;
-        MessageBox.Show("Please adjust the scrollbars to capture axis properly.");
+        MessageBox.Show("Please adjust the scrollbars to capture axis properly.", "Data Capturer Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
         return false;
       }
       return true;
