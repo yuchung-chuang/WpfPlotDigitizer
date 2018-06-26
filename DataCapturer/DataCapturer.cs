@@ -27,7 +27,17 @@ namespace DataCapturer
     private PixelImage ImageFilterRGB;
     private PixelImage ImageErase
     {
-      get => ImageEraseList[EraseIdx];
+      get
+      {
+        if (ImageInput == null)
+        {
+          return null;
+        }
+        else
+        {
+          return ImageEraseList[EraseIdx];
+        }
+      }
       set
       {
         ImageEraseList[EraseIdx] = value;
@@ -103,9 +113,8 @@ namespace DataCapturer
 
       this.Icon = Icon.FromHandle(Properties.Resources.icon5.GetHicon());
 #if DEBUG
-      UpdateImageInput(); // 測試用
+      //UpdateImageInput(); // 測試用
 #endif
-      Focus();
     }
     #endregion
 
@@ -429,70 +438,6 @@ namespace DataCapturer
     }
     #endregion
 
-    #region Background Work
-    private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs DoWork_e)
-    {
-      if (ImageInput == null)
-      {
-        return;
-      }
-      BackgroundArgs arg = (BackgroundArgs)DoWork_e.Argument;
-      if (arg.sender == SliderAxLengthX || arg.sender == SliderAxLengthY)
-      {
-        GetAxis();
-      }
-      else if (arg.sender == SliderAxisOffset)
-      {
-        OffsetAxis();
-      }
-      else if (arg.sender == RangeSliderRed)
-      {
-        ImageFilterRGB.Pixel = FilterRGB(ImageFilterRGB, "R");
-        SetImageErase();
-      }
-      else if (arg.sender == RangeSliderGreen)
-      {
-        ImageFilterRGB.Pixel = FilterRGB(ImageFilterRGB, "G");
-        SetImageErase();
-      }
-      else if (arg.sender == RangeSliderBlue)
-      {
-        ImageFilterRGB.Pixel = FilterRGB(ImageFilterRGB, "B");
-        SetImageErase();
-      }
-      else if (arg.sender == ImageViewerErase)
-      {
-        MouseEventArgs e = arg.e as MouseEventArgs;
-        if (e.Delta == 0)
-        {
-          PixelImage ImageErase = (PixelImage)arg.parameters[0];
-          PixelImage ImageEraseDisplay = (PixelImage)arg.parameters[1];
-
-          EffectiveMouseLocation = ImageViewerErase.GetEffectiveMouseLocation(e.Location);
-          EffectiveMousePos = new Point(ImageViewerErase.ImageBoxPos.X + EffectiveMouseLocation.X, ImageViewerErase.ImageBoxPos.Y + EffectiveMouseLocation.Y);
-          if (e.Button == MouseButtons.Left) //IsErasing
-            ImageErase = EraseImage(EffectiveMousePos, ImageErase);
-          ImageEraseDisplay.Bitmap = DrawEraser(ImageErase, EffectiveMousePos);
-        } //Moving
-      }
-    }
-
-    private void UpdateAllControls()
-    {
-      if (ImageInput == null)
-      {
-        return;
-      }
-      PictureBoxGetAxis.Image = (Bitmap)ImageAxis.Bitmap.Clone();
-      PictureBoxFilter.Image = (Bitmap)ImageFilterRGB.Bitmap.Clone();
-      ImageViewerErase.Image = (Bitmap)ImageEraseTmp.Bitmap.Clone();
-    }
-    private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-    {
-      UpdateAllControls();
-    }
-    #endregion
-
     #region Step 5: Erase
     private int _EraseIdx = 0;
     private int EraseIdx
@@ -507,7 +452,9 @@ namespace DataCapturer
     private int EraserL = 20;
     private Point EffectiveMouseLocation;
     private Point EffectiveMousePos;
-    //entry
+
+
+    // undo/redo
     private void UndoButton_MouseUp(object sender, MouseEventArgs e)
     {
       UndoButtonIsPress = false;
@@ -541,40 +488,6 @@ namespace DataCapturer
       SetImageOutput();
     }
 
-    private void ImageViewerErase_MouseMove(object sender, MouseEventArgs e)
-    {
-      if (BackgroundWorker.IsBusy != true && e.Button != MouseButtons.Right) //右鍵留給drag，就不會有兩個backgroundWorker同時並行
-      {
-        object[] parameters = { ImageErase, ImageEraseTmp };
-        BackgroundWorker.RunWorkerAsync(new BackgroundArgs(sender, e, parameters));
-      }
-    }
-    private void ImageViewerErase_MouseDown(object sender, MouseEventArgs e)
-    {
-      if (e.Button == MouseButtons.Left)
-      {
-        ImageEraseList.RemoveRange(EraseIdx + 1, ImageEraseList.Count - EraseIdx - 1); //清除所有原先的Redo
-        ImageEraseList.Add((PixelImage)ImageErase.Clone());//或許需要設置ImageEraseList的儲存上限
-        EraseIdx += 1;
-
-        ImageViewerErase_MouseMove(sender, e);
-      }
-    }
-    private void ImageViewerErase_MouseUp(object sender, MouseEventArgs e)
-    {
-      if (e.Button == MouseButtons.Left)
-      {
-        SetImageOutput();
-      }
-    }
-    private void ImageViewerErase_MouseEnter(object sender, EventArgs e)
-    {
-      Cursor.Hide();
-    }
-    private void ImageViewerErase_MouseLeave(object sender, EventArgs e)
-    {
-      Cursor.Show();
-    }
     // background work
     private Bitmap DrawEraser(PixelImage ImageErase, Point pos)
     {
@@ -886,6 +799,70 @@ namespace DataCapturer
     }
     #endregion
 
+    #region Background Work
+    private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs DoWork_e)
+    {
+      if (ImageInput == null)
+      {
+        return;
+      }
+      BackgroundArgs arg = (BackgroundArgs)DoWork_e.Argument;
+      if (arg.sender == SliderAxLengthX || arg.sender == SliderAxLengthY)
+      {
+        GetAxis();
+      }
+      else if (arg.sender == SliderAxisOffset)
+      {
+        OffsetAxis();
+      }
+      else if (arg.sender == RangeSliderRed)
+      {
+        ImageFilterRGB.Pixel = FilterRGB(ImageFilterRGB, "R");
+        SetImageErase();
+      }
+      else if (arg.sender == RangeSliderGreen)
+      {
+        ImageFilterRGB.Pixel = FilterRGB(ImageFilterRGB, "G");
+        SetImageErase();
+      }
+      else if (arg.sender == RangeSliderBlue)
+      {
+        ImageFilterRGB.Pixel = FilterRGB(ImageFilterRGB, "B");
+        SetImageErase();
+      }
+      else if (arg.sender == ImageViewerErase)
+      {
+        MouseEventArgs e = arg.e as MouseEventArgs;
+        if (e.Delta == 0)
+        {
+          PixelImage ImageErase = (PixelImage)arg.parameters[0];
+          PixelImage ImageEraseDisplay = (PixelImage)arg.parameters[1];
+
+          EffectiveMouseLocation = ImageViewerErase.GetEffectiveMouseLocation(e.Location);
+          EffectiveMousePos = new Point(ImageViewerErase.ImageBoxPos.X + EffectiveMouseLocation.X, ImageViewerErase.ImageBoxPos.Y + EffectiveMouseLocation.Y);
+          if (e.Button == MouseButtons.Left) //IsErasing
+            ImageErase = EraseImage(EffectiveMousePos, ImageErase);
+          ImageEraseDisplay.Bitmap = DrawEraser(ImageErase, EffectiveMousePos);
+        } //Moving
+      }
+    }
+
+    private void UpdateAllControls()
+    {
+      if (ImageInput == null)
+      {
+        return;
+      }
+      PictureBoxGetAxis.Image = (Bitmap)ImageAxis.Bitmap.Clone();
+      PictureBoxFilter.Image = (Bitmap)ImageFilterRGB.Bitmap.Clone();
+      ImageViewerErase.Image = (Bitmap)ImageEraseTmp.Bitmap.Clone();
+    }
+    private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+    {
+      UpdateAllControls();
+    }
+    #endregion
+
     #region Other User Activities
     private void TabControl_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -1026,6 +1003,36 @@ namespace DataCapturer
         control.Top = (int)(controlAnchor.Top * HeightRatio);
       }
     }
+
     #endregion
+
+    private void ImageViewerErase_MouseEnter(object sender, EventArgs e)
+    {
+      Cursor.Hide();
+    }
+
+    private void ImageViewerErase_MouseDown(object sender, MouseEventArgs e)
+    {
+
+    }
+
+    private void ImageViewerErase_MouseLeave(object sender, EventArgs e)
+    {
+      Cursor.Show();
+    }
+
+    private void ImageViewerErase_MouseMove(object sender, MouseEventArgs e)
+    {
+      if (BackgroundWorker.IsBusy != true && e.Button != MouseButtons.Right) //右鍵留給drag，就不會有兩個backgroundWorker同時並行
+      {
+        object[] parameters = { ImageErase, ImageEraseTmp };
+        BackgroundWorker.RunWorkerAsync(new BackgroundArgs(sender, e, parameters));
+      }
+    }
+
+    private void ImageViewerErase_MouseUp(object sender, MouseEventArgs e)
+    {
+
+    }
   }
 }

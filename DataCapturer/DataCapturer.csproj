@@ -142,13 +142,13 @@
     <None Include="Resources\Undo-icon%28black%29.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\GoogleDrive\CSharp\MetroFramework\MetroFramework\MetroFramework.csproj">
-      <Project>{bb41ac8b-cbed-4387-a7e0-4567edb3f57f}</Project>
-      <Name>MetroFramework</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\..\GoogleDrive\CSharp\MyLibrary\MyLibrary\MyLibrary.csproj">
       <Project>{aa4b8910-6e55-4f05-8037-0ee24933f1b5}</Project>
       <Name>MyLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\MetroFramework\MetroFramework\MetroFramework.csproj">
+      <Project>{bb41ac8b-cbed-4387-a7e0-4567edb3f57f}</Project>
+      <Name>MetroFramework</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

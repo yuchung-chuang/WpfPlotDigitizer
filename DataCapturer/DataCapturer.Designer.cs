@@ -53,26 +53,26 @@ namespace DataCapturer
       this.PictureBoxGetAxis = new System.Windows.Forms.PictureBox();
       this.PictureBoxFilter = new System.Windows.Forms.PictureBox();
       this.PictureBoxOutput = new System.Windows.Forms.PictureBox();
-      this.ImageViewerSetAxLim = new MyLibrary.Controls.ImageViewer();
       this.SliderAxisOffset = new MyLibrary.Controls.Slider();
       this.SliderAxLengthY = new MyLibrary.Controls.Slider();
       this.SliderAxLengthX = new MyLibrary.Controls.Slider();
       this.RangeSliderBlue = new MyLibrary.Controls.RangeSlider();
       this.RangeSliderGreen = new MyLibrary.Controls.RangeSlider();
       this.RangeSliderRed = new MyLibrary.Controls.RangeSlider();
+      this.PictureBoxInput = new System.Windows.Forms.PictureBox();
+      this.ImageViewerSetAxLim = new MyLibrary.Controls.ImageViewer();
+      this.RedoButton = new System.Windows.Forms.PictureBox();
+      this.UndoButton = new System.Windows.Forms.PictureBox();
       this.ButtonNext = new MetroFramework.Controls.MetroButton();
       this.ButtonBack = new MetroFramework.Controls.MetroButton();
       this.TabPage6 = new MetroFramework.Controls.MetroTabPage();
       this.DataGridView = new System.Windows.Forms.DataGridView();
       this.TabPage5 = new MetroFramework.Controls.MetroTabPage();
       this.ImageViewerErase = new MyLibrary.Controls.ImageViewer();
-      this.RedoButton = new System.Windows.Forms.PictureBox();
-      this.UndoButton = new System.Windows.Forms.PictureBox();
       this.TabPage4 = new MetroFramework.Controls.MetroTabPage();
       this.metroPanel1 = new MetroFramework.Controls.MetroPanel();
       this.TabPage3 = new MetroFramework.Controls.MetroTabPage();
       this.TabPage1 = new MetroFramework.Controls.MetroTabPage();
-      this.PictureBoxInput = new System.Windows.Forms.PictureBox();
       this.TabControlMain = new MetroFramework.Controls.MetroTabControl();
       this.TabPage2 = new MetroFramework.Controls.MetroTabPage();
       this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
@@ -82,16 +82,16 @@ namespace DataCapturer
       ((System.ComponentModel.ISupportInitialize)(this.PictureBoxGetAxis)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.PictureBoxFilter)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.PictureBoxOutput)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.PictureBoxInput)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.RedoButton)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.UndoButton)).BeginInit();
       this.TabPage6.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.DataGridView)).BeginInit();
       this.TabPage5.SuspendLayout();
-      ((System.ComponentModel.ISupportInitialize)(this.RedoButton)).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)(this.UndoButton)).BeginInit();
       this.TabPage4.SuspendLayout();
       this.metroPanel1.SuspendLayout();
       this.TabPage3.SuspendLayout();
       this.TabPage1.SuspendLayout();
-      ((System.ComponentModel.ISupportInitialize)(this.PictureBoxInput)).BeginInit();
       this.TabControlMain.SuspendLayout();
       this.TabPage2.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -386,15 +386,6 @@ namespace DataCapturer
       this.PictureBoxOutput.TabStop = false;
       this.Tooltip.SetToolTip(this.PictureBoxOutput, "The captured data.");
       // 
-      // ImageViewerSetAxLim
-      // 
-      this.ImageViewerSetAxLim.Image = null;
-      this.ImageViewerSetAxLim.Location = new System.Drawing.Point(270, 50);
-      this.ImageViewerSetAxLim.Name = "ImageViewerSetAxLim";
-      this.ImageViewerSetAxLim.Size = new System.Drawing.Size(641, 395);
-      this.ImageViewerSetAxLim.TabIndex = 20;
-      this.Tooltip.SetToolTip(this.ImageViewerSetAxLim, "Input the axis limits into the textboxes.\r\n");
-      // 
       // SliderAxisOffset
       // 
       this.SliderAxisOffset.BackColor = System.Drawing.SystemColors.ControlLightLight;
@@ -507,6 +498,59 @@ namespace DataCapturer
       this.Tooltip.SetToolTip(this.RangeSliderRed, "Image filter of red color.");
       this.RangeSliderRed.Scroll += new System.EventHandler(this.RangeSliderRed_Scroll);
       // 
+      // PictureBoxInput
+      // 
+      this.PictureBoxInput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+      this.PictureBoxInput.Location = new System.Drawing.Point(50, 50);
+      this.PictureBoxInput.Name = "PictureBoxInput";
+      this.PictureBoxInput.Size = new System.Drawing.Size(850, 440);
+      this.PictureBoxInput.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+      this.PictureBoxInput.TabIndex = 2;
+      this.PictureBoxInput.TabStop = false;
+      this.Tooltip.SetToolTip(this.PictureBoxInput, "Browse the image to capture its data.");
+      // 
+      // ImageViewerSetAxLim
+      // 
+      this.ImageViewerSetAxLim.Image = null;
+      this.ImageViewerSetAxLim.Location = new System.Drawing.Point(270, 44);
+      this.ImageViewerSetAxLim.MyToolTip = "Input the axis limits into the textboxes.";
+      this.ImageViewerSetAxLim.Name = "ImageViewerSetAxLim";
+      this.ImageViewerSetAxLim.Size = new System.Drawing.Size(641, 395);
+      this.ImageViewerSetAxLim.TabIndex = 21;
+      this.Tooltip.SetToolTip(this.ImageViewerSetAxLim, "Input the axis limits into the textboxes.\r\n");
+      // 
+      // RedoButton
+      // 
+      this.RedoButton.Image = global::DataCapturer.Properties.Resources.Redo_icon;
+      this.RedoButton.Location = new System.Drawing.Point(15, 354);
+      this.RedoButton.Name = "RedoButton";
+      this.RedoButton.Size = new System.Drawing.Size(60, 60);
+      this.RedoButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+      this.RedoButton.TabIndex = 7;
+      this.RedoButton.TabStop = false;
+      this.Tooltip.SetToolTip(this.RedoButton, "Redo");
+      this.RedoButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RedoButton_MouseDown);
+      this.RedoButton.MouseEnter += new System.EventHandler(this.RedoButton_MouseEnter);
+      this.RedoButton.MouseLeave += new System.EventHandler(this.RedoButton_MouseLeave);
+      this.RedoButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.RedoButton_MouseUp);
+      // 
+      // UndoButton
+      // 
+      this.UndoButton.Image = global::DataCapturer.Properties.Resources.Undo_icon;
+      this.UndoButton.Location = new System.Drawing.Point(15, 157);
+      this.UndoButton.Name = "UndoButton";
+      this.UndoButton.Size = new System.Drawing.Size(60, 60);
+      this.UndoButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+      this.UndoButton.TabIndex = 6;
+      this.UndoButton.TabStop = false;
+      this.Tooltip.SetToolTip(this.UndoButton, "Redo");
+      this.UndoButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.UndoButton_MouseDown);
+      this.UndoButton.MouseEnter += new System.EventHandler(this.UndoButton_MouseEnter);
+      this.UndoButton.MouseLeave += new System.EventHandler(this.UndoButton_MouseLeave);
+      this.UndoButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.UndoButton_MouseUp);
+      // 
       // ButtonNext
       // 
       this.ButtonNext.Highlight = true;
@@ -597,43 +641,17 @@ namespace DataCapturer
       // ImageViewerErase
       // 
       this.ImageViewerErase.Image = null;
-      this.ImageViewerErase.Location = new System.Drawing.Point(121, 52);
+      this.ImageViewerErase.Location = new System.Drawing.Point(130, 36);
+      this.ImageViewerErase.MyToolTip = "Hold the right click to erase. Hold the left click to drag. Scroll to zoom in/out" +
+    ".";
       this.ImageViewerErase.Name = "ImageViewerErase";
       this.ImageViewerErase.Size = new System.Drawing.Size(757, 475);
-      this.ImageViewerErase.TabIndex = 1;
+      this.ImageViewerErase.TabIndex = 9;
       this.ImageViewerErase.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ImageViewerErase_MouseDown);
       this.ImageViewerErase.MouseEnter += new System.EventHandler(this.ImageViewerErase_MouseEnter);
       this.ImageViewerErase.MouseLeave += new System.EventHandler(this.ImageViewerErase_MouseLeave);
       this.ImageViewerErase.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ImageViewerErase_MouseMove);
       this.ImageViewerErase.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ImageViewerErase_MouseUp);
-      // 
-      // RedoButton
-      // 
-      this.RedoButton.Image = global::DataCapturer.Properties.Resources.Redo_icon;
-      this.RedoButton.Location = new System.Drawing.Point(15, 354);
-      this.RedoButton.Name = "RedoButton";
-      this.RedoButton.Size = new System.Drawing.Size(60, 60);
-      this.RedoButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-      this.RedoButton.TabIndex = 7;
-      this.RedoButton.TabStop = false;
-      this.RedoButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RedoButton_MouseDown);
-      this.RedoButton.MouseEnter += new System.EventHandler(this.RedoButton_MouseEnter);
-      this.RedoButton.MouseLeave += new System.EventHandler(this.RedoButton_MouseLeave);
-      this.RedoButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.RedoButton_MouseUp);
-      // 
-      // UndoButton
-      // 
-      this.UndoButton.Image = global::DataCapturer.Properties.Resources.Undo_icon;
-      this.UndoButton.Location = new System.Drawing.Point(15, 157);
-      this.UndoButton.Name = "UndoButton";
-      this.UndoButton.Size = new System.Drawing.Size(60, 60);
-      this.UndoButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-      this.UndoButton.TabIndex = 6;
-      this.UndoButton.TabStop = false;
-      this.UndoButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.UndoButton_MouseDown);
-      this.UndoButton.MouseEnter += new System.EventHandler(this.UndoButton_MouseEnter);
-      this.UndoButton.MouseLeave += new System.EventHandler(this.UndoButton_MouseLeave);
-      this.UndoButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.UndoButton_MouseUp);
       // 
       // TabPage4
       // 
@@ -725,18 +743,6 @@ namespace DataCapturer
       this.TabPage1.VerticalScrollbarHighlightOnWheel = false;
       this.TabPage1.VerticalScrollbarSize = 10;
       // 
-      // PictureBoxInput
-      // 
-      this.PictureBoxInput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-      this.PictureBoxInput.Location = new System.Drawing.Point(50, 50);
-      this.PictureBoxInput.Name = "PictureBoxInput";
-      this.PictureBoxInput.Size = new System.Drawing.Size(850, 440);
-      this.PictureBoxInput.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-      this.PictureBoxInput.TabIndex = 2;
-      this.PictureBoxInput.TabStop = false;
-      // 
       // TabControlMain
       // 
       this.TabControlMain.Controls.Add(this.TabPage1);
@@ -749,7 +755,7 @@ namespace DataCapturer
       this.TabControlMain.Location = new System.Drawing.Point(23, 83);
       this.TabControlMain.MetroFont = new System.Drawing.Font("Segoe UI Light", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
       this.TabControlMain.Name = "TabControlMain";
-      this.TabControlMain.SelectedIndex = 0;
+      this.TabControlMain.SelectedIndex = 4;
       this.TabControlMain.Size = new System.Drawing.Size(969, 615);
       this.TabControlMain.Style = MetroFramework.MetroColorStyle.Blue;
       this.TabControlMain.StyleManager = null;
@@ -834,16 +840,16 @@ namespace DataCapturer
       ((System.ComponentModel.ISupportInitialize)(this.PictureBoxGetAxis)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.PictureBoxFilter)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.PictureBoxOutput)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.PictureBoxInput)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.RedoButton)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.UndoButton)).EndInit();
       this.TabPage6.ResumeLayout(false);
       ((System.ComponentModel.ISupportInitialize)(this.DataGridView)).EndInit();
       this.TabPage5.ResumeLayout(false);
-      ((System.ComponentModel.ISupportInitialize)(this.RedoButton)).EndInit();
-      ((System.ComponentModel.ISupportInitialize)(this.UndoButton)).EndInit();
       this.TabPage4.ResumeLayout(false);
       this.metroPanel1.ResumeLayout(false);
       this.TabPage3.ResumeLayout(false);
       this.TabPage1.ResumeLayout(false);
-      ((System.ComponentModel.ISupportInitialize)(this.PictureBoxInput)).EndInit();
       this.TabControlMain.ResumeLayout(false);
       this.TabPage2.ResumeLayout(false);
       this.TabPage2.PerformLayout();
@@ -898,11 +904,11 @@ namespace DataCapturer
 		private MyLibrary.Controls.Slider SliderAxLengthY;
 		private System.Windows.Forms.PictureBox RedoButton;
 		private System.Windows.Forms.PictureBox UndoButton;
-		private MyLibrary.Controls.ImageViewer ImageViewerSetAxLim;
-		private MyLibrary.Controls.ImageViewer ImageViewerErase;
 		private System.ComponentModel.BackgroundWorker BackgroundWorker;
     private System.Windows.Forms.SaveFileDialog saveFileDialog;
     private System.Windows.Forms.PictureBox pictureBox1;
+    private MyLibrary.Controls.ImageViewer ImageViewerSetAxLim;
+    private MyLibrary.Controls.ImageViewer ImageViewerErase;
   }
 }
 
