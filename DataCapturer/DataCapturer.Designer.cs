@@ -32,6 +32,7 @@ namespace DataCapturer
 		/// </summary>
 		private void InitializeComponent()
 		{
+      System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DataCapturer));
       this.Tooltip = new MetroFramework.Components.MetroToolTip();
       this.ButtonSave = new MetroFramework.Controls.MetroButton();
       this.ButtonBrowse = new MetroFramework.Controls.MetroButton();
@@ -806,7 +807,7 @@ namespace DataCapturer
       // 
       // pictureBox1
       // 
-      this.pictureBox1.Image = global::DataCapturer.Properties.Resources.icon5;
+      this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
       this.pictureBox1.Location = new System.Drawing.Point(6, 18);
       this.pictureBox1.Name = "pictureBox1";
       this.pictureBox1.Size = new System.Drawing.Size(50, 50);
@@ -823,6 +824,7 @@ namespace DataCapturer
       this.Controls.Add(this.ButtonBack);
       this.Controls.Add(this.ButtonNext);
       this.Controls.Add(this.TabControlMain);
+      this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
       this.Location = new System.Drawing.Point(0, 0);
       this.MetroFont = new System.Drawing.Font("Segoe UI Light", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.Name = "DataCapturer";

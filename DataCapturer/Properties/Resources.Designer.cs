@@ -113,6 +113,16 @@ namespace DataCapturer.Properties {
         /// <summary>
         ///   查詢類型 System.Drawing.Bitmap 的當地語系化資源。
         /// </summary>
+        internal static System.Drawing.Bitmap startLogo {
+            get {
+                object obj = ResourceManager.GetObject("startLogo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        /// </summary>
         internal static System.Drawing.Bitmap Undo_icon {
             get {
                 object obj = ResourceManager.GetObject("Undo_icon", resourceCulture);

@@ -105,6 +105,7 @@ namespace DataCapturer
 #if DEBUG
       UpdateImageInput(); // 測試用
 #endif
+      Focus();
     }
     #endregion
 
@@ -996,6 +997,10 @@ namespace DataCapturer
     }
     private void DataCapturer_Resize(object sender, EventArgs e)
     {
+      if (this.Tag == null)
+      {
+        return;
+      }
       ControlAnchor formAnchor = (ControlAnchor)this.Tag;
       float WidthRatio = (float)this.Width / formAnchor.Width;
       float HeightRatio = (float)this.Height / formAnchor.Height;

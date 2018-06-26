@@ -7,35 +7,44 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
+using MyLibrary.Classes;
+using System.Diagnostics;
+using MyLibrary.Methods;
+using System.Threading;
 
 namespace DataCapturer
 {
   public partial class StartMovie : Form
   {
+
     public StartMovie()
     {
       InitializeComponent();
 
-      timer1.Enabled = true;
-      timer1.Interval = 450;//0.45秒觸發一次
+      backgroundWorker1.RunWorkerAsync();
     }
-    
-    private void timer1_Tick(object sender, EventArgs e)
+
+    private float moviePercentage = 0;
+    private PixelImage image = new PixelImage(Properties.Resources.icon5);
+    private PixelImage display;
+    private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
     {
-      progressBar1.Increment(10);
-      this.axShockwaveFlash1.Forward();
-      if (progressBar1.Value == 100)
+      while (moviePercentage < 1)
       {
-        timer1.Stop();
-        this.axShockwaveFlash1.Stop();
-        this.Close();
+        display = Drawing.Fade(image, moviePercentage);
+        pictureBox1.InvokeIfRequired(new Action(() => { pictureBox1.Image = display.Bitmap; }));
+        moviePercentage += 0.01f;
       }
+      Thread.Sleep(500);
     }
-
-    private void StartMovie_Load(object sender, EventArgs e)
+    private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
     {
-      axShockwaveFlash1.LoadMovie(0, Application.StartupPath + "\\cloud.swf");
-
+      this.Hide();
+      var dataCapturer = new DataCapturer();
+      dataCapturer.BringToFront();
+      dataCapturer.ShowDialog(this);
+      this.Close();
     }
   }
 }
