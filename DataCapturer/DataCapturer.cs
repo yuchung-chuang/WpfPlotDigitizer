@@ -1063,11 +1063,11 @@ namespace DataCapturer
         control.Top = (int)(controlAnchor.Top * HeightRatio);
       }
     }
-
-
-
     #endregion
 
+    private void TabPage1_Click(object sender, EventArgs e)
+    {
 
+    }
   }
 }

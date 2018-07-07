@@ -79,6 +79,7 @@ namespace DataCapturer
       this.BackgroundWorker = new System.ComponentModel.BackgroundWorker();
       this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
       this.pictureBox1 = new System.Windows.Forms.PictureBox();
+      this.metroLabel3 = new MetroFramework.Controls.MetroLabel();
       ((System.ComponentModel.ISupportInitialize)(this.PictureBoxGetAxis)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.PictureBoxFilter)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.PictureBoxOutput)).BeginInit();
@@ -523,7 +524,6 @@ namespace DataCapturer
       // 
       // RedoButton
       // 
-      this.RedoButton.Image = global::DataCapturer.Properties.Resources.Redo_icon;
       this.RedoButton.Location = new System.Drawing.Point(15, 354);
       this.RedoButton.Name = "RedoButton";
       this.RedoButton.Size = new System.Drawing.Size(60, 60);
@@ -539,7 +539,6 @@ namespace DataCapturer
       // 
       // UndoButton
       // 
-      this.UndoButton.Image = global::DataCapturer.Properties.Resources.Undo_icon;
       this.UndoButton.Location = new System.Drawing.Point(15, 157);
       this.UndoButton.Name = "UndoButton";
       this.UndoButton.Size = new System.Drawing.Size(60, 60);
@@ -744,6 +743,7 @@ namespace DataCapturer
       this.TabPage1.VerticalScrollbarBarColor = true;
       this.TabPage1.VerticalScrollbarHighlightOnWheel = false;
       this.TabPage1.VerticalScrollbarSize = 10;
+      this.TabPage1.Click += new System.EventHandler(this.TabPage1_Click);
       // 
       // TabControlMain
       // 
@@ -757,7 +757,7 @@ namespace DataCapturer
       this.TabControlMain.Location = new System.Drawing.Point(23, 83);
       this.TabControlMain.MetroFont = new System.Drawing.Font("Segoe UI Light", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
       this.TabControlMain.Name = "TabControlMain";
-      this.TabControlMain.SelectedIndex = 4;
+      this.TabControlMain.SelectedIndex = 0;
       this.TabControlMain.Size = new System.Drawing.Size(969, 615);
       this.TabControlMain.Style = MetroFramework.MetroColorStyle.Blue;
       this.TabControlMain.StyleManager = null;
@@ -815,7 +815,7 @@ namespace DataCapturer
       // 
       // pictureBox1
       // 
-      this.pictureBox1.Image = global::DataCapturer.Properties.Resources.icon6;
+      this.pictureBox1.Image = global::DataCapturer.Properties.Resources.icon81;
       this.pictureBox1.Location = new System.Drawing.Point(6, 18);
       this.pictureBox1.Name = "pictureBox1";
       this.pictureBox1.Size = new System.Drawing.Size(50, 50);
@@ -823,11 +823,28 @@ namespace DataCapturer
       this.pictureBox1.TabIndex = 3;
       this.pictureBox1.TabStop = false;
       // 
+      // metroLabel3
+      // 
+      this.metroLabel3.AutoSize = true;
+      this.metroLabel3.CustomBackground = false;
+      this.metroLabel3.LabelMode = MetroFramework.Controls.MetroLabelMode.Default;
+      this.metroLabel3.Location = new System.Drawing.Point(62, 18);
+      this.metroLabel3.MetroFont = new System.Drawing.Font("Segoe UI Light", 35F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+      this.metroLabel3.Name = "metroLabel3";
+      this.metroLabel3.Size = new System.Drawing.Size(217, 47);
+      this.metroLabel3.Style = MetroFramework.MetroColorStyle.Blue;
+      this.metroLabel3.StyleManager = null;
+      this.metroLabel3.TabIndex = 5;
+      this.metroLabel3.Text = "DataCapturer";
+      this.metroLabel3.Theme = MetroFramework.MetroThemeStyle.Light;
+      this.metroLabel3.UseStyleColors = false;
+      // 
       // DataCapturer
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
       this.ClientSize = new System.Drawing.Size(1015, 776);
+      this.Controls.Add(this.metroLabel3);
       this.Controls.Add(this.pictureBox1);
       this.Controls.Add(this.ButtonBack);
       this.Controls.Add(this.ButtonNext);
@@ -836,7 +853,6 @@ namespace DataCapturer
       this.Location = new System.Drawing.Point(0, 0);
       this.MetroFont = new System.Drawing.Font("Segoe UI Light", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.Name = "DataCapturer";
-      this.Text = "    Data Capturer";
       this.Load += new System.EventHandler(this.DataCapturer_Load);
       this.Resize += new System.EventHandler(this.DataCapturer_Resize);
       ((System.ComponentModel.ISupportInitialize)(this.PictureBoxGetAxis)).EndInit();
@@ -857,6 +873,7 @@ namespace DataCapturer
       this.TabPage2.PerformLayout();
       ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
       this.ResumeLayout(false);
+      this.PerformLayout();
 
 		}
 
@@ -911,6 +928,7 @@ namespace DataCapturer
     private System.Windows.Forms.PictureBox pictureBox1;
     private MyLibrary.Controls.ImageViewer ImageViewerSetAxLim;
     private MyLibrary.Controls.ImageViewer ImageViewerErase;
+    private MetroFramework.Controls.MetroLabel metroLabel3;
   }
 }
 
