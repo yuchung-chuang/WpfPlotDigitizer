@@ -92,6 +92,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -119,13 +120,20 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\WinForm\MyLibrary\MyLibrary\MyLibrary.csproj">
-      <Project>{aa4b8910-6e55-4f05-8037-0ee24933f1b5}</Project>
-      <Name>MyLibrary</Name>
+    <ProjectReference Include="..\..\CycWpfLibrary\CycWpfLibrary\CycWpfLibrary.csproj">
+      <Project>{dc9b1571-60b9-48d4-a147-24820d8e895b}</Project>
+      <Name>CycWpfLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="FodyWeavers.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\Lenna_%28test_image%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Model\" />
+    <Folder Include="ViewModels\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.3.2.8\build\Fody.targets" Condition="Exists('..\packages\Fody.3.2.8\build\Fody.targets')" />
