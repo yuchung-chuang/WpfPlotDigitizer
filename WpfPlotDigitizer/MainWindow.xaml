@@ -15,7 +15,10 @@
   </mahapps:MetroWindow.DataContext>
   <Grid>
 
-    <TabControl TabStripPlacement="Top">
+    <TabControl Name="tabcontrolMain"
+                TabStripPlacement="Top"
+                SelectedIndex="{Binding TabIndex}"
+                Margin="20">
       <TabControl.Resources>
         <Style x:Key="TabItemStyle1"
                TargetType="{x:Type TabItem}">
@@ -350,6 +353,7 @@
       </TabControl.Resources>
       <TabItem Header="1. Select your Image  ">
         <Grid>
+
           <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
@@ -377,5 +381,25 @@
       <TabItem Header="5. Data point size  " />
       <TabItem Header="6. Save your data  " />
     </TabControl>
+    <Button Name="btnNext"
+            Width="100"
+            Height="40"
+            FontSize="20"
+            VerticalAlignment="Bottom"
+            HorizontalAlignment="Right"
+            Margin="10"
+            Command="{Binding NextTabCommand}">
+      Next
+    </Button>
+    <Button Name="btnBack"
+            Width="100"
+            Height="40"
+            FontSize="20"
+            VerticalAlignment="Bottom"
+            HorizontalAlignment="Left"
+            Margin="10"
+            Command="{Binding BackTabCommand}">
+      Back
+    </Button>
   </Grid>
 </mahapps:MetroWindow>
