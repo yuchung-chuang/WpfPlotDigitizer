@@ -26,7 +26,11 @@ namespace WpfPlotDigitizer
     public MainWindow()
     {
       InitializeComponent();
-      DataContext = new MainWindowViewModel(tabcontrolMain);
+      DataContext = new MainWindowViewModel
+      {
+        tabControlMain = tabcontrolMain,
+        imageAxis = imageAxis,
+      };
     }
   }
 }

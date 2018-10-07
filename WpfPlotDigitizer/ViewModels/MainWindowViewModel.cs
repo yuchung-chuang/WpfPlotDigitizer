@@ -1,80 +1,98 @@
-﻿using CycWpfLibrary.MVVM;
+﻿using CycWpfLibrary.Media;
+using CycWpfLibrary.MVVM;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
-using CycWpfLibrary.Media;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace WpfPlotDigitizer
 {
   public class MainWindowViewModel : ViewModelBase
   {
+    public BitmapSource bitmapSourceInput => pixelBitmapInput?.ToBitmapSource();
+    public BitmapSource bitmapSourceAxis => pixelBitmapAxis?.ToBitmapSource();
+
+    private PixelBitmap pixelBitmapInput { get; set; }
+    private PixelBitmap pixelBitmapFilterW { get; set; }
+    private PixelBitmap pixelBitmapAxis { get; set; }
+    private PixelBitmap pixelBitmapFilterRGB { get; set; }
+
     public MainWindowViewModel()
     {
       OpenFileCommand = new RelayCommand(OpenFile);
       NextTabCommand = new RelayCommand(NextTab, CanNextTab);
       BackTabCommand = new RelayCommand(BackTab, CanBackTab);
     }
-    public MainWindowViewModel(TabControl tabControl) : this()
-    {
-      this.tabControl = tabControl;
-    }
 
-    public ICommand OpenFileCommand { get; set; } 
-    public BitmapSource bitmapSourceInput { get; set; }
-    private PixelBitmap pixelBitmapInput;
-    private PixelBitmap pixelBitmapFilterW;
-    public void OpenFile()
-    {
-      var dialog = new OpenFileDialog();
-      dialog.Filter = "Image | *.png; *.jpg;";
-      if (dialog.ShowDialog() == false)
-      {
-        return;
-      }
-      bitmapSourceInput = new BitmapImage(new Uri(dialog.FileName));
-      pixelBitmapInput = (bitmapSourceInput as BitmapImage).ToPixelBitmap();
-
-      pixelBitmapFilterW = pixelBitmapInput.Clone() as PixelBitmap;
-      pixelBitmapFilterW.Pixel = pixelBitmapInput.FilterW();
-
-
-    }
-
-    
-    private PixelBitmap pixelBitmapAxis;
-    private PixelBitmap pixelBitmapFilterRGB;
-
-    public TabControl tabControl; // not MVVM design! 
-    public int TabIndex { get; set; } = 0; 
-    public ICommand NextTabCommand { get; set; } 
+    public TabControl tabControlMain; // not MVVM design! 
+    public int TabIndex { get; set; } = 0;
+    public ICommand NextTabCommand { get; set; }
     public ICommand BackTabCommand { get; set; }
-    public void NextTab()
+    private void NextTab()
     {
       TabIndex++;
     }
-    public bool CanNextTab()
+    private bool CanNextTab()
     {
-      return tabControl == null || TabIndex < tabControl.Items.Count - 1;
+      return tabControlMain == null || TabIndex < tabControlMain.Items.Count - 1;
     }
-    public void BackTab()
+    private void BackTab()
     {
       TabIndex--;
     }
-    public bool CanBackTab()
+    private bool CanBackTab()
     {
       return TabIndex > 0;
     }
 
+    public ICommand OpenFileCommand { get; set; }
+    public void OpenFile()
+    {
+      var dialog = new OpenFileDialog();
+      dialog.Filter = "Images (*.png, *.jpg)| *.png; *.PNG; *.jpg; *.JPG |All (*.*)|*.*";
+      if (dialog.ShowDialog() == false)
+      {
+        return;
+      }
+      pixelBitmapInput = new BitmapImage(new Uri(dialog.FileName)).ToPixelBitmap();
 
-    public ICommand ManualGetAxes { get; set; }
-    public ICommand AutoGetAxes { get; set; }
+      pixelBitmapFilterW = pixelBitmapInput.Clone() as PixelBitmap;
+      pixelBitmapFilterW.Pixel = pixelBitmapInput.FilterW();
+      pixelBitmapAxis = pixelBitmapFilterW.Clone() as PixelBitmap;
+      AxisOriginal = pixelBitmapAxis.GetAxis();
+      NextTab();
+      imageAxis.LayoutUpdated += ImageAxis_LayoutUpdated;
+
+    }
+
+    public Image imageAxis { get; set; } //not MVVM!!
+    private void ImageAxis_LayoutUpdated(object sender, EventArgs e)
+    {
+      AutoGetAxis();
+    }
+
+    public ICommand AutoGetAxisCommand { get; set; }
+    private (Size size, Point pos) AxisOriginal { get; set; }
+    public double AxisWidth { get; set; }
+    public double AxisHeight { get; set; }
+    public double AxisLeft { get; set; }
+    public double AxisTop { get; set; }
+    private void AutoGetAxis()
+    {
+      var ratio = imageAxis.ActualWidth / pixelBitmapAxis.Width;
+      AxisWidth = AxisOriginal.size.Width * ratio;
+      AxisHeight = AxisOriginal.size.Height * ratio;
+      AxisLeft = AxisOriginal.pos.X * ratio;
+      AxisTop = AxisOriginal.pos.Y * ratio;
+    }
+
+    public ICommand ManualGetAxisCommand { get; set; }
   }
 }

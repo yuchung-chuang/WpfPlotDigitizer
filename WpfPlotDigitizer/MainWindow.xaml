@@ -18,7 +18,7 @@
     <TabControl Name="tabcontrolMain"
                 TabStripPlacement="Top"
                 SelectedIndex="{Binding TabIndex}"
-                Margin="20">
+                Margin="20,20,20,40">
       <TabControl.Resources>
         <Style x:Key="TabItemStyle1"
                TargetType="{x:Type TabItem}">
@@ -358,7 +358,8 @@
             <RowDefinition Height="auto" />
           </Grid.RowDefinitions>
           <Border Margin="20"
-                  Background="LightGray">
+                  BorderBrush="Black"
+                  BorderThickness="1">
             <Image Name="imageBrowse"
                    Source="{Binding bitmapSourceInput}" />
           </Border>
@@ -375,16 +376,32 @@
       </TabItem>
       <TabItem Header="2. Get axes  ">
         <Grid>
-          <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="auto" />
-          </Grid.RowDefinitions>
-          <Border Margin="20"
-                  Background="LightGray">
-            <Image Name="imageAxes"
-                   Source="{Binding }" />
-          </Border>
-          <Grid Grid.Row="1">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto" />
+          </Grid.ColumnDefinitions>
+
+          <Canvas Margin="20">
+            
+              <Border BorderBrush="Black"
+                      BorderThickness="1">
+                <Image Name="imageAxis"
+                       Source="{Binding bitmapSourceInput}" 
+                       MaxHeight="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Canvas}, Path=ActualHeight}"
+                       MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Canvas}, Path=ActualWidth}"/>
+              </Border>
+
+            <Rectangle Name="rectAxis"
+                       Stroke="#FFFC0000"
+                       Width="{Binding AxisWidth}"
+                       Height="{Binding AxisHeight}"
+                       Canvas.Left="{Binding AxisLeft }"
+                       Canvas.Top="{Binding AxisTop}">
+            </Rectangle>
+              
+          </Canvas>
+
+          <Grid Grid.Column="1">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="auto" />
