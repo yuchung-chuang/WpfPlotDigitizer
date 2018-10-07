@@ -4,9 +4,9 @@
                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                      xmlns:local="clr-namespace:WpfPlotDigitizer"
-                     mc:Ignorable="d"                     xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
-
- WindowStartupLocation="CenterScreen"
+                     mc:Ignorable="d"
+                     xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
+                     WindowStartupLocation="CenterScreen"
                      Title="MainWindow"
                      Height="600"
                      Width="900">
@@ -353,16 +353,14 @@
       </TabControl.Resources>
       <TabItem Header="1. Select your Image  ">
         <Grid>
-
           <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
           </Grid.RowDefinitions>
           <Border Margin="20"
                   Background="LightGray">
-            <Image Name="imageBrowse" 
-                   Source="{Binding ImageSource}"
-                   />
+            <Image Name="imageBrowse"
+                   Source="{Binding bitmapSourceInput}" />
           </Border>
           <Button Name="btnBrowse"
                   Grid.Row="1"
@@ -375,7 +373,45 @@
           </Button>
         </Grid>
       </TabItem>
-      <TabItem Header="2. Get axes  " />
+      <TabItem Header="2. Get axes  ">
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+          </Grid.RowDefinitions>
+          <Border Margin="20"
+                  Background="LightGray">
+            <Image Name="imageAxes"
+                   Source="{Binding }" />
+          </Border>
+          <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="auto" />
+              <ColumnDefinition Width="auto" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Name="btnManual"
+                    Grid.Column="1"
+                    Margin="10"
+                    Width="100"
+                    Height="40"
+                    FontSize="15"
+                    Command="{Binding }">
+              Manual
+            </Button>
+            <Button Name="btnAuto"
+                    Grid.Column="2"
+                    Margin="10"
+                    Width="100"
+                    Height="40"
+                    FontSize="15"
+                    Command="{Binding }">
+              Auto
+            </Button>
+          </Grid>
+        </Grid>
+      </TabItem>
       <TabItem Header="3. Apply filters  " />
       <TabItem Header="4. Erase stains  " />
       <TabItem Header="5. Data point size  " />

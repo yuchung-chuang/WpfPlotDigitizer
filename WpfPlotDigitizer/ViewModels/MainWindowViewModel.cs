@@ -2,11 +2,15 @@
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
+using CycWpfLibrary.Media;
+using System.Windows.Media;
 
 namespace WpfPlotDigitizer
 {
@@ -24,7 +28,9 @@ namespace WpfPlotDigitizer
     }
 
     public ICommand OpenFileCommand { get; set; } 
-    public Uri ImageSource { get; set; } 
+    public BitmapSource bitmapSourceInput { get; set; }
+    private PixelBitmap pixelBitmapInput;
+    private PixelBitmap pixelBitmapFilterW;
     public void OpenFile()
     {
       var dialog = new OpenFileDialog();
@@ -33,8 +39,18 @@ namespace WpfPlotDigitizer
       {
         return;
       }
-      ImageSource = new Uri(dialog.FileName);
+      bitmapSourceInput = new BitmapImage(new Uri(dialog.FileName));
+      pixelBitmapInput = (bitmapSourceInput as BitmapImage).ToPixelBitmap();
+
+      pixelBitmapFilterW = pixelBitmapInput.Clone() as PixelBitmap;
+      pixelBitmapFilterW.Pixel = pixelBitmapInput.FilterW();
+
+
     }
+
+    
+    private PixelBitmap pixelBitmapAxis;
+    private PixelBitmap pixelBitmapFilterRGB;
 
     public TabControl tabControl; // not MVVM design! 
     public int TabIndex { get; set; } = 0; 
@@ -56,5 +72,9 @@ namespace WpfPlotDigitizer
     {
       return TabIndex > 0;
     }
+
+
+    public ICommand ManualGetAxes { get; set; }
+    public ICommand AutoGetAxes { get; set; }
   }
 }
