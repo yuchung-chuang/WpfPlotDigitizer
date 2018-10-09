@@ -396,9 +396,28 @@
                        Width="{Binding AxisWidth}"
                        Height="{Binding AxisHeight}"
                        Canvas.Left="{Binding AxisLeft }"
-                       Canvas.Top="{Binding AxisTop}">
-            </Rectangle>
-              
+                       Canvas.Top="{Binding AxisTop}" 
+                       />
+            <Ellipse Fill="Blue"
+                     Width="5"
+                     Height="5"
+                     Canvas.Left="{Binding AxisLeft}"
+                     Canvas.Top="{Binding AxisTop}"/>
+            <Ellipse Fill="Blue"
+                     Width="5"
+                     Height="5"
+                     Canvas.Left="{Binding AxisRight}"
+                     Canvas.Top="{Binding AxisBottom}" />
+            <Ellipse Fill="Blue"
+                     Width="5"
+                     Height="5"
+                     Canvas.Left="{Binding RTLeft}"
+                     Canvas.Top="{Binding RTTop}" />
+            <Ellipse Fill="Blue"
+                     Width="5"
+                     Height="5"
+                     Canvas.Left="{Binding LBLeft}"
+                     Canvas.Top="{Binding LBTop}" />
           </Canvas>
 
           <Grid Grid.Column="1">

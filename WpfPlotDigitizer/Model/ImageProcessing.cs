@@ -4,7 +4,9 @@ using System.Linq;
 using System.Diagnostics;
 using System.Windows;
 using static CycWpfLibrary.Math;
+using CycWpfLibrary;
 using System;
+using System.Windows.Controls;
 
 namespace WpfPlotDigitizer
 {
@@ -24,14 +26,13 @@ namespace WpfPlotDigitizer
       return optPixel;
     }
 
-    private static bool IsGetAxis(Size AxSize) => (AxSize.Width > 0 && AxSize.Height > 0) ? true : false;
+    private static bool IsGetAxis(Rect AxRect) => (AxRect.Width > 0 && AxRect.Height > 0) ? true : false;
     private static bool IsColor(byte[] pixel, int i) => pixel[i + 3] != 0;
-    public static (Size size, Point pos) GetAxisVer1(this PixelBitmap iptImage)
+    public static Rect GetLongestAxis(this PixelBitmap iptImage)
     {
       int L = 0, xTmp = 0, yTmp = 0, idx;
       int width = iptImage.Width, height = iptImage.Height;
-      var AxSize = new Size();
-      var AxPos = new Point();
+      var AxRect = new Rect();
       for (int x = 0; x < width / 2; x++)
       {
         L = 0; yTmp = 0;
@@ -47,10 +48,10 @@ namespace WpfPlotDigitizer
           }
           else //中斷紀錄
           {
-            if (L > AxSize.Height) //確認是否比紀錄的最大值還大
+            if (L > AxRect.Height) //確認是否比紀錄的最大值還大
             {
-              AxPos.Y = yTmp;
-              AxSize.Height = L;
+              AxRect.Y = yTmp;
+              AxRect.Height = L;
             }
             L = 0; //長度歸零
           }
@@ -71,21 +72,21 @@ namespace WpfPlotDigitizer
           }
           else //中斷紀錄
           {
-            if (L > AxSize.Width) //確認是否比紀錄的最大值還大
+            if (L > AxRect.Width) //確認是否比紀錄的最大值還大
             {
-              AxPos.X = xTmp;
-              AxSize.Width = L;
+              AxRect.X = xTmp;
+              AxRect.Width = L;
             }
             L = 0; //長度歸零
           }
         }
       }
 
-      Debug.Assert(IsGetAxis(AxSize));
-      return (AxSize, AxPos);
+      Debug.Assert(IsGetAxis(AxRect));
+      return AxRect;
     }
 
-    public static bool IsAxisLeftTop(Point pos, PixelBitmap iptImage)
+    private static bool IsAxisLeftTop(Point pos, PixelBitmap iptImage)
     {
       var width = iptImage.Width;
       var height = iptImage.Height;
@@ -109,7 +110,7 @@ namespace WpfPlotDigitizer
       }
       return true;
     }
-    public static Point GetAxisLeftTop(PixelBitmap iptImage)
+    private static Point GetAxisLeftTop(PixelBitmap iptImage)
     {
       var width = iptImage.Width;
       var height = iptImage.Height;
@@ -137,7 +138,7 @@ namespace WpfPlotDigitizer
       // Fail
       return new Point(-1,-1);
     }
-    public static bool IsAxisRightBottom(Point pos, PixelBitmap iptImage)
+    private static bool IsAxisRightBottom(Point pos, PixelBitmap iptImage)
     {
       var width = iptImage.Width;
       var height = iptImage.Height;
@@ -189,21 +190,117 @@ namespace WpfPlotDigitizer
       // Fail
       return new Point(-1, -1);
     }
-    public static (Size size, Point pos) GetAxis(this PixelBitmap iptImage)
+    public static (Point LT, Point RB) GetAxisPos(this PixelBitmap iptImage)
     {
       var AxisLTPos = GetAxisLeftTop(iptImage);
       var AxisRBPos = GetAxisRightBottom(iptImage);
       if (AxisLTPos.X < 0 || AxisRBPos.X < 0)
       {
         //Fail
-        return (new Size(), new Point());
+        return (new Point(-1, -1), new Point(-1, -1));
       }
       else
       {
-        var AxisSize = new Size(AxisRBPos.X - AxisLTPos.X, AxisRBPos.Y - AxisLTPos.Y);
-        return (AxisSize, AxisLTPos);
+        //var AxisSize = new Size(AxisRBPos.X - AxisLTPos.X, AxisRBPos.Y - AxisLTPos.Y);
+        //return (AxisSize, AxisLTPos);
+        return (AxisLTPos, AxisRBPos);
       }
     }
+
+    private static bool IsAxisLT(byte[,,] pixel3, Point pos)
+    {
+      var width = pixel3.GetLength(0);
+      var height = pixel3.GetLength(1);
+      var yTmp = (int)pos.Y;
+      for (int x = (int)pos.X; x < pos.X + width / 2; x++)
+      {
+        if (pixel3[x, yTmp, 0] == 0)
+        {
+          return false;
+        }
+      }
+
+      var xTmp = (int)pos.X;
+      for (int y = (int)pos.Y; y < pos.Y + height / 2; y++)
+      {
+        if (pixel3[xTmp, y, 0] == 0)
+        {
+          return false;
+        }
+      }
+      return true;
+    }
+    private static Point GetAxisLT(byte[,,] pixel3)
+    {
+      var width = pixel3.GetLength(0);
+      var height = pixel3.GetLength(1);
+      Vector[] dirs = { new Vector(1, 0), new Vector(-1, 1), new Vector(0, 1), new Vector(1, -1) };
+      var pos = new Point(0, 0);
+      var dirID = 0;
+      while (pos.X < width / 2 && pos.Y < height / 2)
+      {
+        if (IsAxisLT(pixel3, pos))
+        {
+          return pos;
+        }
+
+        pos += dirs[dirID];
+        if (!IsIn(pos.X, width / 2, 0, true) ||
+          !IsIn(pos.Y, height / 2, 0, true))
+        {
+          dirID++;
+          if (dirID > 3)
+          {
+            dirID = 0;
+          }
+        }
+      }
+      // Fail
+      return new Point(-1, -1);
+    }
+    private static Point GetAxisLB(byte[,,] pixel3)
+    {
+      var pixel3Tmp = pixel3.RotateClockwise();
+
+      var pixelBitmap = new PixelBitmap(pixel3Tmp);
+      pixelBitmap.ShowSnapShot();
+
+      var AxisPosTmp = GetAxisLT(pixel3Tmp);
+      return new Point(AxisPosTmp.Y,
+                        pixel3.GetLength(1) - AxisPosTmp.X);
+    }
+    private static Point GetAxisRB(byte[,,] pixel3)
+    {
+      var pixel3Tmp = pixel3.RotateClockwise(times: 2);
+
+      var pixelBitmap = new PixelBitmap(pixel3Tmp);
+      pixelBitmap.ShowSnapShot();
+
+      var AxisPosTmp = GetAxisLT(pixel3Tmp);
+      return new Point(pixel3.GetLength(0) - AxisPosTmp.X, 
+                        pixel3.GetLength(1) - AxisPosTmp.Y);
+    }
+    private static Point GetAxisRT(byte[,,] pixel3)
+    {
+      var pixel3Tmp = pixel3.RotateClockwise(times: 3);
+
+      var pixelBitmap = new PixelBitmap(pixel3Tmp);
+      pixelBitmap.ShowSnapShot();
+
+      var AxisPosTmp = GetAxisLT(pixel3Tmp);
+      return new Point(pixel3.GetLength(0) - AxisPosTmp.Y,
+                        AxisPosTmp.X);
+    }
+    public static (Point LT, Point RB, Point LB, Point RT) GetAxisPosV2(this PixelBitmap iptImage)
+    {
+      var pixel3 = iptImage.Pixel3;
+      var LT = GetAxisLT(pixel3);
+      var LB = GetAxisLB(pixel3);
+      var RT = GetAxisRT(pixel3);
+      var RB = GetAxisRB(pixel3);
+      return (LT, RB, LB,RT);
+    }
+
 
   }
 }

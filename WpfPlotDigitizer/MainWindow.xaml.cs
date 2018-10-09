@@ -31,6 +31,8 @@ namespace WpfPlotDigitizer
         tabControlMain = tabcontrolMain,
         imageAxis = imageAxis,
       };
+
+
     }
   }
 }
