@@ -55,10 +55,7 @@ namespace WpfPlotDigitizer
     public ICommand OpenFileCommand { get; set; }
     public void OpenFile()
     {
-#if DEBUG
 
-      pixelBitmapInput = new BitmapImage(new Uri("C:\\Users\\alex\\Desktop\\MATLAB\\side projects\\DataCapturer\\images\\Figure-1-Scatter-plot-comparing-log2-ratios-of-FPKM-expression-values-for-uninfected.png")).ToPixelBitmap();
-#else
       var dialog = new OpenFileDialog();
       dialog.Filter = "Images (*.png, *.jpg)| *.png; *.PNG; *.jpg; *.JPG |All (*.*)|*.*";
       if (dialog.ShowDialog() == false)
@@ -66,14 +63,14 @@ namespace WpfPlotDigitizer
         return;
       }
       pixelBitmapInput = new BitmapImage(new Uri(dialog.FileName)).ToPixelBitmap();
-#endif
+
       pixelBitmapFilterW = pixelBitmapInput.Clone() as PixelBitmap;
       pixelBitmapFilterW.Pixel = pixelBitmapInput.FilterW();
       pixelBitmapAxis = pixelBitmapFilterW.Clone() as PixelBitmap;
       //AxisOriginal = pixelBitmapAxis.GetLongestAxis();
 
-      AxisPos = pixelBitmapAxis.GetAxisPosV2();
-      AxisOriginal = new Rect(AxisPos.LT, AxisPos.RB);
+      AxisPos = pixelBitmapAxis.GetAxisPos();
+      AxisOriginal = new Rect(AxisPos.LT, AxisPos.RB + new Vector(1,1));
 
       NextTab();
       imageAxis.LayoutUpdated -= ImageAxis_LayoutUpdated;
@@ -94,28 +91,13 @@ namespace WpfPlotDigitizer
     public double AxisHeight { get; set; }
     public double AxisLeft { get; set; }
     public double AxisTop { get; set; }
-    public double AxisRight { get; set; }
-    public double AxisBottom { get; set; }
-
-    public double RTLeft { get; set; }
-    public double RTTop { get; set; }
-    public double LBLeft { get; set; }
-    public double LBTop { get; set; }
     private void AutoGetAxis()
     {
       var ratio = imageAxis.ActualWidth / pixelBitmapAxis.Width;
-
-      AxisRight = AxisPos.RB.X * ratio;
-      AxisBottom = AxisPos.RB.Y * ratio;
       AxisLeft = AxisOriginal.X * ratio;
       AxisTop = AxisOriginal.Y * ratio;
       AxisWidth = AxisOriginal.Width * ratio;
       AxisHeight = AxisOriginal.Height * ratio;
-
-      RTLeft = AxisPos.RT.X * ratio;
-      RTTop = AxisPos.RT.Y * ratio;
-      LBLeft = AxisPos.LB.X * ratio;
-      LBTop = AxisPos.LB.Y * ratio;
     }
 
     public ICommand ManualGetAxisCommand { get; set; }
