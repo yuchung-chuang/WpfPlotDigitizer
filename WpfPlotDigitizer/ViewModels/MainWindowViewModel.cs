@@ -65,12 +65,9 @@ namespace WpfPlotDigitizer
       pixelBitmapInput = new BitmapImage(new Uri(dialog.FileName)).ToPixelBitmap();
 
       pixelBitmapFilterW = pixelBitmapInput.Clone() as PixelBitmap;
-      pixelBitmapFilterW.Pixel = pixelBitmapInput.FilterW();
+      pixelBitmapFilterW.Pixel = ImageProcessing.FilterW(pixelBitmapInput);
       pixelBitmapAxis = pixelBitmapFilterW.Clone() as PixelBitmap;
-      //AxisOriginal = pixelBitmapAxis.GetLongestAxis();
-
-      AxisPos = pixelBitmapAxis.GetAxisPos();
-      AxisOriginal = new Rect(AxisPos.LT, AxisPos.RB + new Vector(1,1));
+      AxisOriginal = ImageProcessing.GetAxis(pixelBitmapAxis);
 
       NextTab();
       imageAxis.LayoutUpdated -= ImageAxis_LayoutUpdated;

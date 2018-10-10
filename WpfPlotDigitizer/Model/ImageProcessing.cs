@@ -8,7 +8,7 @@ namespace WpfPlotDigitizer
 {
   public static class ImageProcessing
   {
-    public static byte[] FilterW(this PixelBitmap iptImage, int white = 200)
+    public static byte[] FilterW(PixelBitmap iptImage, int white = 200)
     {
       byte blue, green, red;
       byte[] optPixel = (byte[])iptImage.Pixel.Clone(); // 複製值
@@ -27,12 +27,12 @@ namespace WpfPlotDigitizer
     /// <summary>
     /// 取得<paramref name="iptImage"/>中最長的縱軸與橫軸。
     /// </summary>
-    public static Rect GetLongestAxis(this PixelBitmap iptImage)
+    public static Rect GetLongestAxis(PixelBitmap iptImage)
     {
       int L = 0, xTmp = 0, yTmp = 0, idx;
       int width = iptImage.Width, height = iptImage.Height;
       var AxRect = new Rect();
-      for (int x = 0; x < width / 2; x++)
+      for (int x = 0; x < width; x++)
       {
         L = 0; yTmp = 0;
         for (int y = 0; y < height; y++)
@@ -56,7 +56,7 @@ namespace WpfPlotDigitizer
           }
         }
       }
-      for (int y = 0; y < height / 2; y++)
+      for (int y = 0; y < height; y++)
       {
         L = 0; xTmp = 0;
         for (int x = 0; x < width; x++)
@@ -196,17 +196,28 @@ namespace WpfPlotDigitizer
       return new Point(pixel3.GetLength(0) - AxisPosTmp.Y,
                         AxisPosTmp.X);
     }
-    public static (Point LT, Point RB, Point LB, Point RT) GetAxisPos(this PixelBitmap iptImage)
+    public static Rect GetAxisLtRb(PixelBitmap iptImage)
     {
       var pixel3 = iptImage.Pixel3;
       var LT = GetAxisLT(pixel3);
-      var LB = GetAxisLB(pixel3);
-      var RT = GetAxisRT(pixel3);
       var RB = GetAxisRB(pixel3);
-      return (LT, RB, LB, RT);
+      return new Rect(LT, RB + new Vector(1, 1));
     }
 
-    
+    private static int AxisTol = 20;
+    public static Rect GetAxis(PixelBitmap iptImage)
+    {
+      var axisTmp = GetAxisLtRb(iptImage);
+      if (iptImage.Width - axisTmp.Width < AxisTol ||
+        iptImage.Height - axisTmp.Height < AxisTol)
+      {
+        return GetLongestAxis(iptImage);
+      }
+      else
+      {
+        return axisTmp;
+      }
+    }
 
     #region Deprecated methods
     private static bool IsAxisLeftTop(Point pos, PixelBitmap iptImage)
@@ -313,7 +324,7 @@ namespace WpfPlotDigitizer
       // Fail
       return new Point(-1, -1);
     }
-    public static (Point LT, Point RB) GetAxisPosV1(this PixelBitmap iptImage)
+    public static (Point LT, Point RB) GetAxisPosV1(PixelBitmap iptImage)
     {
       var AxisLTPos = GetAxisLeftTop(iptImage);
       var AxisRBPos = GetAxisRightBottom(iptImage);
