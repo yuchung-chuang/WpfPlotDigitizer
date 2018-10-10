@@ -7,6 +7,7 @@
                      mc:Ignorable="d"
                      xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
                      WindowStartupLocation="CenterScreen"
+                     Loaded="MetroWindow_Loaded"
                      Title="MainWindow"
                      Height="600"
                      Width="900">
@@ -353,44 +354,36 @@
       </TabControl.Resources>
       <TabItem Header="1. Select your Image  ">
         <Grid>
-          <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="auto" />
-          </Grid.RowDefinitions>
-          <Border Margin="20"
-                  BorderBrush="Black"
-                  BorderThickness="1">
-            <Image Name="imageBrowse"
-                   Source="{Binding bitmapSourceInput}" />
-          </Border>
-          <Button Name="btnBrowse"
-                  Grid.Row="1"
-                  Margin="10"
-                  Width="100"
-                  Height="40"
-                  FontSize="15"
-                  Command="{Binding OpenFileCommand}">
-            Browse
-          </Button>
+          <TextBlock TextAlignment="Center">
+          <Hyperlink Command="{Binding OpenFileCommand}"
+                     TextDecorations="{x:Null}">
+              <Image Source="{Binding bitmapSourceInput}" />
+          </Hyperlink>
+          </TextBlock>
+
         </Grid>
       </TabItem>
       <TabItem Header="2. Get axes  ">
-        <Canvas Margin="20">
+        <Canvas Name="canvasAxis">
 
-          <Border BorderBrush="Black"
-                  BorderThickness="1">
-            <Image Name="imageAxis"
-                   Source="{Binding bitmapSourceInput}"
-                   MaxHeight="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Canvas}, Path=ActualHeight}"
-                   MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Canvas}, Path=ActualWidth}" />
-          </Border>
+<Grid Width="{Binding ElementName=canvasAxis, Path=ActualWidth}"
+                Height="{Binding ElementName=canvasAxis, Path=ActualHeight}">
+            <Border BorderBrush="Black"
+                    BorderThickness="1">
+              <Image Name="imageAxis"
+                     Source="{Binding bitmapSourceInput}"
+                     MaxHeight="{Binding ElementName=canvasAxis, Path=ActualHeight}"
+                     MaxWidth="{Binding ElementName=canvasAxis, Path=ActualWidth}" />
+            </Border>
 
-          <Rectangle Name="rectAxis"
-                     Stroke="#FFFC0000"
-                     Width="{Binding AxisWidth}"
-                     Height="{Binding AxisHeight}"
-                     Canvas.Left="{Binding AxisLeft }"
-                     Canvas.Top="{Binding AxisTop}" />
+            <Rectangle Name="rectAxis"
+                       Stroke="#FFFC0000"
+                       Width="{Binding AxisWidth}"
+                       Height="{Binding AxisHeight}"
+                       Canvas.Left="{Binding AxisLeft }"
+                       Canvas.Top="{Binding AxisTop}" />
+          </Grid>
+
         </Canvas>
       </TabItem>
       <TabItem Header="3. Apply filters  " />

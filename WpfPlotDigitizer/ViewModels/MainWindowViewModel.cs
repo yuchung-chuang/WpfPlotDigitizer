@@ -3,6 +3,7 @@ using CycWpfLibrary.MVVM;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using Bitmap = System.Drawing.Bitmap;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,6 +30,7 @@ namespace WpfPlotDigitizer
       OpenFileCommand = new RelayCommand(OpenFile);
       NextTabCommand = new RelayCommand(NextTab, CanNextTab);
       BackTabCommand = new RelayCommand(BackTab, CanBackTab);
+      pixelBitmapInput = new PixelBitmap(new Bitmap(@"images/ClickMe.png"));
     }
 
     public TabControl tabControlMain; // not MVVM design! 
