@@ -11,11 +11,14 @@
                      Title="MainWindow"
                      Height="600"
                      Width="900">
-  <mahapps:MetroWindow.DataContext>
+  <Window.Resources>
+    <BitmapImage x:Key="dataImage"
+                 UriSource="images/data.png" />
+  </Window.Resources>
+  <Window.DataContext>
     <local:MainWindowViewModel />
-  </mahapps:MetroWindow.DataContext>
+  </Window.DataContext>
   <Grid>
-
     <TabControl Name="tabcontrolMain"
                 TabStripPlacement="Top"
                 SelectedIndex="{Binding TabIndex}"
@@ -357,7 +360,7 @@
           <TextBlock TextAlignment="Center">
           <Hyperlink Command="{Binding OpenFileCommand}"
                      TextDecorations="{x:Null}">
-              <Image Source="{Binding bitmapSourceInput}" />
+              <Image Source="{Binding bitmapSourceInput, FallbackValue={StaticResource dataImage}}" />
           </Hyperlink>
           </TextBlock>
 
@@ -366,23 +369,90 @@
       <TabItem Header="2. Get axes  ">
         <Canvas Name="canvasAxis">
 
-<Grid Width="{Binding ElementName=canvasAxis, Path=ActualWidth}"
-                Height="{Binding ElementName=canvasAxis, Path=ActualHeight}">
-            <Border BorderBrush="Black"
-                    BorderThickness="1">
-              <Image Name="imageAxis"
-                     Source="{Binding bitmapSourceInput}"
-                     MaxHeight="{Binding ElementName=canvasAxis, Path=ActualHeight}"
-                     MaxWidth="{Binding ElementName=canvasAxis, Path=ActualWidth}" />
-            </Border>
+          <Border Name="imageAxisBorder"
+                  BorderBrush="Black"
+                  BorderThickness="1">
+            <Image Name="imageAxis"
+                   Source="{Binding bitmapSourceInput, FallbackValue={StaticResource dataImage}}"
+                   MaxHeight="{Binding ElementName=canvasAxis, Path=ActualHeight}"
+                   MaxWidth="{Binding ElementName=canvasAxis, Path=ActualWidth}" />
+          </Border>
 
-            <Rectangle Name="rectAxis"
-                       Stroke="#FFFC0000"
-                       Width="{Binding AxisWidth}"
-                       Height="{Binding AxisHeight}"
-                       Canvas.Left="{Binding AxisLeft }"
-                       Canvas.Top="{Binding AxisTop}" />
-          </Grid>
+          <Line Stroke="#FFFC0000"
+                StrokeThickness="2"
+                X1="{Binding AxisLeft, FallbackValue=62.7}"
+                Y1="{Binding AxisTop, FallbackValue=14.4}"
+                X2="{Binding AxisRight, FallbackValue=601.4}"
+                Y2="{Binding AxisTop, FallbackValue= 14.4}">
+            <Line.Style>
+              <Style TargetType="Line">
+                <Style.Triggers>
+                  <Trigger Property="IsMouseOver"
+                           Value="true">
+                    <Setter Property="Cursor"
+                            Value="SizeNS" />
+                  </Trigger>
+                </Style.Triggers>
+              </Style>
+            </Line.Style>
+          </Line>
+          <Line Stroke="#FFFC0000"
+                StrokeThickness="2"
+                X1="{Binding AxisLeft, FallbackValue=62.7}"
+                Y1="{Binding AxisTop, FallbackValue=14.4}"
+                X2="{Binding AxisLeft, FallbackValue=62.7}"
+                Y2="{Binding AxisBottom, FallbackValue=408.9}">
+            <Line.Style>
+              <Style TargetType="Line">
+                <Style.Triggers>
+                  <Trigger Property="IsMouseOver"
+                           Value="true">
+                    <Setter Property="Cursor"
+                            Value="SizeWE" />
+                  </Trigger>
+                </Style.Triggers>
+              </Style>
+            </Line.Style>
+          </Line>
+          <Line Stroke="#FFFC0000"
+                StrokeThickness="2"
+                X1="{Binding AxisLeft, FallbackValue=62.7}"
+                Y1="{Binding AxisBottom, FallbackValue=408.9}"
+                X2="{Binding AxisRight, FallbackValue=601.4}"
+                Y2="{Binding AxisBottom, FallbackValue=408.9}">
+            <Line.Style>
+              <Style TargetType="Line">
+                <Style.Triggers>
+                  <Trigger Property="IsMouseOver"
+                           Value="true">
+                    <Setter Property="Cursor"
+                            Value="SizeNS" />
+                  </Trigger>
+                </Style.Triggers>
+              </Style>
+            </Line.Style>
+          </Line>
+          <Line Stroke="#FFFC0000"
+                StrokeThickness="2"
+                X1="{Binding AxisRight, FallbackValue=601.4}"
+                Y1="{Binding AxisTop, FallbackValue=14.4}"
+                X2="{Binding AxisRight, FallbackValue=601.4}"
+                Y2="{Binding AxisBottom, FallbackValue=408.9}">
+            <Line.Style>
+              <Style TargetType="Line">
+                <Style.Triggers>
+                  <Trigger Property="IsMouseOver"
+                           Value="true">
+                    <Setter Property="Cursor"
+                            Value="SizeWE" />
+                  </Trigger>
+                </Style.Triggers>
+              </Style>
+            </Line.Style>
+          </Line>
+
+
+
 
         </Canvas>
       </TabItem>

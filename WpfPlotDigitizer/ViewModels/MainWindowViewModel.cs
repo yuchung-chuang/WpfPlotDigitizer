@@ -2,15 +2,10 @@
 using CycWpfLibrary.MVVM;
 using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using Bitmap = System.Drawing.Bitmap;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace WpfPlotDigitizer
@@ -20,10 +15,10 @@ namespace WpfPlotDigitizer
     public BitmapSource bitmapSourceInput => pixelBitmapInput?.ToBitmapSource();
     public BitmapSource bitmapSourceAxis => pixelBitmapAxis?.ToBitmapSource();
 
-    private PixelBitmap pixelBitmapInput { get; set; }
-    private PixelBitmap pixelBitmapFilterW { get; set; }
-    private PixelBitmap pixelBitmapAxis { get; set; }
-    private PixelBitmap pixelBitmapFilterRGB { get; set; }
+    protected PixelBitmap pixelBitmapInput { get; set; }
+    protected PixelBitmap pixelBitmapFilterW { get; set; }
+    protected PixelBitmap pixelBitmapAxis { get; set; }
+    protected PixelBitmap pixelBitmapFilterRGB { get; set; }
 
     public MainWindowViewModel()
     {
@@ -71,33 +66,28 @@ namespace WpfPlotDigitizer
       pixelBitmapAxis = pixelBitmapFilterW.Clone() as PixelBitmap;
       AxisOriginal = ImageProcessing.GetAxis(pixelBitmapAxis);
 
-      NextTab();
       imageAxis.LayoutUpdated -= ImageAxis_LayoutUpdated;
       imageAxis.LayoutUpdated += ImageAxis_LayoutUpdated;
 
+      NextTab();
     }
 
     public Image imageAxis { get; set; } //not MVVM!!
     private void ImageAxis_LayoutUpdated(object sender, EventArgs e)
     {
-      AutoGetAxis();
+      imageRatio = imageAxis.ActualWidth / pixelBitmapAxis.Width;
     }
 
     public ICommand AutoGetAxisCommand { get; set; }
-    private Rect AxisOriginal { get; set; }
-    private (Point LT, Point RB, Point RT, Point LB) AxisPos { get; set; }
-    public double AxisWidth { get; set; }
-    public double AxisHeight { get; set; }
-    public double AxisLeft { get; set; }
-    public double AxisTop { get; set; }
-    private void AutoGetAxis()
-    {
-      var ratio = imageAxis.ActualWidth / pixelBitmapAxis.Width;
-      AxisLeft = AxisOriginal.X * ratio;
-      AxisTop = AxisOriginal.Y * ratio;
-      AxisWidth = AxisOriginal.Width * ratio;
-      AxisHeight = AxisOriginal.Height * ratio;
-    }
+    public Rect AxisOriginal { get; set; }
+    public (Point LT, Point RB, Point RT, Point LB) AxisPos { get; set; }
+    public double imageRatio { get; set; }
+    public double AxisWidth => AxisOriginal.Width * imageRatio;
+    public double AxisHeight => AxisOriginal.Height * imageRatio;
+    public double AxisLeft => AxisOriginal.X * imageRatio;
+    public double AxisTop => AxisOriginal.Y * imageRatio;
+    public double AxisRight => AxisOriginal.Right * imageRatio;
+    public double AxisBottom => AxisOriginal.Bottom * imageRatio;
 
     public ICommand ManualGetAxisCommand { get; set; }
   }
