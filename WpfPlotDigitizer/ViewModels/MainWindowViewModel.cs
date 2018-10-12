@@ -73,9 +73,12 @@ namespace WpfPlotDigitizer
     }
 
     public Image imageAxis { get; set; } //not MVVM!!
+    public double imageWidth { get; set; }
     private void ImageAxis_LayoutUpdated(object sender, EventArgs e)
     {
       imageRatio = imageAxis.ActualWidth / pixelBitmapAxis.Width;
+
+      
     }
 
     public ICommand AutoGetAxisCommand { get; set; }
