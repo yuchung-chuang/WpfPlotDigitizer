@@ -12,16 +12,7 @@ namespace WpfPlotDigitizer
 {
   public class MainWindowViewModel : ViewModelBase
   {
-    public BitmapSource bitmapSourceInput => pixelBitmapInput?.ToBitmapSource();
-    public BitmapSource bitmapSourceAxis => pixelBitmapAxis?.ToBitmapSource();
-
-    public double imageInputWidth => pixelBitmapInput.Width;
-    public double imageInputHeight => pixelBitmapInput.Height;
-    protected PixelBitmap pixelBitmapInput { get; set; }
-    protected PixelBitmap pixelBitmapFilterW { get; set; }
-    protected PixelBitmap pixelBitmapAxis { get; set; }
-    protected PixelBitmap pixelBitmapFilterRGB { get; set; }
-
+    public static MainWindowViewModel Instance { get; private set; } = new MainWindowViewModel();
     public MainWindowViewModel()
     {
       OpenFileCommand = new RelayCommand(OpenFile);
@@ -29,6 +20,14 @@ namespace WpfPlotDigitizer
       BackTabCommand = new RelayCommand(BackTab, CanBackTab);
       pixelBitmapInput = new PixelBitmap(new Bitmap(@"images/ClickMe.png"));
     }
+
+    public BitmapSource bitmapSourceInput => pixelBitmapInput?.ToBitmapSource();
+    public BitmapSource bitmapSourceAxis => pixelBitmapAxis?.ToBitmapSource();
+    public double imageInputWidth => pixelBitmapInput.Width;
+    public double imageInputHeight => pixelBitmapInput.Height;
+    protected PixelBitmap pixelBitmapInput { get; set; }
+    protected PixelBitmap pixelBitmapFilterW { get; set; }
+    protected PixelBitmap pixelBitmapAxis { get; set; }
 
     public TabControl tabControlMain; // not MVVM design! 
     public int TabIndex { get; set; } = 0;

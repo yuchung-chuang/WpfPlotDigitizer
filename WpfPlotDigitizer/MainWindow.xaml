@@ -18,6 +18,9 @@
                  UriSource="images/data.png" />
     <sys:Double x:Key="zero">0</sys:Double>
   </Window.Resources>
+  <Window.DataContext>
+    <local:MainWindowViewModel />
+  </Window.DataContext>
   <Grid>
     <TabControl Name="tabcontrolMain"
                 TabStripPlacement="Top"
@@ -379,16 +382,13 @@
                      Source="{Binding bitmapSourceInput, FallbackValue={StaticResource dataImage}}" />
             </Border>
             <Grid Name="gridRect"
-                  Width="{Binding AxisWidth, FallbackValue=747}"
-                  Height="{Binding AxisHeight, FallbackValue=547}"
                   HorizontalAlignment="Left"
                   VerticalAlignment="Top">
               <Grid.Margin>
-                <MultiBinding Converter="{cyc:MarginConverter}">
-                  <Binding Path="AxisLeft"
-                           FallbackValue="87"/>
-                  <Binding Path="AxisTop"
-                           FallbackValue="20"/>
+                <MultiBinding 
+                 FallbackValue="87,20,0,0" Converter="{cyc:MarginConverter}">
+                  <Binding Path="AxisLeft" />
+                  <Binding Path="AxisTop" />
                   <Binding Source="{StaticResource zero}" />
                   <Binding Source="{StaticResource zero}" />
                 </MultiBinding>
@@ -438,6 +438,33 @@
                     Y2="{Binding AxisHeight, FallbackValue=547}"
                     Style="{StaticResource lineNS}" />
             </Grid>
+            <Grid Name="gridShadow">
+              <Grid.Resources>
+                <Style TargetType="Border">
+                  <Setter Property="Background"
+                          Value="#99999999" />
+                  <Setter Property="HorizontalAlignment"
+                          Value="Left" />
+                  <Setter Property="VerticalAlignment"
+                          Value="Top" />
+                </Style>
+              </Grid.Resources>
+              <Border Width="{Binding ElementName=gridShadow, Path=ActualWidth}"
+                      Height="{Binding AxisTop, FallbackValue=20}" />
+              <Border Width="{Binding AxisLeft, FallbackValue=87}"
+                      Height="{Binding AxisTop, FallbackValue=20}">
+                <Border.Margin>
+                  <MultiBinding Converter="{cyc:MarginConverter}"
+                                FallbackValue="0,20,0,0">
+                    <Binding Source="{StaticResource zero}" />
+                    <Binding Path="AxisTop" />
+                    <Binding Source="{StaticResource zero}" />
+                    <Binding Source="{StaticResource zero}" />
+                  </MultiBinding>
+                </Border.Margin>
+              </Border>
+            </Grid>
+            
           </Grid>
         </Viewbox>
       </TabItem>
