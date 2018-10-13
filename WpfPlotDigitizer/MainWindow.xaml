@@ -8,6 +8,7 @@
                      mc:Ignorable="d"
                      xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
                      xmlns:cyc="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
+                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                      WindowStartupLocation="CenterScreen"
                      Loaded="MetroWindow_Loaded"
                      Title="MainWindow"
@@ -16,6 +17,8 @@
   <Window.Resources>
     <BitmapImage x:Key="dataImage"
                  UriSource="images/data.png" />
+    <cyc:MarginConverter x:Key="MarginConverter" />
+    <sys:Double x:Key="zero">0</sys:Double>
   </Window.Resources>
   <Window.DataContext>
     <local:MainWindowViewModel />
@@ -370,80 +373,97 @@
       </TabItem>
       <TabItem Header="2. Get axes  ">
 
-          <Canvas Name="canvasAxis">
-
-<Border Name="borderImageAxis"
+        <Viewbox>
+          <Grid>
+            <Border Name="borderImageAxis"
                     BorderBrush="Black"
                     BorderThickness="1"
-                    Canvas.Left="0"
-                    Canvas.Top="0">
-            <Border.RenderTransform>
-              <TranslateTransform />
-            </Border.RenderTransform>
-            <Image Name="imageAxis"
-                   Loaded="imageAxis_Loaded"
-                   Source="{Binding bitmapSourceInput, FallbackValue={StaticResource dataImage}}"
-                   MaxHeight="{Binding ElementName=canvasAxis, Path=ActualHeight}"
-                   MaxWidth="{Binding ElementName=canvasAxis, Path=ActualWidth}">
-            </Image>
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top">
+              <Border.RenderTransform>
+                <TranslateTransform />
+              </Border.RenderTransform>
+              <Image Name="imageAxis"
+                     Width="{Binding imageInputWidth}"
+                     Height="{Binding imageInputHeight}"
+                     Source="{Binding bitmapSourceInput, FallbackValue={StaticResource dataImage}}">
+              </Image>
             </Border>
 
-          <Grid Name="gridRect"
-                Canvas.Left="{Binding AxisLeft, FallbackValue=62.7}"
-                Canvas.Top="{Binding AxisTop, FallbackValue=14.4}"
-                Width="{Binding AxisWidth, FallbackValue=538.7}"
-                Height="{Binding AxisHeight, FallbackValue=394.5}"
-                Loaded="gridRect_Loaded">
-            <Grid.RenderTransform>
-              <TranslateTransform />
-            </Grid.RenderTransform>
-            <Grid.Resources>
-              <Style x:Key="lineBase"
-                     TargetType="Line">
-                <Setter Property="Stroke"
-                        Value="#FFFC0000" />
-                <Setter Property="StrokeThickness"
-                        Value="2" />
-              </Style>
-              <Style x:Key="lineNS"
-                     TargetType="Line"
-                     BasedOn="{StaticResource lineBase}">
-                <Style.Triggers>
-                  <Trigger Property="IsMouseOver"
-                           Value="true">
-                    <Setter Property="Cursor"
-                            Value="SizeNS" />
-                  </Trigger>
-                </Style.Triggers>
-              </Style>
-              <Style x:Key="lineWE"
-                     TargetType="Line"
-                     BasedOn="{StaticResource lineBase}">
-                <Style.Triggers>
-                  <Trigger Property="IsMouseOver"
-                           Value="true">
-                    <Setter Property="Cursor"
-                            Value="SizeWE" />
-                  </Trigger>
-                </Style.Triggers>
-              </Style>
-            </Grid.Resources>
-            <Line Y1="{Binding AxisHeight, FallbackValue=394.5}"
-                  Style="{StaticResource lineWE}">
-            </Line>
-            <Line X2="{Binding AxisWidth, FallbackValue=538.7}"
-                  Style="{StaticResource lineNS}" />
-            <Line X1="{Binding AxisWidth, FallbackValue=538.7}"
-                  X2="{Binding AxisWidth, FallbackValue=538.7}"
-                  Y2="{Binding AxisHeight, FallbackValue=394.5}"
-                  Style="{StaticResource lineWE}" />
-            <Line Y1="{Binding AxisHeight, FallbackValue=394.5}"
-                  X2="{Binding AxisWidth, FallbackValue=538.7}"
-                  Y2="{Binding AxisHeight, FallbackValue=394.5}"
-                  Style="{StaticResource lineNS}" />
+                  <!--Margin Binding-->
+            <Grid Name="gridRect"
+                  Width="{Binding AxisWidth, FallbackValue=538.7}"
+                  Height="{Binding AxisHeight, FallbackValue=394.5}">
+              <Grid.Margin>
+                <MultiBinding Converter="{StaticResource MarginConverter}">
+                  <Binding Path="AxisLeft"></Binding>
+                  <Binding Path="AxisTop"></Binding>
+                  <Binding Source="{StaticResource zero}"/>
+                  <Binding Source="{StaticResource zero}"/>
+                </MultiBinding>
+              </Grid.Margin>
+              <Grid.RenderTransform>
+                <TranslateTransform />
+              </Grid.RenderTransform>
+              <Grid.Resources>
+                <Style x:Key="lineBase"
+                       TargetType="Line">
+                  <Setter Property="Stroke"
+                          Value="#FFFC0000" />
+                  <Setter Property="StrokeThickness"
+                          Value="2" />
+                </Style>
+                <Style x:Key="lineNS"
+                       TargetType="Line"
+                       BasedOn="{StaticResource lineBase}">
+                  <Style.Triggers>
+                    <Trigger Property="IsMouseOver"
+                             Value="true">
+                      <Setter Property="Cursor"
+                              Value="SizeNS" />
+                    </Trigger>
+                  </Style.Triggers>
+                </Style>
+                <Style x:Key="lineWE"
+                       TargetType="Line"
+                       BasedOn="{StaticResource lineBase}">
+                  <Style.Triggers>
+                    <Trigger Property="IsMouseOver"
+                             Value="true">
+                      <Setter Property="Cursor"
+                              Value="SizeWE" />
+                    </Trigger>
+                  </Style.Triggers>
+                </Style>
+              </Grid.Resources>
+              <Line Y1="{Binding AxisHeight, FallbackValue=394.5}"
+                    Style="{StaticResource lineWE}">
+              </Line>
+              <Line X2="{Binding AxisWidth, FallbackValue=538.7}"
+                    Style="{StaticResource lineNS}" />
+              <Line X1="{Binding AxisWidth, FallbackValue=538.7}"
+                    X2="{Binding AxisWidth, FallbackValue=538.7}"
+                    Y2="{Binding AxisHeight, FallbackValue=394.5}"
+                    Style="{StaticResource lineWE}" />
+              <Line Y1="{Binding AxisHeight, FallbackValue=394.5}"
+                    X2="{Binding AxisWidth, FallbackValue=538.7}"
+                    Y2="{Binding AxisHeight, FallbackValue=394.5}"
+                    Style="{StaticResource lineNS}" />
+              <Canvas Name="canvasAxis"
+                      Width="600"
+                      Height="400">
+
+
+
+
+
+              </Canvas>
+            </Grid>
+
           </Grid>
 
-        </Canvas>
+        </Viewbox>
+        
 
       </TabItem>
       <TabItem Header="3. Apply filters  " />

@@ -15,6 +15,8 @@ namespace WpfPlotDigitizer
     public BitmapSource bitmapSourceInput => pixelBitmapInput?.ToBitmapSource();
     public BitmapSource bitmapSourceAxis => pixelBitmapAxis?.ToBitmapSource();
 
+    public double imageInputWidth => pixelBitmapInput.Width;
+    public double imageInputHeight => pixelBitmapInput.Height;
     protected PixelBitmap pixelBitmapInput { get; set; }
     protected PixelBitmap pixelBitmapFilterW { get; set; }
     protected PixelBitmap pixelBitmapAxis { get; set; }
@@ -66,8 +68,8 @@ namespace WpfPlotDigitizer
       pixelBitmapAxis = pixelBitmapFilterW.Clone() as PixelBitmap;
       AxisOriginal = ImageProcessing.GetAxis(pixelBitmapAxis);
 
-      imageAxis.LayoutUpdated -= ImageAxis_LayoutUpdated;
-      imageAxis.LayoutUpdated += ImageAxis_LayoutUpdated;
+      //imageAxis.LayoutUpdated -= ImageAxis_LayoutUpdated;
+      //imageAxis.LayoutUpdated += ImageAxis_LayoutUpdated;
 
       NextTab();
     }
@@ -77,14 +79,12 @@ namespace WpfPlotDigitizer
     private void ImageAxis_LayoutUpdated(object sender, EventArgs e)
     {
       imageRatio = imageAxis.ActualWidth / pixelBitmapAxis.Width;
-
-      
     }
 
     public ICommand AutoGetAxisCommand { get; set; }
     public Rect AxisOriginal { get; set; }
     public (Point LT, Point RB, Point RT, Point LB) AxisPos { get; set; }
-    public double imageRatio { get; set; }
+    public double imageRatio { get; set; } = 1;
     public double AxisWidth => AxisOriginal.Width * imageRatio;
     public double AxisHeight => AxisOriginal.Height * imageRatio;
     public double AxisLeft => AxisOriginal.X * imageRatio;
