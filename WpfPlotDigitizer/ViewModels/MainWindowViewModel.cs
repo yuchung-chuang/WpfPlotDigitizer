@@ -32,6 +32,7 @@ namespace WpfPlotDigitizer
 
     public TabControl tabControlMain; // not MVVM design! 
     public int TabIndex { get; set; } = 0;
+    public int TabCount { get; set; }
     public ICommand NextTabCommand { get; set; }
     public ICommand BackTabCommand { get; set; }
     private void NextTab()
@@ -66,31 +67,19 @@ namespace WpfPlotDigitizer
       pixelBitmapFilterW = pixelBitmapInput.Clone() as PixelBitmap;
       pixelBitmapFilterW.Pixel = ImageProcessing.FilterW(pixelBitmapInput);
       pixelBitmapAxis = pixelBitmapFilterW.Clone() as PixelBitmap;
-      AxisOriginal = ImageProcessing.GetAxis(pixelBitmapAxis);
-
-      //imageAxis.LayoutUpdated -= ImageAxis_LayoutUpdated;
-      //imageAxis.LayoutUpdated += ImageAxis_LayoutUpdated;
+      Axis = ImageProcessing.GetAxis(pixelBitmapAxis);
 
       NextTab();
     }
 
-    public Image imageAxis { get; set; } //not MVVM!!
-    public double imageWidth { get; set; }
-    private void ImageAxis_LayoutUpdated(object sender, EventArgs e)
-    {
-      imageRatio = imageAxis.ActualWidth / pixelBitmapAxis.Width;
-    }
-
     public ICommand AutoGetAxisCommand { get; set; }
-    public Rect AxisOriginal { get; set; }
-    public (Point LT, Point RB, Point RT, Point LB) AxisPos { get; set; }
-    public double imageRatio { get; set; } = 1;
-    public double AxisWidth => AxisOriginal.Width * imageRatio;
-    public double AxisHeight => AxisOriginal.Height * imageRatio;
-    public double AxisLeft => AxisOriginal.X * imageRatio;
-    public double AxisTop => AxisOriginal.Y * imageRatio;
-    public double AxisRight => AxisOriginal.Right * imageRatio;
-    public double AxisBottom => AxisOriginal.Bottom * imageRatio;
+    public Rect Axis { get; set; }
+    public double AxisWidth => Axis.Width;
+    public double AxisHeight => Axis.Height;
+    public double AxisLeft => Axis.X;
+    public double AxisTop => Axis.Y;
+    public double AxisRight => Axis.Right;
+    public double AxisBottom => Axis.Bottom;
 
     public ICommand ManualGetAxisCommand { get; set; }
   }

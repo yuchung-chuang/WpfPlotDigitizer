@@ -29,30 +29,9 @@ namespace WpfPlotDigitizer
       DataContext = new MainWindowViewModel
       {
         tabControlMain = tabcontrolMain,
-        imageAxis = imageAxis,
       };
 
 
-    }
-
-    private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
-    {
-      
-    }
-
-    private void imageAxis_Loaded(object sender, RoutedEventArgs e)
-    {
-      var shiftLeft = (canvasAxis.ActualWidth - imageAxis.ActualWidth) / 2;
-      var shiftTop = (canvasAxis.ActualHeight - imageAxis.ActualHeight) / 2;
-      (borderImageAxis.RenderTransform as TranslateTransform).X = shiftLeft;
-      (borderImageAxis.RenderTransform as TranslateTransform).Y = shiftTop;
-      (gridRect.RenderTransform as TranslateTransform).X = shiftLeft;
-      (gridRect.RenderTransform as TranslateTransform).Y = shiftTop;
-    }
-
-    private void gridRect_Loaded(object sender, RoutedEventArgs e)
-    {
-      
     }
   }
 }

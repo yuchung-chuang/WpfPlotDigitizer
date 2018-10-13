@@ -10,19 +10,14 @@
                      xmlns:cyc="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
                      xmlns:sys="clr-namespace:System;assembly=mscorlib"
                      WindowStartupLocation="CenterScreen"
-                     Loaded="MetroWindow_Loaded"
                      Title="MainWindow"
                      Height="600"
                      Width="900">
   <Window.Resources>
     <BitmapImage x:Key="dataImage"
                  UriSource="images/data.png" />
-    <cyc:MarginConverter x:Key="MarginConverter" />
     <sys:Double x:Key="zero">0</sys:Double>
   </Window.Resources>
-  <Window.DataContext>
-    <local:MainWindowViewModel />
-  </Window.DataContext>
   <Grid>
     <TabControl Name="tabcontrolMain"
                 TabStripPlacement="Top"
@@ -363,16 +358,14 @@
       <TabItem Header="1. Select your Image  ">
         <Grid>
           <TextBlock TextAlignment="Center">
-          <Hyperlink Command="{Binding OpenFileCommand}"
-                     TextDecorations="{x:Null}">
-              <Image Source="{Binding bitmapSourceInput, FallbackValue={StaticResource dataImage}}" />
-          </Hyperlink>
+            <Hyperlink Command="{Binding OpenFileCommand}"
+                       TextDecorations="{x:Null}">
+                <Image Source="{Binding bitmapSourceInput, FallbackValue={StaticResource dataImage}}" />
+            </Hyperlink>
           </TextBlock>
-
         </Grid>
       </TabItem>
       <TabItem Header="2. Get axes  ">
-
         <Viewbox>
           <Grid>
             <Border Name="borderImageAxis"
@@ -380,31 +373,26 @@
                     BorderThickness="1"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top">
-              <Border.RenderTransform>
-                <TranslateTransform />
-              </Border.RenderTransform>
               <Image Name="imageAxis"
-                     Width="{Binding imageInputWidth}"
-                     Height="{Binding imageInputHeight}"
-                     Source="{Binding bitmapSourceInput, FallbackValue={StaticResource dataImage}}">
-              </Image>
+                     Width="{Binding imageInputWidth, FallbackValue=850}"
+                     Height="{Binding imageInputHeight, FallbackValue=636}"
+                     Source="{Binding bitmapSourceInput, FallbackValue={StaticResource dataImage}}" />
             </Border>
-
-                  <!--Margin Binding-->
             <Grid Name="gridRect"
-                  Width="{Binding AxisWidth, FallbackValue=538.7}"
-                  Height="{Binding AxisHeight, FallbackValue=394.5}">
+                  Width="{Binding AxisWidth, FallbackValue=747}"
+                  Height="{Binding AxisHeight, FallbackValue=547}"
+                  HorizontalAlignment="Left"
+                  VerticalAlignment="Top">
               <Grid.Margin>
-                <MultiBinding Converter="{StaticResource MarginConverter}">
-                  <Binding Path="AxisLeft"></Binding>
-                  <Binding Path="AxisTop"></Binding>
-                  <Binding Source="{StaticResource zero}"/>
-                  <Binding Source="{StaticResource zero}"/>
+                <MultiBinding Converter="{cyc:MarginConverter}">
+                  <Binding Path="AxisLeft"
+                           FallbackValue="87"/>
+                  <Binding Path="AxisTop"
+                           FallbackValue="20"/>
+                  <Binding Source="{StaticResource zero}" />
+                  <Binding Source="{StaticResource zero}" />
                 </MultiBinding>
               </Grid.Margin>
-              <Grid.RenderTransform>
-                <TranslateTransform />
-              </Grid.RenderTransform>
               <Grid.Resources>
                 <Style x:Key="lineBase"
                        TargetType="Line">
@@ -436,35 +424,22 @@
                   </Style.Triggers>
                 </Style>
               </Grid.Resources>
-              <Line Y1="{Binding AxisHeight, FallbackValue=394.5}"
+              <Line Y1="{Binding AxisHeight, FallbackValue=547}"
                     Style="{StaticResource lineWE}">
               </Line>
-              <Line X2="{Binding AxisWidth, FallbackValue=538.7}"
+              <Line X2="{Binding AxisWidth, FallbackValue=747}"
                     Style="{StaticResource lineNS}" />
-              <Line X1="{Binding AxisWidth, FallbackValue=538.7}"
-                    X2="{Binding AxisWidth, FallbackValue=538.7}"
-                    Y2="{Binding AxisHeight, FallbackValue=394.5}"
+              <Line X1="{Binding AxisWidth, FallbackValue=747}"
+                    X2="{Binding AxisWidth, FallbackValue=747}"
+                    Y2="{Binding AxisHeight, FallbackValue=547}"
                     Style="{StaticResource lineWE}" />
-              <Line Y1="{Binding AxisHeight, FallbackValue=394.5}"
-                    X2="{Binding AxisWidth, FallbackValue=538.7}"
-                    Y2="{Binding AxisHeight, FallbackValue=394.5}"
+              <Line Y1="{Binding AxisHeight, FallbackValue=547}"
+                    X2="{Binding AxisWidth, FallbackValue=747}"
+                    Y2="{Binding AxisHeight, FallbackValue=547}"
                     Style="{StaticResource lineNS}" />
-              <Canvas Name="canvasAxis"
-                      Width="600"
-                      Height="400">
-
-
-
-
-
-              </Canvas>
             </Grid>
-
           </Grid>
-
         </Viewbox>
-        
-
       </TabItem>
       <TabItem Header="3. Apply filters  " />
       <TabItem Header="4. Erase stains  " />
