@@ -377,8 +377,8 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top">
               <Image Name="imageAxis"
-                     Width="{Binding imageInputWidth, FallbackValue=850}"
-                     Height="{Binding imageInputHeight, FallbackValue=636}"
+                     Width="{Binding imageWidth, FallbackValue=850}"
+                     Height="{Binding imageHeight, FallbackValue=636}"
                      Source="{Binding bitmapSourceInput, FallbackValue={StaticResource dataImage}}" />
             </Border>
             <Grid Name="gridRect"
@@ -449,14 +449,53 @@
                           Value="Top" />
                 </Style>
               </Grid.Resources>
-              <Border Width="{Binding ElementName=gridShadow, Path=ActualWidth}"
+              <Border Width="{Binding imageWidth, FallbackValue=850}"
                       Height="{Binding AxisTop, FallbackValue=20}" />
               <Border Width="{Binding AxisLeft, FallbackValue=87}"
-                      Height="{Binding AxisTop, FallbackValue=20}">
+                      Height="{Binding AxisHeight, FallbackValue=547}">
                 <Border.Margin>
                   <MultiBinding Converter="{cyc:MarginConverter}"
                                 FallbackValue="0,20,0,0">
                     <Binding Source="{StaticResource zero}" />
+                    <Binding Path="AxisTop" />
+                    <Binding Source="{StaticResource zero}" />
+                    <Binding Source="{StaticResource zero}" />
+                  </MultiBinding>
+                </Border.Margin>
+              </Border>
+              <Border Width="{Binding imageWidth, FallbackValue=850}">
+                <Border.Height>
+                  <MultiBinding Converter="{cyc:MathConverter}"
+                                ConverterParameter="x - y"
+                                FallbackValue="69">
+                    <Binding Path="imageHeight" />
+                    <Binding Path="AxisBottom" />
+
+                  </MultiBinding>
+                </Border.Height>
+                <Border.Margin>
+                  <MultiBinding Converter="{cyc:MarginConverter}"
+                                FallbackValue="0,567,0,0">
+                    <Binding Source="{StaticResource zero}" />
+                    <Binding Path="AxisBottom" />
+                    <Binding Source="{StaticResource zero}" />
+                    <Binding Source="{StaticResource zero}" />
+                  </MultiBinding>
+                </Border.Margin>
+              </Border>
+              <Border Height="{Binding AxisHeight, FallbackValue=547}">
+                <Border.Width>
+                  <MultiBinding Converter="{cyc:MathConverter}"
+                                ConverterParameter="x - y"
+                                FallbackValue="16">
+                    <Binding Path="imageWidth" />
+                    <Binding Path="AxisRight" />
+                  </MultiBinding>
+                </Border.Width>
+                <Border.Margin>
+                  <MultiBinding Converter="{cyc:MarginConverter}"
+                                FallbackValue="834,20,0,0">
+                    <Binding Path="AxisRight" />
                     <Binding Path="AxisTop" />
                     <Binding Source="{StaticResource zero}" />
                     <Binding Source="{StaticResource zero}" />

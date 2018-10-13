@@ -12,22 +12,6 @@ namespace WpfPlotDigitizer
 {
   public class MainWindowDesignModel : MainWindowViewModel
   {
-    private static MainWindowDesignModel _Instace;
-    /// <summary>
-    /// Singleton instance for xaml x:Static binding
-    /// </summary>
-    public static MainWindowDesignModel Instance
-    {
-      get => _Instace;
-      set
-      {
-        if (_Instace == null)
-        {
-          _Instace = new MainWindowDesignModel();
-        }
-      }
-    }
-
     public MainWindowDesignModel()
     {
       pixelBitmapInput = new PixelBitmap(new Bitmap(@"images/ClickMe.png"));

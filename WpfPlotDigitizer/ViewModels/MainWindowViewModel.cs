@@ -23,8 +23,8 @@ namespace WpfPlotDigitizer
 
     public BitmapSource bitmapSourceInput => pixelBitmapInput?.ToBitmapSource();
     public BitmapSource bitmapSourceAxis => pixelBitmapAxis?.ToBitmapSource();
-    public double imageInputWidth => pixelBitmapInput.Width;
-    public double imageInputHeight => pixelBitmapInput.Height;
+    public double imageWidth => pixelBitmapInput.Width;
+    public double imageHeight => pixelBitmapInput.Height;
     protected PixelBitmap pixelBitmapInput { get; set; }
     protected PixelBitmap pixelBitmapFilterW { get; set; }
     protected PixelBitmap pixelBitmapAxis { get; set; }
