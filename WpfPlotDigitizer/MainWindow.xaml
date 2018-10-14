@@ -370,7 +370,7 @@
       </TabItem>
       <TabItem Header="2. Get axes  ">
         <Viewbox>
-          <Grid>
+          <Grid Name="gridBase">
             <Border Name="borderImageAxis"
                     BorderBrush="Black"
                     BorderThickness="1"
@@ -415,6 +415,7 @@
                   </Style.Triggers>
                 </Style>
               </Grid.Resources>
+              <!--Axis Control-->
               <Line X1="{Binding AxisLeft, FallbackValue=87}"
                     Y1="{Binding AxisTop, FallbackValue=20}"
                     X2="{Binding AxisLeft, FallbackValue=87}"
@@ -505,7 +506,9 @@
           </Grid>
         </Viewbox>
       </TabItem>
-      <TabItem Header="3. Apply filters  " />
+      <TabItem Header="3. Apply filters  ">
+        <local:Axis></local:Axis>
+      </TabItem>
       <TabItem Header="4. Erase stains  " />
       <TabItem Header="5. Data point size  " />
       <TabItem Header="6. Save your data  " />
