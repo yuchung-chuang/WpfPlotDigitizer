@@ -2,11 +2,11 @@
 using CycWpfLibrary.MVVM;
 using Microsoft.Win32;
 using System;
-using Bitmap = System.Drawing.Bitmap;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using Bitmap = System.Drawing.Bitmap;
 
 namespace WpfPlotDigitizer
 {
@@ -62,10 +62,46 @@ namespace WpfPlotDigitizer
 
     public ICommand AutoGetAxisCommand { get; set; }
     public Rect Axis { get; set; }
-    public double AxisWidth => Axis.Width;
-    public double AxisHeight => Axis.Height;
-    public double AxisLeft => Axis.X;
-    public double AxisTop => Axis.Y;
+    public double AxisWidth
+    {
+      get => Axis.Width;
+      set
+      {
+        var axisTmp = Axis;
+        axisTmp.Width = value;
+        Axis = axisTmp;
+      }
+    }
+    public double AxisHeight
+    {
+      get => Axis.Height;
+      set
+      {
+        var axisTmp = Axis;
+        axisTmp.Height = value;
+        Axis = axisTmp;
+      }
+    }
+    public double AxisLeft
+    {
+      get => Axis.Left;
+      set
+      {
+        var axisTmp = Axis;
+        axisTmp.X = value;
+        Axis = axisTmp;
+      }
+    }
+    public double AxisTop
+    {
+      get => Axis.Y;
+      set
+      {
+        var axisTmp = Axis;
+        axisTmp.Y = value;
+        Axis = axisTmp;
+      }
+    }
     public double AxisRight => Axis.Right;
     public double AxisBottom => Axis.Bottom;
 
