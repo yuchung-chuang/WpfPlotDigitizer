@@ -30,8 +30,6 @@ namespace WpfPlotDigitizer
       {
         tabControlMain = tabcontrolMain,
       };
-
-
     }
   }
 }

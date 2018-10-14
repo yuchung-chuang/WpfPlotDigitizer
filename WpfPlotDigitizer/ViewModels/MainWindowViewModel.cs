@@ -18,7 +18,7 @@ namespace WpfPlotDigitizer
       OpenFileCommand = new RelayCommand(OpenFile);
       NextTabCommand = new RelayCommand(NextTab, CanNextTab);
       BackTabCommand = new RelayCommand(BackTab, CanBackTab);
-      MoveAxisWECommand = new RelayCommand(MoveAxisWE, CanMoveAxisWE);
+      AutoGetAxisCommand = new RelayCommand(AutoGetAxis, CanAutoGetAxis);
       pixelBitmapInput = new PixelBitmap(new Bitmap(@"images/ClickMe.png"));
     }
 
@@ -45,7 +45,8 @@ namespace WpfPlotDigitizer
     {
 
       var dialog = new OpenFileDialog();
-      dialog.Filter = "Images (*.png, *.jpg)| *.png; *.PNG; *.jpg; *.JPG |All (*.*)|*.*";
+      var imageExtensions = ImageExtensions.String;
+      dialog.Filter = "Images|" + imageExtensions + "|All|*.*";
       if (dialog.ShowDialog() == false)
       {
         return;
@@ -54,13 +55,11 @@ namespace WpfPlotDigitizer
 
       pixelBitmapFilterW = pixelBitmapInput.Clone() as PixelBitmap;
       pixelBitmapFilterW.Pixel = ImageProcessing.FilterW(pixelBitmapInput);
-      pixelBitmapAxis = pixelBitmapFilterW.Clone() as PixelBitmap;
-      Axis = ImageProcessing.GetAxis(pixelBitmapAxis);
 
+      AutoGetAxis();
       NextTab();
     }
 
-    public ICommand AutoGetAxisCommand { get; set; }
     public Rect Axis { get; set; }
     public double AxisWidth
     {
@@ -104,14 +103,13 @@ namespace WpfPlotDigitizer
     }
     public double AxisRight => Axis.Right;
     public double AxisBottom => Axis.Bottom;
-
-    public ICommand MoveAxisNSCommand { get; set; }
-    public ICommand MoveAxisWECommand { get; set; }
-
-    private void MoveAxisWE()
+    public ICommand AutoGetAxisCommand { get; set; }
+    private void AutoGetAxis()
     {
-
+      pixelBitmapAxis = pixelBitmapFilterW.Clone() as PixelBitmap;
+      Axis = ImageProcessing.GetAxis(pixelBitmapAxis);
     }
-    private bool CanMoveAxisWE() => true;
+    private bool CanAutoGetAxis() => true;
+    
   }
 }
