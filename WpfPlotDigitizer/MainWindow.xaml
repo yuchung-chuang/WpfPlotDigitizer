@@ -520,9 +520,9 @@
                      Source="{Binding bitmapSourceInput, FallbackValue={StaticResource dataImage}}" />
             </Border>
             <local:Axis AxisLeft="{Binding AxisLeft, FallbackValue=87}"
-                        AxisTop="{Binding AxisTop, FallbackValue=20}"
-                        AxisWidth="{Binding AxisWidth, FallbackValue=747}"
-                        AxisHeight="{Binding AxisHeight, FallbackValue=547}"
+                        AxisTop="{Binding AxisTop,  FallbackValue=20}"
+                        AxisWidth="{Binding AxisWidth,  FallbackValue=747}"
+                        AxisHeight="{Binding AxisHeight,  FallbackValue=547}"
                         Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType=Grid}, Path=ActualWidth}"
                         Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType=Grid}, Path=ActualHeight}"
                         HorizontalAlignment="Left"

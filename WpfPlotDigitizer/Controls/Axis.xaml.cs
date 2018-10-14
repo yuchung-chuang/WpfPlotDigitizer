@@ -46,55 +46,55 @@ namespace WpfPlotDigitizer
     public double AxisLeft
     {
       get => (double)GetValue(AxisLeftProperty);
-      set => SetValue(AxisLeftProperty, value);
+      set => SetValue(AxisLeftProperty, Clamp(value, AxisRight - tol, 0));
     }
     public static readonly DependencyProperty AxisTopProperty = DependencyProperty.Register(nameof(AxisTop), typeof(double), typeof(Axis));
     public double AxisTop
     {
       get => (double)GetValue(AxisTopProperty);
-      set => SetValue(AxisTopProperty, value);
+      set => SetValue(AxisTopProperty, Clamp(value, AxisBottom - tol, 0));
     }
     public static readonly DependencyProperty AxisWidthProperty = DependencyProperty.Register(nameof(AxisWidth), typeof(double), typeof(Axis));
     public double AxisWidth
     {
       get => (double)GetValue(AxisWidthProperty);
-      set => SetValue(AxisWidthProperty, value);
+      set => SetValue(AxisWidthProperty, Clamp(value, double.MaxValue, tol));
     }
     public static readonly DependencyProperty AxisHeightProperty = DependencyProperty.Register(nameof(AxisHeight), typeof(double), typeof(Axis));
     public double AxisHeight
     {
       get => (double)GetValue(AxisHeightProperty);
-      set => SetValue(AxisHeightProperty, value);
+      set => SetValue(AxisHeightProperty, Clamp(value, double.MaxValue, tol));
     }
     public double AxisRight => AxisLeft + AxisWidth;
     public double AxisBottom => AxisTop + AxisHeight;
 
-    private double tol = 10;
-    protected override void OnMouseMove(MouseEventArgs e)
+    private bool IsAdjust = false;
+    private AdjustType State = AdjustType.None;
+    private AdjustType GetState(Point mousePos)
     {
-      base.OnMouseMove(e);
-
-      var mouseState = new AdjustType();
-      var mousePos = e.GetPosition(gridMain);
-      // judge mouse position
+      var state = new AdjustType();
       if (ApproxEqual(mousePos.X, AxisLeft, tol))
       {
-        mouseState |= AdjustType.Left;
+        state |= AdjustType.Left;
       }
       if (ApproxEqual(mousePos.Y, AxisTop, tol))
       {
-        mouseState |= AdjustType.Top;
+        state |= AdjustType.Top;
       }
       if (ApproxEqual(mousePos.X, AxisRight, tol))
       {
-        mouseState |= AdjustType.Right;
+        state |= AdjustType.Right;
       }
       if (ApproxEqual(mousePos.Y, AxisBottom, tol))
       {
-        mouseState |= AdjustType.Bottom;
+        state |= AdjustType.Bottom;
       }
-      // Change Cursor
-      switch (mouseState)
+      return state;
+    }
+    private void UpdateCursor(AdjustType state)
+    {
+      switch (state)
       {
         default:
         case AdjustType.None:
@@ -117,31 +117,67 @@ namespace WpfPlotDigitizer
           Cursor = Cursors.SizeNESW;
           break;
       }
-      // adjust 
-      if (e.LeftButton == MouseButtonState.Pressed)
+    }
+    protected override void OnMouseDown(MouseButtonEventArgs e)
+    {
+      base.OnMouseDown(e);
+      var mousePos = e.GetPosition(gridMain);
+      State = GetState(mousePos);
+      UpdateCursor(State);
+
+      // Initialize Adjust
+      if (State != AdjustType.None)
       {
-        if (mouseState.Contain(AdjustType.Left))
-        {
-          var delta = mousePos.X - AxisLeft;
-          AxisLeft = mousePos.X;
-          AxisWidth -= delta;
-        }
-        if (mouseState.Contain(AdjustType.Top))
-        {
-          var delta = mousePos.Y - AxisTop;
-          AxisTop = mousePos.Y;
-          AxisHeight -= delta;
-        }
-        if (mouseState.Contain(AdjustType.Right))
-        {
-          AxisWidth = mousePos.X - AxisLeft;
-        }
-        if (mouseState.Contain(AdjustType.Bottom))
-        {
-          AxisHeight = mousePos.Y - AxisTop;
-        }
+        IsAdjust = true;
+        CaptureMouse();
+      }
+    }
+
+    private double tol = 10;
+    protected override void OnMouseMove(MouseEventArgs e)
+    {
+      base.OnMouseMove(e);
+
+      var mousePos = e.GetPosition(gridMain);
+      // is not adjusting, just update the cursor
+      if (!IsAdjust)
+      {
+        UpdateCursor(GetState(mousePos));
+        return;
+      }
+      // avoid mouse go outside the grid
+      if (!(IsIn(mousePos.X, gridMain.ActualWidth, 0) &&
+            IsIn(mousePos.Y, gridMain.ActualHeight, 0)))
+        return;
+      // adjust 
+      if (State.Contain(AdjustType.Left))
+      {
+        var delta = mousePos.X - AxisLeft;
+        AxisLeft = mousePos.X; // must be checked earlier than width
+        AxisWidth -= delta;
+      }
+      if (State.Contain(AdjustType.Top))
+      {
+        var delta = mousePos.Y - AxisTop;
+        AxisTop = mousePos.Y;
+        AxisHeight -= delta;
+      }
+      if (State.Contain(AdjustType.Right))
+      {
+        AxisWidth = mousePos.X - AxisLeft;
+      }
+      if (State.Contain(AdjustType.Bottom))
+      {
+        AxisHeight = mousePos.Y - AxisTop;
       }
 
+    }
+
+    protected override void OnMouseUp(MouseButtonEventArgs e)
+    {
+      base.OnMouseUp(e);
+      IsAdjust = false;
+      ReleaseMouseCapture();
     }
   }
 }
