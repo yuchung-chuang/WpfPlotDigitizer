@@ -32,9 +32,7 @@ namespace WpfPlotDigitizer
   {
     public static bool Contain(this AdjustType typeA, AdjustType typeB) => (typeA & typeB) == typeB;
   }
-  /// <summary>
-  /// AdjustableRectangle.xaml 的互動邏輯
-  /// </summary>
+
   public partial class Axis : UserControl
   {
     public Axis()
@@ -44,16 +42,34 @@ namespace WpfPlotDigitizer
       gridMain.DataContext = this;
     }
 
-    public double AxisLeft { get; set; }
-    public double AxisTop { get; set; }
-    public double AxisWidth { get; set; }
-    public double AxisHeight { get; set; }
+    public static readonly DependencyProperty AxisLeftProperty = DependencyProperty.Register(nameof(AxisLeft), typeof(double), typeof(Axis));
+    public double AxisLeft
+    {
+      get => (double)GetValue(AxisLeftProperty);
+      set => SetValue(AxisLeftProperty, value);
+    }
+    public static readonly DependencyProperty AxisTopProperty = DependencyProperty.Register(nameof(AxisTop), typeof(double), typeof(Axis));
+    public double AxisTop
+    {
+      get => (double)GetValue(AxisTopProperty);
+      set => SetValue(AxisTopProperty, value);
+    }
+    public static readonly DependencyProperty AxisWidthProperty = DependencyProperty.Register(nameof(AxisWidth), typeof(double), typeof(Axis));
+    public double AxisWidth
+    {
+      get => (double)GetValue(AxisWidthProperty);
+      set => SetValue(AxisWidthProperty, value);
+    }
+    public static readonly DependencyProperty AxisHeightProperty = DependencyProperty.Register(nameof(AxisHeight), typeof(double), typeof(Axis));
+    public double AxisHeight
+    {
+      get => (double)GetValue(AxisHeightProperty);
+      set => SetValue(AxisHeightProperty, value);
+    }
     public double AxisRight => AxisLeft + AxisWidth;
     public double AxisBottom => AxisTop + AxisHeight;
 
     private double tol = 10;
-
-
     protected override void OnMouseMove(MouseEventArgs e)
     {
       base.OnMouseMove(e);
@@ -69,7 +85,7 @@ namespace WpfPlotDigitizer
       {
         mouseState |= AdjustType.Top;
       }
-      if (ApproxEqual(mousePos.Y, AxisRight, tol))
+      if (ApproxEqual(mousePos.X, AxisRight, tol))
       {
         mouseState |= AdjustType.Right;
       }
@@ -82,6 +98,7 @@ namespace WpfPlotDigitizer
       {
         default:
         case AdjustType.None:
+          Cursor = Cursors.Arrow;
           break;
         case AdjustType.Right:
         case AdjustType.Left:
@@ -93,11 +110,11 @@ namespace WpfPlotDigitizer
           break;
         case AdjustType.RightBottom:
         case AdjustType.LeftTop:
-          Cursor = Cursors.SizeNESW;
+          Cursor = Cursors.SizeNWSE;
           break;
         case AdjustType.RightTop:
         case AdjustType.LeftBottom:
-          Cursor = Cursors.SizeNWSE;
+          Cursor = Cursors.SizeNESW;
           break;
       }
       // adjust 
@@ -105,11 +122,15 @@ namespace WpfPlotDigitizer
       {
         if (mouseState.Contain(AdjustType.Left))
         {
+          var delta = mousePos.X - AxisLeft;
           AxisLeft = mousePos.X;
+          AxisWidth -= delta;
         }
         if (mouseState.Contain(AdjustType.Top))
         {
-          AxisLeft = mousePos.Y;
+          var delta = mousePos.Y - AxisTop;
+          AxisTop = mousePos.Y;
+          AxisHeight -= delta;
         }
         if (mouseState.Contain(AdjustType.Right))
         {
@@ -117,7 +138,7 @@ namespace WpfPlotDigitizer
         }
         if (mouseState.Contain(AdjustType.Bottom))
         {
-          AxisHeight = mousePos.Y - AxisBottom;
+          AxisHeight = mousePos.Y - AxisTop;
         }
       }
 

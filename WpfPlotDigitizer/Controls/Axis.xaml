@@ -12,10 +12,12 @@
   <UserControl.Resources>
     <sys:Double x:Key="zero">0</sys:Double>
   </UserControl.Resources>
-  <Grid Name="gridMain">
+  <Grid Name="gridMain"
+        Background="Transparent">
     <Rectangle HorizontalAlignment="Left"
                VerticalAlignment="Top"
                Stroke="Red"
+               Fill="Transparent"
                StrokeThickness="3"
                Width="{Binding AxisWidth, FallbackValue=100}"
                Height="{Binding AxisHeight, FallbackValue=100}">
