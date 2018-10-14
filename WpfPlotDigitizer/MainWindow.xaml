@@ -384,15 +384,6 @@
             <Grid Name="gridRect"
                   HorizontalAlignment="Left"
                   VerticalAlignment="Top">
-              <Grid.Margin>
-                <MultiBinding 
-                 FallbackValue="87,20,0,0" Converter="{cyc:MarginConverter}">
-                  <Binding Path="AxisLeft" />
-                  <Binding Path="AxisTop" />
-                  <Binding Source="{StaticResource zero}" />
-                  <Binding Source="{StaticResource zero}" />
-                </MultiBinding>
-              </Grid.Margin>
               <Grid.Resources>
                 <Style x:Key="lineBase"
                        TargetType="Line">
@@ -424,18 +415,26 @@
                   </Style.Triggers>
                 </Style>
               </Grid.Resources>
-              <Line Y1="{Binding AxisHeight, FallbackValue=547}"
+              <Line X1="{Binding AxisLeft, FallbackValue=87}"
+                    Y1="{Binding AxisTop, FallbackValue=20}"
+                    X2="{Binding AxisLeft, FallbackValue=87}"
+                    Y2="{Binding AxisBottom, FallbackValue=567}"
                     Style="{StaticResource lineWE}">
               </Line>
-              <Line X2="{Binding AxisWidth, FallbackValue=747}"
+              <Line X1="{Binding AxisLeft, FallbackValue=87}"
+                    Y1="{Binding AxisTop, FallbackValue=20}"
+                    X2="{Binding AxisRight, FallbackValue=834}"
+                    Y2="{Binding AxisTop, FallbackValue=20}"
                     Style="{StaticResource lineNS}" />
-              <Line X1="{Binding AxisWidth, FallbackValue=747}"
-                    X2="{Binding AxisWidth, FallbackValue=747}"
-                    Y2="{Binding AxisHeight, FallbackValue=547}"
+              <Line X1="{Binding AxisRight, FallbackValue=834}"
+                    Y1="{Binding AxisTop, FallbackValue=20}"
+                    X2="{Binding AxisRight, FallbackValue=834}"
+                    Y2="{Binding AxisBottom, FallbackValue=567}"
                     Style="{StaticResource lineWE}" />
-              <Line Y1="{Binding AxisHeight, FallbackValue=547}"
-                    X2="{Binding AxisWidth, FallbackValue=747}"
-                    Y2="{Binding AxisHeight, FallbackValue=547}"
+              <Line X1="{Binding AxisLeft, FallbackValue=87}"
+                    Y1="{Binding AxisBottom, FallbackValue=567}"
+                    X2="{Binding AxisRight, FallbackValue=834}"
+                    Y2="{Binding AxisBottom, FallbackValue=567}"
                     Style="{StaticResource lineNS}" />
             </Grid>
             <Grid Name="gridShadow">
@@ -503,7 +502,6 @@
                 </Border.Margin>
               </Border>
             </Grid>
-            
           </Grid>
         </Viewbox>
       </TabItem>

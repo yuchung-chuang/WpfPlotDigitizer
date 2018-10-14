@@ -18,6 +18,7 @@ namespace WpfPlotDigitizer
       OpenFileCommand = new RelayCommand(OpenFile);
       NextTabCommand = new RelayCommand(NextTab, CanNextTab);
       BackTabCommand = new RelayCommand(BackTab, CanBackTab);
+      MoveAxisWECommand = new RelayCommand(MoveAxisWE, CanMoveAxisWE);
       pixelBitmapInput = new PixelBitmap(new Bitmap(@"images/ClickMe.png"));
     }
 
@@ -34,22 +35,10 @@ namespace WpfPlotDigitizer
     public int TabCount { get; set; }
     public ICommand NextTabCommand { get; set; }
     public ICommand BackTabCommand { get; set; }
-    private void NextTab()
-    {
-      TabIndex++;
-    }
-    private bool CanNextTab()
-    {
-      return tabControlMain == null || TabIndex < tabControlMain.Items.Count - 1;
-    }
-    private void BackTab()
-    {
-      TabIndex--;
-    }
-    private bool CanBackTab()
-    {
-      return TabIndex > 0;
-    }
+    private void NextTab() => TabIndex++;
+    private bool CanNextTab() => tabControlMain == null || TabIndex < tabControlMain.Items.Count - 1;
+    private void BackTab() => TabIndex--;
+    private bool CanBackTab() => TabIndex > 0;
 
     public ICommand OpenFileCommand { get; set; }
     public void OpenFile()
@@ -80,6 +69,13 @@ namespace WpfPlotDigitizer
     public double AxisRight => Axis.Right;
     public double AxisBottom => Axis.Bottom;
 
-    public ICommand ManualGetAxisCommand { get; set; }
+    public ICommand MoveAxisNSCommand { get; set; }
+    public ICommand MoveAxisWECommand { get; set; }
+
+    private void MoveAxisWE()
+    {
+
+    }
+    private bool CanMoveAxisWE() => true;
   }
 }
