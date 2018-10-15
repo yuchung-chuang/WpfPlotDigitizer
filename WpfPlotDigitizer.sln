@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfPlotDigitizer", "WpfPlot
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CycWpfLibrary", "..\CycWpfLibrary\CycWpfLibrary\CycWpfLibrary.csproj", "{DC9B1571-60B9-48D4-A147-24820D8E895B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfPlotDigitizerTests", "WpfPlotDigitizerTests\WpfPlotDigitizerTests.csproj", "{F1C95353-AD74-4AA1-B0A1-0563D90392E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{DC9B1571-60B9-48D4-A147-24820D8E895B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC9B1571-60B9-48D4-A147-24820D8E895B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC9B1571-60B9-48D4-A147-24820D8E895B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1C95353-AD74-4AA1-B0A1-0563D90392E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1C95353-AD74-4AA1-B0A1-0563D90392E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1C95353-AD74-4AA1-B0A1-0563D90392E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1C95353-AD74-4AA1-B0A1-0563D90392E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -362,16 +362,16 @@
       <TabItem Header="1. Select your Image  ">
         <Grid Name="gridBase1">
           
-          <cycControls:DropImageReceiver Visibility="Visible"
-                                         DropPixelBitmap="{Binding pixelBitmapInput, Mode=TwoWay, Converter={cycMVVM:DebugConverter}, UpdateSourceTrigger=PropertyChanged}" />
+          <cycControls:DropImageReceiver DropPixelBitmap="{Binding pixelBitmapInput, Mode=TwoWay}"/>
           <StackPanel Visibility="Visible"
                       Orientation="Vertical"
                       VerticalAlignment="Center">
-            <TextBlock Text="Drag your image here" TextAlignment="Center"
+            <TextBlock Text="Drag your image here"
+                       TextAlignment="Center"
                        IsHitTestVisible="False"
                        FontSize="40" />
             <TextBlock Text="Or"
-              Margin="10"
+                       Margin="10"
                        TextAlignment="Center"
                        IsHitTestVisible="False"
                        FontSize="30" />
@@ -382,14 +382,7 @@
                     mahapps:ButtonHelper.PreserveTextCase="True"
                     Command="{Binding OpenFileCommand}" />
           </StackPanel>
-          <TextBlock TextAlignment="Center"
-                     Visibility="Hidden">
-            <Hyperlink Command="{Binding OpenFileCommand}"
-                       TextDecorations="{x:Null}">
-                <Image Source="{Binding bitmapSourceInput, FallbackValue={StaticResource dataImage}}" />
-            </Hyperlink>
-          </TextBlock>
-          
+
         </Grid>
       </TabItem>
       <TabItem Header="2. Get axes  ">
@@ -403,7 +396,7 @@
               <Image Name="imageAxis"
                      Width="{Binding imageWidth, FallbackValue=850}"
                      Height="{Binding imageHeight, FallbackValue=636}"
-                     Source="{Binding bitmapSourceInput, FallbackValue={StaticResource dataImage}}" />
+                     Source="{Binding bitmapSourceInput}" />
             </Border>
             <Grid Name="gridShadow">
               <Grid.Resources>
@@ -489,6 +482,75 @@
         </Viewbox>
       </TabItem>
       <TabItem Header="3. Apply filters  ">
+        <Grid Name="gridBase3">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto" />
+          </Grid.ColumnDefinitions>
+          <Border Name="borderImageFilter"
+                  Grid.Column="0"
+                  BorderBrush="Transparent"
+                  BorderThickness="1">
+            <Image Name="imageFilter"
+                   Source="{Binding bitmapSourceFilterRGB}" />
+          </Border>
+          <StackPanel Grid.Column="1"
+                      Margin="10,30"
+                      Orientation="Horizontal">
+            <StackPanel.Resources>
+              <Style TargetType="mahapps:RangeSlider">
+                <Setter Property="Minimum"
+                        Value="0" />
+                <Setter Property="Maximum"
+                        Value="255" />
+                <Setter Property="MoveWholeRange"
+                        Value="True" />
+                <Setter Property="Orientation"
+                        Value="Vertical" />
+                <Setter Property="IsSnapToTickEnabled"
+                        Value="True" />
+                <Setter Property="IsMoveToPointEnabled"
+                        Value="True" />
+                <Setter Property="IsManipulationEnabled"
+                        Value="True" />
+                <Setter Property="ExtendedMode"
+                        Value="True" />
+                <Setter Property="Width"
+                        Value="100" />
+                <Setter Property="Background"
+                        Value="Transparent" />
+                <Setter Property="mahapps:SliderHelper.EnableMouseWheel"
+                        Value="MouseHover" />
+                <Setter Property="cycMVVM:InteractivityItems.Template">
+                  <Setter.Value>
+                    <cycMVVM:InteractivityTemplate>
+                      <cycMVVM:InteractivityItems>
+                        <cycMVVM:InteractivityItems.Triggers>
+                          <i:EventTrigger EventName="UpperValueChanged">
+                            <i:InvokeCommandAction Command="{Binding FilterRGBCommand}" />
+                          </i:EventTrigger>
+                          <i:EventTrigger EventName="LowerValueChanged">
+                            <i:InvokeCommandAction Command="{Binding FilterRGBCommand}" />
+                          </i:EventTrigger>
+                        </cycMVVM:InteractivityItems.Triggers>
+                      </cycMVVM:InteractivityItems>
+                    </cycMVVM:InteractivityTemplate>
+                  </Setter.Value>
+                </Setter>
+              </Style>
+            </StackPanel.Resources>
+            <mahapps:RangeSlider mahapps:SliderHelper.TrackValueFillBrush="Red"
+                                 UpperValue="{Binding FilterRMax}"
+                                 LowerValue="{Binding FilterRMin}" />
+            <mahapps:RangeSlider mahapps:SliderHelper.TrackValueFillBrush="Green"
+                                 UpperValue="{Binding FilterGMax}"
+                                 LowerValue="{Binding FilterGMin}"/>
+            <mahapps:RangeSlider mahapps:SliderHelper.TrackValueFillBrush="Blue"
+                                 UpperValue="{Binding FilterBMax}"
+                                 LowerValue="{Binding FilterBMin}"/>
+            
+          </StackPanel>
+        </Grid>
       </TabItem>
       <TabItem Header="4. Erase stains  " />
       <TabItem Header="5. Data point size  " />

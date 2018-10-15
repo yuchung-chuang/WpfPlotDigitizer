@@ -1,5 +1,6 @@
 ﻿using CycWpfLibrary;
 using CycWpfLibrary.Media;
+using System;
 using System.Diagnostics;
 using System.Windows;
 using static CycWpfLibrary.Math;
@@ -324,6 +325,7 @@ namespace WpfPlotDigitizer
       // Fail
       return new Point(-1, -1);
     }
+    [Obsolete("Use GetAxis Instead", true)]
     public static (Point LT, Point RB) GetAxisPosV1(PixelBitmap iptImage)
     {
       var AxisLTPos = GetAxisLeftTop(iptImage);
