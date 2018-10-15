@@ -19,16 +19,8 @@ namespace WpfPlotDigitizer
       NextTabCommand = new RelayCommand(NextTab, CanNextTab);
       BackTabCommand = new RelayCommand(BackTab, CanBackTab);
       AutoGetAxisCommand = new RelayCommand(AutoGetAxis, CanAutoGetAxis);
-      pixelBitmapInput = new PixelBitmap(new Bitmap(@"images/ClickMe.png"));
+      //pixelBitmapInput = new PixelBitmap(new Bitmap(@"images/ClickMe.png"));
     }
-
-    public BitmapSource bitmapSourceInput => pixelBitmapInput?.ToBitmapSource();
-    public BitmapSource bitmapSourceAxis => pixelBitmapAxis?.ToBitmapSource();
-    public double imageWidth => pixelBitmapInput.Width;
-    public double imageHeight => pixelBitmapInput.Height;
-    protected PixelBitmap pixelBitmapInput { get; set; }
-    protected PixelBitmap pixelBitmapFilterW { get; set; }
-    protected PixelBitmap pixelBitmapAxis { get; set; }
 
     public TabControl tabControlMain; // not MVVM design! 
     public int TabIndex { get; set; } = 0;
@@ -43,7 +35,6 @@ namespace WpfPlotDigitizer
     public ICommand OpenFileCommand { get; set; }
     public void OpenFile()
     {
-
       var dialog = new OpenFileDialog();
       var imageExtensions = ImageExtensions.String;
       dialog.Filter = "Images|" + imageExtensions + "|All|*.*";
@@ -52,35 +43,29 @@ namespace WpfPlotDigitizer
         return;
       }
       pixelBitmapInput = new BitmapImage(new Uri(dialog.FileName)).ToPixelBitmap();
-
-      pixelBitmapFilterW = pixelBitmapInput.Clone() as PixelBitmap;
-      pixelBitmapFilterW.Pixel = ImageProcessing.FilterW(pixelBitmapInput);
-
-      AutoGetAxis();
-      NextTab();
     }
+
+    public BitmapSource bitmapSourceInput => pixelBitmapInput?.ToBitmapSource();
+    public double imageWidth => pixelBitmapInput == null ? 0 : pixelBitmapInput.Width;
+    public double imageHeight => pixelBitmapInput == null ? 0 : pixelBitmapInput.Height;
+
+    public PixelBitmap _pixelBitmapInput { get; set; }
+    public PixelBitmap pixelBitmapInput
+    {
+      get => _pixelBitmapInput;
+      set
+      {
+        _pixelBitmapInput = value;
+        // After update input image, automatically filterW and GetAxis
+        pixelBitmapFilterW = pixelBitmapInput.Clone() as PixelBitmap;
+        pixelBitmapFilterW.Pixel = ImageProcessing.FilterW(pixelBitmapInput);
+        AutoGetAxis();
+        NextTab();
+      }
+    }
+    private PixelBitmap pixelBitmapFilterW { get; set; }
 
     public Rect Axis { get; set; }
-    public double AxisWidth
-    {
-      get => Axis.Width;
-      set
-      {
-        var axisTmp = Axis;
-        axisTmp.Width = value;
-        Axis = axisTmp;
-      }
-    }
-    public double AxisHeight
-    {
-      get => Axis.Height;
-      set
-      {
-        var axisTmp = Axis;
-        axisTmp.Height = value;
-        Axis = axisTmp;
-      }
-    }
     public double AxisLeft
     {
       get => Axis.Left;
@@ -101,15 +86,34 @@ namespace WpfPlotDigitizer
         Axis = axisTmp;
       }
     }
+    public double AxisWidth
+    {
+      get => Axis.Width;
+      set
+      {
+        var axisTmp = Axis;
+        axisTmp.Width = value;
+        Axis = axisTmp;
+      }
+    }
+    public double AxisHeight
+    {
+      get => Axis.Height;
+      set
+      {
+        var axisTmp = Axis;
+        axisTmp.Height = value;
+        Axis = axisTmp;
+      }
+    }
     public double AxisRight => Axis.Right;
     public double AxisBottom => Axis.Bottom;
     public ICommand AutoGetAxisCommand { get; set; }
     private void AutoGetAxis()
     {
-      pixelBitmapAxis = pixelBitmapFilterW.Clone() as PixelBitmap;
-      Axis = ImageProcessing.GetAxis(pixelBitmapAxis);
+      Axis = ImageProcessing.GetAxis(pixelBitmapFilterW);
     }
     private bool CanAutoGetAxis() => true;
-    
+
   }
 }

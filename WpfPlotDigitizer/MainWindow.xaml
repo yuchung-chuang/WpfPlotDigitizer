@@ -362,7 +362,8 @@
       <TabItem Header="1. Select your Image  ">
         <Grid Name="gridBase1">
           
-          <cycControls:DropImageReceiver Visibility="Visible" />
+          <cycControls:DropImageReceiver Visibility="Visible"
+                                         DropPixelBitmap="{Binding pixelBitmapInput, Mode=TwoWay, Converter={cycMVVM:DebugConverter}, UpdateSourceTrigger=PropertyChanged}" />
           <StackPanel Visibility="Visible"
                       Orientation="Vertical"
                       VerticalAlignment="Center">
@@ -395,7 +396,7 @@
         <Viewbox>
           <Grid Name="gridBase2">
             <Border Name="borderImageAxis"
-                    BorderBrush="Black"
+                    BorderBrush="Transparent"
                     BorderThickness="1"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top">
