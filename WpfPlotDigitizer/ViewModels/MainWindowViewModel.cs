@@ -16,22 +16,11 @@ namespace WpfPlotDigitizer
     public MainWindowViewModel()
     {
       OpenFileCommand = new RelayCommand(OpenFile);
-      NextTabCommand = new RelayCommand(NextTab, CanNextTab);
-      BackTabCommand = new RelayCommand(BackTab, CanBackTab);
       AutoGetAxisCommand = new RelayCommand(AutoGetAxis);
       FilterRGBCommand = new RelayCommand(FilterRGB);
     }
 
-    public TabControl tabControlMain; // not MVVM design! 
     public int TabIndex { get; set; } = 0;
-    public int TabCount { get; set; }
-    public ICommand NextTabCommand { get; set; }
-    public ICommand BackTabCommand { get; set; }
-    private void NextTab() => TabIndex++;
-    private bool CanNextTab() => tabControlMain == null || TabIndex < tabControlMain.Items.Count - 1;
-    private void BackTab() => TabIndex--;
-    private bool CanBackTab() => TabIndex > 0;
-
     public double imageWidth => pixelBitmapInput == null ? 0 : pixelBitmapInput.Width;
     public double imageHeight => pixelBitmapInput == null ? 0 : pixelBitmapInput.Height;
     public BitmapSource bitmapSourceInput => pixelBitmapInput?.ToBitmapSource();
@@ -48,7 +37,8 @@ namespace WpfPlotDigitizer
 
         pixelBitmapFilterW.Pixel = ImageProcessing.FilterW(pixelBitmapInput);
         AutoGetAxis();
-        NextTab();
+
+        TabIndex++;
       }
     }
     private PixelBitmap pixelBitmapFilterW { get; set; }

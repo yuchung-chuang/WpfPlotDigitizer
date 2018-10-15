@@ -26,10 +26,25 @@ namespace WpfPlotDigitizer
     public MainWindow()
     {
       InitializeComponent();
-      DataContext = new MainWindowViewModel
+      DataContext = new MainWindowViewModel();
+    }
+
+    private void btnNext_Click(object sender, RoutedEventArgs e)
+    {
+      if (tabcontrolMain.SelectedIndex < tabcontrolMain.Items.Count - 1)
       {
-        tabControlMain = tabcontrolMain,
-      };
+        tabcontrolMain.SelectedIndex++;
+
+      }
+    }
+
+    private void btnBack_Click(object sender, RoutedEventArgs e)
+    {
+      if (tabcontrolMain.SelectedIndex > 0)
+      {
+        tabcontrolMain.SelectedIndex--;
+
+      }
     }
   }
 }

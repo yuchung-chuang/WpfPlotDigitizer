@@ -563,7 +563,7 @@
             VerticalAlignment="Bottom"
             HorizontalAlignment="Right"
             Margin="10"
-            Command="{Binding NextTabCommand}">
+            Click="btnNext_Click">
       Next
     </Button>
     <Button Name="btnBack"
@@ -573,7 +573,7 @@
             VerticalAlignment="Bottom"
             HorizontalAlignment="Left"
             Margin="10"
-            Command="{Binding BackTabCommand}">
+            Click="btnBack_Click">
       Back
     </Button>
   </Grid>
