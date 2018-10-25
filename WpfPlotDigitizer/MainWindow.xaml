@@ -398,12 +398,14 @@
                      Height="{Binding imageHeight, FallbackValue=636}"
                      Source="{Binding bitmapSourceInput}" />
             </Border>
-            <local:Axis AxisLeft="{Binding AxisLeft, Mode=TwoWay, FallbackValue=87}"
-                        AxisTop="{Binding AxisTop, Mode=TwoWay, FallbackValue=20}"
-                        AxisWidth="{Binding AxisWidth, Mode=TwoWay, FallbackValue=747}"
-                        AxisHeight="{Binding AxisHeight, Mode=TwoWay, FallbackValue=547}"
-                        Width="{Binding imageWidth, FallbackValue=850}"
-                        Height="{Binding imageHeight, FallbackValue=636}"
+            <local:Axis AxisLeft="{Binding AxisLeft, Mode=TwoWay}"
+                        AxisTop="{Binding AxisTop, Mode=TwoWay}"
+                        AxisWidth="{Binding AxisWidth, Mode=TwoWay}"
+                        AxisHeight="{Binding AxisHeight, Mode=TwoWay}"
+                        Width="{Binding imageWidth}"
+                        Height="{Binding imageHeight}"
+                        ShadowBrush="#99999999"
+                        AxisBrush="Red"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Panel.ZIndex="1">

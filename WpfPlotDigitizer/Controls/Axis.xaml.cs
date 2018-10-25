@@ -43,34 +43,73 @@ namespace WpfPlotDigitizer
       gridMain.DataContext = this;
     }
 
-    public static readonly DependencyProperty AxisLeftProperty = DependencyProperty.Register(nameof(AxisLeft), typeof(double), typeof(Axis));
+    public string AxisBrush { get; set; }
+    public string ShadowBrush { get; set; }
+
+    #region AxisProperties
+    public static readonly DependencyProperty AxisLeftProperty = DependencyProperty.Register(nameof(AxisLeft), typeof(double), typeof(Axis), new PropertyMetadata((d, e) =>
+    {
+      var sender = d as Axis;
+      sender.OnPropertyChanged(nameof(AxisMargin));
+    }));
     public double AxisLeft
     {
       get => (double)GetValue(AxisLeftProperty);
       set => SetValue(AxisLeftProperty, Clamp(value, AxisRight - tol, 0));
     }
-    public static readonly DependencyProperty AxisTopProperty = DependencyProperty.Register(nameof(AxisTop), typeof(double), typeof(Axis));
+    public static readonly DependencyProperty AxisTopProperty = DependencyProperty.Register(nameof(AxisTop), typeof(double), typeof(Axis), new PropertyMetadata((d, e) =>
+    {
+      var sender = d as Axis;
+      sender.OnPropertyChanged(nameof(AxisMargin));
+      sender.OnPropertyChanged(nameof(AxisRight));
+      sender.OnPropertyChanged(nameof(TopBorderMargin));
+      sender.OnPropertyChanged(nameof(RightBorderMargin));
+    }));
     public double AxisTop
     {
       get => (double)GetValue(AxisTopProperty);
       set => SetValue(AxisTopProperty, Clamp(value, AxisBottom - tol, 0));
     }
-    public static readonly DependencyProperty AxisWidthProperty = DependencyProperty.Register(nameof(AxisWidth), typeof(double), typeof(Axis), new PropertyMetadata((d, e) => (d as Axis).OnPropertyChanged(nameof(AxisRight))));
+    public static readonly DependencyProperty AxisWidthProperty = DependencyProperty.Register(nameof(AxisWidth), typeof(double), typeof(Axis), new PropertyMetadata((d, e) =>
+    {
+      var sender = d as Axis;
+      sender.AxisRight = -1; //fire OnPropertyChanged
+    }));
     public double AxisWidth
     {
       get => (double)GetValue(AxisWidthProperty);
       set => SetValue(AxisWidthProperty, Clamp(value, double.MaxValue, tol));
     }
-    public static readonly DependencyProperty AxisHeightProperty = DependencyProperty.Register(nameof(AxisHeight), typeof(double), typeof(Axis), new PropertyMetadata((d, e) => (d as Axis).OnPropertyChanged(nameof(AxisBottom))));
+    public static readonly DependencyProperty AxisHeightProperty = DependencyProperty.Register(nameof(AxisHeight), typeof(double), typeof(Axis), new PropertyMetadata((d, e) =>
+    {
+      var sender = d as Axis;
+      sender.AxisBottom = -1; //fire OnPropertyChanged
+    }));
     public double AxisHeight
     {
       get => (double)GetValue(AxisHeightProperty);
       set => SetValue(AxisHeightProperty, Clamp(value, double.MaxValue, tol));
     }
-    public double AxisRight => AxisLeft + AxisWidth;
-    public double AxisBottom => AxisTop + AxisHeight;
+    public double AxisRight
+    {
+      get => AxisLeft + AxisWidth;
+      set { }
+    }
+    public double AxisBottom
+    {
+      get => AxisTop + AxisHeight;
+      set { }
+    }
+    #endregion
 
+    #region Margins
+    public Thickness AxisMargin => new Thickness(AxisLeft, AxisTop, 0, 0);
+    public Thickness TopBorderMargin => new Thickness(0, AxisTop, 0, 0);
+    public Thickness BottomBorderMargin => new Thickness(0, AxisBottom, 0, 0);
+    public Thickness RightBorderMargin => new Thickness(AxisRight, AxisTop, 0, 0);
+    #endregion
 
+    #region Event Callbacks
     private bool IsAdjust = false;
     private AdjustType State = AdjustType.None;
     private AdjustType GetState(Point mousePos)
@@ -181,5 +220,6 @@ namespace WpfPlotDigitizer
       IsAdjust = false;
       ReleaseMouseCapture();
     }
+    #endregion
   }
 }
