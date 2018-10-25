@@ -398,77 +398,12 @@
                      Height="{Binding imageHeight, FallbackValue=636}"
                      Source="{Binding bitmapSourceInput}" />
             </Border>
-            <Grid Name="gridShadow">
-              <Grid.Resources>
-                <Style TargetType="Border">
-                  <Setter Property="Background"
-                          Value="#99999999" />
-                  <Setter Property="HorizontalAlignment"
-                          Value="Left" />
-                  <Setter Property="VerticalAlignment"
-                          Value="Top" />
-                </Style>
-              </Grid.Resources>
-              <Border Width="{Binding imageWidth, FallbackValue=850}"
-                      Height="{Binding AxisTop, FallbackValue=20}" />
-              <Border Width="{Binding AxisLeft, FallbackValue=87}"
-                      Height="{Binding AxisHeight, FallbackValue=547}">
-                <Border.Margin>
-                  <MultiBinding Converter="{cycMVVM:MarginConverter}"
-                                FallbackValue="0,20,0,0">
-                    <Binding Source="{StaticResource zero}" />
-                    <Binding Path="AxisTop" />
-                    <Binding Source="{StaticResource zero}" />
-                    <Binding Source="{StaticResource zero}" />
-                  </MultiBinding>
-                </Border.Margin>
-              </Border>
-              <Border Width="{Binding imageWidth, FallbackValue=850}">
-                <Border.Height>
-                  <MultiBinding Converter="{cycMVVM:MathConverter}"
-                                ConverterParameter="x - y"
-                                FallbackValue="69">
-                    <Binding Path="imageHeight" />
-                    <Binding Path="AxisBottom" />
-
-                  </MultiBinding>
-                </Border.Height>
-                <Border.Margin>
-                  <MultiBinding Converter="{cycMVVM:MarginConverter}"
-                                FallbackValue="0,567,0,0">
-                    <Binding Source="{StaticResource zero}" />
-                    <Binding Path="AxisBottom" />
-                    <Binding Source="{StaticResource zero}" />
-                    <Binding Source="{StaticResource zero}" />
-                  </MultiBinding>
-                </Border.Margin>
-              </Border>
-              <Border Height="{Binding AxisHeight, FallbackValue=547}">
-                <Border.Width>
-                  <MultiBinding Converter="{cycMVVM:MathConverter}"
-                                ConverterParameter="x - y"
-                                FallbackValue="16">
-                    <Binding Path="imageWidth" />
-                    <Binding Path="AxisRight" />
-                  </MultiBinding>
-                </Border.Width>
-                <Border.Margin>
-                  <MultiBinding Converter="{cycMVVM:MarginConverter}"
-                                FallbackValue="834,20,0,0">
-                    <Binding Path="AxisRight" />
-                    <Binding Path="AxisTop" />
-                    <Binding Source="{StaticResource zero}" />
-                    <Binding Source="{StaticResource zero}" />
-                  </MultiBinding>
-                </Border.Margin>
-              </Border>
-            </Grid>
             <local:Axis AxisLeft="{Binding AxisLeft, Mode=TwoWay, FallbackValue=87}"
                         AxisTop="{Binding AxisTop, Mode=TwoWay, FallbackValue=20}"
                         AxisWidth="{Binding AxisWidth, Mode=TwoWay, FallbackValue=747}"
                         AxisHeight="{Binding AxisHeight, Mode=TwoWay, FallbackValue=547}"
-                        Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType=Grid}, Path=ActualWidth}"
-                        Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType=Grid}, Path=ActualHeight}"
+                        Width="{Binding imageWidth, FallbackValue=850}"
+                        Height="{Binding imageHeight, FallbackValue=636}"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Panel.ZIndex="1">

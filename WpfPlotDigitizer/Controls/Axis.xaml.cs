@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CycWpfLibrary.MVVM;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,7 +34,7 @@ namespace WpfPlotDigitizer
     public static bool Contain(this AdjustType typeA, AdjustType typeB) => (typeA & typeB) == typeB;
   }
 
-  public partial class Axis : UserControl
+  public partial class Axis : ViewModelUserControl
   {
     public Axis()
     {
@@ -54,13 +55,13 @@ namespace WpfPlotDigitizer
       get => (double)GetValue(AxisTopProperty);
       set => SetValue(AxisTopProperty, Clamp(value, AxisBottom - tol, 0));
     }
-    public static readonly DependencyProperty AxisWidthProperty = DependencyProperty.Register(nameof(AxisWidth), typeof(double), typeof(Axis));
+    public static readonly DependencyProperty AxisWidthProperty = DependencyProperty.Register(nameof(AxisWidth), typeof(double), typeof(Axis), new PropertyMetadata((d, e) => (d as Axis).OnPropertyChanged(nameof(AxisRight))));
     public double AxisWidth
     {
       get => (double)GetValue(AxisWidthProperty);
       set => SetValue(AxisWidthProperty, Clamp(value, double.MaxValue, tol));
     }
-    public static readonly DependencyProperty AxisHeightProperty = DependencyProperty.Register(nameof(AxisHeight), typeof(double), typeof(Axis));
+    public static readonly DependencyProperty AxisHeightProperty = DependencyProperty.Register(nameof(AxisHeight), typeof(double), typeof(Axis), new PropertyMetadata((d, e) => (d as Axis).OnPropertyChanged(nameof(AxisBottom))));
     public double AxisHeight
     {
       get => (double)GetValue(AxisHeightProperty);
@@ -68,6 +69,7 @@ namespace WpfPlotDigitizer
     }
     public double AxisRight => AxisLeft + AxisWidth;
     public double AxisBottom => AxisTop + AxisHeight;
+
 
     private bool IsAdjust = false;
     private AdjustType State = AdjustType.None;
