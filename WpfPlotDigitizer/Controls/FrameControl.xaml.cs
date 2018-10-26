@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CycWpfLibrary.MVVM;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,31 @@ namespace WpfPlotDigitizer
     public FrameControl()
     {
       InitializeComponent();
+
+      gridMain.DataContext = this;
+      TurnBackCommand = new RelayCommand(TurnBack, CanTurnBack);
+      TurnNextCommand = new RelayCommand(TurnNext, CanTurnNext);
     }
+
+    public static readonly DependencyProperty SelectedFrameProperty = DependencyProperty.Register(nameof(SelectedFrame), typeof(Pages), typeof(FrameControl));
+    public Pages SelectedFrame
+    {
+      get { return (Pages)GetValue(SelectedFrameProperty); }
+      set { SetValue(SelectedFrameProperty, value); }
+    }
+    
+    public ICommand TurnBackCommand { get; set; }
+    private void TurnBack()
+    {
+      SelectedFrame--;
+    }
+    private bool CanTurnBack() => SelectedFrame > 0;
+    
+    public ICommand TurnNextCommand { get; set; }
+    private void TurnNext()
+    {
+      SelectedFrame++;
+    }
+    private bool CanTurnNext() => SelectedFrame < Pages.NumOfPages - 1;
   }
 }

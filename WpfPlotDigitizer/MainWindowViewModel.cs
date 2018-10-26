@@ -2,6 +2,7 @@
 using CycWpfLibrary.MVVM;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -19,6 +20,8 @@ namespace WpfPlotDigitizer
       AutoGetAxisCommand = new RelayCommand(AutoGetAxis);
       FilterRGBCommand = new RelayCommand(FilterRGB);
     }
+
+    public Pages CurrentPage { get; set; } = Pages.Browse;
 
     public int TabIndex { get; set; } = 0;
     public double imageWidth => pixelBitmapInput == null ? 0 : pixelBitmapInput.Width;
