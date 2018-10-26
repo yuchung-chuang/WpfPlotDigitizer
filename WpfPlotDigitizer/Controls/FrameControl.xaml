@@ -1,0 +1,106 @@
+﻿<UserControl x:Class="WpfPlotDigitizer.FrameControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:WpfPlotDigitizer"
+             mc:Ignorable="d"
+             d:DesignHeight="600"
+             d:DesignWidth="900">
+  <UserControl.Resources>
+    <ControlTemplate x:Key="ButtonTemplate"
+                     TargetType="{x:Type ButtonBase}">
+      <Border x:Name="border"
+              BorderBrush="{TemplateBinding BorderBrush}"
+              BorderThickness="{TemplateBinding BorderThickness}"
+              Background="{TemplateBinding Background}"
+              SnapsToDevicePixels="True">
+        <ContentPresenter x:Name="contentPresenter"
+                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                          Content="{TemplateBinding Content}"
+                          ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                          Focusable="False"
+                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                          Margin="{TemplateBinding Padding}"
+                          RecognizesAccessKey="True"
+                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+      </Border>
+    </ControlTemplate>
+  </UserControl.Resources>
+  <Grid>
+    <Grid.Resources>
+      <Style TargetType="Button">
+        <Setter Property="FontFamily"
+                Value="{StaticResource FontAwesome}" />
+        <Setter Property="FontSize"
+                Value="100" />
+        <Setter Property="FontWeight"
+                Value="ExtraBold" />
+        <Setter Property="Foreground"
+                Value="WhiteSmoke" />
+        <Setter Property="Opacity"
+                Value="0" />
+        <Setter Property="BorderBrush"
+                Value="{x:Null}" />
+        <Setter Property="Template"
+                Value="{StaticResource ButtonTemplate}" />
+        <Style.Triggers>
+          <Trigger Property="IsMouseOver"
+                   Value="true">
+            <Trigger.EnterActions>
+              <BeginStoryboard>
+                <Storyboard>
+                  <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                   To="1"
+                                   Duration="0:0:0.5" />
+                </Storyboard>
+              </BeginStoryboard>
+            </Trigger.EnterActions>
+            <Trigger.ExitActions>
+              <BeginStoryboard>
+                <Storyboard>
+                  <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                   To="0"
+                                   Duration="0:0:0.5" />
+                </Storyboard>
+              </BeginStoryboard>
+            </Trigger.ExitActions>
+          </Trigger>
+        </Style.Triggers>
+      </Style>
+    </Grid.Resources>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="0.5*" />
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="0.5*" />
+    </Grid.ColumnDefinitions>
+    <Frame Grid.Column="1" />
+
+    <Button Grid.Column="0"
+            Content="&#xf104;">
+      <Button.Background>
+        <LinearGradientBrush EndPoint="1,0.5"
+                             StartPoint="0,0.5">
+          <GradientStop Color="#DD000000"
+                        Offset="0" />
+          <GradientStop Color="#00000000"
+                        Offset="1" />
+        </LinearGradientBrush>
+      </Button.Background>
+    </Button>
+
+    <Button Grid.Column="2"
+            Content="&#xf105;">
+      <Button.Background>
+        <LinearGradientBrush EndPoint="1,0.5"
+                             StartPoint="0,0.5">
+          <GradientStop Color="#DD000000"
+                        Offset="1" />
+          <GradientStop Color="#00000000"
+                        Offset="0" />
+        </LinearGradientBrush>
+      </Button.Background>
+    </Button>
+  </Grid>
+</UserControl>

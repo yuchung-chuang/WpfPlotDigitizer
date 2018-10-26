@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:WpfPlotDigitizer"
              StartupUri="MainWindow.xaml">
   <Application.Resources>
+
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
         <!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->
@@ -15,6 +16,9 @@
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
         <!--MahApps.TabControl-->
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
+        
+        <!--Fonts-->
+        <ResourceDictionary Source="Styles/Fonts.xaml" />
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </Application.Resources>

@@ -14,7 +14,7 @@ namespace WpfPlotDigitizer
   {
     public MainWindowDesignModel()
     {
-      pixelBitmapInput = new PixelBitmap(new Bitmap(@"images/ClickMe.png"));
+      pixelBitmapInput = new PixelBitmap(new Bitmap(@"images/data.png"));
     }
 
   }
