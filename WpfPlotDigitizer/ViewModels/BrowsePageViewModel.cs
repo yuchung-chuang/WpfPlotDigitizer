@@ -13,6 +13,8 @@ namespace WpfPlotDigitizer
 {
   public class BrowsePageViewModel : ViewModelBase
   {
+    private readonly ApplicationViewModel applicationViewModel = IoC.Get<ApplicationViewModel>();
+    private readonly AxisPageViewModel axisPageViewModel = IoC.Get<AxisPageViewModel>();
     public BrowsePageViewModel()
     {
       OpenFileCommand = new RelayCommand(OpenFile);
@@ -20,10 +22,10 @@ namespace WpfPlotDigitizer
 
     public PixelBitmap pixelBitmapInput
     {
-      get => IoC.Get<ImagesViewModel>().pixelBitmapInput;
+      get => IoC.Get<ImageProcessingViewModel>().pixelBitmapInput;
       set
       {
-        IoC.Get<ImagesViewModel>().pixelBitmapInput = value;
+        IoC.Get<ImageProcessingViewModel>().pixelBitmapInput = value;
       }
     }
 
@@ -38,8 +40,6 @@ namespace WpfPlotDigitizer
         return;
       }
       pixelBitmapInput = new BitmapImage(new Uri(dialog.FileName)).ToPixelBitmap();
-
-      IoC.Get<ApplicationViewModel>().CurrentPage++;
     }
   }
 }

@@ -5,12 +5,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace WpfPlotDigitizer
 {
-  public class ImagesViewModel : ViewModelBase
+  public class ImageProcessingViewModel : ViewModelBase
   {
+    private readonly ApplicationViewModel applicationViewModel = IoC.Get<ApplicationViewModel>();
+    private readonly AxisPageViewModel axisPageViewModel = IoC.Get<AxisPageViewModel>();
+
     public PixelBitmap _pixelBitmapInput { get; set; }
     public PixelBitmap pixelBitmapInput
     {
@@ -23,13 +27,17 @@ namespace WpfPlotDigitizer
         pixelBitmapFilterW.Pixel = ImageProcessing.FilterW(pixelBitmapInput);
 
         pixelBitmapFilterRGB = pixelBitmapInput.Clone() as PixelBitmap;
+
+        axisPageViewModel.AutoGetAxis();
+        applicationViewModel.TurnNext();
       }
     }
-    public BitmapSource bitmapSourceInput => pixelBitmapInput?.ToBitmapSource();
 
     public PixelBitmap pixelBitmapFilterW { get; set; }
+    public Rect Axis { get; set; }
+
 
     public PixelBitmap pixelBitmapFilterRGB { get; set; }
-    public BitmapSource bitmapSourceFilterRGB => pixelBitmapFilterRGB?.ToBitmapSource();
+
   }
 }

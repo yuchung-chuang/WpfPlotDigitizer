@@ -21,6 +21,7 @@ namespace WpfPlotDigitizer
       FilterRGBCommand = new RelayCommand(FilterRGB);
     }
 
+    //useless
     public ApplicationPages CurrentPage
     {
       get => IoC.Get<ApplicationViewModel>().CurrentPage;
@@ -29,7 +30,7 @@ namespace WpfPlotDigitizer
         IoC.Get<ApplicationViewModel>().CurrentPage = value;
       }
     }
-
+    //useless
     public int TabIndex { get; set; } = 0;
     
     public PixelBitmap _pixelBitmapInput { get; set; }

@@ -149,7 +149,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ViewModels\ImagesViewModel.cs" />
+    <Compile Include="ViewModels\ImageProcessingViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

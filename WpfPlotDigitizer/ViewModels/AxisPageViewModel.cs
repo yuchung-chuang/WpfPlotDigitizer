@@ -20,18 +20,26 @@ namespace WpfPlotDigitizer
 
     public PixelBitmap pixelBitmapInput
     {
-      get => IoC.Get<ImagesViewModel>().pixelBitmapInput;
+      get => IoC.Get<ImageProcessingViewModel>().pixelBitmapInput;
       set
       {
-        IoC.Get<ImagesViewModel>().pixelBitmapInput = value;
+        IoC.Get<ImageProcessingViewModel>().pixelBitmapInput = value;
       }
     }
     public PixelBitmap pixelBitmapFilterW
     {
-      get => IoC.Get<ImagesViewModel>().pixelBitmapFilterW;
+      get => IoC.Get<ImageProcessingViewModel>().pixelBitmapFilterW;
       set
       {
-        IoC.Get<ImagesViewModel>().pixelBitmapFilterW = value;
+        IoC.Get<ImageProcessingViewModel>().pixelBitmapFilterW = value;
+      }
+    }
+    public Rect Axis
+    {
+      get => IoC.Get<ImageProcessingViewModel>().Axis;
+      set
+      {
+        IoC.Get<ImageProcessingViewModel>().Axis = value;
       }
     }
 
@@ -39,7 +47,6 @@ namespace WpfPlotDigitizer
     public double imageWidth => pixelBitmapInput == null ? 0 : pixelBitmapInput.Width;
     public double imageHeight => pixelBitmapInput == null ? 0 : pixelBitmapInput.Height;
     public BitmapSource bitmapSourceInput => pixelBitmapInput?.ToBitmapSource();
-    public Rect Axis { get; set; }
     public double AxisLeft
     {
       get => Axis.Left;
@@ -83,7 +90,7 @@ namespace WpfPlotDigitizer
     public double AxisRight => Axis.Right;
     public double AxisBottom => Axis.Bottom;
     public ICommand AutoGetAxisCommand { get; set; }
-    private void AutoGetAxis()
+    public void AutoGetAxis()
     {
       Axis = ImageProcessing.GetAxis(pixelBitmapFilterW);
     }

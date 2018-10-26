@@ -73,12 +73,11 @@
       </Style>
     </Grid.Resources>
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="0.5*" />
+      <ColumnDefinition Width="0.2*" />
       <ColumnDefinition Width="*" />
-      <ColumnDefinition Width="0.5*" />
+      <ColumnDefinition Width="0.2*" />
     </Grid.ColumnDefinitions>
-    <Frame Grid.Column="0"
-           Grid.ColumnSpan="3"
+    <Frame Grid.Column="1"
            Name="frameMain"
            NavigationUIVisibility="Hidden"
            Content="{Binding CurrentPage, Converter={local:PageConverter}}"/>

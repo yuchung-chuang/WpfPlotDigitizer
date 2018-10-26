@@ -510,8 +510,7 @@
         Back
       </Button>
     </Grid>
-
-    <local:FrameControl x:Name="frameControlMain" 
+  <local:FrameControl x:Name="frameControlMain" 
                         CurrentPage="{Binding ApplicationViewModel.CurrentPage, Source={x:Static local:ViewModelLocator.Instance}}"/>
   </Grid>
 </mahapps:MetroWindow>
