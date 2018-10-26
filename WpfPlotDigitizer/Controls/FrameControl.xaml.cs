@@ -30,25 +30,25 @@ namespace WpfPlotDigitizer
       TurnNextCommand = new RelayCommand(TurnNext, CanTurnNext);
     }
 
-    public static readonly DependencyProperty SelectedFrameProperty = DependencyProperty.Register(nameof(SelectedFrame), typeof(Pages), typeof(FrameControl));
-    public Pages SelectedFrame
+    public static readonly DependencyProperty SelectedFrameProperty = DependencyProperty.Register(nameof(SelectedFrame), typeof(ApplicationPages), typeof(FrameControl));
+    public ApplicationPages SelectedFrame
     {
-      get { return (Pages)GetValue(SelectedFrameProperty); }
+      get { return (ApplicationPages)GetValue(SelectedFrameProperty); }
       set { SetValue(SelectedFrameProperty, value); }
     }
     
     public ICommand TurnBackCommand { get; set; }
-    private void TurnBack()
+    public void TurnBack()
     {
       SelectedFrame--;
     }
-    private bool CanTurnBack() => SelectedFrame > 0;
+    public bool CanTurnBack() => SelectedFrame > 0;
     
     public ICommand TurnNextCommand { get; set; }
-    private void TurnNext()
+    public void TurnNext()
     {
       SelectedFrame++;
     }
-    private bool CanTurnNext() => SelectedFrame < Pages.NumOfPages - 1;
+    public bool CanTurnNext() => SelectedFrame < ApplicationPages.NumOfPages - 1;
   }
 }

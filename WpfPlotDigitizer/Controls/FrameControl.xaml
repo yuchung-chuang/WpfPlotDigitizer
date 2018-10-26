@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:WpfPlotDigitizer"
              xmlns:cycMVVM="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d"
              d:DesignHeight="600"
              d:DesignWidth="900">
@@ -76,14 +77,19 @@
       <ColumnDefinition Width="*" />
       <ColumnDefinition Width="0.5*" />
     </Grid.ColumnDefinitions>
-    <Frame Grid.Column="1" 
+    <Frame Grid.Column="0"
+           Grid.ColumnSpan="3"
            Name="frameMain"
            NavigationUIVisibility="Hidden"
            Content="{Binding SelectedFrame, Converter={local:PageConverter}}"/>
 
-    <Button Grid.Column="0"
+    <Button Name="BackButton"
+            Grid.Column="0"
             Content="&#xf104;"
             Command="{Binding TurnBackCommand}">
+      <Button.RenderTransform>
+        <TranslateTransform X="{Binding ActualWidth, ElementName=BackButton, Converter={cycMVVM:MathConverter}, ConverterParameter=-x/2}" />
+      </Button.RenderTransform>
       <Button.Background>
         <LinearGradientBrush EndPoint="1,0.5"
                              StartPoint="0,0.5">
@@ -93,11 +99,39 @@
                         Offset="1" />
         </LinearGradientBrush>
       </Button.Background>
+      <Button.Triggers>
+        <EventTrigger RoutedEvent="MouseEnter">
+          <BeginStoryboard>
+            <Storyboard>
+              <DoubleAnimation Storyboard.TargetName="BackButton"
+                               Storyboard.TargetProperty="(Button.RenderTransform).(TranslateTransform.X)"
+                               To="0"
+                               Duration="0:0:0.5" />
+            </Storyboard>
+          </BeginStoryboard>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="MouseLeave">
+          <BeginStoryboard>
+            <Storyboard>
+              <DoubleAnimation Storyboard.TargetName="BackButton"
+                               Storyboard.TargetProperty="(Button.RenderTransform).(TranslateTransform.X)"
+                               To="{Binding ActualWidth, ElementName=BackButton, Converter={cycMVVM:MathConverter}, ConverterParameter=-x/2}"
+                               Duration="0:0:0.5" />
+            </Storyboard>
+          </BeginStoryboard>
+        </EventTrigger>
+
+      </Button.Triggers>
+      
     </Button>
 
-    <Button Grid.Column="2"
+    <Button Name="NextButton"
+            Grid.Column="2"
             Content="&#xf105;"
             Command="{Binding TurnNextCommand}">
+      <Button.RenderTransform>
+        <TranslateTransform X="{Binding ActualWidth, ElementName=NextButton, Converter={cycMVVM:MathConverter}, ConverterParameter=x/2}" />
+      </Button.RenderTransform>
       <Button.Background>
         <LinearGradientBrush EndPoint="1,0.5"
                              StartPoint="0,0.5">
@@ -107,6 +141,29 @@
                         Offset="0" />
         </LinearGradientBrush>
       </Button.Background>
+      <Button.Triggers>
+        <EventTrigger RoutedEvent="MouseEnter">
+          <BeginStoryboard>
+            <Storyboard>
+              <DoubleAnimation Storyboard.TargetName="NextButton"
+                               Storyboard.TargetProperty="(Button.RenderTransform).(TranslateTransform.X)"
+                               To="0"
+                               Duration="0:0:0.5" />
+            </Storyboard>
+          </BeginStoryboard>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="MouseLeave">
+          <BeginStoryboard>
+            <Storyboard>
+              <DoubleAnimation Storyboard.TargetName="NextButton"
+                               Storyboard.TargetProperty="(Button.RenderTransform).(TranslateTransform.X)"
+                               To="{Binding ActualWidth, ElementName=BackButton, Converter={cycMVVM:MathConverter}, ConverterParameter=x/2}"
+                               Duration="0:0:0.5" />
+            </Storyboard>
+          </BeginStoryboard>
+        </EventTrigger>
+
+      </Button.Triggers>
     </Button>
   </Grid>
 </UserControl>

@@ -12,16 +12,16 @@ namespace WpfPlotDigitizer
   {
     public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-      switch ((Pages)value)
+      switch ((ApplicationPages)value)
       {
         default:
-        case Pages.Browse:
+        case ApplicationPages.Browse:
           return new BrowsePage();
-        case Pages.Axis:
+        case ApplicationPages.Axis:
           return new AxisPage();
-        case Pages.Filter:
+        case ApplicationPages.Filter:
           return new FilterPage();
-        case Pages.Erase:
+        case ApplicationPages.Erase:
           return new ErasePage();
       }
     }

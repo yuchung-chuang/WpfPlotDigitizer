@@ -9,7 +9,11 @@
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800">
-  <Grid Name="gridBase1">
+  <UserControl.DataContext>
+    <local:BrowsePageViewModel />
+  </UserControl.DataContext>
+  
+  <Grid Name="gridBase">
 
     <cycControls:DropImageReceiver DropPixelBitmap="{Binding pixelBitmapInput, Mode=TwoWay}" />
     <StackPanel Visibility="Visible"

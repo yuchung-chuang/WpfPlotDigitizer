@@ -6,13 +6,15 @@ using System.Threading.Tasks;
 
 namespace WpfPlotDigitizer
 {
-  public enum Pages
+  public enum ApplicationPages
   {
     Browse,
     Axis,
     Filter,
     Erase,
-
+    /// <summary>
+    /// Number of pages, should always be the last element of enum
+    /// </summary>
     NumOfPages,
   }
 }

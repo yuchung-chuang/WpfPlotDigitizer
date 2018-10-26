@@ -21,12 +21,17 @@ namespace WpfPlotDigitizer
       FilterRGBCommand = new RelayCommand(FilterRGB);
     }
 
-    public Pages CurrentPage { get; set; } = Pages.Browse;
+    public ApplicationPages CurrentPage
+    {
+      get => IoC.Get<ApplicationViewModel>().CurrentPage;
+      set
+      {
+        IoC.Get<ApplicationViewModel>().CurrentPage = value;
+      }
+    }
 
     public int TabIndex { get; set; } = 0;
-    public double imageWidth => pixelBitmapInput == null ? 0 : pixelBitmapInput.Width;
-    public double imageHeight => pixelBitmapInput == null ? 0 : pixelBitmapInput.Height;
-    public BitmapSource bitmapSourceInput => pixelBitmapInput?.ToBitmapSource();
+    
     public PixelBitmap _pixelBitmapInput { get; set; }
     public PixelBitmap pixelBitmapInput
     {
@@ -45,6 +50,8 @@ namespace WpfPlotDigitizer
       }
     }
     private PixelBitmap pixelBitmapFilterW { get; set; }
+
+    // Browse
     public ICommand OpenFileCommand { get; set; }
     public void OpenFile()
     {
@@ -58,6 +65,10 @@ namespace WpfPlotDigitizer
       pixelBitmapInput = new BitmapImage(new Uri(dialog.FileName)).ToPixelBitmap();
     }
 
+    // GetAxis
+    public double imageWidth => pixelBitmapInput == null ? 0 : pixelBitmapInput.Width;
+    public double imageHeight => pixelBitmapInput == null ? 0 : pixelBitmapInput.Height;
+    public BitmapSource bitmapSourceInput => pixelBitmapInput?.ToBitmapSource();
     public Rect Axis { get; set; }
     public double AxisLeft
     {
@@ -107,6 +118,7 @@ namespace WpfPlotDigitizer
       Axis = ImageProcessing.GetAxis(pixelBitmapFilterW);
     }
 
+    //FilterRGB
     private PixelBitmap pixelBitmapFilterRGB { get; set; }
     public BitmapSource bitmapSourceFilterRGB => pixelBitmapFilterRGB?.ToBitmapSource();
     public double FilterRMax { get; set; } = 255;

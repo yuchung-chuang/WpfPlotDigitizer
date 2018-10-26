@@ -13,5 +13,17 @@ namespace WpfPlotDigitizer
   /// </summary>
   public partial class App : Application
   {
+    /// <summary>
+    /// custom startup so we load the iocContainer immediately after startup
+    /// </summary>
+    /// <param name="e"></param>
+    protected override void OnStartup(StartupEventArgs e)
+    {
+      base.OnStartup(e);
+
+      IoC.SetUp();
+      Current.MainWindow = new MainWindow();
+      Current.MainWindow.Show();
+    }
   }
 }

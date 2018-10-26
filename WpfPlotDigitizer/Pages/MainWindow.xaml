@@ -511,6 +511,6 @@
       </Button>
     </Grid>
 
-    <local:FrameControl SelectedFrame="{Binding CurrentPage}" />
+    <local:FrameControl x:Name="frameControlMain" SelectedFrame="{Binding CurrentPage}" />
   </Grid>
 </mahapps:MetroWindow>
