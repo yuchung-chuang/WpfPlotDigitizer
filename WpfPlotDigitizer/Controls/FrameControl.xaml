@@ -81,7 +81,7 @@
            Grid.ColumnSpan="3"
            Name="frameMain"
            NavigationUIVisibility="Hidden"
-           Content="{Binding SelectedFrame, Converter={local:PageConverter}}"/>
+           Content="{Binding CurrentPage, Converter={local:PageConverter}}"/>
 
     <Button Name="BackButton"
             Grid.Column="0"

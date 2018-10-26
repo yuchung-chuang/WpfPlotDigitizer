@@ -20,21 +20,16 @@ namespace WpfPlotDigitizer
         _pixelBitmapInput = value;
         // After update input image, automatically filterW and GetAxis
         pixelBitmapFilterW = new PixelBitmap(pixelBitmapInput.Size);
-        pixelBitmapFilterRGB = pixelBitmapInput.Clone() as PixelBitmap;
-
         pixelBitmapFilterW.Pixel = ImageProcessing.FilterW(pixelBitmapInput);
 
-        //AutoGetAxis();
-
-
-        //TabIndex++;
+        pixelBitmapFilterRGB = pixelBitmapInput.Clone() as PixelBitmap;
       }
     }
     public BitmapSource bitmapSourceInput => pixelBitmapInput?.ToBitmapSource();
 
-    private PixelBitmap pixelBitmapFilterW { get; set; }
+    public PixelBitmap pixelBitmapFilterW { get; set; }
 
-    private PixelBitmap pixelBitmapFilterRGB { get; set; }
+    public PixelBitmap pixelBitmapFilterRGB { get; set; }
     public BitmapSource bitmapSourceFilterRGB => pixelBitmapFilterRGB?.ToBitmapSource();
   }
 }

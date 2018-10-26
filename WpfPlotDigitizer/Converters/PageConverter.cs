@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace WpfPlotDigitizer
 {
@@ -14,7 +15,6 @@ namespace WpfPlotDigitizer
     {
       switch ((ApplicationPages)value)
       {
-        default:
         case ApplicationPages.Browse:
           return new BrowsePage();
         case ApplicationPages.Axis:
@@ -23,6 +23,8 @@ namespace WpfPlotDigitizer
           return new FilterPage();
         case ApplicationPages.Erase:
           return new ErasePage();
+        default:
+          return new UserControl();
       }
     }
 

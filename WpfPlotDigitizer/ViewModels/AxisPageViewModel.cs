@@ -13,8 +13,27 @@ namespace WpfPlotDigitizer
 {
   public class AxisPageViewModel : ViewModelBase
   {
-    public PixelBitmap pixelBitmapInput { get; private set; }
-    public PixelBitmap pixelBitmapFilterW { get; private set; }
+    public AxisPageViewModel()
+    {
+      AutoGetAxisCommand = new RelayCommand(AutoGetAxis);
+    }
+
+    public PixelBitmap pixelBitmapInput
+    {
+      get => IoC.Get<ImagesViewModel>().pixelBitmapInput;
+      set
+      {
+        IoC.Get<ImagesViewModel>().pixelBitmapInput = value;
+      }
+    }
+    public PixelBitmap pixelBitmapFilterW
+    {
+      get => IoC.Get<ImagesViewModel>().pixelBitmapFilterW;
+      set
+      {
+        IoC.Get<ImagesViewModel>().pixelBitmapFilterW = value;
+      }
+    }
 
 
     public double imageWidth => pixelBitmapInput == null ? 0 : pixelBitmapInput.Width;

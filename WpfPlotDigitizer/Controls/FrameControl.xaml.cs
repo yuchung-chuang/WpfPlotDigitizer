@@ -26,29 +26,19 @@ namespace WpfPlotDigitizer
       InitializeComponent();
 
       gridMain.DataContext = this;
-      TurnBackCommand = new RelayCommand(TurnBack, CanTurnBack);
-      TurnNextCommand = new RelayCommand(TurnNext, CanTurnNext);
+      TurnBackCommand = IoC.Get<ApplicationViewModel>().TurnBackCommand;
+      TurnNextCommand = IoC.Get<ApplicationViewModel>().TurnNextCommand;
     }
 
-    public static readonly DependencyProperty SelectedFrameProperty = DependencyProperty.Register(nameof(SelectedFrame), typeof(ApplicationPages), typeof(FrameControl));
-    public ApplicationPages SelectedFrame
+    public static readonly DependencyProperty SelectedFrameProperty = DependencyProperty.Register(nameof(CurrentPage), typeof(ApplicationPages), typeof(FrameControl));
+    public ApplicationPages CurrentPage
     {
       get { return (ApplicationPages)GetValue(SelectedFrameProperty); }
       set { SetValue(SelectedFrameProperty, value); }
     }
-    
+
     public ICommand TurnBackCommand { get; set; }
-    public void TurnBack()
-    {
-      SelectedFrame--;
-    }
-    public bool CanTurnBack() => SelectedFrame > 0;
-    
+
     public ICommand TurnNextCommand { get; set; }
-    public void TurnNext()
-    {
-      SelectedFrame++;
-    }
-    public bool CanTurnNext() => SelectedFrame < ApplicationPages.NumOfPages - 1;
   }
 }

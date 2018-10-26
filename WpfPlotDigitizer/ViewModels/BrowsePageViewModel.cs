@@ -38,6 +38,8 @@ namespace WpfPlotDigitizer
         return;
       }
       pixelBitmapInput = new BitmapImage(new Uri(dialog.FileName)).ToPixelBitmap();
+
+      IoC.Get<ApplicationViewModel>().CurrentPage++;
     }
   }
 }
