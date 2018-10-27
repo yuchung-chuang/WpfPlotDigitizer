@@ -88,8 +88,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ViewModels\ViewModelLocator.cs" />
-    <Page Include="Controls\FrameControl.xaml">
+    <Compile Include="_ViewModels\ViewModelLocator.cs" />
+    <Page Include="_Controls\FrameControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -97,23 +97,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\ErasePage.xaml">
+    <Page Include="_Pages\ErasePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\FilterPage.xaml">
+    <Page Include="_Pages\FilterPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\AxisPage.xaml">
+    <Page Include="_Pages\AxisPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\BrowsePage.xaml">
+    <Page Include="_Pages\BrowsePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\MainWindow.xaml">
+    <Page Include="_Pages\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -121,36 +121,36 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Controls\FrameControl.xaml.cs">
+    <Compile Include="_Controls\FrameControl.xaml.cs">
       <DependentUpon>FrameControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\IocContainer.cs" />
-    <Compile Include="Model\ApplicationPages.cs" />
-    <Compile Include="Converters\PageConverter.cs" />
-    <Compile Include="ViewModels\ApplicationViewModel.cs" />
-    <Compile Include="ViewModels\AxisPageViewModel.cs" />
-    <Compile Include="ViewModels\BrowsePageViewModel.cs" />
-    <Compile Include="Pages\ErasePage.xaml.cs">
+    <Compile Include="_Model\IocContainer.cs" />
+    <Compile Include="_Model\ApplicationPages.cs" />
+    <Compile Include="_Converters\PageConverter.cs" />
+    <Compile Include="_ViewModels\ApplicationViewModel.cs" />
+    <Compile Include="_ViewModels\AxisPageViewModel.cs" />
+    <Compile Include="_ViewModels\BrowsePageViewModel.cs" />
+    <Compile Include="_Pages\ErasePage.xaml.cs">
       <DependentUpon>ErasePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\FilterPage.xaml.cs">
+    <Compile Include="_Pages\FilterPage.xaml.cs">
       <DependentUpon>FilterPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\AxisPage.xaml.cs">
+    <Compile Include="_Pages\AxisPage.xaml.cs">
       <DependentUpon>AxisPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\BrowsePage.xaml.cs">
+    <Compile Include="_Pages\BrowsePage.xaml.cs">
       <DependentUpon>BrowsePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\ImageProcessing.cs" />
-    <Compile Include="Pages\MainWindow.xaml.cs">
+    <Compile Include="_Model\ImageProcessing.cs" />
+    <Compile Include="_Pages\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ViewModels\ImageProcessingViewModel.cs" />
-    <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="_ViewModels\ImageProcessingViewModel.cs" />
+    <Compile Include="_ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

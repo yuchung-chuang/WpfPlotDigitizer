@@ -30,11 +30,11 @@ namespace WpfPlotDigitizer
       TurnNextCommand = IoC.Get<ApplicationViewModel>().TurnNextCommand;
     }
 
-    public static readonly DependencyProperty SelectedFrameProperty = DependencyProperty.Register(nameof(CurrentPage), typeof(ApplicationPages), typeof(FrameControl));
+    public static readonly DependencyProperty CurrentPageProperty = DependencyProperty.Register(nameof(CurrentPage), typeof(ApplicationPages), typeof(FrameControl));
     public ApplicationPages CurrentPage
     {
-      get { return (ApplicationPages)GetValue(SelectedFrameProperty); }
-      set { SetValue(SelectedFrameProperty, value); }
+      get { return (ApplicationPages)GetValue(CurrentPageProperty); }
+      set { SetValue(CurrentPageProperty, value); }
     }
 
     public ICommand TurnBackCommand { get; set; }
