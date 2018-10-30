@@ -11,9 +11,9 @@ using Bitmap = System.Drawing.Bitmap;
 
 namespace WpfPlotDigitizer
 {
-  public class MainWindowViewModel : ViewModelBase
+  public class MainWindowViewModel : ViewModelBase<MainWindowViewModel>
   {
-    public static MainWindowViewModel Instance { get; private set; } = new MainWindowViewModel();
+    
     public MainWindowViewModel()
     {
       OpenFileCommand = new RelayCommand(OpenFile);

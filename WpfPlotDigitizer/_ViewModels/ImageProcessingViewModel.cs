@@ -10,7 +10,7 @@ using System.Windows.Media.Imaging;
 
 namespace WpfPlotDigitizer
 {
-  public class ImageProcessingViewModel : ViewModelBase
+  public class ImageProcessingViewModel : ViewModelBase<ImageProcessingViewModel>
   {
     private readonly ApplicationViewModel applicationViewModel = IoC.Get<ApplicationViewModel>();
     private readonly AxisPageViewModel axisPageViewModel = IoC.Get<AxisPageViewModel>();

@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 
 namespace WpfPlotDigitizer
 {
-  public class AxisPageViewModel : ViewModelBase
+  public class AxisPageViewModel : ViewModelBase<AxisPageViewModel>
   {
     public AxisPageViewModel()
     {
@@ -43,9 +43,6 @@ namespace WpfPlotDigitizer
       }
     }
 
-
-    public double imageWidth => pixelBitmapInput == null ? 0 : pixelBitmapInput.Width;
-    public double imageHeight => pixelBitmapInput == null ? 0 : pixelBitmapInput.Height;
     public BitmapSource bitmapSourceInput => pixelBitmapInput?.ToBitmapSource();
     public double AxisLeft
     {
@@ -87,8 +84,6 @@ namespace WpfPlotDigitizer
         Axis = axisTmp;
       }
     }
-    public double AxisRight => Axis.Right;
-    public double AxisBottom => Axis.Bottom;
     public ICommand AutoGetAxisCommand { get; set; }
     public void AutoGetAxis()
     {

@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using CycWpfLibrary.Media;
 
 namespace WpfPlotDigitizer
 {
@@ -29,22 +30,47 @@ namespace WpfPlotDigitizer
       DataContext = new MainWindowViewModel();
     }
 
-    private void btnNext_Click(object sender, RoutedEventArgs e)
-    {
-      if (tabcontrolMain.SelectedIndex < tabcontrolMain.Items.Count - 1)
-      {
-        tabcontrolMain.SelectedIndex++;
 
-      }
+    public enum MouseControlState
+    {
+      None = 0x0000,
+      Drag = 0x0001,
+      Enter = 0x0004,
+    }
+    private double factor = 1.1;
+    private MouseControlState state;
+
+    private void image_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+    {
+      image.Width *= (e.Delta > 0) ? factor : 1 / factor;
+      image.Height *= (e.Delta > 0) ? factor : 1 / factor;
+
+      e.Handled = true; // block the Parent.MouseWheel event
     }
 
-    private void btnBack_Click(object sender, RoutedEventArgs e)
+    private void image_MouseDown(object sender, MouseButtonEventArgs e)
     {
-      if (tabcontrolMain.SelectedIndex > 0)
-      {
-        tabcontrolMain.SelectedIndex--;
 
-      }
+    }
+
+    private void image_MouseUp(object sender, MouseButtonEventArgs e)
+    {
+
+    }
+
+    private void image_MouseMove(object sender, MouseEventArgs e)
+    {
+
+    }
+
+    private void image_MouseEnter(object sender, MouseEventArgs e)
+    {
+
+    }
+
+    private void image_MouseLeave(object sender, MouseEventArgs e)
+    {
+
     }
   }
 }

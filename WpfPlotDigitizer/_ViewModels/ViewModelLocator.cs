@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace WpfPlotDigitizer
 {
+  /// <summary>
+  /// Provide static members of ViewModels to use in XAML.
+  /// </summary>
   public class ViewModelLocator
   {
     public static ViewModelLocator Instance { get; private set; } = new ViewModelLocator();

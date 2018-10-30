@@ -9,10 +9,8 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d"
              d:DesignHeight="450"
-             d:DesignWidth="800">
-  <UserControl.DataContext>
-    <local:AxisPageViewModel />
-  </UserControl.DataContext>
+             d:DesignWidth="800"
+             DataContext="{x:Static local:AxisPageViewModel.Instance}">
   <Viewbox>
     <Grid Name="gridBase2">
       <Border Name="borderImageAxis"
@@ -21,16 +19,15 @@
               HorizontalAlignment="Left"
               VerticalAlignment="Top">
         <Image Name="imageAxis"
-               Width="{Binding imageWidth, FallbackValue=850}"
-               Height="{Binding imageHeight, FallbackValue=636}"
-               Source="{Binding bitmapSourceInput}" />
+               Source="{Binding bitmapSourceInput}"
+               Stretch="None" />
       </Border>
       <cycControls:Axis AxisLeft="{Binding AxisLeft, Converter={cycMVVM:DebugConverter}, Mode=TwoWay}"
                         AxisTop="{Binding AxisTop, Mode=TwoWay}"
                         AxisWidth="{Binding AxisWidth, Mode=TwoWay}"
                         AxisHeight="{Binding AxisHeight, Mode=TwoWay}"
-                        Width="{Binding imageWidth}"
-                        Height="{Binding imageHeight}"
+                        Width="{Binding ElementName=imageAxis, Path=ActualWidth}"
+                        Height="{Binding ElementName=imageAxis, Path=ActualHeight}"
                         ShadowBrush="#99999999"
                         AxisBrush="Red"
                         HorizontalAlignment="Left"

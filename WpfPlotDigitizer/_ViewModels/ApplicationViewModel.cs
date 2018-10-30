@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace WpfPlotDigitizer
 {
-  public class ApplicationViewModel : ViewModelBase
+  public class ApplicationViewModel : ViewModelBase<ApplicationViewModel>
   {
 
     public ApplicationViewModel()

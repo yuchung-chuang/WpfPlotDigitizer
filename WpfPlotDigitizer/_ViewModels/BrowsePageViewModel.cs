@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 
 namespace WpfPlotDigitizer
 {
-  public class BrowsePageViewModel : ViewModelBase
+  public class BrowsePageViewModel : ViewModelBase<BrowsePageViewModel>
   {
     private readonly ApplicationViewModel applicationViewModel = IoC.Get<ApplicationViewModel>();
     private readonly AxisPageViewModel axisPageViewModel = IoC.Get<AxisPageViewModel>();

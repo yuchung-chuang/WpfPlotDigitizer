@@ -26,7 +26,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7.2</LangVersion>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -36,7 +36,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7.2</LangVersion>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
@@ -126,7 +126,7 @@
     </Compile>
     <Compile Include="_Model\IocContainer.cs" />
     <Compile Include="_Model\ApplicationPages.cs" />
-    <Compile Include="_Converters\PageConverter.cs" />
+    <Compile Include="_Model\Converters\PageConverter.cs" />
     <Compile Include="_ViewModels\ApplicationViewModel.cs" />
     <Compile Include="_ViewModels\AxisPageViewModel.cs" />
     <Compile Include="_ViewModels\BrowsePageViewModel.cs" />
