@@ -13,6 +13,7 @@ namespace WpfPlotDigitizer
 {
   public class AxisPageViewModel : ViewModelBase<AxisPageViewModel>
   {
+
     public AxisPageViewModel()
     {
       AutoGetAxisCommand = new RelayCommand(AutoGetAxis);

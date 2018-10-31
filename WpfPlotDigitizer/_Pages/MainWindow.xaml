@@ -14,27 +14,16 @@
                      Title="MainWindow"
                      Height="600"
                      Width="900"
-                     DataContext="{x:Static local:MainWindowViewModel.Instance}">
+                     DataContext="{x:Static local:ViewModelLocator.MainWindowViewModel}">
   <Grid Name="gridMain">
-    <ScrollViewer HorizontalScrollBarVisibility="Auto"
-                  VerticalScrollBarVisibility="Auto">
-      <Image Name="image"
-             Source="/images/data.png"
-             Width="1000"
-             Stretch="Uniform"
-             StretchDirection="Both" 
-PreviewMouseWheel="image_PreviewMouseWheel"
-             MouseDown="image_MouseDown"
-             MouseUp="image_MouseUp"
-             MouseMove="image_MouseMove"
-             MouseEnter="image_MouseEnter"
-             MouseLeave="image_MouseLeave"
-             />
-
-    </ScrollViewer>
     <local:FrameControl x:Name="frameControlMain"
-                        Visibility="Hidden"
                         CurrentPage="{Binding ApplicationViewModel.CurrentPage, Source={x:Static local:ViewModelLocator.Instance}}" />
+
+    <cycControls:ImageViewer Visibility="Visible">
+      <Grid>
+        <Image Source="/images/data.png" />
+      </Grid>
+    </cycControls:ImageViewer>
 
   </Grid>
 </mahapps:MetroWindow>

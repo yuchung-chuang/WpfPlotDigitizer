@@ -14,5 +14,7 @@ namespace WpfPlotDigitizer
     public static ViewModelLocator Instance { get; private set; } = new ViewModelLocator();
 
     public static ApplicationViewModel ApplicationViewModel => IoC.Get<ApplicationViewModel>();
+    public static MainWindowViewModel MainWindowViewModel => IoC.Get<MainWindowViewModel>();
+    public static AxisPageViewModel AxisPageViewModel => IoC.Get<AxisPageViewModel>();
   }
 }
