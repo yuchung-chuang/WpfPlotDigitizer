@@ -18,6 +18,7 @@ namespace WpfPlotDigitizer
       Kernel.Bind<MainWindowViewModel>().ToConstant(new MainWindowViewModel());
       Kernel.Bind<BrowsePageViewModel>().ToConstant(new BrowsePageViewModel());
       Kernel.Bind<AxisPageViewModel>().ToConstant(new AxisPageViewModel());
+      Kernel.Bind<FilterPageViewModel>().ToConstant(new FilterPageViewModel());
     }
     public static void SetUp()
     {

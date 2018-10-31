@@ -27,7 +27,6 @@ namespace WpfPlotDigitizer
     public MainWindow()
     {
       InitializeComponent();
-      DataContext = IoC.Get<MainWindowViewModel>();
     }
   }
 }

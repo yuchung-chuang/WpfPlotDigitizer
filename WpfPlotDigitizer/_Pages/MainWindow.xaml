@@ -19,11 +19,5 @@
     <local:FrameControl x:Name="frameControlMain"
                         CurrentPage="{Binding ApplicationViewModel.CurrentPage, Source={x:Static local:ViewModelLocator.Instance}}" />
 
-    <cycControls:ImageViewer Visibility="Visible">
-      <Grid>
-        <Image Source="/images/data.png" />
-      </Grid>
-    </cycControls:ImageViewer>
-
   </Grid>
 </mahapps:MetroWindow>

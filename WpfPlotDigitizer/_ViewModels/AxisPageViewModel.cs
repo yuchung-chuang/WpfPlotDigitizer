@@ -22,26 +22,17 @@ namespace WpfPlotDigitizer
     public PixelBitmap pixelBitmapInput
     {
       get => IoC.Get<ImageProcessingViewModel>().pixelBitmapInput;
-      set
-      {
-        IoC.Get<ImageProcessingViewModel>().pixelBitmapInput = value;
-      }
+      set => IoC.Get<ImageProcessingViewModel>().pixelBitmapInput = value;
     }
     public PixelBitmap pixelBitmapFilterW
     {
       get => IoC.Get<ImageProcessingViewModel>().pixelBitmapFilterW;
-      set
-      {
-        IoC.Get<ImageProcessingViewModel>().pixelBitmapFilterW = value;
-      }
+      set => IoC.Get<ImageProcessingViewModel>().pixelBitmapFilterW = value;
     }
     public Rect Axis
     {
       get => IoC.Get<ImageProcessingViewModel>().Axis;
-      set
-      {
-        IoC.Get<ImageProcessingViewModel>().Axis = value;
-      }
+      set => IoC.Get<ImageProcessingViewModel>().Axis = value;
     }
 
     public BitmapSource bitmapSourceInput => pixelBitmapInput?.ToBitmapSource();

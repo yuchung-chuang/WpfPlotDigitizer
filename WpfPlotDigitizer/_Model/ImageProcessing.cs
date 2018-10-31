@@ -3,6 +3,7 @@ using CycWpfLibrary.Media;
 using System;
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Media;
 using static CycWpfLibrary.Math;
 
 namespace WpfPlotDigitizer
@@ -218,6 +219,66 @@ namespace WpfPlotDigitizer
       {
         return axisTmp;
       }
+    }
+
+    public static bool IsRGBFilted(Color color, Color Max, Color Min)
+    {
+      return (color.R <= Max.R && color.R >= Min.R &&
+              color.G <= Max.G && color.G >= Min.G &&
+              color.B <= Max.B && color.B >= Min.B) ? true : false;
+    }
+    public static bool IsColor(byte[,,] pixel3, int x, int y) => pixel3[x, y, 0] != 0;
+    public static PixelBitmap FilterRGB(PixelBitmap iptImage, Color Max, Color Min, string type)
+    {
+      byte selectedColor;
+      Color colorNow;
+      var optImage = iptImage.Clone() as PixelBitmap;
+      var optPixel3 = optImage.Pixel3;
+      int FilterMax, FilterMin, typeN;
+      switch (type)
+      {
+        default:
+        case "R":
+          typeN = 1;
+          FilterMax = Max.R;
+          FilterMin = Min.R;
+          break;
+        case "G":
+          typeN = 2;
+          FilterMax = Max.G;
+          FilterMin = Min.G;
+          break;
+        case "B":
+          typeN = 3;
+          FilterMax = Max.B;
+          FilterMin = Min.B;
+          break;
+      }
+      
+      var width = iptImage.Width;
+      var height = iptImage.Height;
+      int Byte = iptImage.Byte;
+      for (int x = 0; x < width; x++)
+      {
+        for (int y = 0; y < height; y++)
+        {
+          colorNow = new Color
+          {
+            A = optPixel3[x, y, 0],
+            R = optPixel3[x, y, 1],
+            G = optPixel3[x, y, 2],
+            B = optPixel3[x, y, 3],
+          };
+          selectedColor = optPixel3[x, y, typeN];
+          if (IsColor(optPixel3, x, y) &&
+            !IsIn(selectedColor, FilterMax, FilterMin))
+            optPixel3[x, y, 0] = 0;
+          else if (IsRGBFilted(colorNow, Max, Min))
+            optPixel3[x, y, 0] = 255;
+        }
+      }
+      optImage.Pixel3 = optPixel3;
+      return optImage;
     }
 
     #region Deprecated methods

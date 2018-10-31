@@ -125,7 +125,7 @@
     <Compile Include="_Controls\FrameControl.xaml.cs">
       <DependentUpon>FrameControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="_Model\IocContainer.cs" />
+    <Compile Include="_Model\IoC.cs" />
     <Compile Include="_Model\ApplicationPages.cs" />
     <Compile Include="_Model\Converters\PageConverter.cs" />
     <Compile Include="_ViewModels\ApplicationViewModel.cs" />

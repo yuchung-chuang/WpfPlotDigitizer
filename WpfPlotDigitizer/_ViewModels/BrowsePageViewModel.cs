@@ -15,6 +15,7 @@ namespace WpfPlotDigitizer
   {
     private readonly ApplicationViewModel applicationViewModel = IoC.Get<ApplicationViewModel>();
     private readonly AxisPageViewModel axisPageViewModel = IoC.Get<AxisPageViewModel>();
+
     public BrowsePageViewModel()
     {
       OpenFileCommand = new RelayCommand(OpenFile);
@@ -23,10 +24,7 @@ namespace WpfPlotDigitizer
     public PixelBitmap pixelBitmapInput
     {
       get => IoC.Get<ImageProcessingViewModel>().pixelBitmapInput;
-      set
-      {
-        IoC.Get<ImageProcessingViewModel>().pixelBitmapInput = value;
-      }
+      set => IoC.Get<ImageProcessingViewModel>().pixelBitmapInput = value;
     }
 
     public ICommand OpenFileCommand { get; set; }
