@@ -2,6 +2,8 @@
 using CycWpfLibrary.Media;
 using System;
 using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using static CycWpfLibrary.Math;
@@ -228,12 +230,12 @@ namespace WpfPlotDigitizer
               color.B <= Max.B && color.B >= Min.B) ? true : false;
     }
     public static bool IsColor(byte[,,] pixel3, int x, int y) => pixel3[x, y, 0] != 0;
-    public static PixelBitmap FilterRGB(PixelBitmap iptImage, Color Max, Color Min, string type)
+    public static PixelBitmap FilterRGB(PixelBitmap iptImage, Color Max, Color Min, string type, CancellationToken token)
     {
       byte selectedColor;
       Color colorNow;
       var optImage = iptImage.Clone() as PixelBitmap;
-      var optPixel3 = optImage.Pixel3;
+      var optPixel3 = optImage.Pixel3.Clone() as byte[,,];
       int FilterMax, FilterMin, typeN;
       switch (type)
       {
@@ -254,14 +256,18 @@ namespace WpfPlotDigitizer
           FilterMin = Min.B;
           break;
       }
-      
+
       var width = iptImage.Width;
       var height = iptImage.Height;
       int Byte = iptImage.Byte;
-      for (int x = 0; x < width; x++)
+      Parallel.For(0, width, (x, state) =>
       {
         for (int y = 0; y < height; y++)
         {
+          if (token.IsCancellationRequested)
+          {
+            state.Stop();
+          }
           colorNow = new Color
           {
             A = optPixel3[x, y, 0],
@@ -276,6 +282,11 @@ namespace WpfPlotDigitizer
           else if (IsRGBFilted(colorNow, Max, Min))
             optPixel3[x, y, 0] = 255;
         }
+
+      });
+      if (token.IsCancellationRequested)
+      {
+        token.ThrowIfCancellationRequested();
       }
       optImage.Pixel3 = optPixel3;
       return optImage;

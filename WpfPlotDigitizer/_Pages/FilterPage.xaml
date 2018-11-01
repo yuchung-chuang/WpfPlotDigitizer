@@ -35,43 +35,16 @@
       <mahapps:RangeSlider Orientation="Vertical"
                            mahapps:SliderHelper.TrackValueFillBrush="Red"
                            LowerValue="{Binding FilterRMin}"
-                           UpperValue="{Binding FilterRMax}">
-        <i:Interaction.Triggers>
-          <i:EventTrigger EventName="LowerValueChanged">
-            <i:InvokeCommandAction Command="{Binding FilterRMinCommand}" />
-          </i:EventTrigger>
-          <i:EventTrigger EventName="UpperValueChanged">
-            <i:InvokeCommandAction Command="{Binding FilterRMaxCommand}" />
-          </i:EventTrigger>
-        </i:Interaction.Triggers>
-      </mahapps:RangeSlider>
-                           
+                           UpperValue="{Binding FilterRMax}" />
+
       <mahapps:RangeSlider Orientation="Vertical"
                            mahapps:SliderHelper.TrackValueFillBrush="Green"
                            LowerValue="{Binding FilterGMin}"
-                           UpperValue="{Binding FilterGMax}">
-        <i:Interaction.Triggers>
-          <i:EventTrigger EventName="LowerValueChanged">
-            <i:InvokeCommandAction Command="{Binding FilterGMinCommand}" />
-          </i:EventTrigger>
-          <i:EventTrigger EventName="UpperValueChanged">
-            <i:InvokeCommandAction Command="{Binding FilterGMaxCommand}" />
-          </i:EventTrigger>
-        </i:Interaction.Triggers>
-      </mahapps:RangeSlider>
+                           UpperValue="{Binding FilterGMax}" />
       <mahapps:RangeSlider Orientation="Vertical"
                            mahapps:SliderHelper.TrackValueFillBrush="Blue"
                            LowerValue="{Binding FilterBMin}"
-                           UpperValue="{Binding FilterBMax}">
-        <i:Interaction.Triggers>
-          <i:EventTrigger EventName="LowerValueChanged">
-            <i:InvokeCommandAction Command="{Binding FilterBMinCommand}" />
-          </i:EventTrigger>
-          <i:EventTrigger EventName="UpperValueChanged">
-            <i:InvokeCommandAction Command="{Binding FilterBMaxCommand}" />
-          </i:EventTrigger>
-        </i:Interaction.Triggers>
-      </mahapps:RangeSlider>
+                           UpperValue="{Binding FilterBMax}" />
     </StackPanel>
   </Grid>
 </UserControl>
