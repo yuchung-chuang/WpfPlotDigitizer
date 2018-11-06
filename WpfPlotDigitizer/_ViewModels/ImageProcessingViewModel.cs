@@ -15,7 +15,8 @@ namespace WpfPlotDigitizer
     private readonly ApplicationViewModel applicationViewModel = IoC.Get<ApplicationViewModel>();
     private readonly AxisPageViewModel axisPageViewModel = IoC.Get<AxisPageViewModel>();
 
-    public PixelBitmap _pixelBitmapInput { get; set; }
+    public PixelBitmap pixelBitmapFilterW { get; set; }
+    private PixelBitmap _pixelBitmapInput;
     public PixelBitmap pixelBitmapInput
     {
       get => _pixelBitmapInput;
@@ -26,15 +27,22 @@ namespace WpfPlotDigitizer
         pixelBitmapFilterW = new PixelBitmap(pixelBitmapInput.Size);
         pixelBitmapFilterW.Pixel = ImageProcessing.FilterW(pixelBitmapInput);
 
-        pixelBitmapFilterRGB = pixelBitmapInput.Clone() as PixelBitmap;
-
         axisPageViewModel.AutoGetAxis();
         applicationViewModel.TurnNext();
       }
     }
 
-    public PixelBitmap pixelBitmapFilterW { get; set; }
-    public Rect Axis { get; set; }
+    private Rect _Axis;
+    public Rect Axis
+    {
+      get => _Axis;
+      set
+      {
+        _Axis = value;
+        var bitmap = pixelBitmapInput.Bitmap.Crop(_Axis);
+        pixelBitmapFilterRGB = new PixelBitmap(bitmap);
+      }
+    }
 
 
     public PixelBitmap pixelBitmapFilterRGB { get; set; }

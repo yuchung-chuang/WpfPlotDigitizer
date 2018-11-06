@@ -10,6 +10,13 @@ using static CycWpfLibrary.Math;
 
 namespace WpfPlotDigitizer
 {
+  public enum FilterType
+  {
+    Red,
+    Green,
+    Blue
+  }
+
   public static class ImageProcessing
   {
     public static byte[] FilterW(PixelBitmap iptImage, int white = 200)
@@ -230,7 +237,7 @@ namespace WpfPlotDigitizer
               color.B <= Max.B && color.B >= Min.B) ? true : false;
     }
     public static bool IsColor(byte[,,] pixel3, int x, int y) => pixel3[x, y, 0] != 0;
-    public static PixelBitmap FilterRGB(PixelBitmap iptImage, Color Max, Color Min, string type, CancellationToken token)
+    public static PixelBitmap FilterRGB(PixelBitmap iptImage, Color Max, Color Min, FilterType type, CancellationToken token)
     {
       byte selectedColor;
       Color colorNow;
@@ -240,17 +247,17 @@ namespace WpfPlotDigitizer
       switch (type)
       {
         default:
-        case "R":
+        case FilterType.Red:
           typeN = 1;
           FilterMax = Max.R;
           FilterMin = Min.R;
           break;
-        case "G":
+        case FilterType.Green:
           typeN = 2;
           FilterMax = Max.G;
           FilterMin = Min.G;
           break;
-        case "B":
+        case FilterType.Blue:
           typeN = 3;
           FilterMax = Max.B;
           FilterMin = Min.B;
@@ -264,10 +271,11 @@ namespace WpfPlotDigitizer
       {
         for (int y = 0; y < height; y++)
         {
+          // 當工作被取消...
           if (token.IsCancellationRequested)
-          {
+            // 中止parallel.for
             state.Stop();
-          }
+          
           colorNow = new Color
           {
             A = optPixel3[x, y, 0],
@@ -284,10 +292,11 @@ namespace WpfPlotDigitizer
         }
 
       });
+      //當工作被取消...
       if (token.IsCancellationRequested)
-      {
+        //拋出協作式異常
         token.ThrowIfCancellationRequested();
-      }
+      
       optImage.Pixel3 = optPixel3;
       return optImage;
     }

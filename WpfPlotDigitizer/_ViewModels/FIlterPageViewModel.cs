@@ -26,14 +26,8 @@ namespace WpfPlotDigitizer
     private static readonly object key = new object();
     private PixelBitmap pixelBitmapFilterRGB
     {
-      get
-      {
-        return IoC.Get<ImageProcessingViewModel>().pixelBitmapFilterRGB;
-      }
-      set
-      {
-        IoC.Get<ImageProcessingViewModel>().pixelBitmapFilterRGB = value;
-      }
+      get => IoC.Get<ImageProcessingViewModel>().pixelBitmapFilterRGB;
+      set => IoC.Get<ImageProcessingViewModel>().pixelBitmapFilterRGB = value;
     }
     public BitmapSource bitmapSourceFilterRGB => pixelBitmapFilterRGB?.ToBitmapSource();
 
@@ -53,7 +47,7 @@ namespace WpfPlotDigitizer
         if (_filterRMax != value)
         {
           _filterRMax = value;
-          FilterRMethod(FilterMax, FilterMin);
+          FilterMethod(FilterMax, FilterMin, FilterType.Red);
         }
       }
     }
@@ -65,7 +59,7 @@ namespace WpfPlotDigitizer
         if (_filterRMin != value)
         {
           _filterRMin = value;
-          FilterRMethod(FilterMax, FilterMin);
+          FilterMethod(FilterMax, FilterMin, FilterType.Red);
         }
       }
     }
@@ -77,7 +71,7 @@ namespace WpfPlotDigitizer
         if (_filterGMax != value)
         {
           _filterGMax = value;
-          FilterGMethod();
+          FilterMethod(FilterMax, FilterMin, FilterType.Green);
         }
       }
     }
@@ -89,7 +83,7 @@ namespace WpfPlotDigitizer
         if (_filterGMin != value)
         {
           _filterGMin = value;
-          FilterGMethod();
+          FilterMethod(FilterMax, FilterMin, FilterType.Green);
         }
       }
     }
@@ -101,7 +95,7 @@ namespace WpfPlotDigitizer
         if (_filterBMax != value)
         {
           _filterBMax = value;
-          FilterBMethod();
+          FilterMethod(FilterMax, FilterMin, FilterType.Blue);
         }
       }
     }
@@ -113,7 +107,7 @@ namespace WpfPlotDigitizer
         if (_filterBMin != value)
         {
           _filterBMin = value;
-          FilterBMethod();
+          FilterMethod(FilterMax, FilterMin, FilterType.Blue);
         }
       }
     }
@@ -121,41 +115,26 @@ namespace WpfPlotDigitizer
     public Color FilterMin => Color.FromRgb(FilterRMin, FilterGMin, FilterBMin);
     public (Color Max, Color Min) Filter => (FilterMax, FilterMin);
 
-    private TaskQueue taskQueue = new TaskQueue(1);
     private Task workTask;
     private CancellationTokenSource cts;
-    private void FilterRMethod(Color FilterMax, Color FilterMin)
+    private void FilterMethod(Color FilterMax, Color FilterMin, FilterType type)
     {
       if (workTask != null && workTask.Status != TaskStatus.RanToCompletion)
       {
-        cts.Cancel(); //通知取消工作
-        //Debug.WriteLine($"{workTask.Status.ToString()}");
-        //Debug.WriteLine("Cancel!");
+        cts.Cancel(); 
       }
-      cts = new CancellationTokenSource(); // 初始化cts物件
+      cts = new CancellationTokenSource(); 
       workTask = Task.Run(() =>
       {
         PixelBitmap pixelBitmap = new PixelBitmap();
         try
         {
-          pixelBitmap = ImageProcessing.FilterRGB(pixelBitmapFilterRGB, FilterMax, FilterMin, "R", cts.Token); 
+          pixelBitmap = ImageProcessing.FilterRGB(pixelBitmapFilterRGB, FilterMax, FilterMin, type, cts.Token); 
           pixelBitmapFilterRGB = pixelBitmap;
-          Debug.WriteLine($"{FilterMax.R} completed");
         }
         catch (OperationCanceledException)
-        {
-          Debug.WriteLine($"{FilterMax.R} cancelled");
-        }
+        { }
       });
-    }
-
-    private void FilterGMethod()
-    {
-      
-    }
-    private void FilterBMethod()
-    {
-
     }
   }
 }
