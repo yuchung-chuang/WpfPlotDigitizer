@@ -11,28 +11,28 @@ using System.Windows.Media.Imaging;
 
 namespace WpfPlotDigitizer
 {
-  public class AxisPageViewModel : ViewModelBase<AxisPageViewModel>
+  public class AxisPageVM : ViewModelBase<AxisPageVM>
   {
 
-    public AxisPageViewModel()
+    public AxisPageVM()
     {
       AutoGetAxisCommand = new RelayCommand(AutoGetAxis);
     }
 
     public PixelBitmap pixelBitmapInput
     {
-      get => IoC.Get<ImageProcessingViewModel>().pixelBitmapInput;
-      set => IoC.Get<ImageProcessingViewModel>().pixelBitmapInput = value;
+      get => IoC.Get<ImageProcessingVM>().pixelBitmapInput;
+      set => IoC.Get<ImageProcessingVM>().pixelBitmapInput = value;
     }
     public PixelBitmap pixelBitmapFilterW
     {
-      get => IoC.Get<ImageProcessingViewModel>().pixelBitmapFilterW;
-      set => IoC.Get<ImageProcessingViewModel>().pixelBitmapFilterW = value;
+      get => IoC.Get<ImageProcessingVM>().pixelBitmapFilterW;
+      set => IoC.Get<ImageProcessingVM>().pixelBitmapFilterW = value;
     }
     public Rect Axis
     {
-      get => IoC.Get<ImageProcessingViewModel>().Axis;
-      set => IoC.Get<ImageProcessingViewModel>().Axis = value;
+      get => IoC.Get<ImageProcessingVM>().Axis;
+      set => IoC.Get<ImageProcessingVM>().Axis = value;
     }
 
     public BitmapSource bitmapSourceInput => pixelBitmapInput?.ToBitmapSource();
@@ -76,6 +76,7 @@ namespace WpfPlotDigitizer
         Axis = axisTmp;
       }
     }
+
     public ICommand AutoGetAxisCommand { get; set; }
     public void AutoGetAxis()
     {
@@ -83,3 +84,9 @@ namespace WpfPlotDigitizer
     }
   }
 }
+
+
+
+
+
+

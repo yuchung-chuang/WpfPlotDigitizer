@@ -10,7 +10,7 @@
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800"
-             DataContext="{x:Static local:ViewModelLocator.AxisPageViewModel}">
+             DataContext="{x:Static local:VMLocator.AxisPageVM}">
   <Grid>
     <cycControls:PanZoomBorder ClipToBounds="True">
       <cycControls:PanZoomBorder.Background>

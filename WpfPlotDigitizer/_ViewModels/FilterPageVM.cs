@@ -1,34 +1,23 @@
 ﻿using CycWpfLibrary.Media;
 using CycWpfLibrary.MVVM;
-using CycWpfLibrary.NativeMethods;
-using CycWpfLibrary.Threading;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace WpfPlotDigitizer
 {
-  public class FilterPageViewModel : ViewModelBase<FilterPageViewModel>
+  public class FilterPageVM : ViewModelBase<FilterPageVM>
   {
-    public FilterPageViewModel()
-    {
-
-    }
-
+    
     private static readonly object key = new object();
     private PixelBitmap pixelBitmapFilterRGB
     {
-      get => IoC.Get<ImageProcessingViewModel>().pixelBitmapFilterRGB;
-      set => IoC.Get<ImageProcessingViewModel>().pixelBitmapFilterRGB = value;
+      get => IoC.Get<ImageProcessingVM>().pixelBitmapFilterRGB;
+      set => IoC.Get<ImageProcessingVM>().pixelBitmapFilterRGB = value;
     }
+    private readonly ImageProcessingVM IPVM = IoC.Get<ImageProcessingVM>();
     public BitmapSource bitmapSourceFilterRGB => pixelBitmapFilterRGB?.ToBitmapSource();
 
 
@@ -126,11 +115,9 @@ namespace WpfPlotDigitizer
       cts = new CancellationTokenSource(); 
       workTask = Task.Run(() =>
       {
-        PixelBitmap pixelBitmap = new PixelBitmap();
         try
         {
-          pixelBitmap = ImageProcessing.FilterRGB(pixelBitmapFilterRGB, FilterMax, FilterMin, type, cts.Token); 
-          pixelBitmapFilterRGB = pixelBitmap;
+          pixelBitmapFilterRGB = ImageProcessing.FilterRGB(pixelBitmapFilterRGB, FilterMax, FilterMin, type, cts.Token); 
         }
         catch (OperationCanceledException)
         { }

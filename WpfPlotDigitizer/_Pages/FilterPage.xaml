@@ -9,7 +9,7 @@
              mc:Ignorable="d"
              d:DesignHeight="600"
              d:DesignWidth="900"
-             DataContext="{x:Static local:ViewModelLocator.FilterPageViewModel}">
+             DataContext="{x:Static local:VMLocator.FilterPageVM}">
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*" />

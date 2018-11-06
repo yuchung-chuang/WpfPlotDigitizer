@@ -14,10 +14,10 @@
                      Title="MainWindow"
                      Height="600"
                      Width="900"
-                     DataContext="{x:Static local:ViewModelLocator.MainWindowViewModel}">
+                     DataContext="{x:Static local:VMLocator.MainWindowVM}">
   <Grid Name="gridMain">
     <local:FrameControl x:Name="frameControlMain"
-                        PageManager="{Binding ApplicationViewModel.PageManager, Source={x:Static local:ViewModelLocator.Instance}}" />
+                        PageManager="{Binding ApplicationVM.PageManager, Source={x:Static local:VMLocator.Instance}}" />
 
     <!--Fail, don't know why-->
     <!--<cycControls:FrameControl x:Name="a"

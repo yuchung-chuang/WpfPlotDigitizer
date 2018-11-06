@@ -11,20 +11,17 @@ using System.Windows.Media.Imaging;
 
 namespace WpfPlotDigitizer
 {
-  public class BrowsePageViewModel : ViewModelBase<BrowsePageViewModel>
+  public class BrowsePageVM : ViewModelBase<BrowsePageVM>
   {
-    private readonly ApplicationViewModel applicationViewModel = IoC.Get<ApplicationViewModel>();
-    private readonly AxisPageViewModel axisPageViewModel = IoC.Get<AxisPageViewModel>();
-
-    public BrowsePageViewModel()
+    public BrowsePageVM()
     {
       OpenFileCommand = new RelayCommand(OpenFile);
     }
 
     public PixelBitmap pixelBitmapInput
     {
-      get => IoC.Get<ImageProcessingViewModel>().pixelBitmapInput;
-      set => IoC.Get<ImageProcessingViewModel>().pixelBitmapInput = value;
+      get => IoC.Get<ImageProcessingVM>().pixelBitmapInput;
+      set => IoC.Get<ImageProcessingVM>().pixelBitmapInput = value;
     }
 
     public ICommand OpenFileCommand { get; set; }

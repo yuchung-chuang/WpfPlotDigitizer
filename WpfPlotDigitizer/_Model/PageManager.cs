@@ -52,11 +52,16 @@ namespace WpfPlotDigitizer
     private readonly int NumOfPages = (int)ApplicationPages.NumOfPages;
 
     public ICommand TurnNextCommand { get; set; }
-    public ICommand TurnBackCommand { get; set; }
-
-    public bool CanTurnBack() => Index > 0;
-    public bool CanTurnNext() => Index < NumOfPages - 1;
     public void TurnBack() => Index--;
-    public void TurnNext() => Index++;
+    public bool CanTurnBack() => Index > 0;
+
+    public ICommand TurnBackCommand { get; set; }
+    public event Action TurnNextEvent;
+    public void TurnNext()
+    {
+      TurnNextEvent?.Invoke();
+      Index++;
+    }
+    public bool CanTurnNext() => Index < NumOfPages - 1;
   }
 }
