@@ -88,6 +88,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="_Controls\IFrameControlPage.cs" />
     <Compile Include="_ViewModels\FilterPageViewModel.cs" />
     <Compile Include="_ViewModels\ViewModelLocator.cs" />
     <Page Include="_Controls\FrameControl.xaml">
@@ -126,8 +127,7 @@
       <DependentUpon>FrameControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="_Model\IoC.cs" />
-    <Compile Include="_Model\ApplicationPages.cs" />
-    <Compile Include="_Model\Converters\PageConverter.cs" />
+    <Compile Include="_Model\PageManager.cs" />
     <Compile Include="_ViewModels\ApplicationViewModel.cs" />
     <Compile Include="_ViewModels\AxisPageViewModel.cs" />
     <Compile Include="_ViewModels\BrowsePageViewModel.cs" />

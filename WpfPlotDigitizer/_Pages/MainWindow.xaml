@@ -17,7 +17,10 @@
                      DataContext="{x:Static local:ViewModelLocator.MainWindowViewModel}">
   <Grid Name="gridMain">
     <local:FrameControl x:Name="frameControlMain"
-                        CurrentPage="{Binding ApplicationViewModel.CurrentPage, Source={x:Static local:ViewModelLocator.Instance}}" />
+                        PageManager="{Binding ApplicationViewModel.PageManager, Source={x:Static local:ViewModelLocator.Instance}}" />
 
+    <!--Fail, don't know why-->
+    <!--<cycControls:FrameControl x:Name="a"
+                              PageManager="{Binding ApplicationViewModel.PageManager, Source={x:Static local:ViewModelLocator.Instance}}"/>-->
   </Grid>
 </mahapps:MetroWindow>

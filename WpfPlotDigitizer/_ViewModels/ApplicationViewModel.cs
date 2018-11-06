@@ -10,26 +10,7 @@ namespace WpfPlotDigitizer
 {
   public class ApplicationViewModel : ViewModelBase<ApplicationViewModel>
   {
+    public IPageManager PageManager { get; } = IoC.Get<PageManager>();
 
-    public ApplicationViewModel()
-    {
-      TurnBackCommand = new RelayCommand(TurnBack, CanTurnBack);
-      TurnNextCommand = new RelayCommand(TurnNext, CanTurnNext);
-    }
-    public ApplicationPages CurrentPage { get; set; } = ApplicationPages.Browse;
-
-    public ICommand TurnBackCommand { get; set; }
-    public void TurnBack()
-    {
-      CurrentPage--;
-    }
-    public bool CanTurnBack() => CurrentPage > 0;
-
-    public ICommand TurnNextCommand { get; set; }
-    public void TurnNext()
-    {
-      CurrentPage++;
-    }
-    public bool CanTurnNext() => CurrentPage < ApplicationPages.NumOfPages - 1;
   }
 }

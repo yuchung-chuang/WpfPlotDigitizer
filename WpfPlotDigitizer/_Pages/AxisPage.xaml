@@ -32,7 +32,7 @@
                    Source="{Binding bitmapSourceInput}"
                    Stretch="None" />
           </Border>
-          <cycControls:Axis AxisLeft="{Binding AxisLeft, Converter={cycMVVM:DebugConverter}, Mode=TwoWay}"
+          <cycControls:Axis AxisLeft="{Binding AxisLeft, Mode=TwoWay}"
                             AxisTop="{Binding AxisTop, Mode=TwoWay}"
                             AxisWidth="{Binding AxisWidth, Mode=TwoWay}"
                             AxisHeight="{Binding AxisHeight, Mode=TwoWay}"

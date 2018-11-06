@@ -80,12 +80,12 @@
     <Frame Grid.Column="1"
            Name="frameMain"
            NavigationUIVisibility="Hidden"
-           Content="{Binding CurrentPage, Converter={local:PageConverter}}"/>
+           Content="{Binding PageManager.CurrentPage}"/>
 
     <Button Name="BackButton"
             Grid.Column="0"
             Content="&#xf104;"
-            Command="{Binding TurnBackCommand}">
+            Command="{Binding PageManager.TurnBackCommand}">
       <Button.RenderTransform>
         <TranslateTransform X="{Binding ActualWidth, ElementName=BackButton, Converter={cycMVVM:MathConverter}, ConverterParameter=-x/2}" />
       </Button.RenderTransform>
@@ -127,7 +127,7 @@
     <Button Name="NextButton"
             Grid.Column="2"
             Content="&#xf105;"
-            Command="{Binding TurnNextCommand}">
+            Command="{Binding PageManager.TurnNextCommand}">
       <Button.RenderTransform>
         <TranslateTransform X="{Binding ActualWidth, ElementName=NextButton, Converter={cycMVVM:MathConverter}, ConverterParameter=x/2}" />
       </Button.RenderTransform>

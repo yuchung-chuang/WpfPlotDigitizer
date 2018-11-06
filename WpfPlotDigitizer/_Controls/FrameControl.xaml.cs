@@ -26,19 +26,14 @@ namespace WpfPlotDigitizer
       InitializeComponent();
 
       gridMain.DataContext = this;
-      TurnBackCommand = IoC.Get<ApplicationViewModel>().TurnBackCommand;
-      TurnNextCommand = IoC.Get<ApplicationViewModel>().TurnNextCommand;
+      
     }
 
-    public static readonly DependencyProperty CurrentPageProperty = DependencyProperty.Register(nameof(CurrentPage), typeof(ApplicationPages), typeof(FrameControl));
-    public ApplicationPages CurrentPage
+    public static readonly DependencyProperty CurrentPageProperty = DependencyProperty.Register(nameof(PageManager), typeof(IPageManager), typeof(FrameControl));
+    public IPageManager PageManager
     {
-      get { return (ApplicationPages)GetValue(CurrentPageProperty); }
+      get { return (IPageManager)GetValue(CurrentPageProperty); }
       set { SetValue(CurrentPageProperty, value); }
     }
-
-    public ICommand TurnBackCommand { get; set; }
-
-    public ICommand TurnNextCommand { get; set; }
   }
 }

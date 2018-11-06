@@ -13,6 +13,7 @@ namespace WpfPlotDigitizer
 
     private static void BindViewModels()
     {
+      Kernel.Bind<PageManager>().ToConstant(new PageManager());
       Kernel.Bind<ApplicationViewModel>().ToConstant(new ApplicationViewModel());
       Kernel.Bind<ImageProcessingViewModel>().ToConstant(new ImageProcessingViewModel());
       Kernel.Bind<MainWindowViewModel>().ToConstant(new MainWindowViewModel());

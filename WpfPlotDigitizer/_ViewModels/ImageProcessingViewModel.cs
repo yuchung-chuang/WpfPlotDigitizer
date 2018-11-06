@@ -28,7 +28,7 @@ namespace WpfPlotDigitizer
         pixelBitmapFilterW.Pixel = ImageProcessing.FilterW(pixelBitmapInput);
 
         axisPageViewModel.AutoGetAxis();
-        applicationViewModel.TurnNext();
+        applicationViewModel.PageManager.TurnNext();
       }
     }
 
