@@ -1,5 +1,6 @@
 ﻿using CycWpfLibrary.Media;
 using CycWpfLibrary.MVVM;
+using CycWpfLibrary.NativeMethods;
 using CycWpfLibrary.Threading;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -51,7 +53,7 @@ namespace WpfPlotDigitizer
         if (_filterRMax != value)
         {
           _filterRMax = value;
-          FilterRMethod();
+          FilterRMethod(FilterMax, FilterMin);
         }
       }
     }
@@ -63,7 +65,7 @@ namespace WpfPlotDigitizer
         if (_filterRMin != value)
         {
           _filterRMin = value;
-          FilterRMethod();
+          FilterRMethod(FilterMax, FilterMin);
         }
       }
     }
@@ -117,39 +119,34 @@ namespace WpfPlotDigitizer
     }
     public Color FilterMax => Color.FromRgb(FilterRMax, FilterGMax, FilterBMax);
     public Color FilterMin => Color.FromRgb(FilterRMin, FilterGMin, FilterBMin);
+    public (Color Max, Color Min) Filter => (FilterMax, FilterMin);
 
     private TaskQueue taskQueue = new TaskQueue(1);
     private Task workTask;
     private CancellationTokenSource cts;
-    private void work(object state)
-    {
-      var token = (CancellationToken)state;
-      PixelBitmap pixelBitmap = new PixelBitmap();
-      try
-      {
-        //耗時的工作
-        pixelBitmap = ImageProcessing.FilterRGB(pixelBitmapFilterRGB, FilterMax, FilterMin, "R", token);
-        pixelBitmapFilterRGB = pixelBitmap;
-        Debug.WriteLine("completed");
-      }
-      catch (OperationCanceledException)
-      {
-        // 中斷工作
-        Debug.WriteLine("cancelled");
-      }
-
-      
-    }
-    private void FilterRMethod()
+    private void FilterRMethod(Color FilterMax, Color FilterMin)
     {
       if (workTask != null && workTask.Status != TaskStatus.RanToCompletion)
       {
         cts.Cancel(); //通知取消工作
-        Debug.WriteLine("Cancel!");
+        //Debug.WriteLine($"{workTask.Status.ToString()}");
+        //Debug.WriteLine("Cancel!");
       }
       cts = new CancellationTokenSource(); // 初始化cts物件
-      workTask = new Task(work, cts.Token); //初始化Task物件
-      workTask.Start(); //背景執行Task
+      workTask = Task.Run(() =>
+      {
+        PixelBitmap pixelBitmap = new PixelBitmap();
+        try
+        {
+          pixelBitmap = ImageProcessing.FilterRGB(pixelBitmapFilterRGB, FilterMax, FilterMin, "R", cts.Token); 
+          pixelBitmapFilterRGB = pixelBitmap;
+          Debug.WriteLine($"{FilterMax.R} completed");
+        }
+        catch (OperationCanceledException)
+        {
+          Debug.WriteLine($"{FilterMax.R} cancelled");
+        }
+      });
     }
 
     private void FilterGMethod()

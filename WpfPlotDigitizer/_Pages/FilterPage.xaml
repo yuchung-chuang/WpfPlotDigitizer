@@ -30,6 +30,10 @@
                   Value="255" />
           <Setter Property="Minimum"
                   Value="0" />
+          <Setter Property="MinRange"
+                  Value="1" />
+          <Setter Property="MinRangeWidth"
+                  Value="5" />
         </Style>
       </StackPanel.Resources>
       <mahapps:RangeSlider Orientation="Vertical"
