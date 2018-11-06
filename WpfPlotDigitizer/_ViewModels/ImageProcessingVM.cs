@@ -13,24 +13,24 @@ namespace WpfPlotDigitizer
   public class ImageProcessingVM : ViewModelBase<ImageProcessingVM>
   {
 
-    public PixelBitmap pixelBitmapFilterW { get; set; }
+    public PixelBitmap PBFilterW { get; set; }
 
-    public event Action OnPixelBitampInputChanged;
-    private PixelBitmap _pixelBitmapInput;
-    public PixelBitmap pixelBitmapInput
+    public event Action OnPBInputChanged;
+    private PixelBitmap _PBInput;
+    public PixelBitmap PBInput
     {
-      get => _pixelBitmapInput;
+      get => _PBInput;
       set
       {
-        _pixelBitmapInput = value;
-        OnPixelBitampInputChanged?.Invoke();
+        _PBInput = value;
+        OnPBInputChanged?.Invoke();
       }
     }
 
 
     public Rect Axis { get; set; }
 
-    public PixelBitmap pixelBitmapFilterRGB { get; set; }
+    public PixelBitmap PBFilterRGB { get; set; }
 
   }
 }

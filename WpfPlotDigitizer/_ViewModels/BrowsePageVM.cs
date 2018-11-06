@@ -20,8 +20,8 @@ namespace WpfPlotDigitizer
 
     public PixelBitmap pixelBitmapInput
     {
-      get => IoC.Get<ImageProcessingVM>().pixelBitmapInput;
-      set => IoC.Get<ImageProcessingVM>().pixelBitmapInput = value;
+      get => IoC.Get<ImageProcessingVM>().PBInput;
+      set => IoC.Get<ImageProcessingVM>().PBInput = value;
     }
 
     public ICommand OpenFileCommand { get; set; }

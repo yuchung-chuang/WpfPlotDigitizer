@@ -14,19 +14,21 @@ namespace WpfPlotDigitizer
     public ApplicationVM()
     {
       IoC.Get<PageManager>().TurnNextEvent += OnTurnNext;
-      IoC.Get<ImageProcessingVM>().OnPixelBitampInputChanged += OnPixelBitmapInputChanged;
+      IoC.Get<ImageProcessingVM>().OnPBInputChanged += OnPixelBitmapInputChanged;
     }
 
     private readonly ImageProcessingVM IPVM = IoC.Get<ImageProcessingVM>();
     private readonly AxisPageVM axisPageVM = IoC.Get<AxisPageVM>();
+    private readonly FilterPageVM filterPageVM = IoC.Get<FilterPageVM>();
+    
 
     public IPageManager PageManager { get; } = IoC.Get<PageManager>();
 
     private void OnPixelBitmapInputChanged()
     {
-      IPVM.pixelBitmapFilterW = new PixelBitmap(IPVM.pixelBitmapInput.Size)
+      IPVM.PBFilterW = new PixelBitmap(IPVM.PBInput.Size)
       {
-        Pixel = ImageProcessing.FilterW(IPVM.pixelBitmapInput)
+        Pixel = ImageProcessing.FilterW(IPVM.PBInput)
       };
 
       axisPageVM.AutoGetAxis();
@@ -39,7 +41,8 @@ namespace WpfPlotDigitizer
       switch ((ApplicationPages)PageManager.Index + 1)
       {
         case ApplicationPages.Filter:
-          IoC.Get<ImageProcessingVM>().pixelBitmapFilterRGB = new PixelBitmap(IPVM.pixelBitmapInput.Bitmap.Crop(IPVM.Axis));
+          IoC.Get<ImageProcessingVM>().PBFilterRGB = new PixelBitmap(IPVM.PBInput.Bitmap.Crop(IPVM.Axis));
+          filterPageVM.FilterAllMethod();
           break;
         case ApplicationPages.Erase:
           break;

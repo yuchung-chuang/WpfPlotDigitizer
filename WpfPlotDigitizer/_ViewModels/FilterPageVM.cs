@@ -10,16 +10,14 @@ namespace WpfPlotDigitizer
 {
   public class FilterPageVM : ViewModelBase<FilterPageVM>
   {
-    
-    private static readonly object key = new object();
-    private PixelBitmap pixelBitmapFilterRGB
-    {
-      get => IoC.Get<ImageProcessingVM>().pixelBitmapFilterRGB;
-      set => IoC.Get<ImageProcessingVM>().pixelBitmapFilterRGB = value;
-    }
-    private readonly ImageProcessingVM IPVM = IoC.Get<ImageProcessingVM>();
-    public BitmapSource bitmapSourceFilterRGB => pixelBitmapFilterRGB?.ToBitmapSource();
 
+    private static readonly object key = new object();
+    private PixelBitmap PBFilterRGB
+    {
+      get => IoC.Get<ImageProcessingVM>().PBFilterRGB;
+      set => IoC.Get<ImageProcessingVM>().PBFilterRGB = value;
+    }
+    public BitmapSource bitmapSourceFilterRGB => PBFilterRGB?.ToBitmapSource();
 
     private byte _filterRMax = 255;
     private byte _filterRMin = 0;
@@ -104,24 +102,31 @@ namespace WpfPlotDigitizer
     public Color FilterMin => Color.FromRgb(FilterRMin, FilterGMin, FilterBMin);
     public (Color Max, Color Min) Filter => (FilterMax, FilterMin);
 
-    private Task workTask;
+    private Task FilterTask;
     private CancellationTokenSource cts;
     private void FilterMethod(Color FilterMax, Color FilterMin, FilterType type)
     {
-      if (workTask != null && workTask.Status != TaskStatus.RanToCompletion)
+      if (FilterTask != null && FilterTask.Status != TaskStatus.RanToCompletion)
       {
-        cts.Cancel(); 
+        cts.Cancel();
       }
-      cts = new CancellationTokenSource(); 
-      workTask = Task.Run(() =>
+      cts = new CancellationTokenSource();
+      FilterTask = Task.Run(() =>
       {
         try
         {
-          pixelBitmapFilterRGB = ImageProcessing.FilterRGB(pixelBitmapFilterRGB, FilterMax, FilterMin, type, cts.Token); 
+          PBFilterRGB = ImageProcessing.FilterRGB(PBFilterRGB, FilterMax, FilterMin, type, cts.Token);
         }
         catch (OperationCanceledException)
         { }
       });
+    }
+
+    public void FilterAllMethod()
+    {
+      PBFilterRGB = ImageProcessing.FilterRGB(PBFilterRGB, FilterMax, FilterMin, FilterType.Red, CancellationToken.None);
+      PBFilterRGB = ImageProcessing.FilterRGB(PBFilterRGB, FilterMax, FilterMin, FilterType.Green, CancellationToken.None);
+      PBFilterRGB = ImageProcessing.FilterRGB(PBFilterRGB, FilterMax, FilterMin, FilterType.Blue, CancellationToken.None);
     }
   }
 }

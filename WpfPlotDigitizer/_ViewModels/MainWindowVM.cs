@@ -12,7 +12,7 @@ namespace WpfPlotDigitizer
     public MainWindowVM()
     {
 #if DEBUG
-      ImageProcessingVM.pixelBitmapInput = new BitmapImage(new Uri($"pack://application:,,,/images/data.png")).ToPixelBitmap();
+      ImageProcessingVM.PBInput = new BitmapImage(new Uri($"pack://application:,,,/images/data.png")).ToPixelBitmap();
 #endif      
     }
   }
