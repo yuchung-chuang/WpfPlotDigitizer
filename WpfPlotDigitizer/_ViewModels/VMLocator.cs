@@ -17,5 +17,6 @@ namespace WpfPlotDigitizer
     public static MainWindowVM MainWindowVM { get; } = IoC.Get<MainWindowVM>();
     public static AxisPageVM AxisPageVM { get; } = IoC.Get<AxisPageVM>();
     public static FilterPageVM FilterPageVM { get; } = IoC.Get<FilterPageVM>();
+    public static BrowsePageVM BrowsePageVM { get; } = IoC.Get<BrowsePageVM>();
   }
 }

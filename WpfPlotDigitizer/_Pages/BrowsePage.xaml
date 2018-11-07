@@ -8,14 +8,13 @@
              xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d"
              d:DesignHeight="450"
-             d:DesignWidth="800">
-  <UserControl.DataContext>
-    <local:BrowsePageVM />
-  </UserControl.DataContext>
+             d:DesignWidth="800"
+             DataContext="{x:Static local:VMLocator.BrowsePageVM}">
   
   <Grid Name="gridBase">
 
     <cycControls:DropImageReceiver DropPixelBitmap="{Binding pixelBitmapInput, Mode=TwoWay}" />
+
     <StackPanel Visibility="Visible"
                 Orientation="Vertical"
                 VerticalAlignment="Center">
@@ -35,6 +34,5 @@
               mahapps:ButtonHelper.PreserveTextCase="True"
               Command="{Binding OpenFileCommand}" />
     </StackPanel>
-
   </Grid>
 </UserControl>

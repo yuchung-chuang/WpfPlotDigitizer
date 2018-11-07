@@ -10,17 +10,15 @@
                      xmlns:cycMVVM="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
                      xmlns:cycControls="clr-namespace:CycWpfLibrary.Controls;assembly=CycWpfLibrary"
                      xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                     xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
                      WindowStartupLocation="CenterScreen"
                      Title="MainWindow"
                      Height="600"
                      Width="900"
                      DataContext="{x:Static local:VMLocator.MainWindowVM}">
   <Grid Name="gridMain">
-    <local:FrameControl x:Name="frameControlMain"
-                        PageManager="{Binding ApplicationVM.PageManager, Source={x:Static local:VMLocator.Instance}}" />
 
-    <!--Fail, don't know why-->
-    <!--<cycControls:FrameControl x:Name="a"
-                              PageManager="{Binding ApplicationViewModel.PageManager, Source={x:Static local:ViewModelLocator.Instance}}"/>-->
+    <cycControls:FrameControl x:Name="a"
+                              PageManager="{Binding ApplicationVM.PageManager, Source={x:Static local:VMLocator.Instance}}" />
   </Grid>
 </mahapps:MetroWindow>

@@ -88,14 +88,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="_Controls\IFrameControlPage.cs" />
     <Compile Include="_ViewModels\AxisPageVM.cs" />
     <Compile Include="_ViewModels\FilterPageVM.cs" />
     <Compile Include="_ViewModels\VMLocator.cs" />
-    <Page Include="_Controls\FrameControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Styles\Fonts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -123,9 +118,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="_Controls\FrameControl.xaml.cs">
-      <DependentUpon>FrameControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="_Model\IoC.cs" />
     <Compile Include="_Model\PageManager.cs" />
@@ -197,7 +189,9 @@
     </Content>
     <Resource Include="images\data.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="_Controls\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.3.2.8\build\Fody.targets" Condition="Exists('..\packages\Fody.3.2.8\build\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
