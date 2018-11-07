@@ -14,8 +14,10 @@ namespace WpfPlotDigitizer
   {
     Browse,
     Axis,
+    AxisLimit,
     Filter,
     Erase,
+    Save,
     /// <summary>
     /// Number of pages, should always be the last element of enum
     /// </summary>
@@ -30,27 +32,29 @@ namespace WpfPlotDigitizer
       TurnBackCommand = new RelayCommand(TurnBack, CanTurnBack);
     }
 
-    public int Index { get; set; } = 0;
-    public UserControl CurrentPage
+    private UserControl GetCurrentPage()
     {
-      get
+      switch ((ApplicationPages)Index)
       {
-        switch ((ApplicationPages)Index)
-        {
-          case ApplicationPages.Browse:
-            return new BrowsePage();
-          case ApplicationPages.Axis:
-            return new AxisPage();
-          case ApplicationPages.Filter:
-            return new FilterPage();
-          case ApplicationPages.Erase:
-            return new ErasePage();
-          default:
-            return new UserControl();
-        }
+        case ApplicationPages.Browse:
+          return new BrowsePage();
+        case ApplicationPages.Axis:
+          return new AxisPage();
+        case ApplicationPages.AxisLimit:
+          return new AxisLimitPage();
+        case ApplicationPages.Filter:
+          return new FilterPage();
+        case ApplicationPages.Erase:
+          return new ErasePage();
+        case ApplicationPages.Save:
+          return new SavePage();
+        default:
+          return new UserControl();
       }
     }
-    private readonly int NumOfPages = (int)ApplicationPages.NumOfPages;
+
+    public int Index { get; set; } = 0;
+    public UserControl CurrentPage => GetCurrentPage();
 
     public ICommand TurnNextCommand { get; set; }
     public void TurnBack() => Index--;
@@ -63,6 +67,7 @@ namespace WpfPlotDigitizer
       TurnNextEvent?.Invoke();
       Index++;
     }
+    private readonly int NumOfPages = (int)ApplicationPages.NumOfPages;
     public bool CanTurnNext() => Index < NumOfPages - 1;
   }
 }
