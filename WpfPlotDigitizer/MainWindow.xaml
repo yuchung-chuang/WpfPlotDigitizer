@@ -18,7 +18,6 @@
                      DataContext="{x:Static local:VMLocator.MainWindowVM}">
   <Grid Name="gridMain">
 
-    <cycControls:FrameControl x:Name="a"
-                              PageManager="{Binding ApplicationVM.PageManager, Source={x:Static local:VMLocator.Instance}}" />
+    <cycControls:FrameControl PageManager="{Binding ApplicationVM.PageManager, Source={x:Static local:VMLocator.Instance}}" />
   </Grid>
 </mahapps:MetroWindow>
