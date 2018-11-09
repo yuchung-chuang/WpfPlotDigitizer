@@ -19,23 +19,16 @@ namespace WpfPlotDigitizer
       AutoGetAxisCommand = new RelayCommand(AutoGetAxis);
     }
 
-    public PixelBitmap pixelBitmapInput
-    {
-      get => IoC.Get<ImageProcessingVM>().PBInput;
-      set => IoC.Get<ImageProcessingVM>().PBInput = value;
-    }
-    public PixelBitmap pixelBitmapFilterW
-    {
-      get => IoC.Get<ImageProcessingVM>().PBFilterW;
-      set => IoC.Get<ImageProcessingVM>().PBFilterW = value;
-    }
+    private readonly ImageProcessingVM IPVM = IoC.Get<ImageProcessingVM>();
+    public PixelBitmap PBInput => IPVM.PBInput;
+    public PixelBitmap PBFilterW => IPVM.PBFilterW;
     public Rect Axis
     {
-      get => IoC.Get<ImageProcessingVM>().Axis;
-      set => IoC.Get<ImageProcessingVM>().Axis = value;
+      get => IPVM.Axis;
+      set => IPVM.Axis = value;
     }
 
-    public BitmapSource bitmapSourceInput => pixelBitmapInput?.ToBitmapSource();
+    public BitmapSource bitmapSourceInput => PBInput?.ToBitmapSource();
     public double AxisLeft
     {
       get => Axis.Left;
@@ -80,7 +73,7 @@ namespace WpfPlotDigitizer
     public ICommand AutoGetAxisCommand { get; set; }
     public void AutoGetAxis()
     {
-      Axis = ImageProcessing.GetAxis(pixelBitmapFilterW);
+      Axis = ImageProcessing.GetAxis(PBFilterW);
     }
   }
 }

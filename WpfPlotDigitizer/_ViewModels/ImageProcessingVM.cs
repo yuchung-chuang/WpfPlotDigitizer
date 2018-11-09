@@ -27,8 +27,9 @@ namespace WpfPlotDigitizer
       }
     }
 
-
     public Rect Axis { get; set; }
+
+    public PixelBitmap PBAxis { get; set; }
 
     public PixelBitmap PBFilterRGB { get; set; }
 

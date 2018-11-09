@@ -18,18 +18,23 @@ namespace WpfPlotDigitizer
 {
   public class AxisLimitPageVM
   {
-    private Tesseract _ocr;
-    public BitmapSource ImageSource => ImageMat.Bitmap.ToBitmapSource();
-    public Mat ImageMat { get; set; }
+    private readonly ImageProcessingVM IPVM = IoC.Get<ImageProcessingVM>();
 
-    public AxisLimitPageVM()
+
+    private Mat MatInput;
+    public BitmapSource ImageSource => MatInput.ToBitmapSource();
+
+    private Tesseract ocr;
+    private PixelBitmap PBInput => IPVM.PBInput;
+    private Rect Axis => IPVM.Axis;
+    public void AutoGetAxisLimit()
     {
-      _ocr = IP.InitializeOcr("", "eng", OcrEngineMode.TesseractLstmCombined);
-      var source = new Mat(@"C:\Users\alex\Desktop\WPF\WpfPlotDigitizer\WpfPlotDigitizer\images\ocr.png");
-      ImageMat = new Mat();
-      var ocredText = IP.OcrImage(_ocr, source, ImageMat);
-      IP.DrawCharacters(ImageMat, ocredText);
-      ImageMat.Bitmap.ToBitmapSource();
+      ocr = IP.InitializeOcr("", "eng", OcrEngineMode.TesseractLstmCombined);
+
+      MatInput = new Mat();
+      var source = PBInput.ToMat();
+      var ocredText = IP.OcrImage(ocr, source, MatInput);
+      IP.DrawCharacters(MatInput, ocredText);
     }
 
     

@@ -21,6 +21,7 @@ namespace WpfPlotDigitizer
     private readonly ImageProcessingVM IPVM = IoC.Get<ImageProcessingVM>();
     private readonly AxisPageVM axisPageVM = IoC.Get<AxisPageVM>();
     private readonly FilterPageVM filterPageVM = IoC.Get<FilterPageVM>();
+    private readonly AxisLimitPageVM axisLimitPageVM = IoC.Get<AxisLimitPageVM>();
     
     public IPageManager PageManager { get; } = IoC.Get<PageManager>();
 
@@ -40,8 +41,14 @@ namespace WpfPlotDigitizer
       // call before actually turned next
       switch ((ApplicationPages)PageManager.Index + 1)
       {
+        case ApplicationPages.AxisLimit:
+          IPVM.PBAxis = IPVM.PBInput.Bitmap
+                                        .Crop(IPVM.Axis)
+                                        .ToPixelBitmap();
+          axisLimitPageVM.AutoGetAxisLimit();
+          break;
         case ApplicationPages.Filter:
-          IPVM.PBFilterRGB = new PixelBitmap(IPVM.PBInput.Bitmap.Crop(IPVM.Axis));
+          IPVM.PBFilterRGB = IPVM.PBAxis.Clone() as PixelBitmap;
           filterPageVM.FilterAllMethod();
           break;
         case ApplicationPages.Erase:

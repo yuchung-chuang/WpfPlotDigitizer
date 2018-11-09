@@ -18,10 +18,11 @@ namespace WpfPlotDigitizer
       OpenFileCommand = new RelayCommand(OpenFile);
     }
 
-    public PixelBitmap pixelBitmapInput
+    private readonly ImageProcessingVM IPVM = IoC.Get<ImageProcessingVM>();
+    public PixelBitmap PBInput
     {
-      get => IoC.Get<ImageProcessingVM>().PBInput;
-      set => IoC.Get<ImageProcessingVM>().PBInput = value;
+      get => IPVM.PBInput;
+      set => IPVM.PBInput = value;
     }
 
     public ICommand OpenFileCommand { get; set; }
@@ -34,7 +35,7 @@ namespace WpfPlotDigitizer
       {
         return;
       }
-      pixelBitmapInput = new BitmapImage(new Uri(dialog.FileName)).ToPixelBitmap();
+      PBInput = new BitmapImage(new Uri(dialog.FileName)).ToPixelBitmap();
     }
   }
 }
