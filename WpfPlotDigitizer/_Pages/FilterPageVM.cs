@@ -10,12 +10,12 @@ namespace WpfPlotDigitizer
 {
   public class FilterPageVM : ViewModelBase<FilterPageVM>
   {
-
     private static readonly object key = new object();
+    private readonly ImageProcessingVM IPVM = IoC.Get<ImageProcessingVM>();
     private PixelBitmap PBFilterRGB
     {
-      get => IoC.Get<ImageProcessingVM>().PBFilterRGB;
-      set => IoC.Get<ImageProcessingVM>().PBFilterRGB = value;
+      get => IPVM.PBFilterRGB;
+      set => IPVM.PBFilterRGB = value;
     }
     public BitmapSource bitmapSourceFilterRGB => PBFilterRGB?.ToBitmapSource();
 

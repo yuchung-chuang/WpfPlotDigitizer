@@ -1,7 +1,12 @@
 ﻿using CycWpfLibrary;
 using CycWpfLibrary.Media;
+using Emgu.CV;
+using Emgu.CV.CvEnum;
+using Emgu.CV.OCR;
+using Emgu.CV.Structure;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,6 +24,7 @@ namespace WpfPlotDigitizer
 
   public static class ImageProcessing
   {
+    #region AutoGetAxis
     public static byte[] FilterW(PixelBitmap iptImage, int white = 200)
     {
       byte blue, green, red;
@@ -229,7 +235,9 @@ namespace WpfPlotDigitizer
         return axisTmp;
       }
     }
+    #endregion
 
+    #region FilterRGB
     public static bool IsRGBFilted(Color color, Color Max, Color Min)
     {
       return (color.R <= Max.R && color.R >= Min.R &&
@@ -300,6 +308,78 @@ namespace WpfPlotDigitizer
       optImage.Pixel3 = optPixel3;
       return optImage;
     }
+    #endregion
+
+    #region AutoGetAxisLimits
+    public static Tesseract.Character[] OcrImageThreshold(Tesseract ocr, Mat imageInput, Mat imageOutput, double threshold)
+    {
+      Mat imgGrey = new Mat();
+      CvInvoke.CvtColor(imageInput, imgGrey, ColorConversion.Bgr2Gray);
+      Mat imgThresholded = new Mat();
+      CvInvoke.Threshold(imgGrey, imgThresholded, threshold, 255, ThresholdType.Binary);
+
+      ocr.SetImage(imgThresholded);
+      var characters = ocr.GetCharacters();
+      imageOutput = imgThresholded;
+
+      return characters;
+    }
+    public static Tesseract.Character[] OcrImage(Tesseract ocr, Mat imageInput, Mat imageOutput)
+    {
+      if (imageInput.NumberOfChannels == 1)
+        CvInvoke.CvtColor(imageInput, imageOutput, ColorConversion.Gray2Bgr);
+      else
+        imageInput.CopyTo(imageOutput);
+
+      ocr.SetImage(imageOutput);
+
+      if (ocr.Recognize() != 0)
+        throw new Exception("Failed to recognizer image");
+
+      var characters = ocr.GetCharacters();
+
+      if (characters.Length != 0)
+        return characters;
+
+      characters = OcrImageThreshold(ocr, imageInput, imageOutput, 65);
+
+      if (characters.Length != 0)
+        return characters;
+
+      characters = OcrImageThreshold(ocr, imageInput, imageOutput, 190);
+
+      return characters;
+    }
+
+    public static void DrawCharacters(Mat image, Tesseract.Character[] characters)
+    {
+      var color = new Bgr(System.Drawing.Color.Red).MCvScalar;
+      foreach (Tesseract.Character c in characters)
+      {
+        CvInvoke.Rectangle(image, c.Region, color);
+        CvInvoke.PutText(image, c.Text, c.Region.Location, FontFace.HersheyPlain, 1, color);
+      }
+    }
+
+    public static Tesseract InitializeOcr(string path, string lang, OcrEngineMode mode)
+    {
+      try
+      {
+        if (string.IsNullOrEmpty(path))
+          path = ".";
+
+        var pathFinal = path.Length == 0 || path.Substring(path.Length - 1, 1).Equals(Path.DirectorySeparatorChar.ToString()) ?
+          path : string.Format("{0}{1}", path, Path.DirectorySeparatorChar);
+
+        return new Tesseract(pathFinal, lang, mode);
+      }
+      catch (Exception)
+      {
+        return null;
+      }
+    }
+
+    #endregion
 
     #region Deprecated methods
     private static bool IsAxisLeftTop(Point pos, PixelBitmap iptImage)

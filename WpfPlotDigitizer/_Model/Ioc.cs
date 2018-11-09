@@ -15,9 +15,14 @@ namespace WpfPlotDigitizer
     {
       Kernel.Bind<ImageProcessingVM>().ToConstant(new ImageProcessingVM());
       Kernel.Bind<PageManager>().ToConstant(new PageManager());
+
       Kernel.Bind<BrowsePageVM>().ToConstant(new BrowsePageVM());
       Kernel.Bind<AxisPageVM>().ToConstant(new AxisPageVM());
+      Kernel.Bind<AxisLimitPageVM>().ToConstant(new AxisLimitPageVM());
       Kernel.Bind<FilterPageVM>().ToConstant(new FilterPageVM());
+      Kernel.Bind<ErasePageVM>().ToConstant(new ErasePageVM());
+      Kernel.Bind<SavePageVM>().ToConstant(new SavePageVM());
+
       Kernel.Bind<ApplicationVM>().ToConstant(new ApplicationVM());
       Kernel.Bind<MainWindowVM>().ToConstant(new MainWindowVM());
     }
