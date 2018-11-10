@@ -18,7 +18,9 @@ namespace WpfPlotDigitizer
       OpenFileCommand = new RelayCommand(OpenFile);
     }
 
+    private readonly PageManager pageManager = IoC.Get<PageManager>();
     private readonly ImageProcessingVM IPVM = IoC.Get<ImageProcessingVM>();
+
     public PixelBitmap PBInput
     {
       get => IPVM.PBInput;

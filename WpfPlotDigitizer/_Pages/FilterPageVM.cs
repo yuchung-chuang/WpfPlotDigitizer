@@ -119,7 +119,7 @@ namespace WpfPlotDigitizer
         }
         catch (OperationCanceledException)
         { }
-      });
+      }, cts.Token);
     }
 
     public void FilterAllMethod()
