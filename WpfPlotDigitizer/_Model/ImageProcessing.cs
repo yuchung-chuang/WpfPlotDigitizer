@@ -1,4 +1,5 @@
 ﻿using CycWpfLibrary;
+using CycWpfLibrary.Emgu;
 using CycWpfLibrary.Media;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
@@ -283,7 +284,7 @@ namespace WpfPlotDigitizer
           if (token.IsCancellationRequested)
             // 中止parallel.for
             state.Stop();
-          
+
           colorNow = new Color
           {
             A = optPixel3[x, y, 0],
@@ -304,13 +305,34 @@ namespace WpfPlotDigitizer
       if (token.IsCancellationRequested)
         //拋出協作式異常
         token.ThrowIfCancellationRequested();
-      
+
       optImage.Pixel3 = optPixel3;
       return optImage;
     }
     #endregion
 
     #region AutoGetAxisLimits
+    public static Tesseract.Character[] OcrImage(Tesseract ocr, IInputArray image)
+    {
+      ocr.SetImage(image);
+
+      if (ocr.Recognize() != 0)
+        throw new Exception("Failed to recognizer image");
+
+      var characters = ocr.GetCharacters();
+
+      return characters;
+    }
+    public static void DrawCharacters(IInputOutputArray image, Tesseract.Character[] characters)
+    {
+      var color = Colors.Blue.ToMCvScalar();
+      foreach (Tesseract.Character c in characters)
+      {
+        CvInvoke.Rectangle(image, c.Region, color);
+        CvInvoke.PutText(image, c.Text, c.Region.Location, FontFace.HersheyPlain, 1, color);
+      }
+    }
+
     public static Tesseract.Character[] OcrImageThreshold(Tesseract ocr, Mat imageInput, Mat imageOutput, double threshold)
     {
       Mat imgGrey = new Mat();
@@ -350,10 +372,9 @@ namespace WpfPlotDigitizer
 
       return characters;
     }
-
     public static void DrawCharacters(Mat image, Tesseract.Character[] characters)
     {
-      var color = new Bgr(System.Drawing.Color.Red).MCvScalar;
+      var color = Colors.Red.ToMCvScalar();
       foreach (Tesseract.Character c in characters)
       {
         CvInvoke.Rectangle(image, c.Region, color);
@@ -361,7 +382,7 @@ namespace WpfPlotDigitizer
       }
     }
 
-    public static Tesseract InitializeOcr(string path, string lang, OcrEngineMode mode)
+    public static Tesseract InitializeOcr(string path, string lang, OcrEngineMode mode, string whiteList)
     {
       try
       {
@@ -370,8 +391,10 @@ namespace WpfPlotDigitizer
 
         var pathFinal = path.Length == 0 || path.Substring(path.Length - 1, 1).Equals(Path.DirectorySeparatorChar.ToString()) ?
           path : string.Format("{0}{1}", path, Path.DirectorySeparatorChar);
-
-        return new Tesseract(pathFinal, lang, mode);
+        var ocr = new Tesseract();
+        ocr.Init(pathFinal, lang, mode);
+        ocr.SetVariable("tessedit_char_whitelist", whiteList);
+        return ocr;
       }
       catch (Exception)
       {
