@@ -1,6 +1,7 @@
 ﻿using CycWpfLibrary;
 using CycWpfLibrary.Emgu;
 using CycWpfLibrary.Media;
+using CycWpfLibrary.WinForm;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.OCR;
@@ -21,6 +22,22 @@ namespace WpfPlotDigitizer
     Red,
     Green,
     Blue
+  }
+
+  public struct AxisType
+  {
+    public bool Left;
+    public bool Top;
+    public bool Right;
+    public bool Bottom;
+
+    public AxisType(bool left, bool top, bool right, bool bottom)
+    {
+      Left = left;
+      Top = top;
+      Right = right;
+      Bottom = bottom;
+    }
   }
 
   public static class ImageProcessing
@@ -161,35 +178,117 @@ namespace WpfPlotDigitizer
       while (failCount < failTimes);
       return iniPos;
     }
+    public enum TracerState
+    {
+      Normal = 0,
+      OutTurn1 = 1,
+      OutTrun2 = 2,
+      OutTurned = 3,
+    }
+    public class PixelTracer
+    {
+      public static readonly Vector[] dirs =
+      {
+        new Vector(1, -1),
+        new Vector(1, 0),
+        new Vector(-1, 1),
+        new Vector(0, 1),
+      };
+
+      private int _dirID = 0;
+      public int dirID
+      {
+        get => _dirID;
+        set => _dirID = (value >= dirs.Length) ? 0 : value;
+      }
+      public System.Drawing.Point intPos => pos.ToWinForm();
+      public Point pos;
+      public TracerState state = TracerState.Normal;
+      public (double XMax, double XMin, double YMax, double YMin) boundary;
+      public int steps = 0;
+      private int stepTotal;
+
+      public PixelTracer(double XMax, double YMax, double XMin, double YMin)
+      {
+        pos = new Point(XMin + 1, YMin + 1);
+        boundary = (XMax, XMin, YMax, YMin);
+        stepTotal = (int)(boundary.XMax - boundary.XMin) * (int)(boundary.YMax - boundary.YMin);
+      }
+
+      public void Move()
+      {
+        pos += dirs[dirID];
+        UpdateState();
+        UpdateDir();
+        steps++;
+      }
+      private bool IsOutsideBoundary() =>
+        !IsIn(pos.X, boundary.XMax, boundary.XMin, excludeBoundary: true) ||
+        !IsIn(pos.Y, boundary.YMax, boundary.YMin, excludeBoundary: true);
+      private void UpdateState()
+      {
+        if (state == TracerState.Normal && IsOutsideBoundary())
+        {
+          state++;
+        }
+        else if (state == TracerState.OutTurn1)
+        {
+          state++;
+        }
+        else if (state == TracerState.OutTrun2)
+        {
+          if (!IsOutsideBoundary())
+          {
+            state = TracerState.Normal;
+          }
+          else
+          {
+            state++;
+          }
+        }
+        else if (state == TracerState.OutTurned && !IsOutsideBoundary())
+        {
+          state = TracerState.Normal;
+        }
+      }
+      private void UpdateDir()
+      {
+        if (state == TracerState.OutTurn1 || state == TracerState.OutTrun2)
+        {
+          dirID++;
+        }
+      }
+      public bool IsCompleted() => steps > stepTotal;
+
+    }
     /// <summary>
     /// 搜索<paramref name="pixel3"/>中最靠近中心的左上角坐標軸。
+    /// 若搜索不到角點，則回傳<see cref="Point"/>(<see cref="double.NaN"/>,<see cref="double.NaN"/>)。
     /// </summary>
-    /// <returns>若搜索不到角點，則回傳<see cref="Point"/>(-1,-1)。</returns>
     private static Point GetAxisLT(byte[,,] pixel3)
     {
       var width = pixel3.GetLength(0);
       var height = pixel3.GetLength(1);
-      Vector[] dirs = { new Vector(1, 0), new Vector(-1, 1), new Vector(0, 1), new Vector(1, -1) };
-      Point output = new Point(-1, -1);
-      var pos = new Point(0, 0);
-      var dirID = 0;
-      while (pos.X < width / 2 && pos.Y < height / 2)
-      {
-        if (IsAxisLT(pixel3, pos))
-        {
-          return GetInterAxisPos(pixel3, pos);
-        }
+      var offset = 5;
+      var tracer = new PixelTracer(width / 2, height / 2, offset, offset);
+      Point output = new Point(double.NaN, double.NaN);
 
-        pos += dirs[dirID];
-        if (!IsIn(pos.X, width / 2, 0, true) ||
-          !IsIn(pos.Y, height / 2, 0, true))
+      while (!tracer.IsCompleted())
+      {
+        if (IsAxisLT(pixel3, tracer.pos))
         {
-          dirID++;
-          if (dirID > 3)
-          {
-            dirID = 0;
-          }
+          //new PixelBitmap(pixel3).ShowSnapShot();
+          return GetInterAxisPos(pixel3, tracer.pos);
         }
+        //else
+        //{
+        //  pixel3[tracer.intPos.X, tracer.intPos.Y, 0] = 255;
+        //  pixel3[tracer.intPos.X, tracer.intPos.Y, 1] = 255;
+        //  pixel3[tracer.intPos.X, tracer.intPos.Y, 2] = 0;
+        //  pixel3[tracer.intPos.X, tracer.intPos.Y, 3] = 0;
+        //}
+
+        tracer.Move();
       }
       return output;
     }
@@ -227,19 +326,43 @@ namespace WpfPlotDigitizer
       return (GetAxisLT(pixel3), GetAxisLB(pixel3), GetAxisRT(pixel3), GetAxisRB(pixel3));
     }
 
-    private static int AxisTol = 20;
-    public static Rect GetAxis(PixelBitmap iptImage)
+    private static readonly int axisTol = 20;
+    public static (Rect, AxisType) GetAxis(PixelBitmap iptImage)
     {
-      var axisTmp = GetAxisLtRb(iptImage);
-      if (iptImage.Width - axisTmp.Width < AxisTol ||
-        iptImage.Height - axisTmp.Height < AxisTol)
+      AxisType axisType2 = new AxisType();
+      var pixel3 = iptImage.Pixel3;
+      var LT = GetAxisLT(pixel3);
+      var RB = GetAxisRB(pixel3);
+      var LB = GetAxisLB(pixel3);
+      var RT = GetAxisRT(pixel3);
+      if (!(double.IsNaN(LT.X)))
       {
-        return GetLongestAxis(iptImage);
+        axisType2.Left = true;
+        axisType2.Top = true;
       }
+      if (!(double.IsNaN(LB.X)))
+      {
+        axisType2.Left = true;
+        axisType2.Bottom = true;
+      }
+      if (!(double.IsNaN(RT.X)))
+      {
+        axisType2.Right = true;
+        axisType2.Top = true;
+      }
+      if (!(double.IsNaN(RB.X)))
+      {
+        axisType2.Right = true;
+        axisType2.Bottom = true;
+      }
+
+      var axisTmp = new Rect(LT, RB + new Vector(1, 1));
+      if (double.IsNaN(LT.X) || double.IsNaN(RB.X) ||
+        iptImage.Width - axisTmp.Width < axisTol ||
+        iptImage.Height - axisTmp.Height < axisTol)
+        return (GetLongestAxis(iptImage), axisType2);
       else
-      {
-        return axisTmp;
-      }
+        return (axisTmp, axisType2);
     }
     #endregion
 

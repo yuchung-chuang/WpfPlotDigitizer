@@ -39,6 +39,11 @@ namespace WpfPlotDigitizer
       }
       set => IPVM.Axis = value;
     }
+    public AxisType AxisType
+    {
+      get => IPVM.AxisType;
+      set => IPVM.AxisType = value;
+    }
 
     public BitmapSource bitmapSourceInput => PBInput?.ToBitmapSource();
     public double AxisLeft
@@ -85,9 +90,7 @@ namespace WpfPlotDigitizer
     public ICommand AutoGetAxisCommand { get; set; }
     public void AutoGetAxis()
     {
-      //Point LT, LB, RT, RB;
-      //(LT, LB, RT, RB) = ImageProcessing.GetAxisPoints(PBFilterW);
-      Axis = ImageProcessing.GetAxis(PBFilterW);
+      (Axis, AxisType) = ImageProcessing.GetAxis(PBFilterW);
     }
   }
 }

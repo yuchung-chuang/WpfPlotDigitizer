@@ -1,4 +1,5 @@
-﻿using CycWpfLibrary.Media;
+﻿using CycWpfLibrary;
+using CycWpfLibrary.Media;
 using CycWpfLibrary.MVVM;
 using System;
 using System.Collections.Generic;
@@ -10,15 +11,6 @@ using System.Windows.Media.Imaging;
 
 namespace WpfPlotDigitizer
 {
-  public enum AxisType
-  {
-    None = 0x00,
-    Left = 0x01,
-    Top = 0x02,
-    Right = 0x04,
-    Bottom = 0x08,
-  }
-
   public class ImageProcessingVM : ViewModelBase<ImageProcessingVM>
   {
 
@@ -37,6 +29,7 @@ namespace WpfPlotDigitizer
     }
 
     public Rect Axis { get; set; }
+    public AxisType AxisType { get; set; }
 
     public PixelBitmap PBAxis { get; set; }
 

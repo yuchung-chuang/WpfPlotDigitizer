@@ -21,7 +21,7 @@ namespace WpfPlotDigitizer.Tests
       var pixelBitmapInput = new Bitmap(@"C:\Users\alex\Desktop\WPF\WpfPlotDigitizer\WpfPlotDigitizerTests\data.png").ToPixelBitmap();
       var pixelBitmapFilterW = new PixelBitmap(pixelBitmapInput.Size);
       pixelBitmapFilterW.Pixel = ImageProcessing.FilterW(pixelBitmapInput);
-      var actualAxis = ImageProcessing.GetAxis(pixelBitmapFilterW);
+      var (actualAxis, axisType) = ImageProcessing.GetAxis(pixelBitmapFilterW);
       var expectedAxis = new Rect(87, 20, 747, 547);
       Assert.AreEqual(expectedAxis, actualAxis);
     }
