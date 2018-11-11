@@ -1,10 +1,12 @@
-﻿using System;
+﻿using CycWpfLibrary.Media;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace WpfPlotDigitizer
 {
@@ -23,6 +25,13 @@ namespace WpfPlotDigitizer
 
       IoC.SetUp();
       Current.MainWindow = new MainWindow();
+
+#if DEBUG
+      IoC.Get<ImageProcessingVM>().PBInput = new BitmapImage(new Uri($"pack://application:,,,/images/data.png")).ToPixelBitmap();
+
+      //applicationVM.PageManager.Index = (int)ApplicationPages.AxisLimit;
+#endif 
+
       Current.MainWindow.Show();
     }
   }

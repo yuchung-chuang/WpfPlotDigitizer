@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -23,34 +24,63 @@ namespace WpfPlotDigitizer
     /// </summary>
     NumOfPages,
   }
-  
+
   public class PageManager : ViewModelBase<PageManager>, IPageManager
   {
     public PageManager()
     {
       TurnNextCommand = new RelayCommand(TurnNext, CanTurnNext);
       TurnBackCommand = new RelayCommand(TurnBack, CanTurnBack);
+      IoC.Get<IoC>().ViewModelsLoaded += OnViewModelsLoaded;
     }
+
+    private void OnViewModelsLoaded()
+    {
+      browsePage    = new BrowsePage();
+      axisPage      = new AxisPage();
+      axisLimitPage = new AxisLimitPage();
+      filterPage    = new FilterPage();
+      erasePage     = new ErasePage();
+      savePage      = new SavePage();
+      emptyPage     = new UserControl();
+    }
+
+    // Singleton fields
+    private BrowsePage    browsePage   ;
+    private AxisPage      axisPage     ;
+    private AxisLimitPage axisLimitPage;
+    private FilterPage    filterPage   ;
+    private ErasePage     erasePage    ;
+    private SavePage      savePage     ;
+    private UserControl   emptyPage    ;
 
     private UserControl GetCurrentPage()
     {
+      UserControl CurrentPage = emptyPage;
       switch ((ApplicationPages)Index)
       {
         case ApplicationPages.Browse:
-          return new BrowsePage();
+          CurrentPage = browsePage;
+          break;
         case ApplicationPages.Axis:
-          return new AxisPage();
+          CurrentPage = axisPage;
+          break;
         case ApplicationPages.AxisLimit:
-          return new AxisLimitPage();
+          CurrentPage = axisLimitPage;
+          break;
         case ApplicationPages.Filter:
-          return new FilterPage();
+          CurrentPage = filterPage;
+          break;
         case ApplicationPages.Erase:
-          return new ErasePage();
+          CurrentPage = erasePage;
+          break;
         case ApplicationPages.Save:
-          return new SavePage();
+          CurrentPage = savePage;
+          break;
         default:
-          return new UserControl();
+          break;
       }
+      return CurrentPage;
     }
 
     public int Index { get; set; } = 0;

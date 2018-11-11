@@ -17,14 +17,25 @@ namespace WpfPlotDigitizer
     {
       IoC.Get<PageManager>().TurnNextEvent += OnTurnNextAsync;
       IoC.Get<ImageProcessingVM>().OnPBInputChanged += OnPixelBitmapInputChanged;
+      IoC.Get<IoC>().ViewModelsLoaded += OnViewModelsLoaded;
     }
 
-    private readonly ImageProcessingVM IPVM = IoC.Get<ImageProcessingVM>();
-    private readonly AxisPageVM axisPageVM = IoC.Get<AxisPageVM>();
-    private readonly FilterPageVM filterPageVM = IoC.Get<FilterPageVM>();
-    private readonly AxisLimitPageVM axisLimitPageVM = IoC.Get<AxisLimitPageVM>();
+    private void OnViewModelsLoaded()
+    {
+      IPVM = IoC.Get<ImageProcessingVM>();
+      axisPageVM = IoC.Get<AxisPageVM>();
+      filterPageVM = IoC.Get<FilterPageVM>();
+      axisLimitPageVM = IoC.Get<AxisLimitPageVM>();
+      PageManager = IoC.Get<PageManager>();
+    }
 
-    public IPageManager PageManager { get; } = IoC.Get<PageManager>();
+    //Singleton fields
+    private ImageProcessingVM IPVM;
+    private AxisPageVM axisPageVM;
+    private FilterPageVM filterPageVM;
+    private AxisLimitPageVM axisLimitPageVM;
+
+    public IPageManager PageManager { get; private set; }
 
     /// <summary>
     /// Turn Next Page automatically after seleted an image
@@ -42,6 +53,7 @@ namespace WpfPlotDigitizer
       switch ((ApplicationPages)PageManager.Index + 1)
       {
         case ApplicationPages.Axis:
+          axisPageVM.OnPropertyChanged(nameof(axisPageVM.bitmapSourceInput));
 
           IPVM.PBFilterW = new PixelBitmap(IPVM.PBInput.Size)
           {

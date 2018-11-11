@@ -19,12 +19,18 @@ namespace WpfPlotDigitizer
 {
   public class AxisLimitPageVM : ViewModelBase<AxisLimitPageVM>
   {
-    private readonly ImageProcessingVM IPVM = IoC.Get<ImageProcessingVM>();
-
     public AxisLimitPageVM()
     {
       GetAxisLimitCommand = new RelayCommand(GetAxisLimit);
+      IoC.Get<IoC>().ViewModelsLoaded += OnViewModelsLoaded;
     }
+
+    private void OnViewModelsLoaded()
+    {
+      IPVM = IoC.Get<ImageProcessingVM>();
+    }
+    //Singleton fields
+    private ImageProcessingVM IPVM;
 
     public PixelBitmap PBModified { get; set; }
     public BitmapSource ImageSource => PBModified?.ToBitmapSource();

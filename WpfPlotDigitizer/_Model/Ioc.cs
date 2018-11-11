@@ -7,12 +7,15 @@ using System.Threading.Tasks;
 
 namespace WpfPlotDigitizer
 {
-  public static class IoC
+  public class IoC
   {
     public static IKernel Kernel { get; private set; } = new StandardKernel();
 
-    private static void BindViewModels()
+    public event Action ViewModelsLoaded;
+
+    public static void SetUp()
     {
+      Kernel.Bind<IoC>().ToConstant(new IoC());
       Kernel.Bind<ImageProcessingVM>().ToConstant(new ImageProcessingVM());
       Kernel.Bind<PageManager>().ToConstant(new PageManager());
 
@@ -25,11 +28,10 @@ namespace WpfPlotDigitizer
 
       Kernel.Bind<ApplicationVM>().ToConstant(new ApplicationVM());
       Kernel.Bind<MainWindowVM>().ToConstant(new MainWindowVM());
+
+      Get<IoC>().ViewModelsLoaded?.Invoke();
     }
-    public static void SetUp()
-    {
-      BindViewModels();
-    }
+    
 
     /// <summary>
     /// 注意! 若在尚未Bind時呼叫Get，系統會自動new一個實例！

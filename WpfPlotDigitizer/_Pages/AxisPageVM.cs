@@ -13,18 +13,30 @@ namespace WpfPlotDigitizer
 {
   public class AxisPageVM : ViewModelBase<AxisPageVM>
   {
-
     public AxisPageVM()
     {
       AutoGetAxisCommand = new RelayCommand(AutoGetAxis);
+      IoC.Get<IoC>().ViewModelsLoaded += OnViewModelsLoaded;
     }
 
-    private readonly ImageProcessingVM IPVM = IoC.Get<ImageProcessingVM>();
-    public PixelBitmap PBInput => IPVM.PBInput;
-    public PixelBitmap PBFilterW => IPVM.PBFilterW;
+    private void OnViewModelsLoaded()
+    {
+      IPVM = IoC.Get<ImageProcessingVM>();
+    }
+    //Singleton fields
+    private ImageProcessingVM IPVM;
+
+    public PixelBitmap PBInput => IPVM?.PBInput;
+    public PixelBitmap PBFilterW => IPVM?.PBFilterW;
     public Rect Axis
     {
-      get => IPVM.Axis;
+      get
+      {
+        if (IPVM == null)
+          return Rect.Empty;
+        else
+          return IPVM.Axis;
+      }
       set => IPVM.Axis = value;
     }
 

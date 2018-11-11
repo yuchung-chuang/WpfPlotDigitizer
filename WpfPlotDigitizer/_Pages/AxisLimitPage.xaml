@@ -6,7 +6,9 @@
              xmlns:local="clr-namespace:WpfPlotDigitizer"
              xmlns:cycMVVM="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:controlzEx="clr-namespace:ControlzEx;assembly=MaterialDesignThemes.Wpf"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:cycControl="clr-namespace:CycWpfLibrary.Controls;assembly=CycWpfLibrary"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              TextElement.FontWeight="Regular"
              TextElement.FontSize="13"
@@ -15,138 +17,356 @@
              Background="{DynamicResource MaterialDesignPaper}"
              FontFamily="{DynamicResource MaterialDesignFont}"
              mc:Ignorable="d"
-             d:DesignHeight="450"
-             d:DesignWidth="800"
+             d:DesignHeight="600"
+             d:DesignWidth="900"
              DataContext="{x:Static local:VMLocator.AxisLimitPageVM}">
-  <Grid Margin="20">
-    <Grid.Resources>
-      <Style TargetType="TextBox"
-             BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
-        <Setter Property="Width"
-                Value="100" />
-        <Setter Property="Height"
-                Value="40" />
-      </Style>
-    </Grid.Resources>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="auto" />
-      <RowDefinition Height="*" />
-      <RowDefinition Height="auto" />
-    </Grid.RowDefinitions>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="auto" />
-      <ColumnDefinition Width="*" />
-      <ColumnDefinition Width="auto" />
-    </Grid.ColumnDefinitions>
-    <Image Grid.Column="1"
-           Grid.Row="1"
-           Source="{Binding ImageSource}">
-      <Image.InputBindings>
-        <MouseBinding MouseAction="LeftDoubleClick"
-                      Command="{Binding GetAxisLimitCommand}" />
-      </Image.InputBindings>
-    </Image>
-    <Grid Grid.Column="0"
-          Grid.Row="1"
-          Width="100">
+  <AdornerDecorator>
+    <Grid Margin="20,0">
+      <Grid.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <ControlTemplate x:Key="ValidationErrorTemplate">
+          <ControlTemplate.Resources>
+            <DataTemplate DataType="{x:Type ValidationError}">
+              <TextBlock Foreground="{DynamicResource ValidationErrorBrush}"
+                         FontSize="10"
+                         MaxWidth="{Binding ElementName=Placeholder, Path=ActualWidth}"
+                         HorizontalAlignment="Left"
+                         Margin="2"
+                         TextWrapping="Wrap"
+                         Text="{Binding ErrorContent}"
+                         UseLayoutRounding="false" />
+            </DataTemplate>
+          </ControlTemplate.Resources>
+          <StackPanel>
+            <AdornedElementPlaceholder Name="Placeholder" />
+            <Border x:Name="DefaultErrorViewer"
+                    Visibility="Collapsed"
+                    Background="Transparent">
+              <TextBlock Foreground="{DynamicResource ValidationErrorBrush}"
+                         FontSize="10"
+                         MaxWidth="{Binding ElementName=Placeholder, Path=ActualWidth}"
+                         HorizontalAlignment="Left"
+                         Margin="0 2"
+                         TextWrapping="Wrap"
+                         Text="{Binding CurrentItem.ErrorContent}"
+                         UseLayoutRounding="false" />
+            </Border>
+            <controlzEx:PopupEx x:Name="ValidationPopup"
+                                IsOpen="False"
+                                Placement="Bottom"
+                                PlacementTarget="{Binding ElementName=Placeholder, Mode=OneWay}"
+                                AllowsTransparency="True">
+              <Border x:Name="PopupBorder"
+                      Background="Transparent">
+                <TextBlock Foreground="{DynamicResource ValidationErrorBrush}"
+                           FontSize="10"
+                           HorizontalAlignment="Left"
+                           Margin="0 2"
+                           TextWrapping="Wrap"
+                           Text="{Binding CurrentItem.ErrorContent}"
+                           UseLayoutRounding="false" />
+              </Border>
+            </controlzEx:PopupEx>
+          </StackPanel>
+          <ControlTemplate.Triggers>
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <Condition Binding="{Binding ElementName=Placeholder, Path=AdornedElement.(md:ValidationAssist.OnlyShowOnFocus)}"
+                           Value="False" />
+                <Condition Binding="{Binding ElementName=Placeholder, Path=AdornedElement.(md:ValidationAssist.UsePopup)}"
+                           Value="True" />
+                <Condition Binding="{Binding ElementName=Placeholder, Path=AdornedElement.(md:ValidationAssist.Suppress)}"
+                           Value="False" />
+              </MultiDataTrigger.Conditions>
+              <MultiDataTrigger.Setters>
+                <Setter TargetName="ValidationPopup"
+                        Property="IsOpen"
+                        Value="True" />
+              </MultiDataTrigger.Setters>
+            </MultiDataTrigger>
+
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <Condition Binding="{Binding ElementName=Placeholder, Path=AdornedElement.(md:ValidationAssist.OnlyShowOnFocus)}"
+                           Value="False" />
+                <Condition Binding="{Binding ElementName=Placeholder, Path=AdornedElement.(md:ValidationAssist.UsePopup)}"
+                           Value="False" />
+                <Condition Binding="{Binding ElementName=Placeholder, Path=AdornedElement.(md:ValidationAssist.Suppress)}"
+                           Value="False" />
+              </MultiDataTrigger.Conditions>
+              <MultiDataTrigger.Setters>
+                <Setter TargetName="DefaultErrorViewer"
+                        Property="Visibility"
+                        Value="Visible" />
+              </MultiDataTrigger.Setters>
+            </MultiDataTrigger>
+
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <Condition Binding="{Binding ElementName=Placeholder, Path=AdornedElement.(md:ValidationAssist.OnlyShowOnFocus)}"
+                           Value="True" />
+                <Condition Binding="{Binding ElementName=Placeholder, Path=AdornedElement.(md:ValidationAssist.UsePopup)}"
+                           Value="True" />
+              </MultiDataTrigger.Conditions>
+              <MultiDataTrigger.Setters>
+                <Setter TargetName="ValidationPopup"
+                        Property="IsOpen"
+                        Value="{Binding ElementName=Placeholder, Path=AdornedElement.IsKeyboardFocusWithin, Mode=OneWay}" />
+              </MultiDataTrigger.Setters>
+            </MultiDataTrigger>
+
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <Condition Binding="{Binding ElementName=Placeholder, Path=AdornedElement.(md:ValidationAssist.OnlyShowOnFocus)}"
+                           Value="True" />
+                <Condition Binding="{Binding ElementName=Placeholder, Path=AdornedElement.(md:ValidationAssist.UsePopup)}"
+                           Value="False" />
+              </MultiDataTrigger.Conditions>
+              <MultiDataTrigger.Setters>
+                <Setter TargetName="DefaultErrorViewer"
+                        Property="Visibility"
+                        Value="{Binding ElementName=Placeholder, Path=AdornedElement.IsKeyboardFocusWithin, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+              </MultiDataTrigger.Setters>
+            </MultiDataTrigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <Style x:Key="TextBoxStyleBase"
+               TargetType="TextBox"
+               BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
+          <Setter Property="Width"
+                  Value="100" />
+          <Setter Property="Height"
+                  Value="40" />
+          <Setter Property="Validation.ErrorTemplate"
+                  Value="{StaticResource ValidationErrorTemplate}" />
+        </Style>
+
+      </Grid.Resources>
       <Grid.RowDefinitions>
+        <RowDefinition Height="auto" />
         <RowDefinition Height="*" />
-        <RowDefinition Height="*" />
-        <RowDefinition Height="*" />
+        <RowDefinition Height="auto" />
       </Grid.RowDefinitions>
-      <TextBox Grid.Row="0"
-               md:HintAssist.Hint="Y-Axis: Max">
-        <TextBox.Text>
-          <Binding Path="YMaxL"
-                   Mode="OneWayToSource"
-                   UpdateSourceTrigger="PropertyChanged"
-                   Converter="{cycMVVM:NumStrConverter}">
-            <Binding.ValidationRules>
-              <cycMVVM:DoubleValidation />
-            </Binding.ValidationRules>
-          </Binding>
-        </TextBox.Text>
-      </TextBox>
-      <TextBox Grid.Row="1"
-               md:HintAssist.Hint="Y-Axis: Log Base">
-        <TextBox.Text>
-          <Binding Path="YLogL"
-                   Mode="OneWayToSource"
-                   UpdateSourceTrigger="PropertyChanged"
-                   Converter="{cycMVVM:NumStrConverter}">
-            <Binding.ValidationRules>
-              <cycMVVM:LogBaseValidation />
-            </Binding.ValidationRules>
-          </Binding>
-        </TextBox.Text>
-      </TextBox>
-      <TextBox Grid.Row="2"
-               md:HintAssist.Hint="Y-Axis: Min">
-        <TextBox.Text>
-          <Binding Path="YMinL"
-                   Mode="OneWayToSource"
-                   UpdateSourceTrigger="PropertyChanged"
-                   Converter="{cycMVVM:NumStrConverter}">
-            <Binding.ValidationRules>
-              <cycMVVM:DoubleValidation />
-            </Binding.ValidationRules>
-          </Binding>
-        </TextBox.Text>
-      </TextBox>
-    </Grid>
-    <Grid Grid.Column="2"
-          Grid.Row="1"
-          Width="100">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="*" />
-        <RowDefinition Height="*" />
-        <RowDefinition Height="*" />
-      </Grid.RowDefinitions>
-      <TextBox Grid.Row="0"
-               md:HintAssist.Hint="Y-Axis: Max"
-               Text="{Binding YMaxR, Mode=OneWayToSource}" />
-      <TextBox Grid.Row="1"
-               md:HintAssist.Hint="Y-Axis: Log Base"
-               Text="{Binding YLogR, Mode=OneWayToSource}" />
-      <TextBox Grid.Row="2"
-               md:HintAssist.Hint="Y-Axis: Min"
-               Text="{Binding YMinR, Mode=OneWayToSource}" />
-    </Grid>
-    <Grid Grid.Column="1"
-          Grid.Row="0"
-          Height="50">
       <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="auto" />
         <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="auto" />
       </Grid.ColumnDefinitions>
-      <TextBox Grid.Column="0" 
-               md:HintAssist.Hint="X-Axis: Min"
-               Text="{Binding XMinT, Mode=OneWayToSource}"/>
-      <TextBox Grid.Column="1"
-               md:HintAssist.Hint="X-Axis: Log Base"
-               Text="{Binding XLogT, Mode=OneWayToSource}"/>
-      <TextBox Grid.Column="2"
-               md:HintAssist.Hint="X-Axis: Max" 
-               Text="{Binding XMaxT, Mode=OneWayToSource}"/>
+      <cycControl:PanZoomBorder Grid.Column="1"
+                                Grid.Row="1">
+        <Image Source="{Binding ImageSource}">
+          <Image.InputBindings>
+            <MouseBinding MouseAction="LeftDoubleClick"
+                          Command="{Binding GetAxisLimitCommand}" />
+          </Image.InputBindings>
+        </Image>
+      </cycControl:PanZoomBorder>
+      <Grid Grid.Column="0"
+            Grid.Row="1"
+            Width="120">
+        <Grid.Resources>
+          <Style TargetType="TextBox"
+                 BasedOn="{StaticResource TextBoxStyleBase}" />
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="*" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBox Grid.Row="0"
+                 md:HintAssist.Hint="Y-Axis: Max">
+          <TextBox.Text>
+            <Binding Path="YMaxL"
+                     Mode="OneWayToSource"
+                     Converter="{cycMVVM:NumStrConverter}">
+              <Binding.ValidationRules>
+                <cycMVVM:DoubleValidation />
+              </Binding.ValidationRules>
+            </Binding>
+          </TextBox.Text>
+        </TextBox>
+        <TextBox Grid.Row="1"
+                 md:HintAssist.Hint="Y-Axis: Log Base">
+          <TextBox.Text>
+            <Binding Path="YLogL"
+                     Mode="OneWayToSource"
+                     Converter="{cycMVVM:NumStrConverter}">
+              <Binding.ValidationRules>
+                <cycMVVM:LogBaseValidation />
+              </Binding.ValidationRules>
+            </Binding>
+          </TextBox.Text>
+        </TextBox>
+        <TextBox Grid.Row="2"
+                 md:HintAssist.Hint="Y-Axis: Min">
+          <TextBox.Text>
+            <Binding Path="YMinL"
+                     Mode="OneWayToSource"
+                     Converter="{cycMVVM:NumStrConverter}">
+              <Binding.ValidationRules>
+                <cycMVVM:DoubleValidation />
+              </Binding.ValidationRules>
+            </Binding>
+          </TextBox.Text>
+        </TextBox>
+      </Grid>
+      <Grid Grid.Column="2"
+            Grid.Row="1"
+            Width="120">
+        <Grid.Resources>
+          <Style TargetType="TextBox"
+                 BasedOn="{StaticResource TextBoxStyleBase}" />
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="*" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBox Grid.Row="0"
+                 md:HintAssist.Hint="Y-Axis: Max">
+          <TextBox.Text>
+            <Binding Path="YMaxR"
+                     Mode="OneWayToSource"
+                     Converter="{cycMVVM:NumStrConverter}">
+              <Binding.ValidationRules>
+                <cycMVVM:DoubleValidation />
+              </Binding.ValidationRules>
+            </Binding>
+          </TextBox.Text>
+        </TextBox>
+        <TextBox Grid.Row="1"
+                 md:HintAssist.Hint="Y-Axis: Log Base">
+          <TextBox.Text>
+            <Binding Path="YLogR"
+                     Mode="OneWayToSource"
+                     Converter="{cycMVVM:NumStrConverter}">
+              <Binding.ValidationRules>
+                <cycMVVM:LogBaseValidation />
+              </Binding.ValidationRules>
+            </Binding>
+          </TextBox.Text>
+        </TextBox>
+        <TextBox Grid.Row="2"
+                 md:HintAssist.Hint="Y-Axis: Min">
+          <TextBox.Text>
+            <Binding Path="YMinR"
+                     Mode="OneWayToSource"
+                     Converter="{cycMVVM:NumStrConverter}">
+              <Binding.ValidationRules>
+                <cycMVVM:DoubleValidation />
+              </Binding.ValidationRules>
+            </Binding>
+          </TextBox.Text>
+        </TextBox>
+      </Grid>
+      <Grid Grid.Column="1"
+            Grid.Row="0"
+            Height="100">
+        <Grid.Resources>
+          <Style TargetType="TextBox"
+                 BasedOn="{StaticResource TextBoxStyleBase}">
+            <Setter Property="Margin"
+                    Value="0,0,0,20" />
+            <Setter Property="VerticalAlignment"
+                    Value="Top" />
+          </Style>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <TextBox Grid.Column="0"
+                 md:HintAssist.Hint="X-Axis: Min">
+          <TextBox.Text>
+            <Binding Path="XMinT"
+                     Mode="OneWayToSource"
+                     Converter="{cycMVVM:NumStrConverter}">
+              <Binding.ValidationRules>
+                <cycMVVM:DoubleValidation />
+              </Binding.ValidationRules>
+            </Binding>
+          </TextBox.Text>
+        </TextBox>
+        <TextBox Grid.Column="1"
+                 md:HintAssist.Hint="X-Axis: Log Base">
+          <TextBox.Text>
+            <Binding Path="XLogT"
+                     Mode="OneWayToSource"
+                     Converter="{cycMVVM:NumStrConverter}">
+              <Binding.ValidationRules>
+                <cycMVVM:LogBaseValidation />
+              </Binding.ValidationRules>
+            </Binding>
+          </TextBox.Text>
+        </TextBox>
+        <TextBox Grid.Column="2"
+                 md:HintAssist.Hint="X-Axis: Max">
+          <TextBox.Text>
+            <Binding Path="XMaxT"
+                     Mode="OneWayToSource"
+                     Converter="{cycMVVM:NumStrConverter}">
+              <Binding.ValidationRules>
+                <cycMVVM:DoubleValidation />
+              </Binding.ValidationRules>
+            </Binding>
+          </TextBox.Text>
+        </TextBox>
+      </Grid>
+      <Grid Grid.Column="1"
+            Grid.Row="2"
+            Height="100">
+        <Grid.Resources>
+          <Style TargetType="TextBox"
+                 BasedOn="{StaticResource TextBoxStyleBase}">
+            <Setter Property="Margin"
+                    Value="0,0,0,20" />
+            <Setter Property="VerticalAlignment"
+                    Value="Top" />
+          </Style>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <TextBox Grid.Column="0"
+                 md:HintAssist.Hint="X-Axis: Min">
+          <TextBox.Text>
+            <Binding Path="XMinB"
+                     Mode="OneWayToSource"
+                     Converter="{cycMVVM:NumStrConverter}">
+              <Binding.ValidationRules>
+                <cycMVVM:DoubleValidation />
+              </Binding.ValidationRules>
+            </Binding>
+          </TextBox.Text>
+        </TextBox>
+        <TextBox Grid.Column="1"
+                 md:HintAssist.Hint="X-Axis: Log Base">
+          <TextBox.Text>
+            <Binding Path="XLogB"
+                     Mode="OneWayToSource"
+                     Converter="{cycMVVM:NumStrConverter}">
+              <Binding.ValidationRules>
+                <cycMVVM:LogBaseValidation />
+              </Binding.ValidationRules>
+            </Binding>
+          </TextBox.Text>
+        </TextBox>
+        <TextBox Grid.Column="2"
+                 md:HintAssist.Hint="X-Axis: Max">
+          <TextBox.Text>
+            <Binding Path="XMaxB"
+                     Mode="OneWayToSource"
+                     Converter="{cycMVVM:NumStrConverter}">
+              <Binding.ValidationRules>
+                <cycMVVM:DoubleValidation />
+              </Binding.ValidationRules>
+            </Binding>
+          </TextBox.Text>
+        </TextBox>
+      </Grid>
     </Grid>
-    <Grid Grid.Column="1"
-          Grid.Row="2"
-          Height="50">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="*" />
-      </Grid.ColumnDefinitions>
-      <TextBox Grid.Column="0"
-               md:HintAssist.Hint="X-Axis: Min" 
-               Text="{Binding XMinB, Mode=OneWayToSource}"/>
-      <TextBox Grid.Column="1"
-               md:HintAssist.Hint="X-Axis: Log Base" 
-               Text="{Binding XLogB, Mode=OneWayToSource}"/>
-      <TextBox Grid.Column="2"
-               md:HintAssist.Hint="X-Axis: Max" 
-               Text="{Binding XMaxB, Mode=OneWayToSource}"/>
-    </Grid>
-  </Grid>
+  </AdornerDecorator>
 </UserControl>

@@ -16,10 +16,17 @@ namespace WpfPlotDigitizer
     public BrowsePageVM()
     {
       OpenFileCommand = new RelayCommand(OpenFile);
+      IoC.Get<IoC>().ViewModelsLoaded += OnViewModelsLoaded;
     }
 
-    private readonly PageManager pageManager = IoC.Get<PageManager>();
-    private readonly ImageProcessingVM IPVM = IoC.Get<ImageProcessingVM>();
+    private void OnViewModelsLoaded()
+    {
+      pageManager = IoC.Get<PageManager>();
+      IPVM = IoC.Get<ImageProcessingVM>();
+    }
+    //Singleton fields
+    private PageManager pageManager;
+    private ImageProcessingVM IPVM;
 
     public PixelBitmap PBInput
     {
