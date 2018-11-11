@@ -12,26 +12,12 @@
              d:DesignWidth="800"
              DataContext="{x:Static local:VMLocator.AxisPageVM}">
   <Grid>
-    <cycControls:PanZoomBorder ClipToBounds="True">
-      <cycControls:PanZoomBorder.Background>
-        <DrawingBrush TileMode="Tile"
-                      Viewport="0,0,32,32"
-                      ViewportUnits="Absolute">
-          <DrawingBrush.Drawing>
-            <GeometryDrawing Geometry="M0,0 H16 V16 H32 V32 H16 V16 H0Z"
-                             Brush="LightGray" />
-          </DrawingBrush.Drawing>
-        </DrawingBrush>
-      </cycControls:PanZoomBorder.Background>
+    <cycControls:PanZoomBorder>
       <Viewbox>
         <Grid Name="gridBase2">
-          <Border Name="borderImageAxis"
-                  BorderBrush="Transparent"
-                  BorderThickness="1">
-            <Image Name="imageAxis"
-                   Source="{Binding bitmapSourceInput}"
-                   Stretch="None" />
-          </Border>
+          <Image Name="imageAxis"
+                 Source="{Binding bitmapSourceInput}"
+                 Stretch="None" />
           <cycControls:Axis AxisLeft="{Binding AxisLeft, Mode=TwoWay}"
                             AxisTop="{Binding AxisTop, Mode=TwoWay}"
                             AxisWidth="{Binding AxisWidth, Mode=TwoWay}"

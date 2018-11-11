@@ -5,11 +5,148 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:WpfPlotDigitizer"
              xmlns:cycMVVM="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             TextElement.FontWeight="Regular"
+             TextElement.FontSize="13"
+             TextOptions.TextFormattingMode="Ideal"
+             TextOptions.TextRenderingMode="Auto"
+             Background="{DynamicResource MaterialDesignPaper}"
+             FontFamily="{DynamicResource MaterialDesignFont}"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800"
              DataContext="{x:Static local:VMLocator.AxisLimitPageVM}">
-  <Grid>
-    <Image Source="{Binding ImageSource}"/>
+  <Grid Margin="20">
+    <Grid.Resources>
+      <Style TargetType="TextBox"
+             BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
+        <Setter Property="Width"
+                Value="100" />
+        <Setter Property="Height"
+                Value="40" />
+      </Style>
+    </Grid.Resources>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="auto" />
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="auto" />
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="auto" />
+    </Grid.ColumnDefinitions>
+    <Image Grid.Column="1"
+           Grid.Row="1"
+           Source="{Binding ImageSource}">
+      <Image.InputBindings>
+        <MouseBinding MouseAction="LeftDoubleClick"
+                      Command="{Binding GetAxisLimitCommand}" />
+      </Image.InputBindings>
+    </Image>
+    <Grid Grid.Column="0"
+          Grid.Row="1"
+          Width="100">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*" />
+        <RowDefinition Height="*" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+      <TextBox Grid.Row="0"
+               md:HintAssist.Hint="Y-Axis: Max">
+        <TextBox.Text>
+          <Binding Path="YMaxL"
+                   Mode="OneWayToSource"
+                   UpdateSourceTrigger="PropertyChanged"
+                   Converter="{cycMVVM:NumStrConverter}">
+            <Binding.ValidationRules>
+              <cycMVVM:DoubleValidation />
+            </Binding.ValidationRules>
+          </Binding>
+        </TextBox.Text>
+      </TextBox>
+      <TextBox Grid.Row="1"
+               md:HintAssist.Hint="Y-Axis: Log Base">
+        <TextBox.Text>
+          <Binding Path="YLogL"
+                   Mode="OneWayToSource"
+                   UpdateSourceTrigger="PropertyChanged"
+                   Converter="{cycMVVM:NumStrConverter}">
+            <Binding.ValidationRules>
+              <cycMVVM:LogBaseValidation />
+            </Binding.ValidationRules>
+          </Binding>
+        </TextBox.Text>
+      </TextBox>
+      <TextBox Grid.Row="2"
+               md:HintAssist.Hint="Y-Axis: Min">
+        <TextBox.Text>
+          <Binding Path="YMinL"
+                   Mode="OneWayToSource"
+                   UpdateSourceTrigger="PropertyChanged"
+                   Converter="{cycMVVM:NumStrConverter}">
+            <Binding.ValidationRules>
+              <cycMVVM:DoubleValidation />
+            </Binding.ValidationRules>
+          </Binding>
+        </TextBox.Text>
+      </TextBox>
+    </Grid>
+    <Grid Grid.Column="2"
+          Grid.Row="1"
+          Width="100">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*" />
+        <RowDefinition Height="*" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+      <TextBox Grid.Row="0"
+               md:HintAssist.Hint="Y-Axis: Max"
+               Text="{Binding YMaxR, Mode=OneWayToSource}" />
+      <TextBox Grid.Row="1"
+               md:HintAssist.Hint="Y-Axis: Log Base"
+               Text="{Binding YLogR, Mode=OneWayToSource}" />
+      <TextBox Grid.Row="2"
+               md:HintAssist.Hint="Y-Axis: Min"
+               Text="{Binding YMinR, Mode=OneWayToSource}" />
+    </Grid>
+    <Grid Grid.Column="1"
+          Grid.Row="0"
+          Height="50">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      <TextBox Grid.Column="0" 
+               md:HintAssist.Hint="X-Axis: Min"
+               Text="{Binding XMinT, Mode=OneWayToSource}"/>
+      <TextBox Grid.Column="1"
+               md:HintAssist.Hint="X-Axis: Log Base"
+               Text="{Binding XLogT, Mode=OneWayToSource}"/>
+      <TextBox Grid.Column="2"
+               md:HintAssist.Hint="X-Axis: Max" 
+               Text="{Binding XMaxT, Mode=OneWayToSource}"/>
+    </Grid>
+    <Grid Grid.Column="1"
+          Grid.Row="2"
+          Height="50">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      <TextBox Grid.Column="0"
+               md:HintAssist.Hint="X-Axis: Min" 
+               Text="{Binding XMinB, Mode=OneWayToSource}"/>
+      <TextBox Grid.Column="1"
+               md:HintAssist.Hint="X-Axis: Log Base" 
+               Text="{Binding XLogB, Mode=OneWayToSource}"/>
+      <TextBox Grid.Column="2"
+               md:HintAssist.Hint="X-Axis: Max" 
+               Text="{Binding XMaxB, Mode=OneWayToSource}"/>
+    </Grid>
   </Grid>
 </UserControl>

@@ -57,7 +57,7 @@ namespace WpfPlotDigitizer
             IPVM.PBAxis = IPVM.PBInput.Bitmap
                                           .Crop(IPVM.Axis)
                                           .ToPixelBitmap();
-            axisLimitPageVM.AutoGetAxisLimit();
+            axisLimitPageVM.GetAxisLimit();
           });
           GetAxisLimitTask.Wait();
           Application.Current.MainWindow.Cursor = Cursors.Arrow;

@@ -97,9 +97,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="_Pages\AxisLimitPageVM.cs" />
     <Compile Include="_Pages\SavePageVM.cs" />
     <Compile Include="_Pages\ErasePageVM.cs" />
-    <Compile Include="_Pages\AxisLimitPageVM.cs" />
     <Compile Include="_Pages\SavePage.xaml.cs">
       <DependentUpon>SavePage.xaml</DependentUpon>
     </Compile>
@@ -208,7 +208,7 @@
     <Resource Include="images\data.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="_Controls\" />
+    <Folder Include="Styles\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="License-LGPL.txt" />
