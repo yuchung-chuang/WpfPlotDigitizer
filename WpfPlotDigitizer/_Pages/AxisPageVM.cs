@@ -33,7 +33,7 @@ namespace WpfPlotDigitizer
       get
       {
         if (IPVM == null)
-          return Rect.Empty;
+          return new Rect(0, 0, 0, 0);
         else
           return IPVM.Axis;
       }
@@ -85,6 +85,8 @@ namespace WpfPlotDigitizer
     public ICommand AutoGetAxisCommand { get; set; }
     public void AutoGetAxis()
     {
+      //Point LT, LB, RT, RB;
+      //(LT, LB, RT, RB) = ImageProcessing.GetAxisPoints(PBFilterW);
       Axis = ImageProcessing.GetAxis(PBFilterW);
     }
   }

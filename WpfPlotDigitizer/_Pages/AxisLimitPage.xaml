@@ -177,7 +177,7 @@
                  md:HintAssist.Hint="Y-Axis: Max">
           <TextBox.Text>
             <Binding Path="YMaxL"
-                     Mode="OneWayToSource"
+                     Mode="TwoWay"
                      Converter="{cycMVVM:NumStrConverter}">
               <Binding.ValidationRules>
                 <cycMVVM:DoubleValidation />
@@ -189,7 +189,7 @@
                  md:HintAssist.Hint="Y-Axis: Log Base">
           <TextBox.Text>
             <Binding Path="YLogL"
-                     Mode="OneWayToSource"
+                     Mode="TwoWay"
                      Converter="{cycMVVM:NumStrConverter}">
               <Binding.ValidationRules>
                 <cycMVVM:LogBaseValidation />
@@ -201,7 +201,7 @@
                  md:HintAssist.Hint="Y-Axis: Min">
           <TextBox.Text>
             <Binding Path="YMinL"
-                     Mode="OneWayToSource"
+                     Mode="TwoWay"
                      Converter="{cycMVVM:NumStrConverter}">
               <Binding.ValidationRules>
                 <cycMVVM:DoubleValidation />
@@ -226,7 +226,7 @@
                  md:HintAssist.Hint="Y-Axis: Max">
           <TextBox.Text>
             <Binding Path="YMaxR"
-                     Mode="OneWayToSource"
+                     Mode="TwoWay"
                      Converter="{cycMVVM:NumStrConverter}">
               <Binding.ValidationRules>
                 <cycMVVM:DoubleValidation />
@@ -238,7 +238,7 @@
                  md:HintAssist.Hint="Y-Axis: Log Base">
           <TextBox.Text>
             <Binding Path="YLogR"
-                     Mode="OneWayToSource"
+                     Mode="TwoWay"
                      Converter="{cycMVVM:NumStrConverter}">
               <Binding.ValidationRules>
                 <cycMVVM:LogBaseValidation />
@@ -250,7 +250,7 @@
                  md:HintAssist.Hint="Y-Axis: Min">
           <TextBox.Text>
             <Binding Path="YMinR"
-                     Mode="OneWayToSource"
+                     Mode="TwoWay"
                      Converter="{cycMVVM:NumStrConverter}">
               <Binding.ValidationRules>
                 <cycMVVM:DoubleValidation />
@@ -280,7 +280,7 @@
                  md:HintAssist.Hint="X-Axis: Min">
           <TextBox.Text>
             <Binding Path="XMinT"
-                     Mode="OneWayToSource"
+                     Mode="TwoWay"
                      Converter="{cycMVVM:NumStrConverter}">
               <Binding.ValidationRules>
                 <cycMVVM:DoubleValidation />
@@ -292,7 +292,7 @@
                  md:HintAssist.Hint="X-Axis: Log Base">
           <TextBox.Text>
             <Binding Path="XLogT"
-                     Mode="OneWayToSource"
+                     Mode="TwoWay"
                      Converter="{cycMVVM:NumStrConverter}">
               <Binding.ValidationRules>
                 <cycMVVM:LogBaseValidation />
@@ -304,7 +304,7 @@
                  md:HintAssist.Hint="X-Axis: Max">
           <TextBox.Text>
             <Binding Path="XMaxT"
-                     Mode="OneWayToSource"
+                     Mode="TwoWay"
                      Converter="{cycMVVM:NumStrConverter}">
               <Binding.ValidationRules>
                 <cycMVVM:DoubleValidation />
@@ -334,7 +334,7 @@
                  md:HintAssist.Hint="X-Axis: Min">
           <TextBox.Text>
             <Binding Path="XMinB"
-                     Mode="OneWayToSource"
+                     Mode="TwoWay"
                      Converter="{cycMVVM:NumStrConverter}">
               <Binding.ValidationRules>
                 <cycMVVM:DoubleValidation />
@@ -346,7 +346,7 @@
                  md:HintAssist.Hint="X-Axis: Log Base">
           <TextBox.Text>
             <Binding Path="XLogB"
-                     Mode="OneWayToSource"
+                     Mode="TwoWay"
                      Converter="{cycMVVM:NumStrConverter}">
               <Binding.ValidationRules>
                 <cycMVVM:LogBaseValidation />
@@ -358,7 +358,7 @@
                  md:HintAssist.Hint="X-Axis: Max">
           <TextBox.Text>
             <Binding Path="XMaxB"
-                     Mode="OneWayToSource"
+                     Mode="TwoWay"
                      Converter="{cycMVVM:NumStrConverter}">
               <Binding.ValidationRules>
                 <cycMVVM:DoubleValidation />

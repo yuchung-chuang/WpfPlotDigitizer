@@ -29,9 +29,11 @@ namespace WpfPlotDigitizer
 #if DEBUG
       IoC.Get<ImageProcessingVM>().PBInput = new BitmapImage(new Uri($"pack://application:,,,/images/data.png")).ToPixelBitmap();
 
+      var ipvm = IoC.Get<ImageProcessingVM>();
+
       //applicationVM.PageManager.Index = (int)ApplicationPages.AxisLimit;
 #endif 
-
+      
       Current.MainWindow.Show();
     }
   }

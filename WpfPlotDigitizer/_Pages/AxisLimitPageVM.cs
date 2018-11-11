@@ -35,18 +35,18 @@ namespace WpfPlotDigitizer
     public PixelBitmap PBModified { get; set; }
     public BitmapSource ImageSource => PBModified?.ToBitmapSource();
 
-    public double YMaxL { get; set; }
-    public double YMinL { get; set; }
-    public double YLogL { get; set; }
-    public double XMaxT { get; set; }
-    public double XMinT { get; set; }
-    public double XLogT { get; set; }
-    public double YMaxR { get; set; }
-    public double YMinR { get; set; }
-    public double YLogR { get; set; }
-    public double XMaxB { get; set; }
-    public double XMinB { get; set; }
-    public double XLogB { get; set; }
+    public double? YMaxL { get; set; }
+    public double? YMinL { get; set; }
+    public double? YLogL { get; set; }
+    public double? XMaxT { get; set; }
+    public double? XMinT { get; set; }
+    public double? XLogT { get; set; }
+    public double? YMaxR { get; set; }
+    public double? YMinR { get; set; }
+    public double? YLogR { get; set; }
+    public double? XMaxB { get; set; }
+    public double? XMinB { get; set; }
+    public double? XLogB { get; set; }
 
     private readonly Tesseract ocr = IP.InitializeOcr("", "eng", OcrEngineMode.TesseractOnly, "0123456789");
     private PixelBitmap PBInput => IPVM.PBInput;

@@ -221,6 +221,11 @@ namespace WpfPlotDigitizer
       var RB = GetAxisRB(pixel3);
       return new Rect(LT, RB + new Vector(1, 1));
     }
+    public static (Point LT, Point LB, Point RT, Point RB) GetAxisPoints(PixelBitmap iptImage)
+    {
+      var pixel3 = iptImage.Pixel3;
+      return (GetAxisLT(pixel3), GetAxisLB(pixel3), GetAxisRT(pixel3), GetAxisRB(pixel3));
+    }
 
     private static int AxisTol = 20;
     public static Rect GetAxis(PixelBitmap iptImage)
