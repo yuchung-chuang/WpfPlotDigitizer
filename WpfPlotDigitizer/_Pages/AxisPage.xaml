@@ -29,7 +29,7 @@
                             Panel.ZIndex="1">
             <i:Interaction.Triggers>
               <i:EventTrigger EventName="MouseDoubleClick">
-                <i:InvokeCommandAction Command="{Binding AutoGetAxisCommand}" />
+                <i:InvokeCommandAction Command="{Binding GetAxisCommand}" />
               </i:EventTrigger>
             </i:Interaction.Triggers>
           </cycControls:Axis>

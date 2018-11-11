@@ -59,7 +59,7 @@ namespace WpfPlotDigitizer
           {
             Pixel = ImageProcessing.FilterW(IPVM.PBInput)
           };
-          axisPageVM.AutoGetAxis();
+          axisPageVM.GetAxis();
 
           break;
         case ApplicationPages.AxisLimit:

@@ -23,7 +23,6 @@ namespace WpfPlotDigitizer
     Green,
     Blue
   }
-
   public struct AxisType
   {
     public bool Left;
@@ -38,6 +37,90 @@ namespace WpfPlotDigitizer
       Right = right;
       Bottom = bottom;
     }
+  }
+
+  internal enum TracerState
+  {
+    Normal = 0,
+    OutTurn1 = 1,
+    OutTrun2 = 2,
+    OutTurned = 3,
+  }
+  internal class PixelTracer
+  {
+    public static readonly Vector[] dirs =
+    {
+      new Vector(1, -1),
+      new Vector(1, 0),
+      new Vector(-1, 1),
+      new Vector(0, 1),
+    };
+
+    private int _dirID = 0;
+    public int dirID
+    {
+      get => _dirID;
+      set => _dirID = (value >= dirs.Length) ? 0 : value;
+    }
+    public System.Drawing.Point intPos => pos.ToWinForm();
+    public Point pos;
+    public TracerState state = TracerState.Normal;
+    public (double XMax, double XMin, double YMax, double YMin) boundary;
+    public int steps = 0;
+    private int stepTotal;
+
+    public PixelTracer(double XMax, double YMax, double XMin, double YMin)
+    {
+      pos = new Point(XMin + 1, YMin + 1);
+      boundary = (XMax, XMin, YMax, YMin);
+      stepTotal = (int)(boundary.XMax - boundary.XMin) * (int)(boundary.YMax - boundary.YMin);
+    }
+
+    public void Move()
+    {
+      pos += dirs[dirID];
+      UpdateState();
+      UpdateDir();
+      steps++;
+    }
+    private bool IsOutsideBoundary() =>
+      !IsIn(pos.X, boundary.XMax, boundary.XMin, excludeBoundary: true) ||
+      !IsIn(pos.Y, boundary.YMax, boundary.YMin, excludeBoundary: true);
+    private void UpdateState()
+    {
+      if (state == TracerState.Normal && IsOutsideBoundary())
+      {
+        state++;
+      }
+      else if (state == TracerState.OutTurn1)
+      {
+        state++;
+      }
+      else if (state == TracerState.OutTrun2)
+      {
+        if (!IsOutsideBoundary())
+        {
+          state = TracerState.Normal;
+        }
+        else
+        {
+          state++;
+        }
+      }
+      else if (state == TracerState.OutTurned && !IsOutsideBoundary())
+      {
+        state = TracerState.Normal;
+      }
+    }
+    private void UpdateDir()
+    {
+      if (state == TracerState.OutTurn1 || state == TracerState.OutTrun2)
+      {
+        dirID++;
+      }
+    }
+    public bool IsCompleted() => steps > stepTotal;
+
   }
 
   public static class ImageProcessing
@@ -177,89 +260,6 @@ namespace WpfPlotDigitizer
       }
       while (failCount < failTimes);
       return iniPos;
-    }
-    public enum TracerState
-    {
-      Normal = 0,
-      OutTurn1 = 1,
-      OutTrun2 = 2,
-      OutTurned = 3,
-    }
-    public class PixelTracer
-    {
-      public static readonly Vector[] dirs =
-      {
-        new Vector(1, -1),
-        new Vector(1, 0),
-        new Vector(-1, 1),
-        new Vector(0, 1),
-      };
-
-      private int _dirID = 0;
-      public int dirID
-      {
-        get => _dirID;
-        set => _dirID = (value >= dirs.Length) ? 0 : value;
-      }
-      public System.Drawing.Point intPos => pos.ToWinForm();
-      public Point pos;
-      public TracerState state = TracerState.Normal;
-      public (double XMax, double XMin, double YMax, double YMin) boundary;
-      public int steps = 0;
-      private int stepTotal;
-
-      public PixelTracer(double XMax, double YMax, double XMin, double YMin)
-      {
-        pos = new Point(XMin + 1, YMin + 1);
-        boundary = (XMax, XMin, YMax, YMin);
-        stepTotal = (int)(boundary.XMax - boundary.XMin) * (int)(boundary.YMax - boundary.YMin);
-      }
-
-      public void Move()
-      {
-        pos += dirs[dirID];
-        UpdateState();
-        UpdateDir();
-        steps++;
-      }
-      private bool IsOutsideBoundary() =>
-        !IsIn(pos.X, boundary.XMax, boundary.XMin, excludeBoundary: true) ||
-        !IsIn(pos.Y, boundary.YMax, boundary.YMin, excludeBoundary: true);
-      private void UpdateState()
-      {
-        if (state == TracerState.Normal && IsOutsideBoundary())
-        {
-          state++;
-        }
-        else if (state == TracerState.OutTurn1)
-        {
-          state++;
-        }
-        else if (state == TracerState.OutTrun2)
-        {
-          if (!IsOutsideBoundary())
-          {
-            state = TracerState.Normal;
-          }
-          else
-          {
-            state++;
-          }
-        }
-        else if (state == TracerState.OutTurned && !IsOutsideBoundary())
-        {
-          state = TracerState.Normal;
-        }
-      }
-      private void UpdateDir()
-      {
-        if (state == TracerState.OutTurn1 || state == TracerState.OutTrun2)
-        {
-          dirID++;
-        }
-      }
-      public bool IsCompleted() => steps > stepTotal;
-
     }
     /// <summary>
     /// 搜索<paramref name="pixel3"/>中最靠近中心的左上角坐標軸。

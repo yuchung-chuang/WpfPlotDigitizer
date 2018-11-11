@@ -15,7 +15,7 @@ namespace WpfPlotDigitizer
   {
     public AxisPageVM()
     {
-      AutoGetAxisCommand = new RelayCommand(AutoGetAxis);
+      GetAxisCommand = new RelayCommand(GetAxis);
       IoC.Get<IoC>().ViewModelsLoaded += OnViewModelsLoaded;
     }
 
@@ -87,8 +87,8 @@ namespace WpfPlotDigitizer
       }
     }
 
-    public ICommand AutoGetAxisCommand { get; set; }
-    public void AutoGetAxis()
+    public ICommand GetAxisCommand { get; set; }
+    public void GetAxis()
     {
       (Axis, AxisType) = ImageProcessing.GetAxis(PBFilterW);
     }
