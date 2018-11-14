@@ -91,9 +91,9 @@ namespace WpfPlotDigitizer
         var charLT = GetLocalAxisLimit(image, rectangleLT);
         var charLB = GetLocalAxisLimit(image, rectangleLB);
 
-        var distances = charLT.Select(c => Point.Subtract(c.Region.Location.ToWpf(), Axis.Location).Length);
-        var minDistance = distances.Min();
-        var minIndex = distances.ToList().IndexOf(minDistance);
+        //var distances = charLT.Select(c => Point.Subtract(c.Region.Location.ToWpf(), Axis.Location).Length);
+        //var minDistance = distances.Min();
+        //var minIndex = distances.ToList().IndexOf(minDistance);
         // Align the text and find the nearest one!!
       }
       if (AxisType.Bottom)

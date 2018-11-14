@@ -345,22 +345,22 @@ namespace WpfPlotDigitizer
       bool IsValid(Point point) => !(double.IsNaN(point.X));
       void CheckAxisType()
       {
-        if (!IsValid(LT))
+        if (IsValid(LT))
         {
           axisType.Left = true;
           axisType.Top = true;
         }
-        if (!IsValid(RT))
+        if (IsValid(RT))
         {
           axisType.Left = true;
           axisType.Bottom = true;
         }
-        if (!IsValid(LB))
+        if (IsValid(LB))
         {
           axisType.Right = true;
           axisType.Top = true;
         }
-        if (!IsValid(RB))
+        if (IsValid(RB))
         {
           axisType.Right = true;
           axisType.Bottom = true;
