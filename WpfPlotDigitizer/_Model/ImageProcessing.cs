@@ -88,36 +88,33 @@ namespace WpfPlotDigitizer
       !IsIn(pos.Y, boundary.YMax, boundary.YMin, excludeBoundary: true);
     private void UpdateState()
     {
-      if (state == TracerState.Normal && IsOutsideBoundary())
+      switch (state)
       {
-        state++;
-      }
-      else if (state == TracerState.OutTurn1)
-      {
-        state++;
-      }
-      else if (state == TracerState.OutTrun2)
-      {
-        if (!IsOutsideBoundary())
-        {
-          state = TracerState.Normal;
-        }
-        else
-        {
-          state++;
-        }
-      }
-      else if (state == TracerState.OutTurned && !IsOutsideBoundary())
-      {
-        state = TracerState.Normal;
+        case TracerState.Normal:
+          if (IsOutsideBoundary())
+            state++;
+          break;
+        case TracerState.OutTurn1:
+          state++; 
+          break;
+        case TracerState.OutTrun2:
+          if (IsOutsideBoundary())
+            state++;
+          else
+            state = TracerState.Normal;
+          break;
+        case TracerState.OutTurned:
+          if (!IsOutsideBoundary())
+            state = TracerState.Normal;
+          break;
+        default:
+          break;
       }
     }
     private void UpdateDir()
     {
       if (state == TracerState.OutTurn1 || state == TracerState.OutTrun2)
-      {
         dirID++;
-      }
     }
     public bool IsCompleted() => steps > stepTotal;
 
@@ -329,40 +326,46 @@ namespace WpfPlotDigitizer
     private static readonly int axisTol = 20;
     public static (Rect, AxisType) GetAxis(PixelBitmap iptImage)
     {
-      AxisType axisType2 = new AxisType();
+      AxisType axisType = new AxisType();
       var pixel3 = iptImage.Pixel3;
       var LT = GetAxisLT(pixel3);
       var RB = GetAxisRB(pixel3);
       var LB = GetAxisLB(pixel3);
       var RT = GetAxisRT(pixel3);
-      if (!(double.IsNaN(LT.X)))
-      {
-        axisType2.Left = true;
-        axisType2.Top = true;
-      }
-      if (!(double.IsNaN(LB.X)))
-      {
-        axisType2.Left = true;
-        axisType2.Bottom = true;
-      }
-      if (!(double.IsNaN(RT.X)))
-      {
-        axisType2.Right = true;
-        axisType2.Top = true;
-      }
-      if (!(double.IsNaN(RB.X)))
-      {
-        axisType2.Right = true;
-        axisType2.Bottom = true;
-      }
+      CheckAxisType();
 
       var axisTmp = new Rect(LT, RB + new Vector(1, 1));
-      if (double.IsNaN(LT.X) || double.IsNaN(RB.X) ||
+      if (!IsValid(LT) || !IsValid(RB) ||
         iptImage.Width - axisTmp.Width < axisTol ||
         iptImage.Height - axisTmp.Height < axisTol)
-        return (GetLongestAxis(iptImage), axisType2);
+        return (GetLongestAxis(iptImage), axisType);
       else
-        return (axisTmp, axisType2);
+        return (axisTmp, axisType);
+
+      bool IsValid(Point point) => !(double.IsNaN(point.X));
+      void CheckAxisType()
+      {
+        if (!IsValid(LT))
+        {
+          axisType.Left = true;
+          axisType.Top = true;
+        }
+        if (!IsValid(RT))
+        {
+          axisType.Left = true;
+          axisType.Bottom = true;
+        }
+        if (!IsValid(LB))
+        {
+          axisType.Right = true;
+          axisType.Top = true;
+        }
+        if (!IsValid(RB))
+        {
+          axisType.Right = true;
+          axisType.Bottom = true;
+        }
+      }
     }
     #endregion
 

@@ -7,6 +7,7 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.OCR;
 using Emgu.CV.Structure;
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -87,16 +88,21 @@ namespace WpfPlotDigitizer
         EnableL = true;
         var rectangleLT = new Rect(Axis.Left - ocrLength.width / 2, Axis.Top - ocrLength.height / 2, ocrLength.width / 2, ocrLength.height).ToWinForm();
         var rectangleLB = new Rect(Axis.Left - ocrLength.width / 2, Axis.Bottom - ocrLength.height / 2, ocrLength.width / 2, ocrLength.height).ToWinForm();
-        var textLT = GetLocalAxisLimit(image, rectangleLT);
-        var textLB = GetLocalAxisLimit(image, rectangleLB);
+        var charLT = GetLocalAxisLimit(image, rectangleLT);
+        var charLB = GetLocalAxisLimit(image, rectangleLB);
+
+        var distances = charLT.Select(c => Point.Subtract(c.Region.Location.ToWpf(), Axis.Location).Length);
+        var minDistance = distances.Min();
+        var minIndex = distances.ToList().IndexOf(minDistance);
+        // Align the text and find the nearest one!!
       }
       if (AxisType.Bottom)
       {
         EnableB = true;
         var rectangleBL = new Rect(Axis.Left - ocrLength.width / 2, Axis.Bottom, ocrLength.width, ocrLength.height / 2).ToWinForm();
         var rectangleBR = new Rect(Axis.Right - ocrLength.width / 2, Axis.Bottom, ocrLength.width, ocrLength.height / 2).ToWinForm();
-        var textBL = GetLocalAxisLimit(image, rectangleBL);
-        var textBR = GetLocalAxisLimit(image, rectangleBR);
+        var charBL = GetLocalAxisLimit(image, rectangleBL);
+        var charBR = GetLocalAxisLimit(image, rectangleBR);
 
       }
       if (AxisType.Right)
@@ -104,16 +110,16 @@ namespace WpfPlotDigitizer
         EnableR = true;
         var rectangleRB = new Rect(Axis.Right, Axis.Bottom - ocrLength.height / 2, ocrLength.width / 2, ocrLength.height).ToWinForm();
         var rectangleRT = new Rect(Axis.Right, Axis.Top - ocrLength.height / 2, ocrLength.width / 2, ocrLength.height).ToWinForm();
-        var textRB = GetLocalAxisLimit(image, rectangleRB);
-        var textRT = GetLocalAxisLimit(image, rectangleRT);
+        var charRB = GetLocalAxisLimit(image, rectangleRB);
+        var charRT = GetLocalAxisLimit(image, rectangleRT);
       }
       if (AxisType.Top)
       {
         EnableT = true;
         var rectangleTR = new Rect(Axis.Right - ocrLength.width / 2, Axis.Top - ocrLength.height / 2, ocrLength.width, ocrLength.height / 2).ToWinForm();
         var rectangleTL = new Rect(Axis.Left - ocrLength.width / 2, Axis.Top - ocrLength.height / 2, ocrLength.width, ocrLength.height / 2).ToWinForm();
-        var textTR = GetLocalAxisLimit(image, rectangleTR);
-        var textTL = GetLocalAxisLimit(image, rectangleTL);
+        var charTR = GetLocalAxisLimit(image, rectangleTR);
+        var charTL = GetLocalAxisLimit(image, rectangleTL);
       }
 
       PBModified = image.Bitmap.ToPixelBitmap();

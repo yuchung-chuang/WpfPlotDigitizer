@@ -42,7 +42,6 @@ namespace WpfPlotDigitizer
     /// </summary>
     private void OnPixelBitmapInputChanged() => PageManager.TurnNext();
 
-    private Task GetAxisTask;
     private Task GetAxisLimitTask;
     /// <summary>
     /// Called whenever <see cref="PageManager.TurnNext"/> is fired.
