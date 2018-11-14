@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 
 namespace WpfPlotDigitizer
 {
-  public class ImageProcessingVM : ViewModelBase<ImageProcessingVM>
+  public class ImageProcessingVM : ViewModelBase
   {
 
     public PixelBitmap PBFilterW { get; set; }

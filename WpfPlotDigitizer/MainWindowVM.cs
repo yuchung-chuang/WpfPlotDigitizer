@@ -5,7 +5,7 @@ using System.Windows.Media.Imaging;
 
 namespace WpfPlotDigitizer
 {
-  public class MainWindowVM : ViewModelBase<MainWindowVM>
+  public class MainWindowVM : ViewModelBase
   {
 
   }

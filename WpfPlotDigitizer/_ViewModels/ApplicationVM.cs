@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace WpfPlotDigitizer
 {
-  public class ApplicationVM : ViewModelBase<ApplicationVM>
+  public class ApplicationVM : ViewModelBase
   {
     public ApplicationVM()
     {

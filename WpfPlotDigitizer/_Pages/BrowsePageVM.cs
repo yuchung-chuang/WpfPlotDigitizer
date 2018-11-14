@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 
 namespace WpfPlotDigitizer
 {
-  public class BrowsePageVM : ViewModelBase<BrowsePageVM>
+  public class BrowsePageVM : ViewModelBase
   {
     public BrowsePageVM()
     {

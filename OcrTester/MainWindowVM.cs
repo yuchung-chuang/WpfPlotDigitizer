@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 
 namespace OcrTester
 {
-  public class MainWindowVM : ViewModelBase<MainWindowVM>
+  public class MainWindowVM : ViewModelBase
   {
     public BitmapSource imageSource { get; set; }
 

@@ -64,6 +64,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="CycWpfLibrary\EditorTests.cs" />
     <Compile Include="CycWpfLibrary\EnumExtensionTests.cs" />
     <Compile Include="ImageProcessingTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

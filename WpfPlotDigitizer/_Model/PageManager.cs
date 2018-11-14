@@ -25,7 +25,7 @@ namespace WpfPlotDigitizer
     NumOfPages,
   }
 
-  public class PageManager : ViewModelBase<PageManager>, IPageManager
+  public class PageManager : ViewModelBase, IPageManager
   {
     public PageManager()
     {

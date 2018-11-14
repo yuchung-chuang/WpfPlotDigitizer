@@ -8,7 +8,7 @@ using System.Windows.Media.Imaging;
 
 namespace WpfPlotDigitizer
 {
-  public class FilterPageVM : ViewModelBase<FilterPageVM>
+  public class FilterPageVM : ViewModelBase
   {
     public FilterPageVM()
     {

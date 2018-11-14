@@ -18,7 +18,7 @@ using Rectangle = System.Drawing.Rectangle;
 
 namespace WpfPlotDigitizer
 {
-  public class AxisLimitPageVM : ViewModelBase<AxisLimitPageVM>
+  public class AxisLimitPageVM : ViewModelBase
   {
     public AxisLimitPageVM()
     {

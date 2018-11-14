@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 
 namespace WpfPlotDigitizer
 {
-  public class AxisPageVM : ViewModelBase<AxisPageVM>
+  public class AxisPageVM : ViewModelBase
   {
     public AxisPageVM()
     {
