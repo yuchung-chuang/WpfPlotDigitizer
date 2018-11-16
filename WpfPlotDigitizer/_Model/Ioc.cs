@@ -1,5 +1,5 @@
 ﻿using CycWpfLibrary.Controls;
-using CycWpfLibrary.Logger;
+using CycWpfLibrary.Diagnostics;
 using CycWpfLibrary.MVVM;
 using Ninject;
 using System;

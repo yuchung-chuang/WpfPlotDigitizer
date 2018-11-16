@@ -27,7 +27,7 @@
 
       <Style TargetType="cycControls:PanZoomBorder"
              BasedOn="{StaticResource NormalPanZoomBorder}">
-        
+
       </Style>
     </ResourceDictionary>
   </Application.Resources>
