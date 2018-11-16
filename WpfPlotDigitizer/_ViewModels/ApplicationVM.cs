@@ -15,7 +15,7 @@ namespace WpfPlotDigitizer
   {
     public ApplicationVM()
     {
-      IoC.Get<PageManager>().TurnNextEvent += OnTurnNextAsync;
+      IoC.Get<PageManagerBase>().TurnNextEvent += OnTurnNextAsync;
       IoC.Get<ImageProcessingVM>().OnPBInputChanged += OnPixelBitmapInputChanged;
       IoC.Get<IoC>().ViewModelsLoaded += OnViewModelsLoaded;
     }
@@ -26,7 +26,7 @@ namespace WpfPlotDigitizer
       axisPageVM = IoC.Get<AxisPageVM>();
       filterPageVM = IoC.Get<FilterPageVM>();
       axisLimitPageVM = IoC.Get<AxisLimitPageVM>();
-      PageManager = IoC.Get<PageManager>();
+      PageManager = IoC.Get<PageManagerBase>();
     }
 
     //Singleton fields
@@ -35,7 +35,7 @@ namespace WpfPlotDigitizer
     private FilterPageVM filterPageVM;
     private AxisLimitPageVM axisLimitPageVM;
 
-    public IPageManager PageManager { get; private set; }
+    public PageManagerBase PageManager { get; private set; }
 
     /// <summary>
     /// Turn Next Page automatically after seleted an image

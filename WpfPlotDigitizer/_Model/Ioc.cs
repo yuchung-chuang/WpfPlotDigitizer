@@ -1,4 +1,5 @@
-﻿using CycWpfLibrary.Logger;
+﻿using CycWpfLibrary.Controls;
+using CycWpfLibrary.Logger;
 using CycWpfLibrary.MVVM;
 using Ninject;
 using System;
@@ -19,7 +20,7 @@ namespace WpfPlotDigitizer
     {
       Kernel.Bind<IoC>().ToConstant(new IoC());
       Kernel.Bind<ImageProcessingVM>().ToConstant(new ImageProcessingVM());
-      Kernel.Bind<PageManager>().ToConstant(new PageManager());
+      Kernel.Bind<PageManagerBase>().ToConstant(new PageManager());
 
       Kernel.Bind<BrowsePageVM>().ToConstant(new BrowsePageVM());
       Kernel.Bind<AxisPageVM>().ToConstant(new AxisPageVM());

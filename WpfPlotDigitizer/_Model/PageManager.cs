@@ -25,7 +25,7 @@ namespace WpfPlotDigitizer
     NumOfPages,
   }
 
-  public class PageManager : NotifyableObject, IPageManager
+  public class PageManager : PageManagerBase
   {
     public PageManager()
     {
@@ -36,23 +36,23 @@ namespace WpfPlotDigitizer
 
     private void OnViewModelsLoaded()
     {
-      browsePage    = new BrowsePage();
-      axisPage      = new AxisPage();
+      browsePage = new BrowsePage();
+      axisPage = new AxisPage();
       axisLimitPage = new AxisLimitPage();
-      filterPage    = new FilterPage();
-      erasePage     = new ErasePage();
-      savePage      = new SavePage();
-      emptyPage     = new UserControl();
+      filterPage = new FilterPage();
+      erasePage = new ErasePage();
+      savePage = new SavePage();
+      emptyPage = new UserControl();
     }
 
     // Singleton fields
-    private BrowsePage    browsePage   ;
-    private AxisPage      axisPage     ;
+    private BrowsePage browsePage;
+    private AxisPage axisPage;
     private AxisLimitPage axisLimitPage;
-    private FilterPage    filterPage   ;
-    private ErasePage     erasePage    ;
-    private SavePage      savePage     ;
-    private UserControl   emptyPage    ;
+    private FilterPage filterPage;
+    private ErasePage erasePage;
+    private SavePage savePage;
+    private UserControl emptyPage;
 
     private UserControl GetCurrentPage()
     {
@@ -83,21 +83,19 @@ namespace WpfPlotDigitizer
       return CurrentPage;
     }
 
-    public int Index { get; set; } = 0;
-    public UserControl CurrentPage => GetCurrentPage();
-
-    public ICommand TurnNextCommand { get; set; }
-    public void TurnBack() => Index--;
-    public bool CanTurnBack() => Index > 0;
-
-    public ICommand TurnBackCommand { get; set; }
-    public event Action TurnNextEvent;
-    public void TurnNext()
+    private int index;
+    public override int Index
     {
-      TurnNextEvent?.Invoke();
-      Index++;
+      get => index;
+      set
+      {
+        index = value;
+        OnPropertyChanged(nameof(CurrentPage));
+      }
     }
+    public override UserControl CurrentPage => GetCurrentPage();
+
     private readonly int NumOfPages = (int)ApplicationPages.NumOfPages;
-    public bool CanTurnNext() => Index < NumOfPages - 1;
+    public override bool CanTurnNext() => Index < NumOfPages - 1;
   }
 }

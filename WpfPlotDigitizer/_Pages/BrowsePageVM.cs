@@ -1,4 +1,5 @@
-﻿using CycWpfLibrary.Media;
+﻿using CycWpfLibrary.Controls;
+using CycWpfLibrary.Media;
 using CycWpfLibrary.MVVM;
 using Microsoft.Win32;
 using System;
@@ -21,11 +22,9 @@ namespace WpfPlotDigitizer
 
     private void OnViewModelsLoaded()
     {
-      pageManager = IoC.Get<PageManager>();
       IPVM = IoC.Get<ImageProcessingVM>();
     }
     //Singleton fields
-    private PageManager pageManager;
     private ImageProcessingVM IPVM;
 
     public PixelBitmap PBInput

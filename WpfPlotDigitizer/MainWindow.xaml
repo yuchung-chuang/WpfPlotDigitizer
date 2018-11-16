@@ -7,6 +7,7 @@
                      mc:Ignorable="d"
                      xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
                      xmlns:mvvm="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
+                     xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
                      xmlns:cycControls="clr-namespace:CycWpfLibrary.Controls;assembly=CycWpfLibrary"
                      WindowStartupLocation="CenterScreen"
                      Title="MainWindow"
@@ -15,7 +16,7 @@
                      DataContext="{x:Static local:VMLocator.MainWindowVM}">
   <Grid Name="gridMain">
 
-    <cycControls:FrameControl PageManager="{Binding ApplicationVM.PageManager, Source={x:Static local:VMLocator.Instance}}" />
+    <cycControls:PageControl PageManager="{Binding ApplicationVM.PageManager, Source={x:Static local:VMLocator.Instance}}" />
 
   </Grid>
 </mahapps:MetroWindow>
