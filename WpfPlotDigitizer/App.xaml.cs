@@ -1,5 +1,5 @@
 ﻿using CycWpfLibrary.Controls;
-using CycWpfLibrary.Diagnostics;
+using CycWpfLibrary.Logger;
 using CycWpfLibrary.Media;
 using System;
 using System.Collections.Generic;
