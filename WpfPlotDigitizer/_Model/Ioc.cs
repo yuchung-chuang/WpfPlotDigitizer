@@ -1,4 +1,6 @@
-﻿using Ninject;
+﻿using CycWpfLibrary.Logger;
+using CycWpfLibrary.MVVM;
+using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +15,7 @@ namespace WpfPlotDigitizer
 
     public event Action ViewModelsLoaded;
 
-    public static void SetUp()
+    public static void SetUpVM()
     {
       Kernel.Bind<IoC>().ToConstant(new IoC());
       Kernel.Bind<ImageProcessingVM>().ToConstant(new ImageProcessingVM());
@@ -31,13 +33,27 @@ namespace WpfPlotDigitizer
 
       Get<IoC>().ViewModelsLoaded?.Invoke();
     }
-    
+
+    public static void SetUpTools()
+    {
+      Kernel.Bind<ILogManager>().ToConstant(new LogManager(new ILogger[]
+            {
+                // TODO: Add ApplicationSettings so we can set/edit a log location
+                new FileLogger("log.txt"),
+                new DebugLogger(),
+            }, LogOutputLevel.Debug, isLogPosition: true));
+    }
+
+    public static void SetUp()
+    {
+      SetUpVM();
+      SetUpTools();
+    }
 
     /// <summary>
     /// 注意! 若在尚未Bind時呼叫Get，系統會自動new一個實例！
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
     public static T Get<T>() => Kernel.Get<T>();
+
   }
 }

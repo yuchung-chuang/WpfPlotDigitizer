@@ -1,4 +1,5 @@
-﻿using CycWpfLibrary.Media;
+﻿using CycWpfLibrary.Logger;
+using CycWpfLibrary.Media;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -24,16 +25,13 @@ namespace WpfPlotDigitizer
       base.OnStartup(e);
 
       IoC.SetUp();
+      
       Current.MainWindow = new MainWindow();
-
 #if DEBUG
       IoC.Get<ImageProcessingVM>().PBInput = new BitmapImage(new Uri($"pack://application:,,,/images/data.png")).ToPixelBitmap();
 
-      var ipvm = IoC.Get<ImageProcessingVM>();
-
-      //applicationVM.PageManager.Index = (int)ApplicationPages.AxisLimit;
+      IoC.Get<PageManager>().Index = (int)ApplicationPages.AxisLimit;
 #endif 
-      
       Current.MainWindow.Show();
     }
   }
