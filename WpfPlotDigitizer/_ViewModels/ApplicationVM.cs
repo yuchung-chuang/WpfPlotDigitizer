@@ -1,10 +1,12 @@
-﻿using CycWpfLibrary.Controls;
+﻿using CycWpfLibrary;
+using CycWpfLibrary.Controls;
 using CycWpfLibrary.Media;
 using CycWpfLibrary.MVVM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -42,7 +44,6 @@ namespace WpfPlotDigitizer
     /// </summary>
     private void OnPixelBitmapInputChanged() => PageManager.TurnNext();
 
-    private Task GetAxisLimitTask;
     /// <summary>
     /// Called whenever <see cref="PageManager.TurnNext"/> is fired.
     /// </summary>
@@ -62,16 +63,10 @@ namespace WpfPlotDigitizer
 
           break;
         case ApplicationPages.AxisLimit:
-          Application.Current.MainWindow.Cursor = Cursors.Wait;
-          GetAxisLimitTask = Task.Run(() =>
-          {
-            IPVM.PBAxis = IPVM.PBInput.Bitmap
-                                          .Crop(IPVM.Axis)
-                                          .ToPixelBitmap();
-            axisLimitPageVM.GetAxisLimit();
-          });
-          GetAxisLimitTask.Wait();
-          Application.Current.MainWindow.Cursor = Cursors.Arrow;
+          IPVM.PBAxis = IPVM.PBInput.Bitmap
+                                        .Crop(IPVM.Axis)
+                                        .ToPixelBitmap();
+          axisLimitPageVM.GetAxisLimit();
           break;
         case ApplicationPages.Filter:
           IPVM.PBFilterRGB = IPVM.PBAxis.Clone() as PixelBitmap;

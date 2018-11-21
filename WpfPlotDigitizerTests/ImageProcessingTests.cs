@@ -39,15 +39,11 @@ namespace WpfPlotDigitizer.Tests
       for (int i = 0; i < n; i++)
       {
         ms += NativeMethod.TimeIt(() => imageFilterRGB = ImageProcessing.FilterRGB(image, Color.FromRgb(250, 250, 250), Color.FromRgb(50, 50, 50), CancellationToken.None));
-        if (i == 0)
-        {
-          ms = 0;
-        }
       }
       ms /= n;
       Debug.WriteLine($"Average: {ms}");
       imageFilterRGB.ShowSnapShot();
-      Assert.IsTrue(ms < 25);
+      Assert.IsTrue(ms < 10);
       
     }
   }

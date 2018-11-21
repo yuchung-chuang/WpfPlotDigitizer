@@ -48,22 +48,6 @@ namespace WpfPlotDigitizer
     private Task<PixelBitmap> FilterTask;
     private cts cts;
     public ICommand FilterRGBCommand { get; set; }
-    //public void FilterRGB2()
-    //{
-    //  if (FilterTask != null && FilterTask.Status != TaskStatus.RanToCompletion)
-    //  {
-    //    cts.Cancel();
-    //  }
-    //  cts = new cts();
-    //  FilterTask = Task.Run(() =>
-    //  {
-    //    try
-    //    {
-    //      PBFilterRGB = IP.FilterRGB(PBFilterRGB, FilterMax, FilterMin, cts.Token);
-    //    }
-    //    catch (OperationCanceledException) { }
-    //  }, cts.Token);
-    //}
 
     public async Task FilterRGBAsync(object param = null)
     {
