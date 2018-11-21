@@ -39,16 +39,43 @@
       <mahapps:RangeSlider Orientation="Vertical"
                            mahapps:SliderHelper.TrackValueFillBrush="Red"
                            LowerValue="{Binding FilterRMin}"
-                           UpperValue="{Binding FilterRMax}" />
+                           UpperValue="{Binding FilterRMax}">
+        <i:Interaction.Triggers>
+          <i:EventTrigger EventName="UpperValueChanged">
+            <i:InvokeCommandAction Command="{Binding FilterRGBCommand}" />
+          </i:EventTrigger>
+          <i:EventTrigger EventName="LowerValueChanged">
+            <i:InvokeCommandAction Command="{Binding FilterRGBCommand}" />
+          </i:EventTrigger>
+        </i:Interaction.Triggers>
+      </mahapps:RangeSlider>
 
       <mahapps:RangeSlider Orientation="Vertical"
                            mahapps:SliderHelper.TrackValueFillBrush="Green"
                            LowerValue="{Binding FilterGMin}"
-                           UpperValue="{Binding FilterGMax}" />
+                           UpperValue="{Binding FilterGMax}">
+        <i:Interaction.Triggers>
+          <i:EventTrigger EventName="UpperValueChanged">
+            <i:InvokeCommandAction Command="{Binding FilterRGBCommand}" />
+          </i:EventTrigger>
+          <i:EventTrigger EventName="LowerValueChanged">
+            <i:InvokeCommandAction Command="{Binding FilterRGBCommand}" />
+          </i:EventTrigger>
+        </i:Interaction.Triggers>
+      </mahapps:RangeSlider>
       <mahapps:RangeSlider Orientation="Vertical"
                            mahapps:SliderHelper.TrackValueFillBrush="Blue"
                            LowerValue="{Binding FilterBMin}"
-                           UpperValue="{Binding FilterBMax}" />
+                           UpperValue="{Binding FilterBMax}">
+        <i:Interaction.Triggers>
+          <i:EventTrigger EventName="UpperValueChanged">
+            <i:InvokeCommandAction Command="{Binding FilterRGBCommand}" />
+          </i:EventTrigger>
+          <i:EventTrigger EventName="LowerValueChanged">
+            <i:InvokeCommandAction Command="{Binding FilterRGBCommand}" />
+          </i:EventTrigger>
+        </i:Interaction.Triggers>
+      </mahapps:RangeSlider>
     </StackPanel>
   </Grid>
 </UserControl>

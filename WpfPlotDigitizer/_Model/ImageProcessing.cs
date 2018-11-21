@@ -17,12 +17,33 @@ using static CycWpfLibrary.Math;
 
 namespace WpfPlotDigitizer
 {
-  public enum FilterType
+  public enum FilterType2
   {
     Red,
     Green,
     Blue
   }
+  /// <summary>
+  /// 偶數為Min, 奇數為Max
+  /// </summary>
+  public enum FilterType
+  {
+    RMax = 5,
+    RMin = 4,
+    GMax = 3,
+    GMin = 2,
+    BMax = 1,
+    BMin = 0,
+  }
+  public static class FilterTypeExtention
+  {
+    /// <summary>
+    /// 根據<see cref="FilterType"/>取得<see cref="PixelBitmap.Pixel"/>中顏色的位移索引。
+    /// </summary>
+    /// <remarks>int division rounds toward zero</remarks>
+    public static int GetColorIndex(this FilterType type) => (int)type / 2;
+  }
+
   public struct AxisType
   {
     public bool Left;
@@ -95,7 +116,7 @@ namespace WpfPlotDigitizer
             state++;
           break;
         case TracerState.OutTurn1:
-          state++; 
+          state++;
           break;
         case TracerState.OutTrun2:
           if (IsOutsideBoundary())
@@ -122,7 +143,7 @@ namespace WpfPlotDigitizer
 
   public static class ImageProcessing
   {
-    #region AutoGetAxis
+    // FilterW
     public static byte[] FilterW(PixelBitmap iptImage, int white = 200)
     {
       byte blue, green, red;
@@ -137,12 +158,13 @@ namespace WpfPlotDigitizer
       return optPixel;
     }
 
+    //GetAxis
     private static bool IsGetAxis(Rect AxRect) => (AxRect.Width > 0 && AxRect.Height > 0) ? true : false;
-    private static bool IsColor(byte[] pixel, int i) => pixel[i + 3] != 0;
+    private static bool IsTransparent(byte[] pixel, int i) => pixel[i + 3] == 0;
     /// <summary>
     /// 取得<paramref name="iptImage"/>中最長的縱軸與橫軸。
     /// </summary>
-    public static Rect GetLongestAxis(PixelBitmap iptImage)
+    private static Rect GetLongestAxis(PixelBitmap iptImage)
     {
       int L = 0, xTmp = 0, yTmp = 0, idx;
       int width = iptImage.Width, height = iptImage.Height;
@@ -154,7 +176,7 @@ namespace WpfPlotDigitizer
         {
           //右移x個像素(*一個字節的長度)下移y個像素(*一整行字節的長度)
           idx = x * iptImage.Byte + y * iptImage.Stride;
-          if (IsColor(iptImage.Pixel, idx))
+          if (!IsTransparent(iptImage.Pixel, idx))
           {
             if (L == 0) //如果長度歸零
               yTmp = y; //更新lo索引
@@ -178,7 +200,7 @@ namespace WpfPlotDigitizer
         {
           // 右移x個像素(*一個字節的長度)下移y個像素(*一整行字節的長度)
           idx = x * iptImage.Byte + y * iptImage.Stride;
-          if (IsColor(iptImage.Pixel, idx)) //繼續記錄
+          if (!IsTransparent(iptImage.Pixel, idx)) //繼續記錄
           {
             if (L == 0) //如果長度歸零
               xTmp = x; //更新lo索引
@@ -260,8 +282,8 @@ namespace WpfPlotDigitizer
     }
     /// <summary>
     /// 搜索<paramref name="pixel3"/>中最靠近中心的左上角坐標軸。
-    /// 若搜索不到角點，則回傳<see cref="Point"/>(<see cref="double.NaN"/>,<see cref="double.NaN"/>)。
     /// </summary>
+    /// <remarks>若搜索不到角點，則回傳<see cref="Point"/>(<see cref="double.NaN"/>,<see cref="double.NaN"/>)。</remarks>
     private static Point GetAxisLT(byte[,,] pixel3)
     {
       var width = pixel3.GetLength(0);
@@ -310,28 +332,23 @@ namespace WpfPlotDigitizer
       return new Point(pixel3.GetLength(0) - AxisPosTmp.Y,
                         AxisPosTmp.X);
     }
-    public static Rect GetAxisLtRb(PixelBitmap iptImage)
+    private static Rect GetAxisLtRb(PixelBitmap iptImage)
     {
       var pixel3 = iptImage.Pixel3;
       var LT = GetAxisLT(pixel3);
       var RB = GetAxisRB(pixel3);
       return new Rect(LT, RB + new Vector(1, 1));
     }
-    public static (Point LT, Point LB, Point RT, Point RB) GetAxisPoints(PixelBitmap iptImage)
+    private static (Point LT, Point LB, Point RT, Point RB) GetAxisPoints(PixelBitmap iptImage)
     {
       var pixel3 = iptImage.Pixel3;
       return (GetAxisLT(pixel3), GetAxisLB(pixel3), GetAxisRT(pixel3), GetAxisRB(pixel3));
     }
-
     private static readonly int axisTol = 20;
     public static (Rect, AxisType) GetAxis(PixelBitmap iptImage)
     {
       AxisType axisType = new AxisType();
-      var pixel3 = iptImage.Pixel3;
-      var LT = GetAxisLT(pixel3);
-      var RB = GetAxisRB(pixel3);
-      var LB = GetAxisLB(pixel3);
-      var RT = GetAxisRT(pixel3);
+      var (LT, LB, RT, RB) = GetAxisPoints(iptImage);
       CheckAxisType();
 
       var axisTmp = new Rect(LT, RB + new Vector(1, 1));
@@ -367,82 +384,112 @@ namespace WpfPlotDigitizer
         }
       }
     }
-    #endregion
 
-    #region FilterRGB
-    public static bool IsRGBFilted(Color color, Color Max, Color Min)
+    // FilterRGB
+    private static bool IsRGBFilted(Color color, Color Max, Color Min)
     {
       return (color.R <= Max.R && color.R >= Min.R &&
               color.G <= Max.G && color.G >= Min.G &&
               color.B <= Max.B && color.B >= Min.B) ? true : false;
     }
-    public static bool IsColor(byte[,,] pixel3, int x, int y) => pixel3[x, y, 0] != 0;
-    public static PixelBitmap FilterRGB(PixelBitmap iptImage, Color Max, Color Min, FilterType type, CancellationToken token)
+    private static bool IsRGBFilted(byte R, byte G, byte B, Color Max, Color Min)
     {
-      byte selectedColor;
-      Color colorNow;
-      var optImage = iptImage.Clone() as PixelBitmap;
-      var optPixel3 = optImage.Pixel3.Clone() as byte[,,];
+      return (R <= Max.R && R >= Min.R &&
+              G <= Max.G && G >= Min.G &&
+              B <= Max.B && B >= Min.B) ? true : false;
+    }
+
+    private static bool IsTransparent(byte[,,] pixel3, int x, int y) => pixel3[x, y, 0] == 0;
+
+    public static PixelBitmap FilterRGB2(PixelBitmap iptImage, Color Max, Color Min, FilterType2 type, CancellationToken token)
+    {
+      var optPixel = iptImage.Pixel.Clone() as byte[];
       int FilterMax, FilterMin, typeN;
       switch (type)
       {
         default:
-        case FilterType.Red:
-          typeN = 1;
+        case FilterType2.Red:
+          typeN = 2;
           FilterMax = Max.R;
           FilterMin = Min.R;
           break;
-        case FilterType.Green:
-          typeN = 2;
+        case FilterType2.Green:
+          typeN = 1;
           FilterMax = Max.G;
           FilterMin = Min.G;
           break;
-        case FilterType.Blue:
-          typeN = 3;
+        case FilterType2.Blue:
+          typeN = 0;
           FilterMax = Max.B;
           FilterMin = Min.B;
           break;
       }
 
-      var width = iptImage.Width;
-      var height = iptImage.Height;
-      int Byte = iptImage.Byte;
-      Parallel.For(0, width, (x, state) =>
+      var length = iptImage.Pixel.Length;
+      int @byte = iptImage.Byte;
+      byte color;
+      Color colorNow;
+      for (int i = 0; i < length; i += @byte)
       {
-        for (int y = 0; y < height; y++)
+        // 當工作被取消...
+        if (token.IsCancellationRequested)
+          break;
+
+        colorNow = new Color
         {
-          // 當工作被取消...
-          if (token.IsCancellationRequested)
-            // 中止parallel.for
-            state.Stop();
+          B = optPixel[i + 0],
+          G = optPixel[i + 1],
+          R = optPixel[i + 2],
+        };
+        color = optPixel[i + typeN];
+        if (!IsTransparent(optPixel, i) && (!IsIn(color, FilterMax, FilterMin)))
+          optPixel[i + 3] = 0; //A
+        else if (IsRGBFilted(colorNow, Max, Min))
+          optPixel[i + 3] = 255; //A
+      }
 
-          colorNow = new Color
-          {
-            A = optPixel3[x, y, 0],
-            R = optPixel3[x, y, 1],
-            G = optPixel3[x, y, 2],
-            B = optPixel3[x, y, 3],
-          };
-          selectedColor = optPixel3[x, y, typeN];
-          if (IsColor(optPixel3, x, y) &&
-            !IsIn(selectedColor, FilterMax, FilterMin))
-            optPixel3[x, y, 0] = 0;
-          else if (IsRGBFilted(colorNow, Max, Min))
-            optPixel3[x, y, 0] = 255;
-        }
-
-      });
       //當工作被取消...
       if (token.IsCancellationRequested)
         //拋出協作式異常
         token.ThrowIfCancellationRequested();
 
-      optImage.Pixel3 = optPixel3;
-      return optImage;
+      return new PixelBitmap(optPixel, iptImage.Size);
     }
-    #endregion
 
-    #region AutoGetAxisLimits
+    public static PixelBitmap FilterRGB(PixelBitmap iptImage, Color Max, Color Min, CancellationToken token)
+    {
+      var optPixel = iptImage.Pixel.Clone() as byte[];
+      var length = iptImage.Pixel.Length;
+      var @byte = iptImage.Byte;
+      byte R, G, B;
+      // For-loop 內千萬不要呼叫函式!!! 速度會變得超級慢!!!
+      for (int i = 0; i < length; i += @byte)
+      {
+        // 當工作被取消...
+        if (token.IsCancellationRequested)
+          break;
+
+        B = optPixel[i + 0];
+        G = optPixel[i + 1];
+        R = optPixel[i + 2];
+        if (R <= Max.R && R >= Min.R &&
+            G <= Max.G && G >= Min.G &&
+            B <= Max.B && B >= Min.B)
+          optPixel[i + 3] = 255; //A
+        else
+          optPixel[i + 3] = 0; //A
+
+      }
+
+      //當工作被取消...
+      if (token.IsCancellationRequested)
+        //拋出協作式異常
+        token.ThrowIfCancellationRequested();
+
+      return new PixelBitmap(optPixel, iptImage.Size);
+    }
+
+    // AutoGetAxisLimits
     public static Tesseract.Character[] OcrImage(Tesseract ocr, IInputArray image)
     {
       ocr.SetImage(image);
@@ -457,55 +504,6 @@ namespace WpfPlotDigitizer
     public static void DrawCharacters(IInputOutputArray image, Tesseract.Character[] characters)
     {
       var color = Colors.Blue.ToMCvScalar();
-      foreach (Tesseract.Character c in characters)
-      {
-        CvInvoke.Rectangle(image, c.Region, color);
-        CvInvoke.PutText(image, c.Text, c.Region.Location, FontFace.HersheyPlain, 1, color);
-      }
-    }
-
-    public static Tesseract.Character[] OcrImageThreshold(Tesseract ocr, Mat imageInput, Mat imageOutput, double threshold)
-    {
-      Mat imgGrey = new Mat();
-      CvInvoke.CvtColor(imageInput, imgGrey, ColorConversion.Bgr2Gray);
-      Mat imgThresholded = new Mat();
-      CvInvoke.Threshold(imgGrey, imgThresholded, threshold, 255, ThresholdType.Binary);
-
-      ocr.SetImage(imgThresholded);
-      var characters = ocr.GetCharacters();
-      imageOutput = imgThresholded;
-
-      return characters;
-    }
-    public static Tesseract.Character[] OcrImage(Tesseract ocr, Mat imageInput, Mat imageOutput)
-    {
-      if (imageInput.NumberOfChannels == 1)
-        CvInvoke.CvtColor(imageInput, imageOutput, ColorConversion.Gray2Bgr);
-      else
-        imageInput.CopyTo(imageOutput);
-
-      ocr.SetImage(imageOutput);
-
-      if (ocr.Recognize() != 0)
-        throw new Exception("Failed to recognizer image");
-
-      var characters = ocr.GetCharacters();
-
-      if (characters.Length != 0)
-        return characters;
-
-      characters = OcrImageThreshold(ocr, imageInput, imageOutput, 65);
-
-      if (characters.Length != 0)
-        return characters;
-
-      characters = OcrImageThreshold(ocr, imageInput, imageOutput, 190);
-
-      return characters;
-    }
-    public static void DrawCharacters(Mat image, Tesseract.Character[] characters)
-    {
-      var color = Colors.Red.ToMCvScalar();
       foreach (Tesseract.Character c in characters)
       {
         CvInvoke.Rectangle(image, c.Region, color);
@@ -533,7 +531,6 @@ namespace WpfPlotDigitizer
       }
     }
 
-    #endregion
 
     #region Deprecated methods
     private static bool IsAxisLeftTop(Point pos, PixelBitmap iptImage)
@@ -655,6 +652,58 @@ namespace WpfPlotDigitizer
         //var AxisSize = new Size(AxisRBPos.X - AxisLTPos.X, AxisRBPos.Y - AxisLTPos.Y);
         //return (AxisSize, AxisLTPos);
         return (AxisLTPos, AxisRBPos);
+      }
+    }
+
+    [Obsolete]
+    public static Tesseract.Character[] OcrImageThreshold(Tesseract ocr, Mat imageInput, Mat imageOutput, double threshold)
+    {
+      Mat imgGrey = new Mat();
+      CvInvoke.CvtColor(imageInput, imgGrey, ColorConversion.Bgr2Gray);
+      Mat imgThresholded = new Mat();
+      CvInvoke.Threshold(imgGrey, imgThresholded, threshold, 255, ThresholdType.Binary);
+
+      ocr.SetImage(imgThresholded);
+      var characters = ocr.GetCharacters();
+      imageOutput = imgThresholded;
+
+      return characters;
+    }
+    [Obsolete]
+    public static Tesseract.Character[] OcrImage(Tesseract ocr, Mat imageInput, Mat imageOutput)
+    {
+      if (imageInput.NumberOfChannels == 1)
+        CvInvoke.CvtColor(imageInput, imageOutput, ColorConversion.Gray2Bgr);
+      else
+        imageInput.CopyTo(imageOutput);
+
+      ocr.SetImage(imageOutput);
+
+      if (ocr.Recognize() != 0)
+        throw new Exception("Failed to recognizer image");
+
+      var characters = ocr.GetCharacters();
+
+      if (characters.Length != 0)
+        return characters;
+
+      characters = OcrImageThreshold(ocr, imageInput, imageOutput, 65);
+
+      if (characters.Length != 0)
+        return characters;
+
+      characters = OcrImageThreshold(ocr, imageInput, imageOutput, 190);
+
+      return characters;
+    }
+    [Obsolete]
+    public static void DrawCharacters(Mat image, Tesseract.Character[] characters)
+    {
+      var color = Colors.Red.ToMCvScalar();
+      foreach (Tesseract.Character c in characters)
+      {
+        CvInvoke.Rectangle(image, c.Region, color);
+        CvInvoke.PutText(image, c.Text, c.Region.Location, FontFace.HersheyPlain, 1, color);
       }
     }
     #endregion

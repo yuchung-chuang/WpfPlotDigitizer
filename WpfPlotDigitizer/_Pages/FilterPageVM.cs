@@ -5,6 +5,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using IP = WpfPlotDigitizer.ImageProcessing;
+using ct = System.Threading.CancellationToken;
+using cts = System.Threading.CancellationTokenSource;
+using System.Windows.Input;
 
 namespace WpfPlotDigitizer
 {
@@ -13,6 +17,7 @@ namespace WpfPlotDigitizer
     public FilterPageVM()
     {
       IoC.Get<IoC>().ViewModelsLoaded += OnViewModelsLoaded;
+      FilterRGBCommand = new RelayCommand(FilterRGB);
     }
 
     private void OnViewModelsLoaded()
@@ -30,92 +35,37 @@ namespace WpfPlotDigitizer
     }
     public BitmapSource bitmapSourceFilterRGB => PBFilterRGB?.ToBitmapSource();
 
-    private byte _filterRMax = 255;
-    private byte _filterRMin = 0;
-    private byte _filterGMax = 255;
-    private byte _filterGMin = 0;
-    private byte _filterBMax = 255;
-    private byte _filterBMin = 0;
-
-    public byte FilterRMax
-    {
-      get => _filterRMax;
-      set
-      {
-        if (_filterRMax != value)
-        {
-          _filterRMax = value;
-          FilterMethod(FilterMax, FilterMin, FilterType.Red);
-        }
-      }
-    }
-    public byte FilterRMin
-    {
-      get => _filterRMin;
-      set
-      {
-        if (_filterRMin != value)
-        {
-          _filterRMin = value;
-          FilterMethod(FilterMax, FilterMin, FilterType.Red);
-        }
-      }
-    }
-    public byte FilterGMax
-    {
-      get => _filterGMax;
-      set
-      {
-        if (_filterGMax != value)
-        {
-          _filterGMax = value;
-          FilterMethod(FilterMax, FilterMin, FilterType.Green);
-        }
-      }
-    }
-    public byte FilterGMin
-    {
-      get => _filterGMin;
-      set
-      {
-        if (_filterGMin != value)
-        {
-          _filterGMin = value;
-          FilterMethod(FilterMax, FilterMin, FilterType.Green);
-        }
-      }
-    }
-    public byte FilterBMax
-    {
-      get => _filterBMax;
-      set
-      {
-        if (_filterBMax != value)
-        {
-          _filterBMax = value;
-          FilterMethod(FilterMax, FilterMin, FilterType.Blue);
-        }
-      }
-    }
-    public byte FilterBMin
-    {
-      get => _filterBMin;
-      set
-      {
-        if (_filterBMin != value)
-        {
-          _filterBMin = value;
-          FilterMethod(FilterMax, FilterMin, FilterType.Blue);
-        }
-      }
-    }
+    public byte FilterRMax { get; set; } = 255;
+    public byte FilterRMin { get; set; } = 0;
+    public byte FilterGMax { get; set; } = 255;
+    public byte FilterGMin { get; set; } = 0;
+    public byte FilterBMax { get; set; } = 255;
+    public byte FilterBMin { get; set; } = 0;
     public Color FilterMax => Color.FromRgb(FilterRMax, FilterGMax, FilterBMax);
     public Color FilterMin => Color.FromRgb(FilterRMin, FilterGMin, FilterBMin);
-    public (Color Max, Color Min) Filter => (FilterMax, FilterMin);
 
     private Task FilterTask;
-    private CancellationTokenSource cts;
-    private void FilterMethod(Color FilterMax, Color FilterMin, FilterType type)
+    private cts cts;
+    public ICommand FilterRGBCommand { get; set; }
+    public void FilterRGB()
+    {
+      if (FilterTask != null && FilterTask.Status != TaskStatus.RanToCompletion)
+      {
+        cts.Cancel();
+      }
+      cts = new cts();
+      FilterTask = Task.Run(() =>
+      {
+        try
+        {
+          PBFilterRGB = IP.FilterRGB(PBFilterRGB, FilterMax, FilterMin, cts.Token);
+        }
+        catch (OperationCanceledException) { }
+      }, cts.Token);
+    }
+
+    [Obsolete]
+    private void FilterMethod2(Color FilterMax, Color FilterMin, FilterType2 type)
     {
       if (FilterTask != null && FilterTask.Status != TaskStatus.RanToCompletion)
       {
@@ -126,18 +76,11 @@ namespace WpfPlotDigitizer
       {
         try
         {
-          PBFilterRGB = ImageProcessing.FilterRGB(PBFilterRGB, FilterMax, FilterMin, type, cts.Token);
+          PBFilterRGB = ImageProcessing.FilterRGB2(PBFilterRGB, FilterMax, FilterMin, type, cts.Token);
         }
         catch (OperationCanceledException)
         { }
       }, cts.Token);
-    }
-
-    public void FilterAllMethod()
-    {
-      PBFilterRGB = ImageProcessing.FilterRGB(PBFilterRGB, FilterMax, FilterMin, FilterType.Red, CancellationToken.None);
-      PBFilterRGB = ImageProcessing.FilterRGB(PBFilterRGB, FilterMax, FilterMin, FilterType.Green, CancellationToken.None);
-      PBFilterRGB = ImageProcessing.FilterRGB(PBFilterRGB, FilterMax, FilterMin, FilterType.Blue, CancellationToken.None);
     }
   }
 }

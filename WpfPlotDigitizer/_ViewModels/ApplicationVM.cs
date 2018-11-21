@@ -75,7 +75,7 @@ namespace WpfPlotDigitizer
           break;
         case ApplicationPages.Filter:
           IPVM.PBFilterRGB = IPVM.PBAxis.Clone() as PixelBitmap;
-          filterPageVM.FilterAllMethod();
+          filterPageVM.FilterRGB();
           break;
         case ApplicationPages.Erase:
           break;

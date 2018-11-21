@@ -1,29 +1,55 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WpfPlotDigitizer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media.Imaging;
 using CycWpfLibrary.Media;
 using System.Windows;
-using System.Drawing;
+using System.Windows.Media;
+using Bitmap = System.Drawing.Bitmap;
+using System.Threading;
+using CycWpfLibrary;
+using System;
+using System.Diagnostics;
 
 namespace WpfPlotDigitizer.Tests
 {
   [TestClass()]
   public class ImageProcessingTests
   {
+    private PixelBitmap image;
+
+    public ImageProcessingTests()
+    {
+      image = new Bitmap(@"C:\Users\alex\Desktop\WPF\WpfPlotDigitizer\WpfPlotDigitizerTests\data.png").ToPixelBitmap();
+    }
+
     [TestMethod()]
     public void GetAxisTest()
     {
-      var pixelBitmapInput = new Bitmap(@"C:\Users\alex\Desktop\WPF\WpfPlotDigitizer\WpfPlotDigitizerTests\data.png").ToPixelBitmap();
-      var pixelBitmapFilterW = new PixelBitmap(pixelBitmapInput.Size);
-      pixelBitmapFilterW.Pixel = ImageProcessing.FilterW(pixelBitmapInput);
-      var (actualAxis, axisType) = ImageProcessing.GetAxis(pixelBitmapFilterW);
+      var imageFilterW = new PixelBitmap(image.Size);
+      imageFilterW.Pixel = ImageProcessing.FilterW(image);
+      var (actualAxis, axisType) = ImageProcessing.GetAxis(imageFilterW);
       var expectedAxis = new Rect(87, 20, 747, 547);
       Assert.AreEqual(expectedAxis, actualAxis);
+    }
+
+    [TestMethod()]
+    public void FilterRGBTest()
+    {
+      PixelBitmap imageFilterRGB = new PixelBitmap();
+      double ms = 0;
+      int n = 100;
+      for (int i = 0; i < n; i++)
+      {
+        //ms += NativeMethod.TimeIt(() => imageFilterRGB = ImageProcessing.FilterRGB2(image, Color.FromRgb(200, 200, 200), Color.FromRgb(100, 100, 100), FilterType2.Red, CancellationToken.None));
+        ms += NativeMethod.TimeIt(() => imageFilterRGB = ImageProcessing.FilterRGB(image, Color.FromRgb(200, 200, 200), Color.FromRgb(100, 100, 100), CancellationToken.None));
+        if (i == 0)
+        {
+          ms = 0;
+        }
+      }
+      ms /= n;
+      Debug.WriteLine($"Average: {ms}");
+      imageFilterRGB.ShowSnapShot();
+      Assert.IsTrue(ms < 50);
+      
     }
   }
 }
