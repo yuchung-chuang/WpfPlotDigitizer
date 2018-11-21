@@ -1,14 +1,15 @@
 ﻿using CycWpfLibrary.Media;
 using CycWpfLibrary.MVVM;
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using IP = WpfPlotDigitizer.ImageProcessing;
 using ct = System.Threading.CancellationToken;
 using cts = System.Threading.CancellationTokenSource;
-using System.Windows.Input;
+using IP = WpfPlotDigitizer.ImageProcessing;
 
 namespace WpfPlotDigitizer
 {
@@ -17,7 +18,7 @@ namespace WpfPlotDigitizer
     public FilterPageVM()
     {
       IoC.Get<IoC>().ViewModelsLoaded += OnViewModelsLoaded;
-      FilterRGBCommand = new RelayCommand(FilterRGB);
+      FilterRGBCommand = new RelayCommand<object, Task>(FilterRGBAsync);
     }
 
     private void OnViewModelsLoaded()
@@ -44,43 +45,39 @@ namespace WpfPlotDigitizer
     public Color FilterMax => Color.FromRgb(FilterRMax, FilterGMax, FilterBMax);
     public Color FilterMin => Color.FromRgb(FilterRMin, FilterGMin, FilterBMin);
 
-    private Task FilterTask;
+    private Task<PixelBitmap> FilterTask;
     private cts cts;
     public ICommand FilterRGBCommand { get; set; }
-    public void FilterRGB()
+    //public void FilterRGB2()
+    //{
+    //  if (FilterTask != null && FilterTask.Status != TaskStatus.RanToCompletion)
+    //  {
+    //    cts.Cancel();
+    //  }
+    //  cts = new cts();
+    //  FilterTask = Task.Run(() =>
+    //  {
+    //    try
+    //    {
+    //      PBFilterRGB = IP.FilterRGB(PBFilterRGB, FilterMax, FilterMin, cts.Token);
+    //    }
+    //    catch (OperationCanceledException) { }
+    //  }, cts.Token);
+    //}
+
+    public async Task FilterRGBAsync(object param = null)
     {
       if (FilterTask != null && FilterTask.Status != TaskStatus.RanToCompletion)
       {
         cts.Cancel();
       }
       cts = new cts();
-      FilterTask = Task.Run(() =>
+      try
       {
-        try
-        {
-          PBFilterRGB = IP.FilterRGB(PBFilterRGB, FilterMax, FilterMin, cts.Token);
-        }
-        catch (OperationCanceledException) { }
-      }, cts.Token);
-    }
-
-    [Obsolete]
-    private void FilterMethod2(Color FilterMax, Color FilterMin, FilterType2 type)
-    {
-      if (FilterTask != null && FilterTask.Status != TaskStatus.RanToCompletion)
-      {
-        cts.Cancel();
+        FilterTask = IP.FilterRGBAsync(PBFilterRGB, FilterMax, FilterMin, cts.Token);
+        PBFilterRGB = await FilterTask;
       }
-      cts = new CancellationTokenSource();
-      FilterTask = Task.Run(() =>
-      {
-        try
-        {
-          PBFilterRGB = ImageProcessing.FilterRGB2(PBFilterRGB, FilterMax, FilterMin, type, cts.Token);
-        }
-        catch (OperationCanceledException)
-        { }
-      }, cts.Token);
+      catch (TaskCanceledException) { }
     }
   }
 }

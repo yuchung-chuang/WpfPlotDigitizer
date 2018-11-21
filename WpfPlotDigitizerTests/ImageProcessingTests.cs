@@ -38,8 +38,7 @@ namespace WpfPlotDigitizer.Tests
       int n = 100;
       for (int i = 0; i < n; i++)
       {
-        //ms += NativeMethod.TimeIt(() => imageFilterRGB = ImageProcessing.FilterRGB2(image, Color.FromRgb(200, 200, 200), Color.FromRgb(100, 100, 100), FilterType2.Red, CancellationToken.None));
-        ms += NativeMethod.TimeIt(() => imageFilterRGB = ImageProcessing.FilterRGB(image, Color.FromRgb(200, 200, 200), Color.FromRgb(100, 100, 100), CancellationToken.None));
+        ms += NativeMethod.TimeIt(() => imageFilterRGB = ImageProcessing.FilterRGB(image, Color.FromRgb(250, 250, 250), Color.FromRgb(50, 50, 50), CancellationToken.None));
         if (i == 0)
         {
           ms = 0;
@@ -48,7 +47,7 @@ namespace WpfPlotDigitizer.Tests
       ms /= n;
       Debug.WriteLine($"Average: {ms}");
       imageFilterRGB.ShowSnapShot();
-      Assert.IsTrue(ms < 50);
+      Assert.IsTrue(ms < 25);
       
     }
   }

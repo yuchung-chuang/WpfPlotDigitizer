@@ -17,33 +17,6 @@ using static CycWpfLibrary.Math;
 
 namespace WpfPlotDigitizer
 {
-  public enum FilterType2
-  {
-    Red,
-    Green,
-    Blue
-  }
-  /// <summary>
-  /// 偶數為Min, 奇數為Max
-  /// </summary>
-  public enum FilterType
-  {
-    RMax = 5,
-    RMin = 4,
-    GMax = 3,
-    GMin = 2,
-    BMax = 1,
-    BMin = 0,
-  }
-  public static class FilterTypeExtention
-  {
-    /// <summary>
-    /// 根據<see cref="FilterType"/>取得<see cref="PixelBitmap.Pixel"/>中顏色的位移索引。
-    /// </summary>
-    /// <remarks>int division rounds toward zero</remarks>
-    public static int GetColorIndex(this FilterType type) => (int)type / 2;
-  }
-
   public struct AxisType
   {
     public bool Left;
@@ -400,62 +373,6 @@ namespace WpfPlotDigitizer
     }
 
     private static bool IsTransparent(byte[,,] pixel3, int x, int y) => pixel3[x, y, 0] == 0;
-
-    public static PixelBitmap FilterRGB2(PixelBitmap iptImage, Color Max, Color Min, FilterType2 type, CancellationToken token)
-    {
-      var optPixel = iptImage.Pixel.Clone() as byte[];
-      int FilterMax, FilterMin, typeN;
-      switch (type)
-      {
-        default:
-        case FilterType2.Red:
-          typeN = 2;
-          FilterMax = Max.R;
-          FilterMin = Min.R;
-          break;
-        case FilterType2.Green:
-          typeN = 1;
-          FilterMax = Max.G;
-          FilterMin = Min.G;
-          break;
-        case FilterType2.Blue:
-          typeN = 0;
-          FilterMax = Max.B;
-          FilterMin = Min.B;
-          break;
-      }
-
-      var length = iptImage.Pixel.Length;
-      int @byte = iptImage.Byte;
-      byte color;
-      Color colorNow;
-      for (int i = 0; i < length; i += @byte)
-      {
-        // 當工作被取消...
-        if (token.IsCancellationRequested)
-          break;
-
-        colorNow = new Color
-        {
-          B = optPixel[i + 0],
-          G = optPixel[i + 1],
-          R = optPixel[i + 2],
-        };
-        color = optPixel[i + typeN];
-        if (!IsTransparent(optPixel, i) && (!IsIn(color, FilterMax, FilterMin)))
-          optPixel[i + 3] = 0; //A
-        else if (IsRGBFilted(colorNow, Max, Min))
-          optPixel[i + 3] = 255; //A
-      }
-
-      //當工作被取消...
-      if (token.IsCancellationRequested)
-        //拋出協作式異常
-        token.ThrowIfCancellationRequested();
-
-      return new PixelBitmap(optPixel, iptImage.Size);
-    }
-
     public static PixelBitmap FilterRGB(PixelBitmap iptImage, Color Max, Color Min, CancellationToken token)
     {
       var optPixel = iptImage.Pixel.Clone() as byte[];
@@ -465,9 +382,8 @@ namespace WpfPlotDigitizer
       // For-loop 內千萬不要呼叫函式!!! 速度會變得超級慢!!!
       for (int i = 0; i < length; i += @byte)
       {
-        // 當工作被取消...
-        if (token.IsCancellationRequested)
-          break;
+        if (token.IsCancellationRequested) // 當工作被取消...
+          token.ThrowIfCancellationRequested(); //拋出協作式異常
 
         B = optPixel[i + 0];
         G = optPixel[i + 1];
@@ -480,13 +396,23 @@ namespace WpfPlotDigitizer
           optPixel[i + 3] = 0; //A
 
       }
-
-      //當工作被取消...
-      if (token.IsCancellationRequested)
-        //拋出協作式異常
-        token.ThrowIfCancellationRequested();
-
       return new PixelBitmap(optPixel, iptImage.Size);
+    }
+    public static async Task<PixelBitmap> FilterRGBAsync(PixelBitmap iptImage, Color Max, Color Min, CancellationToken token)
+    {
+      PixelBitmap optImage = new PixelBitmap();
+      await Task.Run(() =>
+      {
+        try
+        {
+          optImage = FilterRGB(iptImage, Max, Min, token);
+        }
+        catch (OperationCanceledException)
+        {
+          token.ThrowIfCancellationRequested();
+        }
+      }, token);
+      return optImage;
     }
 
     // AutoGetAxisLimits
@@ -706,6 +632,92 @@ namespace WpfPlotDigitizer
         CvInvoke.PutText(image, c.Text, c.Region.Location, FontFace.HersheyPlain, 1, color);
       }
     }
+
+    [Obsolete]
+    public static PixelBitmap FilterRGB2(PixelBitmap iptImage, Color Max, Color Min, FilterType2 type, CancellationToken token)
+    {
+      var optPixel = iptImage.Pixel.Clone() as byte[];
+      int FilterMax, FilterMin, typeN;
+      switch (type)
+      {
+        default:
+        case FilterType2.Red:
+          typeN = 2;
+          FilterMax = Max.R;
+          FilterMin = Min.R;
+          break;
+        case FilterType2.Green:
+          typeN = 1;
+          FilterMax = Max.G;
+          FilterMin = Min.G;
+          break;
+        case FilterType2.Blue:
+          typeN = 0;
+          FilterMax = Max.B;
+          FilterMin = Min.B;
+          break;
+      }
+
+      var length = iptImage.Pixel.Length;
+      int @byte = iptImage.Byte;
+      byte color;
+      Color colorNow;
+      for (int i = 0; i < length; i += @byte)
+      {
+        // 當工作被取消...
+        if (token.IsCancellationRequested)
+          break;
+
+        colorNow = new Color
+        {
+          B = optPixel[i + 0],
+          G = optPixel[i + 1],
+          R = optPixel[i + 2],
+        };
+        color = optPixel[i + typeN];
+        if (!IsTransparent(optPixel, i) && (!IsIn(color, FilterMax, FilterMin)))
+          optPixel[i + 3] = 0; //A
+        else if (IsRGBFilted(colorNow, Max, Min))
+          optPixel[i + 3] = 255; //A
+      }
+
+      //當工作被取消...
+      if (token.IsCancellationRequested)
+        //拋出協作式異常
+        token.ThrowIfCancellationRequested();
+
+      return new PixelBitmap(optPixel, iptImage.Size);
+    }
     #endregion
+  }
+
+  [Obsolete]
+  public enum FilterType2
+  {
+    Red,
+    Green,
+    Blue
+  }
+  [Obsolete]
+  /// <summary>
+  /// 偶數為Min, 奇數為Max
+  /// </summary>
+  public enum FilterType
+  {
+    RMax = 5,
+    RMin = 4,
+    GMax = 3,
+    GMin = 2,
+    BMax = 1,
+    BMin = 0,
+  }
+  [Obsolete]
+  public static class FilterTypeExtention
+  {
+    /// <summary>
+    /// 根據<see cref="FilterType"/>取得<see cref="PixelBitmap.Pixel"/>中顏色的位移索引。
+    /// </summary>
+    /// <remarks>int division rounds toward zero</remarks>
+    public static int GetColorIndex(this FilterType type) => (int)type / 2;
   }
 }

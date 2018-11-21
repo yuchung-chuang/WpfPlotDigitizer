@@ -46,7 +46,7 @@ namespace WpfPlotDigitizer
     /// <summary>
     /// Called whenever <see cref="PageManager.TurnNext"/> is fired.
     /// </summary>
-    private void OnTurnNextAsync()
+    private async void OnTurnNextAsync()
     {
       // call before actually turned next
       switch ((ApplicationPages)PageManager.Index + 1)
@@ -75,7 +75,7 @@ namespace WpfPlotDigitizer
           break;
         case ApplicationPages.Filter:
           IPVM.PBFilterRGB = IPVM.PBAxis.Clone() as PixelBitmap;
-          filterPageVM.FilterRGB();
+          await filterPageVM.FilterRGBAsync();
           break;
         case ApplicationPages.Erase:
           break;
