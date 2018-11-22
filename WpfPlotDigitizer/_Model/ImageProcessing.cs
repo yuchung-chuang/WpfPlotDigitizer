@@ -9,14 +9,18 @@ using Emgu.CV.Structure;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using static CycWpfLibrary.Math;
+using ct = System.Threading.CancellationToken;
+using PB = CycWpfLibrary.Media.PixelBitmap;
 
 namespace WpfPlotDigitizer
 {
+  #region Helper classes
   public struct AxisType
   {
     public bool Left;
@@ -113,14 +117,15 @@ namespace WpfPlotDigitizer
     public bool IsCompleted() => steps > stepTotal;
 
   }
+  #endregion
 
   public static class ImageProcessing
   {
-    public static byte[] FilterW(PixelBitmap iptImage, int white = 200)
+    public static byte[] FilterW(PB iptImage, int white = 200)
     {
       byte blue, green, red;
       byte[] optPixel = (byte[])iptImage.Pixel.Clone(); // 複製值
-      for (int i = 0; i < iptImage.Pixel.Length; i += iptImage.Byte)
+      for (int i = 0; i < iptImage.Pixel.Length; i += iptImage.Depth)
       {
         blue = iptImage.Pixel[i];   //B
         green = iptImage.Pixel[i + 1]; //G
@@ -131,7 +136,7 @@ namespace WpfPlotDigitizer
     }
 
     private static readonly int axisTol = 20;
-    public static (Rect, AxisType) GetAxis(PixelBitmap iptImage)
+    public static (Rect, AxisType) GetAxis(PB iptImage)
     {
       AxisType axisType = new AxisType();
       var (LT, LB, RT, RB) = GetAxisPoints();
@@ -172,7 +177,7 @@ namespace WpfPlotDigitizer
       }
       (Point LT, Point LB, Point RT, Point RB) GetAxisPoints()
       {
-        var pixel3 = iptImage.GetPixel3();
+        var pixel3 = iptImage.GetPixel3Rgba();
         return (GetAxisLT(pixel3), GetAxisLB(pixel3), GetAxisRT(pixel3), GetAxisRB(pixel3));
       }
       /// <summary>
@@ -293,7 +298,7 @@ namespace WpfPlotDigitizer
           for (int y = 0; y < height; y++)
           {
             //右移x個像素(*一個字節的長度)下移y個像素(*一整行字節的長度)
-            idx = x * iptImage.Byte + y * iptImage.Stride;
+            idx = x * iptImage.Depth + y * iptImage.Stride;
             if (!IsTransparent(iptImage.Pixel, idx))
             {
               if (L == 0) //如果長度歸零
@@ -317,7 +322,7 @@ namespace WpfPlotDigitizer
           for (int x = 0; x < width; x++)
           {
             // 右移x個像素(*一個字節的長度)下移y個像素(*一整行字節的長度)
-            idx = x * iptImage.Byte + y * iptImage.Stride;
+            idx = x * iptImage.Depth + y * iptImage.Stride;
             if (!IsTransparent(iptImage.Pixel, idx)) //繼續記錄
             {
               if (L == 0) //如果長度歸零
@@ -341,13 +346,13 @@ namespace WpfPlotDigitizer
       }
     }
 
-    public static PixelBitmap FilterRGB(PixelBitmap iptImage, Color Max, Color Min, CancellationToken token)
+    public static PB FilterRGB(PB iptImage, Color Max, Color Min, ct token)
     {
       var optPixel = iptImage.Pixel.Clone() as byte[];
       var length = iptImage.Pixel.Length;
-      var @byte = iptImage.Byte;
+      var @byte = iptImage.Depth;
       byte R, G, B;
-      // For-loop 內千萬不要呼叫函式!!! 速度會變得超級慢!!!
+      // 針對圖像的for-loop會需要執行上萬次，迴圈內的call method開銷會非常大，必須要避免
       for (int i = 0; i < length; i += @byte)
       {
         if (token.IsCancellationRequested) // 當工作被取消...
@@ -364,11 +369,11 @@ namespace WpfPlotDigitizer
           optPixel[i + 3] = 0; //A
 
       }
-      return new PixelBitmap(optPixel, iptImage.Size);
+      return new PB(optPixel, iptImage.Size);
     }
-    public static async Task<PixelBitmap> FilterRGBAsync(PixelBitmap iptImage, Color Max, Color Min, CancellationToken token)
+    public static async Task<PB> FilterRGBAsync(PB iptImage, Color Max, Color Min, ct token)
     {
-      PixelBitmap optImage = new PixelBitmap();
+      PB optImage = new PB();
       await Task.Run(() =>
       {
         try
@@ -382,6 +387,55 @@ namespace WpfPlotDigitizer
       }, token);
       return optImage;
     }
+
+    public static Image<Rgba, byte> FilterRGB_Emgu(Image<Rgba, byte> image, Color Max, Color Min, ct token)
+    {
+      var optPixel = image.Data.Clone() as byte[,,];
+      var height = image.Height;
+      var width = image.Width;
+      byte R, G, B;
+      for (int row = 0; row < height; row++)
+      {
+        for (int col = 0; col < width; col++)
+        {
+          B = optPixel[row, col, 0];
+          G = optPixel[row, col, 1];
+          R = optPixel[row, col, 2];
+          if (R <= Max.R && R >= Min.R &&
+              G <= Max.G && G >= Min.G &&
+              B <= Max.B && B >= Min.B)
+            optPixel[row, col, 3] = 255; //A
+          else
+            optPixel[row, col, 3] = 0; //A
+        }
+      }
+      //new PB(optPixel).ShowSnapShot();
+      return new Image<Rgba, byte>(optPixel);
+    }
+
+    public static Image<Rgba, byte> InRange(Image<Rgba, byte> iptImage, Color Max, Color Min)
+    {
+      var mask = iptImage.InRange(Min.ToRgba(), Max.ToRgba());
+      return iptImage.Copy(mask);
+    }
+    public static PB InRange(PB iptImage, Color Max, Color Min)
+    {
+      return InRange(iptImage.ToImage<Rgba, byte>(), Max, Min).ToPixelBitmap();
+    }
+
+    public static async Task<Image<Rgba, byte>> InRangeAsync(Image<Rgba, byte> iptImage, Color Max, Color Min)
+    {
+      var optImage = new Image<Rgba, byte>(iptImage.Size);
+      await Task.Run(() => optImage = InRange(iptImage, Max, Min));
+      return optImage;
+    }
+    public static async Task<PB> InRangeAsync(PB iptImage, Color Max, Color Min)
+    {
+      PB optImage = new PB();
+      await Task.Run(() => optImage = InRange(iptImage, Max, Min));
+      return optImage;
+    }
+
 
     public static Tesseract.Character[] OcrImage(Tesseract ocr, IInputArray image)
     {
@@ -422,5 +476,8 @@ namespace WpfPlotDigitizer
         return null;
       }
     }
+
+
+
   }
 }

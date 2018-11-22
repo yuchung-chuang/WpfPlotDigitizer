@@ -1,30 +1,43 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using WpfPlotDigitizer;
+using CycWpfLibrary;
 using CycWpfLibrary.Media;
+using Emgu.CV;
+using Emgu.CV.Structure;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Diagnostics;
+using System.Threading;
 using System.Windows;
 using System.Windows.Media;
 using Bitmap = System.Drawing.Bitmap;
-using System.Threading;
-using CycWpfLibrary;
-using System;
-using System.Diagnostics;
 
 namespace WpfPlotDigitizer.Tests
 {
   [TestClass()]
   public class ImageProcessingTests
   {
-    private PixelBitmap image;
+    private PixelBitmap pixelBitmap;
+    private Image<Rgba, byte> imageRGBA;
+    private Image<Bgr, byte> imageRGB;
+    private Image<Hsv, byte> imageHSV;
+    private Mat mat;
 
     public ImageProcessingTests()
     {
-      image = new Bitmap(@"C:\Users\alex\Desktop\WPF\WpfPlotDigitizer\WpfPlotDigitizerTests\data.png").ToPixelBitmap();
+      pixelBitmap = new Bitmap(@"C:\Users\alex\Desktop\WPF\WpfPlotDigitizer\WpfPlotDigitizerTests\data.png").ToPixelBitmap();
+      imageRGBA = pixelBitmap.ToImage<Rgba, byte>();
+      imageRGB = pixelBitmap.ToImage<Bgr, byte>();
+      imageHSV = pixelBitmap.ToImage<Hsv, byte>();
+      mat = imageRGBA.Mat;
     }
 
     [TestMethod()]
     public void GetAxisTest()
     {
-      var imageFilterW = new PixelBitmap(image.Size);
-      imageFilterW.Pixel = ImageProcessing.FilterW(image);
+      var imageFilterW = new PixelBitmap(pixelBitmap.Size)
+      {
+        Pixel = ImageProcessing.FilterW(pixelBitmap)
+      };
       var (actualAxis, axisType) = ImageProcessing.GetAxis(imageFilterW);
       var expectedAxis = new Rect(87, 20, 747, 547);
       Assert.AreEqual(expectedAxis, actualAxis);
@@ -33,18 +46,69 @@ namespace WpfPlotDigitizer.Tests
     [TestMethod()]
     public void FilterRGBTest()
     {
-      PixelBitmap imageFilterRGB = new PixelBitmap();
+      PixelBitmap PBFilterRGB = new PixelBitmap();
       double ms = 0;
       int n = 100;
       for (int i = 0; i < n; i++)
       {
-        ms += NativeMethod.TimeIt(() => imageFilterRGB = ImageProcessing.FilterRGB(image, Color.FromRgb(250, 250, 250), Color.FromRgb(50, 50, 50), CancellationToken.None));
+        ms += NativeMethod.TimeIt(() => PBFilterRGB = ImageProcessing.FilterRGB(pixelBitmap, Color.FromRgb(250, 250, 250), Color.FromRgb(10, 10, 10), CancellationToken.None));
+        if (i == 0)
+        {
+          ms = 0;
+        }
       }
       ms /= n;
       Debug.WriteLine($"Average: {ms}");
-      imageFilterRGB.ShowSnapShot();
+      //PBFilterRGB.Show();
       Assert.IsTrue(ms < 10);
-      
+
     }
+
+    [TestMethod]
+    public void FilterRGB_EmguTest()
+    {
+      Image<Rgba, byte> imageFilterRGB = new Image<Rgba, byte>(imageRGBA.Size);
+      double ms = 0;
+      int n = 100;
+      for (int i = 0; i < n; i++)
+      {
+        ms += NativeMethod.TimeIt(() =>
+        {
+          imageFilterRGB = ImageProcessing.FilterRGB_Emgu(imageRGBA, Color.FromRgb(250, 250, 250), Color.FromRgb(10, 10, 10), CancellationToken.None);
+          if (i == 0)
+          {
+            ms = 0;
+          }
+        });
+      }
+      ms /= n;
+      Debug.WriteLine($"Average: {ms}");
+      //imageFilterRGB.ToPixelBitmap().Show();
+      Assert.IsTrue(ms < 25);
+    }
+
+    [TestMethod()]
+    public void InRangeTest()
+    {
+      Image<Rgba, byte> imageFilterRGB = new Image<Rgba, byte>(imageRGBA.Size);
+      double ms = 0;
+      int n = 100;
+      for (int i = 0; i < n; i++)
+      {
+        ms += NativeMethod.TimeIt(() =>
+        {
+          imageFilterRGB = ImageProcessing.InRange(imageRGBA, Color.FromRgb(250, 250, 250), Color.FromRgb(10, 10, 10));
+          if (i == 0)
+          {
+            ms = 0;
+          }
+        });
+      }
+      ms /= n;
+      Debug.WriteLine($"Average: {ms}");
+      //imageFilterRGB.ToPixelBitmap().Show();
+      Assert.IsTrue(ms < 10);
+    }
+    
   }
 }

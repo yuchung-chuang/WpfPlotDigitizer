@@ -37,7 +37,7 @@ namespace WpfPlotDigitizer
     public void OpenFile()
     {
       var dialog = new OpenFileDialog();
-      var imageExtensions = ImageExtensions.String;
+      var imageExtensions = ImageExts.String;
       dialog.Filter = "Images|" + imageExtensions + "|All|*.*";
       if (dialog.ShowDialog() == false)
       {

@@ -2,6 +2,7 @@
 using CycWpfLibrary.Controls;
 using CycWpfLibrary.Media;
 using CycWpfLibrary.MVVM;
+using Emgu.CV.Structure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,8 +70,11 @@ namespace WpfPlotDigitizer
           axisLimitPageVM.GetAxisLimit();
           break;
         case ApplicationPages.Filter:
-          IPVM.PBFilterRGB = IPVM.PBAxis.Clone() as PixelBitmap;
-          await filterPageVM.FilterRGBAsync();
+          //IPVM.PBFilterRGB = IPVM.PBAxis.Clone() as PixelBitmap;
+          //await filterPageVM.FilterRGBAsync();
+          IPVM.imageAxis = IPVM.PBAxis.ToImage<Rgba, byte>();
+          IPVM.imageFilterRGB = IPVM.imageAxis.Clone();
+          await filterPageVM.InRangeAsync();
           break;
         case ApplicationPages.Erase:
           break;
