@@ -516,7 +516,6 @@ namespace DataCapturer
       // 
       this.ImageViewerSetAxLim.Image = null;
       this.ImageViewerSetAxLim.Location = new System.Drawing.Point(270, 44);
-      this.ImageViewerSetAxLim.MyToolTip = "Input the axis limits into the textboxes.";
       this.ImageViewerSetAxLim.Name = "ImageViewerSetAxLim";
       this.ImageViewerSetAxLim.Size = new System.Drawing.Size(641, 395);
       this.ImageViewerSetAxLim.TabIndex = 21;
@@ -545,7 +544,7 @@ namespace DataCapturer
       this.UndoButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
       this.UndoButton.TabIndex = 6;
       this.UndoButton.TabStop = false;
-      this.Tooltip.SetToolTip(this.UndoButton, "Redo");
+      this.Tooltip.SetToolTip(this.UndoButton, "Undo");
       this.UndoButton.EnabledChanged += new System.EventHandler(this.UndoButton_EnabledChanged);
       this.UndoButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.UndoButton_MouseDown);
       this.UndoButton.MouseEnter += new System.EventHandler(this.UndoButton_MouseEnter);
@@ -643,8 +642,6 @@ namespace DataCapturer
       // 
       this.ImageViewerErase.Image = null;
       this.ImageViewerErase.Location = new System.Drawing.Point(130, 36);
-      this.ImageViewerErase.MyToolTip = "Hold the right click to erase. Hold the left click to drag. Scroll to zoom in/out" +
-    ".";
       this.ImageViewerErase.Name = "ImageViewerErase";
       this.ImageViewerErase.Size = new System.Drawing.Size(757, 475);
       this.ImageViewerErase.TabIndex = 9;
@@ -757,7 +754,7 @@ namespace DataCapturer
       this.TabControlMain.Location = new System.Drawing.Point(23, 83);
       this.TabControlMain.MetroFont = new System.Drawing.Font("Segoe UI Light", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
       this.TabControlMain.Name = "TabControlMain";
-      this.TabControlMain.SelectedIndex = 0;
+      this.TabControlMain.SelectedIndex = 4;
       this.TabControlMain.Size = new System.Drawing.Size(969, 615);
       this.TabControlMain.Style = MetroFramework.MetroColorStyle.Blue;
       this.TabControlMain.StyleManager = null;

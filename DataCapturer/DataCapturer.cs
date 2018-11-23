@@ -590,19 +590,19 @@ namespace DataCapturer
       if (ImageInput == null)
       {
         TabControlMain.SelectedIndex = 0;
-        MessageBox.Show("Please browse an image to capture the data.", "Data Capturer Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        MessageBox.Show("Please browse an image to capture the data.", "DataCapturer Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
         return false;
       }
       else if (IsSetAxisLim)
       {
         TabControlMain.SelectedIndex = 1;
-        MessageBox.Show("Please fill in all the axis limits.", "Data Capturer Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        MessageBox.Show("Please fill in all the axis limits.", "DataCapturer Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
         return false;
       }
       else if (!IsGetAxis || !IsOffset)
       {
         TabControlMain.SelectedIndex = 2;
-        MessageBox.Show("Please adjust the scrollbars to capture axis properly.", "Data Capturer Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        MessageBox.Show("Please adjust the scrollbars to capture axis properly.", "DataCapturer Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
         return false;
       }
       return true;
@@ -824,11 +824,11 @@ namespace DataCapturer
       IsBusySaving = false;
       if (IsSucessfulSave)
       {
-        MessageBox.Show("Sucessfully saved!");
+        MessageBox.Show("Sucessfully saved!", "DataCapturer Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
       }
       else
       {
-        MessageBox.Show("Sorry... there's something wrong while saving...");
+        MessageBox.Show("Sorry... there's something wrong while saving...", "DataCapturer Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
       }
 
     }

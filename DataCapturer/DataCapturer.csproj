@@ -153,7 +153,7 @@
     <None Include="Resources\Undo-icon%28black%29.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\GoogleDrive\CSharp\MyLibrary\MyLibrary\MyLibrary.csproj">
+    <ProjectReference Include="..\..\MyLibrary\MyLibrary\MyLibrary.csproj">
       <Project>{aa4b8910-6e55-4f05-8037-0ee24933f1b5}</Project>
       <Name>MyLibrary</Name>
     </ProjectReference>
@@ -205,8 +205,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="content\ILMergeOrder.txt" />
-    <Content Include="icon7.ico" />
-    <Content Include="iconSmall.ico" />
     <Content Include="ILMergeInternalizeExcludeList.txt" />
     <Content Include="ILMergeOrder.txt" />
     <Content Include="Resources\icon5.ico" />
