@@ -8,8 +8,8 @@ namespace WpfPlotDigitizer
   {
     public static DIConstruct AddWpfPlotDigitizerViewModels(this DIConstruct construction)
     {
-      construction.Services.AddSingleton<ApplicationVM>();
-      construction.Services.AddSingleton<ImageProcessingVM>();
+      construction.Services.AddSingleton<ApplicationManager>();
+      construction.Services.AddSingleton<ImageProcessingManager>();
 
       return construction;
     }

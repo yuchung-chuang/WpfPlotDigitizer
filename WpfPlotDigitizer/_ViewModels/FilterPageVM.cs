@@ -19,11 +19,11 @@ namespace WpfPlotDigitizer
       FilterRGBCommand = new RelayCommand<object, Task>(InRangeAsync);
     }
 
-    private Image<Bgra, byte> imageAxis => IPVM?.ImageAxis;
+    private Image<Bgra, byte> imageAxis => IPManager?.ImageAxis;
     private Image<Bgra, byte> imageFilterRGB
     {
-      get => IPVM?.ImageFilterRGB;
-      set => IPVM.ImageFilterRGB = value;
+      get => IPManager?.ImageFilterRGB;
+      set => IPManager.ImageFilterRGB = value;
     }
     public BitmapSource bitmapSourceFilterRGB => imageFilterRGB?.ToBitmapSource();
 

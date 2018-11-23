@@ -6,6 +6,6 @@ namespace WpfPlotDigitizer
 {
   public class MainWindowVM : ViewModelBase
   {
-    public PageManagerBase PageManager => AppVM.PageManager;
+    public PageManagerBase PageManager => AppManager.PageManager;
   }
 }

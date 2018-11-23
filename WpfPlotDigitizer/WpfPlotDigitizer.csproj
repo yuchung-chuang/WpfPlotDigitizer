@@ -217,7 +217,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="_Model\PageManager.cs" />
-    <Compile Include="_Model\ApplicationVM.cs" />
+    <Compile Include="_Model\ApplicationManager.cs" />
     <Compile Include="_ViewModels\BrowsePageVM.cs" />
     <Compile Include="_Pages\ErasePage.xaml.cs">
       <DependentUpon>ErasePage.xaml</DependentUpon>
@@ -238,7 +238,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="_Model\ImageProcessingVM.cs" />
+    <Compile Include="_Model\ImageProcessingManager.cs" />
     <Compile Include="MainWindowVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

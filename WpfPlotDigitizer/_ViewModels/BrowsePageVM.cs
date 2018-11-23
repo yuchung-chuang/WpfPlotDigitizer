@@ -22,8 +22,8 @@ namespace WpfPlotDigitizer
 
     public PixelBitmap PBInput
     {
-      get => IPVM.PBInput;
-      set => IPVM.PBInput = value;
+      get => IPManager.PBInput;
+      set => IPManager.PBInput = value;
     }
 
     public ICommand OpenFileCommand { get; set; }

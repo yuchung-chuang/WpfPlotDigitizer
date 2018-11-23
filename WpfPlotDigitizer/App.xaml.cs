@@ -47,8 +47,8 @@ namespace WpfPlotDigitizer
       //#endif 
 
 #if DEBUG
-      IPVM.PBInput = new BitmapImage(new Uri($"pack://application:,,,/images/data.png")).ToPixelBitmap();
-      AppVM.PageManager.TurnNext();
+      IPManager.PBInput = new BitmapImage(new Uri($"pack://application:,,,/images/data.png")).ToPixelBitmap();
+      AppManager.PageManager.TurnNext();
 #endif
 
       Current.MainWindow = new MainWindow();

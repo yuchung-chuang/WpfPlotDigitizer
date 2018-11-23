@@ -7,12 +7,12 @@ using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer
 {
-  public class ApplicationVM : ViewModelBase
+  public class ApplicationManager 
   {
-    public ApplicationVM()
+    public ApplicationManager()
     {
       PageManager.TurnNextEvent += OnTurnNextAsync;
-      IPVM.OnPBInputChanged += OnPixelBitmapInputChanged;
+      IPManager.OnPBInputChanged += OnPixelBitmapInputChanged;
     }
 
     public PageManagerBase PageManager { get; private set; } = new PageManager();
@@ -33,22 +33,22 @@ namespace WpfPlotDigitizer
         case ApplicationPages.Axis:
           axisPageVM.OnPropertyChanged(nameof(axisPageVM.bitmapSourceInput));
 
-          IPVM.PBFilterW = new PixelBitmap(IPVM.PBInput.Size)
+          IPManager.PBFilterW = new PixelBitmap(IPManager.PBInput.Size)
           {
-            Pixel = ImageProcessing.FilterW(IPVM.PBInput)
+            Pixel = ImageProcessing.FilterW(IPManager.PBInput)
           };
           axisPageVM.GetAxis();
 
           break;
         case ApplicationPages.AxisLimit:
-          IPVM.PBAxis = IPVM.PBInput.Bitmap
-                                        .Crop(IPVM.Axis)
+          IPManager.PBAxis = IPManager.PBInput.Bitmap
+                                        .Crop(IPManager.Axis)
                                         .ToPixelBitmap();
           axisLimitPageVM.GetAxisLimit();
           break;
         case ApplicationPages.Filter:
-          IPVM.ImageAxis = IPVM.PBAxis.ToImage<Bgra, byte>();
-          IPVM.ImageFilterRGB = IPVM.ImageAxis.Clone();
+          IPManager.ImageAxis = IPManager.PBAxis.ToImage<Bgra, byte>();
+          IPManager.ImageFilterRGB = IPManager.ImageAxis.Clone();
           await filterPageVM.InRangeAsync();
           break;
         case ApplicationPages.Erase:

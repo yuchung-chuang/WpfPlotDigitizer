@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace WpfPlotDigitizer
 {
-  public class ImageProcessingVM : ViewModelBase
+  public class ImageProcessingManager 
   {
 
     public PixelBitmap PBFilterW { get; set; }

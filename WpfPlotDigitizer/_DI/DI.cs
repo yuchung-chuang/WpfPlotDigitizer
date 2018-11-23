@@ -10,10 +10,10 @@ namespace WpfPlotDigitizer
 {
   public static class DI
   {
-    public static ApplicationVM AppVM
-      => Framework.Service<ApplicationVM>();
-    public static ImageProcessingVM IPVM
-      => Framework.Service<ImageProcessingVM>();
+    public static ApplicationManager AppManager
+      => Framework.Service<ApplicationManager>();
+    public static ImageProcessingManager IPManager
+      => Framework.Service<ImageProcessingManager>();
 
     public static readonly MainWindowVM mainWindowVM = new MainWindowVM();
     public static readonly BrowsePageVM browsePageVM = new BrowsePageVM();
