@@ -30,8 +30,8 @@ namespace WpfPlotDigitizer
     //Singleton fields
     private ImageProcessingVM IPVM;
 
-    private Image<Rgba, byte> imageAxis => IPVM?.ImageAxis;
-    private Image<Rgba, byte> imageFilterRGB
+    private Image<Bgra, byte> imageAxis => IPVM?.ImageAxis;
+    private Image<Bgra, byte> imageFilterRGB
     {
       get => IPVM?.ImageFilterRGB;
       set => IPVM.ImageFilterRGB = value;

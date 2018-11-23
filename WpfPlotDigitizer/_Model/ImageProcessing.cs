@@ -346,17 +346,17 @@ namespace WpfPlotDigitizer
       }
     }
 
-    private static readonly Rgba transparent = new Rgba(0, 0, 0, 0);
-    public static Image<Rgba, byte> InRange(Image<Rgba, byte> iptImage, Color Max, Color Min)
+    private static readonly Bgra transparent = new Bgra(0, 0, 0, 0);
+    public static Image<Bgra, byte> InRange(Image<Bgra, byte> iptImage, Color Max, Color Min)
     {
-      var mask = iptImage.InRange(Min.ToRgba(), Max.ToRgba());
+      var mask = iptImage.InRange(Min.ToBgra(), Max.ToBgra());
       var optImage = iptImage.Copy(mask);
       optImage.SetValue(transparent, mask.Not());
       return optImage;
     }
-    public static async Task<Image<Rgba, byte>> InRangeAsync(Image<Rgba, byte> iptImage, Color Max, Color Min)
+    public static async Task<Image<Bgra, byte>> InRangeAsync(Image<Bgra, byte> iptImage, Color Max, Color Min)
     {
-      var optImage = new Image<Rgba, byte>(iptImage.Size);
+      var optImage = new Image<Bgra, byte>(iptImage.Size);
       await Task.Run(() => optImage = InRange(iptImage, Max, Min));
       return optImage;
     }
@@ -477,6 +477,21 @@ namespace WpfPlotDigitizer
     public static async Task<PB> InRangeAsync(PB iptImage, Color Max, Color Min)
     {
       PB optImage = new PB();
+      await Task.Run(() => optImage = InRange(iptImage, Max, Min));
+      return optImage;
+    }
+
+    private static readonly Rgba transparentRgba = new Rgba(0, 0, 0, 0);
+    public static Image<Rgba, byte> InRange(Image<Rgba, byte> iptImage, Color Max, Color Min)
+    {
+      var mask = iptImage.InRange(Min.ToRgba(), Max.ToRgba());
+      var optImage = iptImage.Copy(mask);
+      optImage.SetValue(transparentRgba, mask.Not());
+      return optImage;
+    }
+    public static async Task<Image<Rgba, byte>> InRangeAsync(Image<Rgba, byte> iptImage, Color Max, Color Min)
+    {
+      var optImage = new Image<Rgba, byte>(iptImage.Size);
       await Task.Run(() => optImage = InRange(iptImage, Max, Min));
       return optImage;
     }
