@@ -173,17 +173,17 @@
     <Compile Include="ToBeImproved\IsObserveSize.cs" />
     <Compile Include="_DI\DI.cs" />
     <Compile Include="_DI\DIConstructExtensions.cs" />
-    <Compile Include="_Pages\AxisLimitPageVM.cs" />
-    <Compile Include="_Pages\SavePageVM.cs" />
-    <Compile Include="_Pages\ErasePageVM.cs" />
+    <Compile Include="_ViewModels\AxisLimitPageVM.cs" />
+    <Compile Include="_ViewModels\SavePageVM.cs" />
+    <Compile Include="_ViewModels\ErasePageVM.cs" />
     <Compile Include="_Pages\SavePage.xaml.cs">
       <DependentUpon>SavePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="_Pages\AxisLimitPage.xaml.cs">
       <DependentUpon>AxisLimitPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="_Pages\AxisPageVM.cs" />
-    <Compile Include="_Pages\FilterPageVM.cs" />
+    <Compile Include="_ViewModels\AxisPageVM.cs" />
+    <Compile Include="_ViewModels\FilterPageVM.cs" />
     <Page Include="_Pages\SavePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -217,8 +217,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="_Model\PageManager.cs" />
-    <Compile Include="_ViewModels\ApplicationVM.cs" />
-    <Compile Include="_Pages\BrowsePageVM.cs" />
+    <Compile Include="_Model\ApplicationVM.cs" />
+    <Compile Include="_ViewModels\BrowsePageVM.cs" />
     <Compile Include="_Pages\ErasePage.xaml.cs">
       <DependentUpon>ErasePage.xaml</DependentUpon>
     </Compile>
@@ -238,7 +238,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="_ViewModels\ImageProcessingVM.cs" />
+    <Compile Include="_Model\ImageProcessingVM.cs" />
     <Compile Include="MainWindowVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
