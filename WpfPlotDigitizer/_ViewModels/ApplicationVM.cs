@@ -1,17 +1,8 @@
-﻿using CycWpfLibrary;
-using CycWpfLibrary.Controls;
+﻿using CycWpfLibrary.Controls;
 using CycWpfLibrary.Media;
 using CycWpfLibrary.MVVM;
-using Emgu.CV;
 using Emgu.CV.Structure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
+using CycWpfLibrary.Emgu;
 
 namespace WpfPlotDigitizer
 {

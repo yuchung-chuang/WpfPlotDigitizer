@@ -6,8 +6,5 @@ namespace WpfPlotDigitizer
 {
   public class ObservedWidth : CycWpfLibrary.MVVM.ObservedWidth { }
   public class ObservedHeight : CycWpfLibrary.MVVM.ObservedHeight { }
-  public class IsObserveSize : CycWpfLibrary.MVVM.IsObserveSize
-  {
-
-  }
+  public class IsObserveSize : CycWpfLibrary.MVVM.IsObserveSize { }
 }

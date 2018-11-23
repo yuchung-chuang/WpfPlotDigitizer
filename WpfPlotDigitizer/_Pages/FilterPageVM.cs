@@ -2,16 +2,12 @@
 using CycWpfLibrary.MVVM;
 using Emgu.CV;
 using Emgu.CV.Structure;
-using System;
-using System.Diagnostics;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using ct = System.Threading.CancellationToken;
-using cts = System.Threading.CancellationTokenSource;
 using IP = WpfPlotDigitizer.ImageProcessing;
+using CycWpfLibrary.Emgu;
 
 namespace WpfPlotDigitizer
 {

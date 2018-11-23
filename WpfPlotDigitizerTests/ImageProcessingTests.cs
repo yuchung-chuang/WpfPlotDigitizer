@@ -10,6 +10,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Media;
 using Bitmap = System.Drawing.Bitmap;
+using CycWpfLibrary.Emgu;
 
 namespace WpfPlotDigitizer.Tests
 {

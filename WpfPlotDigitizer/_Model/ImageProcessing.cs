@@ -177,7 +177,7 @@ namespace WpfPlotDigitizer
       }
       (Point LT, Point LB, Point RT, Point RB) GetAxisPoints()
       {
-        var pixel3 = iptImage.GetPixel3Rgba();
+        var pixel3 = iptImage.GetPixel3Argb();
         return (GetAxisLT(pixel3), GetAxisLB(pixel3), GetAxisRT(pixel3), GetAxisRB(pixel3));
       }
       /// <summary>

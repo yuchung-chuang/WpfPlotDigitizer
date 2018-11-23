@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfPlotDigitizerTests", "Wp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OcrTester", "OcrTester\OcrTester.csproj", "{2592D4E4-24F8-41CE-B5B8-386C725CBFDD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CycWpfLibraryTests", "..\CycWpfLibrary\CycWpfLibraryTests\CycWpfLibraryTests.csproj", "{E14630FC-5D4F-404D-98AE-4A7FD8D579A7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{2592D4E4-24F8-41CE-B5B8-386C725CBFDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2592D4E4-24F8-41CE-B5B8-386C725CBFDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2592D4E4-24F8-41CE-B5B8-386C725CBFDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E14630FC-5D4F-404D-98AE-4A7FD8D579A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E14630FC-5D4F-404D-98AE-4A7FD8D579A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E14630FC-5D4F-404D-98AE-4A7FD8D579A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E14630FC-5D4F-404D-98AE-4A7FD8D579A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
