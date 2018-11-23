@@ -70,10 +70,8 @@ namespace WpfPlotDigitizer
           axisLimitPageVM.GetAxisLimit();
           break;
         case ApplicationPages.Filter:
-          //IPVM.PBFilterRGB = IPVM.PBAxis.Clone() as PixelBitmap;
-          //await filterPageVM.FilterRGBAsync();
-          IPVM.imageAxis = IPVM.PBAxis.ToImage<Rgba, byte>();
-          IPVM.imageFilterRGB = IPVM.imageAxis.Clone();
+          IPVM.ImageAxis = IPVM.PBAxis.ToImage<Rgba, byte>();
+          IPVM.ImageFilterRGB = IPVM.ImageAxis.Clone();
           await filterPageVM.InRangeAsync();
           break;
         case ApplicationPages.Erase:

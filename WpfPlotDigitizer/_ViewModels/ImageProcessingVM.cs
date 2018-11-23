@@ -35,9 +35,8 @@ namespace WpfPlotDigitizer
 
     public PixelBitmap PBAxis { get; set; }
 
-    public PixelBitmap PBFilterRGB { get; set; }
-    public Image<Rgba, byte> imageAxis { get; set; }
-    public Image<Rgba, byte> imageFilterRGB { get; set; }
+    public Image<Rgba, byte> ImageAxis { get; set; }
+    public Image<Rgba, byte> ImageFilterRGB { get; set; }
 
   }
 }
