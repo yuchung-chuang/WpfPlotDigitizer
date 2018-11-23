@@ -1,14 +1,9 @@
-﻿using CycWpfLibrary.Controls;
-using CycWpfLibrary.Diagnostics;
-using CycWpfLibrary.Media;
+﻿using CycWpfLibrary.Media;
+using Dna;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer
 {
@@ -21,18 +16,42 @@ namespace WpfPlotDigitizer
     /// custom startup so we load the iocContainer immediately after startup
     /// </summary>
     /// <param name="e"></param>
+//    protected override void OnStartup(StartupEventArgs e)
+//    {
+//      base.OnStartup(e);
+
+//      IoC.SetUp();
+      
+//      Current.MainWindow = new MainWindow();
+//#if DEBUG
+//      IoC.Get<ImageProcessingVM>().PBInput = new BitmapImage(new Uri($"pack://application:,,,/images/data.png")).ToPixelBitmap();
+
+//      IoC.Get<PageManagerBase>().TurnNext();
+//#endif 
+//      Current.MainWindow.Show();
+//    }
+
     protected override void OnStartup(StartupEventArgs e)
     {
       base.OnStartup(e);
 
-      IoC.SetUp();
-      
-      Current.MainWindow = new MainWindow();
-#if DEBUG
-      IoC.Get<ImageProcessingVM>().PBInput = new BitmapImage(new Uri($"pack://application:,,,/images/data.png")).ToPixelBitmap();
+      Framework.Construct<DefaultFrameworkConstruction>()
+          .AddFileLogger()
+          .AddWpfPlotDigitizerViewModels()
+          .Build();
+      //IoC.SetUp();
+      //#if DEBUG
+      //      IoC.Get<ImageProcessingVM>().PBInput = new BitmapImage(new Uri($"pack://application:,,,/images/data.png")).ToPixelBitmap();
 
-      IoC.Get<PageManagerBase>().TurnNext();
-#endif 
+      //      IoC.Get<PageManagerBase>().TurnNext();
+      //#endif 
+
+#if DEBUG
+      IPVM.PBInput = new BitmapImage(new Uri($"pack://application:,,,/images/data.png")).ToPixelBitmap();
+      AppVM.PageManager.TurnNext();
+#endif
+
+      Current.MainWindow = new MainWindow();
       Current.MainWindow.Show();
     }
   }

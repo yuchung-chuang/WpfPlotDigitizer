@@ -12,11 +12,10 @@
                      WindowStartupLocation="CenterScreen"
                      Title="MainWindow"
                      Height="600"
-                     Width="900"
-                     DataContext="{x:Static local:VMLocator.MainWindowVM}">
+                     Width="900">
   <Grid Name="gridMain">
 
-    <cycControls:PageControl PageManager="{Binding ApplicationVM.PageManager, Source={x:Static local:VMLocator.Instance}}" />
+    <cycControls:PageControl PageManager="{Binding PageManager}" />
 
   </Grid>
 </mahapps:MetroWindow>

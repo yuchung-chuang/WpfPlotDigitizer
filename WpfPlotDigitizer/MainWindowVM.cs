@@ -1,16 +1,11 @@
-﻿using CycWpfLibrary.Media;
+﻿using CycWpfLibrary.Controls;
 using CycWpfLibrary.MVVM;
-using System;
-using System.Windows.Media.Imaging;
+using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer
 {
   public class MainWindowVM : ViewModelBase
   {
-    public double Width { get; set; }
-    public double Height { get; set; }
-
-    public string widthStr => Width.ToString();
-    public string heightStr => Height.ToString();
+    public PageManagerBase PageManager => AppVM.PageManager;
   }
 }

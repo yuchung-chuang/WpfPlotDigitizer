@@ -18,8 +18,7 @@
              FontFamily="{DynamicResource MaterialDesignFont}"
              mc:Ignorable="d"
              d:DesignHeight="600"
-             d:DesignWidth="900"
-             DataContext="{x:Static local:VMLocator.AxisLimitPageVM}">
+             d:DesignWidth="900">
   <AdornerDecorator>
     <Grid Margin="20,0">
       <Grid.Resources>

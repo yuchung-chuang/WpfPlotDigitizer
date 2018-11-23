@@ -123,9 +123,6 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
-    </Reference>
     <Reference Include="PropertyChanged, Version=2.5.14.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
       <HintPath>..\packages\PropertyChanged.Fody.2.5.14\lib\net452\PropertyChanged.dll</HintPath>
     </Reference>
@@ -174,6 +171,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ToBeImproved\IsObserveSize.cs" />
+    <Compile Include="_DI\DI.cs" />
+    <Compile Include="_DI\DIConstructExtensions.cs" />
     <Compile Include="_Pages\AxisLimitPageVM.cs" />
     <Compile Include="_Pages\SavePageVM.cs" />
     <Compile Include="_Pages\ErasePageVM.cs" />
@@ -185,7 +184,6 @@
     </Compile>
     <Compile Include="_Pages\AxisPageVM.cs" />
     <Compile Include="_Pages\FilterPageVM.cs" />
-    <Compile Include="_Model\VMLocator.cs" />
     <Page Include="_Pages\SavePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -218,7 +216,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="_Model\IoC.cs" />
     <Compile Include="_Model\PageManager.cs" />
     <Compile Include="_ViewModels\ApplicationVM.cs" />
     <Compile Include="_Pages\BrowsePageVM.cs" />

@@ -1,13 +1,9 @@
 ﻿using CycWpfLibrary.Media;
 using CycWpfLibrary.MVVM;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer
 {
@@ -16,15 +12,7 @@ namespace WpfPlotDigitizer
     public AxisPageVM()
     {
       GetAxisCommand = new RelayCommand(GetAxis);
-      IoC.Get<IoC>().ViewModelsLoaded += OnViewModelsLoaded;
     }
-
-    private void OnViewModelsLoaded()
-    {
-      IPVM = IoC.Get<ImageProcessingVM>();
-    }
-    //Singleton fields
-    private ImageProcessingVM IPVM;
 
     public PixelBitmap PBInput => IPVM?.PBInput;
     public PixelBitmap PBFilterW => IPVM?.PBFilterW;

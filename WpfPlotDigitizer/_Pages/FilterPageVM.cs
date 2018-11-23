@@ -7,6 +7,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using IP = WpfPlotDigitizer.ImageProcessing;
+using static WpfPlotDigitizer.DI;
 using CycWpfLibrary.Emgu;
 
 namespace WpfPlotDigitizer
@@ -15,16 +16,8 @@ namespace WpfPlotDigitizer
   {
     public FilterPageVM()
     {
-      IoC.Get<IoC>().ViewModelsLoaded += OnViewModelsLoaded;
       FilterRGBCommand = new RelayCommand<object, Task>(InRangeAsync);
     }
-
-    private void OnViewModelsLoaded()
-    {
-      IPVM = IoC.Get<ImageProcessingVM>();
-    }
-    //Singleton fields
-    private ImageProcessingVM IPVM;
 
     private Image<Bgra, byte> imageAxis => IPVM?.ImageAxis;
     private Image<Bgra, byte> imageFilterRGB

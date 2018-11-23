@@ -1,13 +1,7 @@
 ﻿using CycWpfLibrary.Controls;
 using CycWpfLibrary.MVVM;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
+using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer
 {
@@ -31,28 +25,7 @@ namespace WpfPlotDigitizer
     {
       TurnNextCommand = new RelayCommand(TurnNext, CanTurnNext);
       TurnBackCommand = new RelayCommand(TurnBack, CanTurnBack);
-      IoC.Get<IoC>().ViewModelsLoaded += OnViewModelsLoaded;
     }
-
-    private void OnViewModelsLoaded()
-    {
-      browsePage = new BrowsePage();
-      axisPage = new AxisPage();
-      axisLimitPage = new AxisLimitPage();
-      filterPage = new FilterPage();
-      erasePage = new ErasePage();
-      savePage = new SavePage();
-      emptyPage = new UserControl();
-    }
-
-    // Singleton fields
-    private BrowsePage browsePage;
-    private AxisPage axisPage;
-    private AxisLimitPage axisLimitPage;
-    private FilterPage filterPage;
-    private ErasePage erasePage;
-    private SavePage savePage;
-    private UserControl emptyPage;
 
     private UserControl GetCurrentPage()
     {

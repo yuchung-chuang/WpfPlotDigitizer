@@ -15,27 +15,20 @@ using System.Windows.Media.Imaging;
 using Bitmap = System.Drawing.Bitmap;
 using IP = WpfPlotDigitizer.ImageProcessing;
 using Rectangle = System.Drawing.Rectangle;
+using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer
 {
-  public class AxisLimitPageVM : ViewModelBase
+  public class AxLimPageVM : ViewModelBase
   {
-    public AxisLimitPageVM()
+    public AxLimPageVM()
     {
       GetAxisLimitCommand = new RelayCommand(GetAxisLimit);
       EnableLimitLCommand = new RelayCommand(EnableLimitL);
       EnableLimitTCommand = new RelayCommand(EnableLimitT);
       EnableLimitRCommand = new RelayCommand(EnableLimitR);
       EnableLimitBCommand = new RelayCommand(EnableLimitB);
-      IoC.Get<IoC>().ViewModelsLoaded += OnViewModelsLoaded;
     }
-
-    private void OnViewModelsLoaded()
-    {
-      IPVM = IoC.Get<ImageProcessingVM>();
-    }
-    //Singleton fields
-    private ImageProcessingVM IPVM;
 
     public PixelBitmap PBModified { get; set; }
     public BitmapSource ImageSource => PBModified?.ToBitmapSource();

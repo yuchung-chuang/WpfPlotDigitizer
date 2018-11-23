@@ -3,6 +3,7 @@ using CycWpfLibrary.Media;
 using CycWpfLibrary.MVVM;
 using Emgu.CV.Structure;
 using CycWpfLibrary.Emgu;
+using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer
 {
@@ -10,27 +11,11 @@ namespace WpfPlotDigitizer
   {
     public ApplicationVM()
     {
-      IoC.Get<PageManagerBase>().TurnNextEvent += OnTurnNextAsync;
-      IoC.Get<ImageProcessingVM>().OnPBInputChanged += OnPixelBitmapInputChanged;
-      IoC.Get<IoC>().ViewModelsLoaded += OnViewModelsLoaded;
+      PageManager.TurnNextEvent += OnTurnNextAsync;
+      IPVM.OnPBInputChanged += OnPixelBitmapInputChanged;
     }
 
-    private void OnViewModelsLoaded()
-    {
-      IPVM = IoC.Get<ImageProcessingVM>();
-      axisPageVM = IoC.Get<AxisPageVM>();
-      filterPageVM = IoC.Get<FilterPageVM>();
-      axisLimitPageVM = IoC.Get<AxisLimitPageVM>();
-      PageManager = IoC.Get<PageManagerBase>();
-    }
-
-    //Singleton fields
-    private ImageProcessingVM IPVM;
-    private AxisPageVM axisPageVM;
-    private FilterPageVM filterPageVM;
-    private AxisLimitPageVM axisLimitPageVM;
-
-    public PageManagerBase PageManager { get; private set; }
+    public PageManagerBase PageManager { get; private set; } = new PageManager();
 
     /// <summary>
     /// Turn Next Page automatically after seleted an image
