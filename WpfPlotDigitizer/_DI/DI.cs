@@ -19,7 +19,8 @@ namespace WpfPlotDigitizer
     public static readonly BrowsePageVM browsePageVM = new BrowsePageVM();
     public static readonly AxisPageVM axisPageVM = new AxisPageVM();
     public static readonly AxLimPageVM axisLimitPageVM = new AxLimPageVM();
-    public static readonly FilterPageVM  filterPageVM= new FilterPageVM();
+    public static readonly FilterPageVM filterPageVM = new FilterPageVM();
+    public static readonly ErasePageVM erasePageVM = new ErasePageVM();
 
     public static readonly BrowsePage browsePage = new BrowsePage();
     public static readonly AxisPage axisPage = new AxisPage();

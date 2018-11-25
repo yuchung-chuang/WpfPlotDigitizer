@@ -4,15 +4,14 @@ using Emgu.CV;
 using Emgu.CV.Structure;
 using System;
 using System.Windows;
+using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer
 {
   public class ImageProcessingManager 
   {
-
     public PixelBitmap PBFilterW { get; set; }
 
-    public event Action OnPBInputChanged;
     private PixelBitmap _PBInput;
     public PixelBitmap PBInput
     {
@@ -20,7 +19,7 @@ namespace WpfPlotDigitizer
       set
       {
         _PBInput = value;
-        OnPBInputChanged?.Invoke();
+        AppManager.PageManager.TurnNext();
       }
     }
 
@@ -32,5 +31,6 @@ namespace WpfPlotDigitizer
     public Image<Bgra, byte> ImageAxis { get; set; }
     public Image<Bgra, byte> ImageFilterRGB { get; set; }
 
+    public Image<Bgra, byte> ImageErase { get; set; }
   }
 }

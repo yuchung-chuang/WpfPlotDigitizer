@@ -16,21 +16,6 @@ namespace WpfPlotDigitizer
     /// custom startup so we load the iocContainer immediately after startup
     /// </summary>
     /// <param name="e"></param>
-//    protected override void OnStartup(StartupEventArgs e)
-//    {
-//      base.OnStartup(e);
-
-//      IoC.SetUp();
-      
-//      Current.MainWindow = new MainWindow();
-//#if DEBUG
-//      IoC.Get<ImageProcessingVM>().PBInput = new BitmapImage(new Uri($"pack://application:,,,/images/data.png")).ToPixelBitmap();
-
-//      IoC.Get<PageManagerBase>().TurnNext();
-//#endif 
-//      Current.MainWindow.Show();
-//    }
-
     protected override void OnStartup(StartupEventArgs e)
     {
       base.OnStartup(e);
@@ -39,19 +24,14 @@ namespace WpfPlotDigitizer
           .AddFileLogger()
           .AddWpfPlotDigitizerViewModels()
           .Build();
-      //IoC.SetUp();
-      //#if DEBUG
-      //      IoC.Get<ImageProcessingVM>().PBInput = new BitmapImage(new Uri($"pack://application:,,,/images/data.png")).ToPixelBitmap();
 
-      //      IoC.Get<PageManagerBase>().TurnNext();
-      //#endif 
+      Current.MainWindow = new MainWindow();
 
 #if DEBUG
       IPManager.PBInput = new BitmapImage(new Uri($"pack://application:,,,/images/data.png")).ToPixelBitmap();
       AppManager.PageManager.TurnNext();
 #endif
 
-      Current.MainWindow = new MainWindow();
       Current.MainWindow.Show();
     }
   }

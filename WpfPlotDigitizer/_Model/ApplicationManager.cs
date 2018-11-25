@@ -1,26 +1,24 @@
-﻿using CycWpfLibrary.Controls;
+﻿using CycWpfLibrary;
+using CycWpfLibrary.Controls;
+using CycWpfLibrary.Emgu;
 using CycWpfLibrary.Media;
 using CycWpfLibrary.MVVM;
 using Emgu.CV.Structure;
-using CycWpfLibrary.Emgu;
+using System.Threading;
+using System.Threading.Tasks;
+using static CycWpfLibrary.NativeMethod;
 using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer
 {
-  public class ApplicationManager 
+  public class ApplicationManager
   {
     public ApplicationManager()
     {
       PageManager.TurnNextEvent += OnTurnNextAsync;
-      IPManager.OnPBInputChanged += OnPixelBitmapInputChanged;
     }
 
     public PageManagerBase PageManager { get; private set; } = new PageManager();
-
-    /// <summary>
-    /// Turn Next Page automatically after seleted an image
-    /// </summary>
-    private void OnPixelBitmapInputChanged() => PageManager.TurnNext();
 
     /// <summary>
     /// Called whenever <see cref="PageManager.TurnNext"/> is fired.
@@ -38,7 +36,6 @@ namespace WpfPlotDigitizer
             Pixel = ImageProcessing.FilterW(IPManager.PBInput)
           };
           axisPageVM.GetAxis();
-
           break;
         case ApplicationPages.AxisLimit:
           IPManager.PBAxis = IPManager.PBInput.Bitmap
@@ -52,6 +49,9 @@ namespace WpfPlotDigitizer
           await filterPageVM.InRangeAsync();
           break;
         case ApplicationPages.Erase:
+          IPManager.ImageErase = IPManager.ImageFilterRGB.Clone();
+          erasePageVM.editor.Init(IPManager.ImageErase);
+
           break;
         default:
           break;
