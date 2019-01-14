@@ -30,7 +30,6 @@ namespace WpfPlotDigitizer
       {
         case ApplicationPages.Axis:
           axisPageVM.OnPropertyChanged(nameof(axisPageVM.bitmapSourceInput));
-
           IPManager.PBFilterW = new PixelBitmap(IPManager.PBInput.Size)
           {
             Pixel = ImageProcessing.FilterW(IPManager.PBInput)
@@ -51,7 +50,7 @@ namespace WpfPlotDigitizer
         case ApplicationPages.Erase:
           IPManager.ImageErase = IPManager.ImageFilterRGB.Clone();
           erasePageVM.editor.Init(IPManager.ImageErase);
-
+          erasePageVM.OnPropertyChanged(nameof(erasePageVM.imageSource));
           break;
         default:
           break;

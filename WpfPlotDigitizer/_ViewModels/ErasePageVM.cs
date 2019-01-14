@@ -14,7 +14,7 @@ using CycWpfLibrary.Emgu;
 
 namespace WpfPlotDigitizer
 {
-  public class ErasePageVM
+  public class ErasePageVM : ViewModelBase
   {
 
     public ErasePageVM()
@@ -24,7 +24,7 @@ namespace WpfPlotDigitizer
       
     }
 
-    private Image<Bgra, byte> imageDisplay;
+    public Image<Bgra, byte> imageDisplay => editor.Object as Image<Bgra, byte>;
     public BitmapSource imageSource => imageDisplay?.ToBitmapSource();
     public EditorBase editor { get; private set; } = new ObjectEditor();
 
