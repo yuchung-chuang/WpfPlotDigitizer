@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:cycControls="clr-namespace:CycWpfLibrary.Controls;assembly=CycWpfLibrary"
              xmlns:local="clr-namespace:WpfPlotDigitizer"
+             xmlns:cycMvvm="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="400">
@@ -20,9 +21,9 @@
       <Button Content="Redo"
               Command="{Binding RedoCommand}" />
     </WrapPanel>
-    <cycControls:PanZoomBorder Grid.Column="1">
-      <Image Source="{Binding imageSource}" />
-    </cycControls:PanZoomBorder>
 
+    <cycControls:ImageEraser Grid.Column="1"
+                             Name="imageEraser"
+                             Image="{Binding imageDisplay, Mode=TwoWay}"/>
   </Grid>
 </UserControl>

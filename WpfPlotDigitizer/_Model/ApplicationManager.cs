@@ -15,7 +15,7 @@ namespace WpfPlotDigitizer
   {
     public ApplicationManager()
     {
-      PageManager.TurnNextEvent += OnTurnNextAsync;
+      PageManager.TurnNextEvent += OnTurnNext;
     }
 
     public PageManagerBase PageManager { get; private set; } = new PageManager();
@@ -23,7 +23,7 @@ namespace WpfPlotDigitizer
     /// <summary>
     /// Called whenever <see cref="PageManager.TurnNext"/> is fired.
     /// </summary>
-    private async void OnTurnNextAsync()
+    private void OnTurnNext()
     {
       // call before actually turned next
       switch ((ApplicationPages)PageManager.Index + 1)
@@ -45,12 +45,13 @@ namespace WpfPlotDigitizer
         case ApplicationPages.Filter:
           IPManager.ImageAxis = IPManager.PBAxis.ToImage<Bgra, byte>();
           IPManager.ImageFilterRGB = IPManager.ImageAxis.Clone();
-          await filterPageVM.InRangeAsync();
+          filterPageVM.InRange();
           break;
         case ApplicationPages.Erase:
           IPManager.ImageErase = IPManager.ImageFilterRGB.Clone();
-          erasePageVM.editor.Init(IPManager.ImageErase);
-          erasePageVM.OnPropertyChanged(nameof(erasePageVM.imageSource));
+          erasePageVM.editManager.Init(IPManager.ImageErase);
+          erasePageVM.OnPropertyChanged(nameof(erasePageVM.imageDisplay));
+          erasePage.imageEraser.OnPropertyChanged(nameof(erasePage.imageEraser.ImageSource));
           break;
         default:
           break;

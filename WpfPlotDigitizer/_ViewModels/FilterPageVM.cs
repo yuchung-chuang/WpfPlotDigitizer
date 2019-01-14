@@ -41,5 +41,10 @@ namespace WpfPlotDigitizer
     {
       imageFilterRGB = await IP.InRangeAsync(imageAxis, FilterMax, FilterMin);
     }
+
+    public void InRange()
+    {
+      imageFilterRGB = IP.InRange(imageAxis, FilterMax, FilterMin);
+    }
   }
 }
