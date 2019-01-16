@@ -238,7 +238,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="_Model\ImageProcessingManager.cs" />
+    <Compile Include="_Model\ImageData.cs" />
     <Compile Include="MainWindowVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

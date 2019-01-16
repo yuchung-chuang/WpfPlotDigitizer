@@ -8,20 +8,10 @@ using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer
 {
-  public class ImageProcessingManager 
+  public class ImageData
   {
     public PixelBitmap PBFilterW { get; set; }
-
-    private PixelBitmap _PBInput;
-    public PixelBitmap PBInput
-    {
-      get => _PBInput;
-      set
-      {
-        _PBInput = value;
-        AppManager.PageManager.TurnNext();
-      }
-    }
+    public PixelBitmap PBInput { get; set; }
 
     public Rect Axis { get; set; }
     public AxisType AxisType { get; set; }

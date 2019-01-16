@@ -52,9 +52,9 @@ namespace WpfPlotDigitizer
     public bool EnableB { get; set; } = false;
 
     private readonly Tesseract ocr = IP.InitializeOcr("", "eng", OcrEngineMode.TesseractOnly, "0123456789");
-    private PixelBitmap PBInput => IPManager.PBInput;
-    private AxisType AxisType => IPManager.AxisType;
-    private Rect Axis => IPManager.Axis;
+    private PixelBitmap PBInput => imageData.PBInput;
+    private AxisType AxisType => imageData.AxisType;
+    private Rect Axis => imageData.Axis;
     private (double width, double height) ocrLength => (Axis.Width / 5, Axis.Height / 5);
     private Tesseract.Character[] GetLocalAxisLimit(Image<Bgr, byte> image, Rectangle rectangle)
     {

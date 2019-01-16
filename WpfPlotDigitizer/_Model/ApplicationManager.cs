@@ -30,28 +30,26 @@ namespace WpfPlotDigitizer
       {
         case ApplicationPages.Axis:
           axisPageVM.OnPropertyChanged(nameof(axisPageVM.bitmapSourceInput));
-          IPManager.PBFilterW = new PixelBitmap(IPManager.PBInput.Size)
+          imageData.PBFilterW = new PixelBitmap(imageData.PBInput.Size)
           {
-            Pixel = ImageProcessing.FilterW(IPManager.PBInput)
+            Pixel = ImageProcessing.FilterW(imageData.PBInput)
           };
           axisPageVM.GetAxis();
           break;
         case ApplicationPages.AxisLimit:
-          IPManager.PBAxis = IPManager.PBInput.Bitmap
-                                        .Crop(IPManager.Axis)
+          imageData.PBAxis = imageData.PBInput.Bitmap
+                                        .Crop(imageData.Axis)
                                         .ToPixelBitmap();
           axisLimitPageVM.GetAxisLimit();
           break;
         case ApplicationPages.Filter:
-          IPManager.ImageAxis = IPManager.PBAxis.ToImage<Bgra, byte>();
-          IPManager.ImageFilterRGB = IPManager.ImageAxis.Clone();
+          imageData.ImageAxis = imageData.PBAxis.ToImage<Bgra, byte>();
+          imageData.ImageFilterRGB = imageData.ImageAxis.Clone();
           filterPageVM.InRange();
           break;
         case ApplicationPages.Erase:
-          IPManager.ImageErase = IPManager.ImageFilterRGB.Clone();
-          erasePageVM.editManager.Init(IPManager.ImageErase);
-          erasePageVM.OnPropertyChanged(nameof(erasePageVM.imageDisplay));
-          erasePage.imageEraser.OnPropertyChanged(nameof(erasePage.imageEraser.ImageSource));
+          imageData.ImageErase = imageData.ImageFilterRGB.Clone();
+          erasePageVM.editManager.Init(imageData.ImageErase);
           break;
         default:
           break;
