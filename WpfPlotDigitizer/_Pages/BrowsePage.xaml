@@ -12,7 +12,7 @@
   
   <Grid Name="gridBase">
 
-    <cycControls:DropImageReceiver />
+    <cycControls:DropImageReceiver DropPixelBitmap="{Binding PBInput, Mode=OneWayToSource}" />
 
     <StackPanel Visibility="Visible"
                 Orientation="Vertical"
