@@ -7,7 +7,7 @@ using Emgu.CV.Structure;
 using System.Threading;
 using System.Threading.Tasks;
 using static CycWpfLibrary.NativeMethod;
-using static WpfPlotDigitizer.DI;
+using static WpfPlotDigitizer.Singletons;
 
 namespace WpfPlotDigitizer
 {

@@ -4,7 +4,7 @@ using Emgu.CV;
 using Emgu.CV.Structure;
 using System;
 using System.Windows;
-using static WpfPlotDigitizer.DI;
+using static WpfPlotDigitizer.Singletons;
 
 namespace WpfPlotDigitizer
 {

@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using static WpfPlotDigitizer.DI;
+using static WpfPlotDigitizer.Singletons;
 
 namespace WpfPlotDigitizer
 {
@@ -22,8 +22,12 @@ namespace WpfPlotDigitizer
 
     public PixelBitmap PBInput
     {
-      get => IPManager.PBInput;
-      set => IPManager.PBInput = value;
+      get => imageData?.PBInput;
+      set
+      {
+        imageData.PBInput = value;
+        appManager.PageManager.TurnNext(); //設定好就直接翻頁
+      }
     }
 
     public ICommand OpenFileCommand { get; set; }

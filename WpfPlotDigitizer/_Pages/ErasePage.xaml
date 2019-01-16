@@ -20,10 +20,12 @@
               Command="{Binding UndoCommand}" />
       <Button Content="Redo"
               Command="{Binding RedoCommand}" />
+      <Button Content="Debug"
+              Command="{Binding DebugCommand}" />
     </WrapPanel>
 
     <cycControls:ImageEraser Grid.Column="1"
                              Name="imageEraser"
-                             Image="{Binding imageDisplay, Mode=TwoWay}"/>
+                             Image="{Binding imageErase, Mode=TwoWay}"/>
   </Grid>
 </UserControl>

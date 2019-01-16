@@ -1,6 +1,6 @@
 ﻿using CycWpfLibrary.Controls;
 using CycWpfLibrary.MVVM;
-using static WpfPlotDigitizer.DI;
+using static WpfPlotDigitizer.Singletons;
 
 namespace WpfPlotDigitizer
 {

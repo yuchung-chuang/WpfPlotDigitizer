@@ -42,9 +42,6 @@
     <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\ControlzEx.dll</HintPath>
     </Reference>
-    <Reference Include="Dna.Framework, Version=1.0.7.10, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dna.Framework.1.0.7.10\lib\netstandard2.0\Dna.Framework.dll</HintPath>
-    </Reference>
     <Reference Include="Emgu.CV.UI, Version=3.4.3.3016, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL">
       <HintPath>..\packages\EMGU.CV.3.4.3.3016\lib\net35\Emgu.CV.UI.dll</HintPath>
     </Reference>
@@ -172,7 +169,6 @@
     </ApplicationDefinition>
     <Compile Include="ToBeImproved\IsObserveSize.cs" />
     <Compile Include="_DI\DI.cs" />
-    <Compile Include="_DI\DIConstructExtensions.cs" />
     <Compile Include="_ViewModels\AxisLimitPageVM.cs" />
     <Compile Include="_ViewModels\SavePageVM.cs" />
     <Compile Include="_ViewModels\ErasePageVM.cs" />

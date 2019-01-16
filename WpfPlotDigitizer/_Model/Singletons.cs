@@ -1,19 +1,20 @@
-﻿using Dna;
+﻿using CycWpfLibrary.Media;
+using Emgu.CV;
+using Emgu.CV.Structure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace WpfPlotDigitizer
 {
-  public static class DI
+  public static class Singletons
   {
-    public static ApplicationManager AppManager
-      => Framework.Service<ApplicationManager>();
-    public static ImageProcessingManager IPManager
-      => Framework.Service<ImageProcessingManager>();
+    public static readonly ApplicationManager appManager = new ApplicationManager();
+    public static readonly ImageData imageData = new ImageData();
 
     public static readonly MainWindowVM mainWindowVM = new MainWindowVM();
     public static readonly BrowsePageVM browsePageVM = new BrowsePageVM();

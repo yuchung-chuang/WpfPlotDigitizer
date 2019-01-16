@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using static WpfPlotDigitizer.DI;
+using static WpfPlotDigitizer.Singletons;
 
 namespace WpfPlotDigitizer
 {

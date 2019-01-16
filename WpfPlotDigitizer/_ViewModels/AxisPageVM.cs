@@ -3,7 +3,7 @@ using CycWpfLibrary.MVVM;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using static WpfPlotDigitizer.DI;
+using static WpfPlotDigitizer.Singletons;
 
 namespace WpfPlotDigitizer
 {

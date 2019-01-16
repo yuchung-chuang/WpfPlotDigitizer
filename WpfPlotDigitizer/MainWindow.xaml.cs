@@ -1,5 +1,5 @@
 ﻿using MahApps.Metro.Controls;
-using static WpfPlotDigitizer.DI;
+using static WpfPlotDigitizer.Singletons;
 
 namespace WpfPlotDigitizer
 {

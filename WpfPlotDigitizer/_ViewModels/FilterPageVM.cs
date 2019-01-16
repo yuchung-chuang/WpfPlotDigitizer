@@ -7,7 +7,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using IP = WpfPlotDigitizer.ImageProcessing;
-using static WpfPlotDigitizer.DI;
+using static WpfPlotDigitizer.Singletons;
 using CycWpfLibrary.Emgu;
 
 namespace WpfPlotDigitizer
