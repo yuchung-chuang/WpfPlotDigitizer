@@ -8,7 +8,7 @@ using static WpfPlotDigitizer.Singletons;
 
 namespace WpfPlotDigitizer
 {
-  public class ImageData
+  public class ImageData : NotifyableObject
   {
     public PixelBitmap PBFilterW { get; set; }
     public PixelBitmap PBInput { get; set; }

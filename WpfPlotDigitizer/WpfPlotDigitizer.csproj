@@ -168,7 +168,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ToBeImproved\IsObserveSize.cs" />
-    <Compile Include="_DI\DI.cs" />
+    <Compile Include="_Model\Singletons.cs" />
     <Compile Include="_ViewModels\AxisLimitPageVM.cs" />
     <Compile Include="_ViewModels\SavePageVM.cs" />
     <Compile Include="_ViewModels\ErasePageVM.cs" />

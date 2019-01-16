@@ -29,7 +29,6 @@ namespace WpfPlotDigitizer
       switch ((ApplicationPages)PageManager.Index + 1)
       {
         case ApplicationPages.Axis:
-          axisPageVM.OnPropertyChanged(nameof(axisPageVM.bitmapSourceInput));
           imageData.PBFilterW = new PixelBitmap(imageData.PBInput.Size)
           {
             Pixel = ImageProcessing.FilterW(imageData.PBInput)
