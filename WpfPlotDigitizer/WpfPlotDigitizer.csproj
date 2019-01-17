@@ -184,8 +184,8 @@
     <Compile Include="_Pages\SavePage.xaml.cs">
       <DependentUpon>SavePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="_Pages\AxisLimitPage.xaml.cs">
-      <DependentUpon>AxisLimitPage.xaml</DependentUpon>
+    <Compile Include="_Pages\AxLimPage.xaml.cs">
+      <DependentUpon>AxLimPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="_ViewModels\AxisPageVM.cs" />
     <Compile Include="_ViewModels\FilterPageVM.cs" />
@@ -197,7 +197,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="_Pages\AxisLimitPage.xaml">
+    <Page Include="_Pages\AxLimPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

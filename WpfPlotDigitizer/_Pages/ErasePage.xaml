@@ -8,7 +8,8 @@
              xmlns:cycMvvm="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
              mc:Ignorable="d"
              d:DesignHeight="450"
-             d:DesignWidth="400">
+             d:DesignWidth="400"
+             d:DataContext="{d:DesignInstance local:ErasePageVM, IsDesignTimeCreatable=True}">
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="auto" />

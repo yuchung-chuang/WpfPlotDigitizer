@@ -8,7 +8,8 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d"
              d:DesignHeight="600"
-             d:DesignWidth="900">
+             d:DesignWidth="900"
+             d:DataContext="{d:DesignInstance local:FilterPageVM, IsDesignTimeCreatable=True}">
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*" />
