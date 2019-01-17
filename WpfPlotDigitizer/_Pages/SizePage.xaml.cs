@@ -1,5 +1,4 @@
-﻿using CycWpfLibrary.MVVM;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,20 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer
 {
   /// <summary>
-  /// ErasePage.xaml 的互動邏輯
+  /// SizePage.xaml 的互動邏輯
   /// </summary>
-  public partial class ErasePage : UserControl
+  public partial class SizePage : UserControl
   {
-    public ErasePage()
+    public SizePage()
     {
       InitializeComponent();
-
-      DataContext = erasePageVM;
     }
   }
 }

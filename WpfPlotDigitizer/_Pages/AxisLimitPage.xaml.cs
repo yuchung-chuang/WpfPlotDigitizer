@@ -1,18 +1,18 @@
 ﻿using System.Windows.Controls;
-using static WpfPlotDigitizer.Singletons;
+using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer
 {
   /// <summary>
   /// AxisLimitPage.xaml 的互動邏輯
   /// </summary>
-  public partial class AxisLimitPage : UserControl
+  public partial class AxLimPage : UserControl
   {
-    public AxisLimitPage()
+    public AxLimPage()
     {
       InitializeComponent();
 
-      DataContext = axisLimitPageVM;
+      DataContext = axLimPageVM;
     }
   }
 }

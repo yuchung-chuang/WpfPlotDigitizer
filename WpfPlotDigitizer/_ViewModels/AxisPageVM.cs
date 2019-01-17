@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using static WpfPlotDigitizer.Singletons;
+using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer
 {
@@ -20,7 +20,7 @@ namespace WpfPlotDigitizer
     {
       if (e.PropertyName == nameof(imageData.PBInput))
       {
-        OnPropertyChanged(nameof(bitmapSourceInput));
+        OnPropertyChanged(nameof(ImageSource));
       }
     }
 
@@ -43,7 +43,7 @@ namespace WpfPlotDigitizer
       set => imageData.AxisType = value;
     }
 
-    public BitmapSource bitmapSourceInput => PBInput?.ToBitmapSource();
+    public BitmapSource ImageSource => PBInput?.ToBitmapSource();
     public double AxisLeft
     {
       get => Axis.Left;

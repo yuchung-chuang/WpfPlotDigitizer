@@ -113,6 +113,10 @@
       <Project>{dc9b1571-60b9-48d4-a147-24820d8e895b}</Project>
       <Name>CycWpfLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WpfPlotDigitizer\WpfPlotDigitizer.csproj">
+      <Project>{81747536-ADC6-4893-A248-7039A67C52D9}</Project>
+      <Name>WpfPlotDigitizer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

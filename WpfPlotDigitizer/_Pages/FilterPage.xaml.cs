@@ -1,5 +1,5 @@
 ﻿using System.Windows.Controls;
-using static WpfPlotDigitizer.Singletons;
+using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer
 {

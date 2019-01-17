@@ -7,7 +7,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using IP = WpfPlotDigitizer.ImageProcessing;
-using static WpfPlotDigitizer.Singletons;
+using static WpfPlotDigitizer.DI;
 using CycWpfLibrary.Emgu;
 
 namespace WpfPlotDigitizer
@@ -25,7 +25,7 @@ namespace WpfPlotDigitizer
       get => imageData?.ImageFilterRGB;
       set => imageData.ImageFilterRGB = value;
     }
-    public BitmapSource bitmapSourceFilterRGB => imageFilterRGB?.ToBitmapSource();
+    public BitmapSource ImageSource => imageFilterRGB?.ToBitmapSource();
 
     public byte FilterRMax { get; set; } = 255;
     public byte FilterRMin { get; set; } = 0;

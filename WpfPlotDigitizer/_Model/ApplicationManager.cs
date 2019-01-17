@@ -7,7 +7,7 @@ using Emgu.CV.Structure;
 using System.Threading;
 using System.Threading.Tasks;
 using static CycWpfLibrary.NativeMethod;
-using static WpfPlotDigitizer.Singletons;
+using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer
 {
@@ -39,7 +39,7 @@ namespace WpfPlotDigitizer
           imageData.PBAxis = imageData.PBInput.Bitmap
                                         .Crop(imageData.Axis)
                                         .ToPixelBitmap();
-          axisLimitPageVM.GetAxisLimit();
+          axLimPageVM.GetAxisLimit();
           break;
         case ApplicationPages.Filter:
           imageData.ImageAxis = imageData.PBAxis.ToImage<Bgra, byte>();
@@ -49,6 +49,9 @@ namespace WpfPlotDigitizer
         case ApplicationPages.Erase:
           imageData.ImageErase = imageData.ImageFilterRGB.Clone();
           erasePageVM.editManager.Init(imageData.ImageErase);
+          break;
+        case ApplicationPages.Size:
+
           break;
         default:
           break;

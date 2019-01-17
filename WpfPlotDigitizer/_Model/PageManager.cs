@@ -1,7 +1,7 @@
 ﻿using CycWpfLibrary.Controls;
 using CycWpfLibrary.MVVM;
 using System.Windows.Controls;
-using static WpfPlotDigitizer.Singletons;
+using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer
 {
@@ -12,6 +12,7 @@ namespace WpfPlotDigitizer
     AxisLimit,
     Filter,
     Erase,
+    Size,
     Save,
     /// <summary>
     /// Number of pages, should always be the last element of enum
@@ -39,13 +40,16 @@ namespace WpfPlotDigitizer
           CurrentPage = axisPage;
           break;
         case ApplicationPages.AxisLimit:
-          CurrentPage = axisLimitPage;
+          CurrentPage = axLimPage;
           break;
         case ApplicationPages.Filter:
           CurrentPage = filterPage;
           break;
         case ApplicationPages.Erase:
           CurrentPage = erasePage;
+          break;
+        case ApplicationPages.Size:
+          CurrentPage = sizePage;
           break;
         case ApplicationPages.Save:
           CurrentPage = savePage;

@@ -15,7 +15,7 @@
       <ColumnDefinition Width="auto" />
     </Grid.ColumnDefinitions>
     <Border Grid.Column="0">
-      <Image Source="{Binding bitmapSourceFilterRGB}" />
+      <Image Source="{Binding ImageSource}" />
     </Border>
     <StackPanel Grid.Column="1"
                 Orientation="Horizontal">

@@ -42,6 +42,9 @@
     <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\ControlzEx.dll</HintPath>
     </Reference>
+    <Reference Include="Dna.Framework, Version=1.0.7.10, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dna.Framework.1.0.7.10\lib\netstandard2.0\Dna.Framework.dll</HintPath>
+    </Reference>
     <Reference Include="Emgu.CV.UI, Version=3.4.3.3016, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL">
       <HintPath>..\packages\EMGU.CV.3.4.3.3016\lib\net35\Emgu.CV.UI.dll</HintPath>
     </Reference>
@@ -167,8 +170,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="_Model\DIConstructExtensions.cs" />
+    <Compile Include="ViewModelBase.cs" />
+    <Compile Include="_ViewModels\SizePageVM.cs" />
+    <Compile Include="_Pages\SizePage.xaml.cs">
+      <DependentUpon>SizePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ToBeImproved\IsObserveSize.cs" />
-    <Compile Include="_Model\Singletons.cs" />
+    <Compile Include="_Model\DI.cs" />
     <Compile Include="_ViewModels\AxisLimitPageVM.cs" />
     <Compile Include="_ViewModels\SavePageVM.cs" />
     <Compile Include="_ViewModels\ErasePageVM.cs" />
@@ -180,6 +189,10 @@
     </Compile>
     <Compile Include="_ViewModels\AxisPageVM.cs" />
     <Compile Include="_ViewModels\FilterPageVM.cs" />
+    <Page Include="_Pages\SizePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="_Pages\SavePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

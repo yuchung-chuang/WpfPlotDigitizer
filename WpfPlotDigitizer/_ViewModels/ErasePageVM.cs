@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static WpfPlotDigitizer.Singletons;
+using static WpfPlotDigitizer.DI;
 using System.Windows.Input;
 using Emgu.CV;
 using Emgu.CV.Structure;

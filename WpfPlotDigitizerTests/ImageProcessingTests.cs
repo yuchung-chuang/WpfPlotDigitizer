@@ -18,18 +18,15 @@ namespace WpfPlotDigitizer.Tests
   public class ImageProcessingTests
   {
     private PixelBitmap pixelBitmap;
-    private Image<Rgba, byte> imageRGBA;
-    private Image<Bgr, byte> imageRGB;
-    private Image<Hsv, byte> imageHSV;
+    private Image<Bgra, byte> imageBGRA; 
+    private Image<Rgba, byte> imageRGBA; 
     private Mat mat;
 
     public ImageProcessingTests()
     {
       pixelBitmap = new Bitmap(@"C:\Users\alex\Desktop\WPF\WpfPlotDigitizer\WpfPlotDigitizerTests\data.png").ToPixelBitmap();
-      imageRGBA = pixelBitmap.ToImage<Rgba, byte>();
-      imageRGB = pixelBitmap.ToImage<Bgr, byte>();
-      imageHSV = pixelBitmap.ToImage<Hsv, byte>();
-      mat = imageRGBA.Mat;
+      imageBGRA = pixelBitmap.ToImage<Bgra, byte>();  
+      mat = imageBGRA.Mat;
     }
 
     [TestMethod()]
@@ -45,6 +42,7 @@ namespace WpfPlotDigitizer.Tests
     }
 
     [TestMethod()]
+    [Obsolete]
     public void FilterRGBTest()
     {
       PixelBitmap PBFilterRGB = new PixelBitmap();
@@ -66,6 +64,7 @@ namespace WpfPlotDigitizer.Tests
     }
 
     [TestMethod]
+    [Obsolete]
     public void FilterRGB_EmguTest()
     {
       Image<Rgba, byte> imageFilterRGB = new Image<Rgba, byte>(imageRGBA.Size);
@@ -91,14 +90,14 @@ namespace WpfPlotDigitizer.Tests
     [TestMethod()]
     public void InRangeTest()
     {
-      Image<Rgba, byte> imageFilterRGB = new Image<Rgba, byte>(imageRGBA.Size);
+      Image<Bgra, byte> imageFilterRGB = new Image<Bgra, byte>(imageBGRA.Size);
       double ms = 0;
       int n = 100;
       for (int i = 0; i < n; i++)
       {
         ms += NativeMethod.TimeIt(() =>
         {
-          imageFilterRGB = ImageProcessing.InRange(imageRGBA, Color.FromRgb(250, 250, 250), Color.FromRgb(10, 10, 10));
+          imageFilterRGB = ImageProcessing.InRange(imageBGRA, Color.FromRgb(250, 250, 250), Color.FromRgb(10, 10, 10));
           if (i == 0)
           {
             ms = 0;

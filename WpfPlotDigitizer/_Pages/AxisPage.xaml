@@ -15,7 +15,7 @@
       <Viewbox>
         <Grid Name="gridBase2">
           <Image Name="imageAxis"
-                 Source="{Binding bitmapSourceInput}"
+                 Source="{Binding ImageSource}"
                  Stretch="None" />
           <cycControls:Axis AxisLeft="{Binding AxisLeft, Mode=TwoWay}"
                             AxisTop="{Binding AxisTop, Mode=TwoWay}"

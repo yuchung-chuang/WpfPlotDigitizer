@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using Bitmap = System.Drawing.Bitmap;
 using IP = WpfPlotDigitizer.ImageProcessing;
 using Rectangle = System.Drawing.Rectangle;
-using static WpfPlotDigitizer.Singletons;
+using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer
 {

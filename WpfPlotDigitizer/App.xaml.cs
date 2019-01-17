@@ -1,9 +1,10 @@
 ﻿using CycWpfLibrary.Media;
+using Dna;
 using System;
 using System.Threading;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using static WpfPlotDigitizer.Singletons;
+using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer
 {
@@ -19,8 +20,12 @@ namespace WpfPlotDigitizer
     protected override void OnStartup(StartupEventArgs e)
     {
       base.OnStartup(e);
+      Framework.Construct<DefaultFrameworkConstruction>()
+        .AddFileLogger()
+        .AddWpfPlotDigitizerViewModels()
+        .Build();
 
-      Current.MainWindow = new MainWindow();
+      Current.MainWindow = mainWindow;
       Current.MainWindow.Show();
 
 #if DEBUG
