@@ -7,12 +7,14 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.OCR;
 using Emgu.CV.Structure;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using static CycWpfLibrary.Math;
+using static System.Math;
 using ct = System.Threading.CancellationToken;
 using PB = CycWpfLibrary.Media.PixelBitmap;
 
@@ -344,12 +346,11 @@ namespace WpfPlotDigitizer
       }
     }
 
-    private static readonly Bgra transparent = new Bgra(0, 0, 0, 0);
     public static Image<Bgra, byte> InRange(Image<Bgra, byte> iptImage, Color Max, Color Min)
     {
       var mask = iptImage.InRange(Min.ToBgra(), Max.ToBgra());
       var optImage = iptImage.Copy(mask);
-      optImage.SetValue(transparent, mask.Not());
+      optImage.SetValue(Bgras.Transparent, mask.Not());
       return optImage;
     }
     public static async Task<Image<Bgra, byte>> InRangeAsync(Image<Bgra, byte> iptImage, Color Max, Color Min)
@@ -399,8 +400,60 @@ namespace WpfPlotDigitizer
       }
     }
 
+    private static bool IsData(Image<Bgra, byte> image, Rect rect)
+    {
+      var area = rect.Width * rect.Height;
+      int count = 0;
+      for (int x = (int)rect.X; x < rect.Right; x++)
+        for (int y = (int)rect.Y; y < rect.Bottom; y++)
+          if (image.Data[x, y, 3] != 0)
+            count++;
+      return count > area / 2 ? true : false;
+    }
+    public static List<Point> GetData(Image<Bgra, byte> image, Rect axLim, Point @base, int size)
+    {
+      var width = image.Width;
+      var height = image.Height;
+      Point axisPos;
+      Point data;
+      List<Point> dataList = new List<Point>();
+      for (int x = 0; x < width; x += size)
+      {
+        for (int y = 0; y < height; y += size)
+        {
+          if (IsData(image, new Rect(x, y, size, size)))
+            continue;
+
+          axisPos = new Point(x, height - y);
+          data = new Point
+          {
+            X = LinConvert(axisPos.X, width, 0, axLim.Right, axLim.Left),
+            Y = LinConvert(axisPos.Y, height, 0, axLim.Bottom, axLim.Top),
+          };
+
+          if (@base.X > 0)
+            data.X = (float)Pow(
+              @base.X,
+              LinConvert(data.X, axLim.Left, axLim.Right,
+                LogBase(@base.X, axLim.Left),
+                LogBase(@base.X, axLim.Right))
+              );
+          if (@base.Y > 0)
+            data.Y = (float)Pow(
+              @base.Y,
+              LinConvert(data.Y, axLim.Top, axLim.Bottom,
+                LogBase(@base.Y, axLim.Top),
+                LogBase(@base.Y, axLim.Bottom))
+              );
+
+          dataList.Add(data);
+        }
+      }
+      return dataList;
+    }
 
     #region Deprecated methods
+    [Obsolete]
     public static PB FilterRGB(PB iptImage, Color Max, Color Min, ct token)
     {
       var optPixel = iptImage.Pixel.Clone() as byte[];
@@ -426,6 +479,7 @@ namespace WpfPlotDigitizer
       }
       return new PB(optPixel, iptImage.Size);
     }
+    [Obsolete]
     public static async Task<PB> FilterRGBAsync(PB iptImage, Color Max, Color Min, ct token)
     {
       PB optImage = new PB();
@@ -442,7 +496,7 @@ namespace WpfPlotDigitizer
       }, token);
       return optImage;
     }
-
+    [Obsolete]
     public static Image<Rgba, byte> FilterRGB_Emgu(Image<Rgba, byte> image, Color Max, Color Min, ct token)
     {
       var optPixel = image.Data.Clone() as byte[,,];
@@ -467,19 +521,21 @@ namespace WpfPlotDigitizer
       //new PB(optPixel).ShowSnapShot();
       return new Image<Rgba, byte>(optPixel);
     }
-
+    [Obsolete]
     public static PB InRange(PB iptImage, Color Max, Color Min)
     {
       return InRange(iptImage.ToImage<Rgba, byte>(), Max, Min).ToPixelBitmap();
     }
+    [Obsolete]
     public static async Task<PB> InRangeAsync(PB iptImage, Color Max, Color Min)
     {
       PB optImage = new PB();
       await Task.Run(() => optImage = InRange(iptImage, Max, Min));
       return optImage;
     }
-
+    [Obsolete]
     private static readonly Rgba transparentRgba = new Rgba(0, 0, 0, 0);
+    [Obsolete]
     public static Image<Rgba, byte> InRange(Image<Rgba, byte> iptImage, Color Max, Color Min)
     {
       var mask = iptImage.InRange(Min.ToRgba(), Max.ToRgba());
@@ -487,6 +543,7 @@ namespace WpfPlotDigitizer
       optImage.SetValue(transparentRgba, mask.Not());
       return optImage;
     }
+    [Obsolete]
     public static async Task<Image<Rgba, byte>> InRangeAsync(Image<Rgba, byte> iptImage, Color Max, Color Min)
     {
       var optImage = new Image<Rgba, byte>(iptImage.Size);
