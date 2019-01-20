@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="WpfPlotDigitizer.SizePage"
+﻿<UserControl x:Class="WpfPlotDigitizer.DataPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -20,14 +20,23 @@
     <Grid>
       <Image Source="{Binding imageSource}"
              mvvm:Zoom.IsEnabled="True"
+             mvvm:Zoom.IsLeaveReset="False"
+             mvvm:Zoom.Maximum="100"
              mvvm:Pan.IsEnabled="True" />
     </Grid>
-    <Slider Grid.Column="1"
-            Orientation="Vertical"
-            Margin="40"
-            Minimum="2"
-            Maximum="50"
-            Value="{Binding DataSize }"
-            mahapps:SliderHelper.TrackValueFillBrush="Black" />
+    <StackPanel Grid.Column="1"
+                Orientation="Horizontal">
+      <Slider Orientation="Vertical"
+              Margin="10,40"
+              Minimum="1"
+              Maximum="50"
+              Value="{Binding DataSize }" />
+      <Slider Orientation="Vertical"
+              Margin="10,40,40,40"
+              Minimum="0"
+              Maximum="100"
+              Value="{Binding RatioInt}" />
+    </StackPanel>
+
   </Grid>
 </UserControl>

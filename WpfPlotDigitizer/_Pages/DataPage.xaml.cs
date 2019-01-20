@@ -18,9 +18,9 @@ namespace WpfPlotDigitizer
   /// <summary>
   /// SizePage.xaml 的互動邏輯
   /// </summary>
-  public partial class SizePage : UserControl
+  public partial class DataPage : UserControl
   {
-    public SizePage()
+    public DataPage()
     {
       InitializeComponent();
       DataContext = DI.sizePageVM;

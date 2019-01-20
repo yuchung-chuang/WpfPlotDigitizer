@@ -2,6 +2,7 @@
 using CycWpfLibrary.MVVM;
 using CycWpfLibrary.WinForm;
 using Emgu.CV;
+using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using System;
 using System.Collections.Generic;
@@ -22,14 +23,25 @@ namespace WpfPlotDigitizer
     public Image<Bgra, byte> imageDisplay { get; set; }
     public BitmapSource imageSource => imageDisplay?.ToBitmapSource();
 
-    private int dataSize = 2;
+    private int dataSize = 1;
     public int DataSize
     {
       get => dataSize;
       set
       {
         dataSize = value;
-        SizeChanged();
+        ParamChanged();
+      }
+    }
+    private double ratio => ratioInt / 100d;
+    private int ratioInt = 100;
+    public int RatioInt
+    {
+      get => ratioInt;
+      set
+      {
+        ratioInt = value;
+        ParamChanged();
       }
     }
 
@@ -38,16 +50,18 @@ namespace WpfPlotDigitizer
       get => imageData.Data;
       set => imageData.Data = value;
     }
-    public List<Point> Pos { get; set; }
 
-    public void SizeChanged()
+    public void ParamChanged()
     {
-      (Data, Pos) = ImageProcessing.GetData(imageOrigin, imageData.Axis, new Point(1,1), DataSize);
+      var posLists = ImageProcessing.GetDataList(imageOrigin, dataSize);
+      var Pos = ImageProcessing.GetData(imageOrigin, posLists, dataSize, ratio);
+      Data = ImageProcessing.TransformData(imageOrigin, Pos, imageData.Axis, new Point(1, 1));
       imageDisplay = imageOrigin.Clone();
+      var dotSize = DataSize == 1 ? 1 : DataSize / 2;
       foreach (var pos in Pos)
       {
-        CvInvoke.Circle(imageDisplay, pos.ToWinForm(), DataSize / 2, Colors.Red.ToMCvScalar(), -1);
-        CvInvoke.Circle(imageDisplay, pos.ToWinForm(), DataSize / 2, Colors.Black.ToMCvScalar(), 1);
+        CvInvoke.Circle(imageDisplay, pos.ToWinForm(), dotSize, Colors.Red.ToMCvScalar(), -1, LineType.AntiAlias);
+        CvInvoke.Circle(imageDisplay, pos.ToWinForm(), dotSize, Colors.Black.ToMCvScalar(), 1, LineType.AntiAlias);
       }
       OnPropertyChanged(nameof(imageSource));
     }
