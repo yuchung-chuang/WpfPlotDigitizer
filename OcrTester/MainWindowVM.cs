@@ -35,11 +35,10 @@ namespace OcrTester
 
       var characters = ocr.GetCharacters();
 
-      var color = Colors.Blue.ToMCvScalar();
       foreach (Tesseract.Character c in characters)
       {
-        CvInvoke.Rectangle(image, c.Region, color);
-        CvInvoke.PutText(image, c.Text, c.Region.Location, FontFace.HersheyPlain, 1, color);
+        //CvInvoke.Rectangle(image, c.Region, Colors.Blue.ToMCvScalar());
+        CvInvoke.PutText(image, c.Text, c.Region.Location, FontFace.HersheyPlain, 1, Colors.Red.ToMCvScalar());
       }
 
       imageSource = image.Bitmap.ToBitmapSource();

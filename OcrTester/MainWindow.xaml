@@ -4,15 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OcrTester"
+        xmlns:mvvm="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance local:MainWindowVM, IsDesignTimeCreatable=True}"
         Title="MainWindow"
         Height="450"
         Width="800">
-  <Window.DataContext>
-    <local:MainWindowVM />
-  </Window.DataContext>
   <Grid Name="grid">
     <Image Name="image"
-           Source="{Binding imageSource}"/>
+           Source="{Binding imageSource}"
+           mvvm:Zoom.IsEnabled="True"
+           mvvm:Pan.IsEnabled="True"/>
   </Grid>
 </Window>

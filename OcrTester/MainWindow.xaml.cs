@@ -23,6 +23,7 @@ namespace OcrTester
     public MainWindow()
     {
       InitializeComponent();
+      DataContext = new MainWindowVM();
     }
   }
 }
