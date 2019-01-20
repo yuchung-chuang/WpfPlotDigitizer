@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -369,6 +370,8 @@ namespace WpfPlotDigitizer
 
       var characters = ocr.GetCharacters();
 
+
+
       return characters;
     }
     public static void DrawCharacters(IInputOutputArray image, Tesseract.Character[] characters)
@@ -400,60 +403,173 @@ namespace WpfPlotDigitizer
       }
     }
 
-    private static bool IsData(Image<Bgra, byte> image, Rect rect)
-    {
-      var area = rect.Width * rect.Height;
-      var colMax = rect.Right;
-      var rowMax = rect.Bottom;
-      int count = 0;
-      for (int col = (int)rect.X; col < rect.Right; col++)
-        for (int row = (int)rect.Y; row < rect.Bottom; row++)
-          if (image.Data[row, col, 3] != 0)
-            count++;
-      return count == area ? true : false;
-    }
-    public static (List<Point> data, List<Point> pos) GetData(Image<Bgra, byte> image, Rect axLim, Point @base, int size)
+    public static List<List<Point>> GetDataList(Image<Bgra, byte> image, int size)
     {
       var width = image.Width;
       var height = image.Height;
-      var xMax = width - size;
-      var yMax = height - size;
-      Point data, pos;
-      List<Point> dataList = new List<Point>(), posList = new List<Point>();
-      for (int x = 0; x < xMax; x += size)
+      var posLists = new List<List<Point>>();
+      var searched = new bool[height, width];
+      for (int col = 0; col < width; col++)
       {
-        for (int y = 0; y < yMax; y += size)
+        for (int row = 0; row < height; row++)
         {
-          if (!IsData(image, new Rect(x, y, size, size)))
+          if (searched[row, col] || image.Data[row, col, 3] == 0)
             continue;
+          var posList = FloodFill(row, col);
 
-          pos = new Point(x, y);
-          data = new Point
+          if (posList.Count > Pow(size, 2))
           {
-            X = LinConvert(x, width, 0, axLim.Right, axLim.Left),
-            Y = LinConvert(height - y, height, 0, axLim.Bottom, axLim.Top),
-          };
-
-          //if (@base.X > 0)
-          //  data.X = (float)Pow(
-          //    @base.X,
-          //    LinConvert(data.X, axLim.Left, axLim.Right,
-          //      LogBase(@base.X, axLim.Left),
-          //      LogBase(@base.X, axLim.Right))
-          //    );
-          //if (@base.Y > 0)
-          //  data.Y = (float)Pow(
-          //    @base.Y,
-          //    LinConvert(data.Y, axLim.Top, axLim.Bottom,
-          //      LogBase(@base.Y, axLim.Top),
-          //      LogBase(@base.Y, axLim.Bottom))
-          //    );
-
-          dataList.Add(data);
-          posList.Add(pos);
+            posList.OrderBy(p => p.Y).ThenBy(p => p.X);
+            posLists.Add(posList);
+          }
         }
       }
-      return (dataList, posList);
+      return posLists;
+
+      List<Point> FloodFill(int row, int col)
+      {
+        var posList = new List<Point>();
+        int colL, colR;
+        bool IsSpan;
+        Point pos = new Point(col, row);
+        Stack<Point> stack = new Stack<Point>();
+        stack.Push(pos);
+        while (stack.Count != 0)
+        {
+          pos = stack.Pop();
+          row = (int)pos.Y;
+          col = (int)pos.X;
+          //向右填充
+          while (IsNeedFill())
+          {
+            posList.Add(new Point(col, row));
+            searched[row, col] = true;
+            col++;
+          }
+          colR = col - 1;
+          col = (int)pos.X - 1;
+          //向左填充
+          while (IsNeedFill())
+          {
+            posList.Add(new Point(col, row));
+            searched[row, col] = true;
+            col--;
+          }
+          //處理上面一條掃描線
+          col++;
+          colL = col;
+          row++;
+          while (IsIn(row, height - 1, 0) && IsIn(col, colR, 0))
+          {
+            IsSpan = false;
+            while (IsNeedFill())
+            {
+              IsSpan = true;
+              col++;
+            }
+            if (IsSpan)
+            {
+              pos.X = col - 1;
+              pos.Y = row;
+              stack.Push(pos);
+              IsSpan = false;
+            }
+            while (IsIn(col, colR, 0) && IsSkip())
+              col++;
+          }
+          //處理下面一條掃描線
+          col = colL;
+          row = row - 2;
+          while (IsIn(row, height - 1, 0) && IsIn(col, colR, 0))
+          {
+            IsSpan = false;
+            while (IsNeedFill())
+            {
+              IsSpan = true;
+              col++;
+            }
+            if (IsSpan)
+            {
+              pos.X = col - 1;
+              pos.Y = row;
+              stack.Push(pos);
+              IsSpan = false;
+            }
+            while (IsIn(col, colR, 0) && IsSkip())
+              col++;
+          }
+        }
+        return posList;
+
+        bool IsNeedFill() => IsIn(row, height - 1, 0) && IsIn(col, width - 1, 0) && !searched[row, col] && image.Data[row, col, 3] != 0;
+        bool IsSkip() => searched[row, col] || image.Data[row, col, 3] == 0;
+      }
+    }
+    public static List<Point> GetData(Image<Bgra, byte> image, List<List<Point>> posLists, int size, double ratio)
+    {
+      var posList = new List<Point>();
+      foreach (var list in posLists)
+      {
+        var pivot = list[0].Add((size / 2, size / 2));
+        foreach (var pos in list)
+        {
+          var delta = pos.Minus(pivot);
+          if (delta.X % size == 0 && delta.Y % size == 0 && 
+            IsData(pos))
+          {
+            posList.Add(pos);
+          }
+        }
+      }
+      return posList;
+
+      bool IsData(Point pos)
+      {
+        var area = Pow(size, 2);
+        var shift = new Vector(size / 2, size / 2);
+        var rect = new Rect(pos, new Size(size, size)).Minus(shift);
+        var colMax = image.Width - 1;
+        var rowMax = image.Height - 1;
+        var count = 0;
+        for (int col = (int)rect.X; col < rect.Right; col++)
+          for (int row = (int)rect.Y; row < rect.Bottom; row++)
+            if (IsIn(row, rowMax, 0) && IsIn(col, colMax, 0) &&
+              image.Data[row, col, 3] != 0)
+              count++;
+        return count >= area * ratio ? true : false;
+      }
+    }
+    public static List<Point> TransformData(Image<Bgra, byte> image, List<Point> positions, Rect axLim, Point @base)
+    {
+      var width = image.Width;
+      var height = image.Height;
+      var dataList = new List<Point>();
+      Point data;
+      foreach (var pos in positions)
+      {
+        data = new Point
+        {
+          X = LinConvert(pos.X, width, 0, axLim.Right, axLim.Left),
+          Y = LinConvert(height - pos.Y, height, 0, axLim.Bottom, axLim.Top),
+        };
+
+        //if (@base.X > 0)
+        //  data.X = (float)Pow(
+        //    @base.X,
+        //    LinConvert(data.X, axLim.Left, axLim.Right,
+        //      LogBase(@base.X, axLim.Left),
+        //      LogBase(@base.X, axLim.Right))
+        //    );
+        //if (@base.Y > 0)
+        //  data.Y = (float)Pow(
+        //    @base.Y,
+        //    LinConvert(data.Y, axLim.Top, axLim.Bottom,
+        //      LogBase(@base.Y, axLim.Top),
+        //      LogBase(@base.Y, axLim.Bottom))
+        //    );
+        dataList.Add(data);
+      }
+      return dataList;
     }
 
     #region Deprecated methods
@@ -539,6 +655,7 @@ namespace WpfPlotDigitizer
     }
     [Obsolete]
     private static readonly Rgba transparentRgba = new Rgba(0, 0, 0, 0);
+
     [Obsolete]
     public static Image<Rgba, byte> InRange(Image<Rgba, byte> iptImage, Color Max, Color Min)
     {
@@ -554,7 +671,7 @@ namespace WpfPlotDigitizer
       await Task.Run(() => optImage = InRange(iptImage, Max, Min));
       return optImage;
     }
-
+    
     #endregion
   }
 }

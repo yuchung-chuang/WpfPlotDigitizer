@@ -155,15 +155,17 @@
         <ColumnDefinition Width="*" />
         <ColumnDefinition Width="auto" />
       </Grid.ColumnDefinitions>
-      <cycControl:PanZoomBorder Grid.Column="1"
-                                Grid.Row="1">
-        <Image Source="{Binding ImageSource}">
+      <Grid Grid.Column="1"
+            Grid.Row="1">
+        <Image Source="{Binding ImageSource}"
+               cycMVVM:Pan.IsEnabled="True"
+               cycMVVM:Zoom.IsEnabled="True">
           <Image.InputBindings>
             <MouseBinding MouseAction="LeftDoubleClick"
                           Command="{Binding GetAxisLimitCommand}" />
           </Image.InputBindings>
         </Image>
-      </cycControl:PanZoomBorder>
+      </Grid>
       <Grid Grid.Column="0"
             Grid.Row="1"
             Width="120">

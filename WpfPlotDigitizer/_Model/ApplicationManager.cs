@@ -3,6 +3,7 @@ using CycWpfLibrary.Controls;
 using CycWpfLibrary.Emgu;
 using CycWpfLibrary.Media;
 using CycWpfLibrary.MVVM;
+using Emgu.CV;
 using Emgu.CV.Structure;
 using System.Threading;
 using System.Threading.Tasks;
@@ -51,8 +52,9 @@ namespace WpfPlotDigitizer
           erasePageVM.editManager.Init(imageData.ImageErase);
           break;
         case ApplicationPages.Size:
+          imageData.ImageErase = erasePageVM.editManager.Object as Image<Bgra, byte>;
           sizePageVM.imageDisplay = imageData.ImageErase.Clone();
-          sizePageVM.SizeChanged();
+          sizePageVM.ParamChanged();
           break;
         default:
           break;

@@ -171,13 +171,13 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="_Model\DIConstructExtensions.cs" />
-    <Compile Include="_ViewModels\SizePageVM.cs" />
-    <Compile Include="_Pages\SizePage.xaml.cs">
-      <DependentUpon>SizePage.xaml</DependentUpon>
+    <Compile Include="_ViewModels\DataPageVM.cs" />
+    <Compile Include="_Pages\DataPage.xaml.cs">
+      <DependentUpon>DataPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ToBeImproved\IsObserveSize.cs" />
     <Compile Include="_Model\DI.cs" />
-    <Compile Include="_ViewModels\AxisLimitPageVM.cs" />
+    <Compile Include="_ViewModels\AxLimPageVM.cs" />
     <Compile Include="_ViewModels\SavePageVM.cs" />
     <Compile Include="_ViewModels\ErasePageVM.cs" />
     <Compile Include="_Pages\SavePage.xaml.cs">
@@ -188,7 +188,7 @@
     </Compile>
     <Compile Include="_ViewModels\AxisPageVM.cs" />
     <Compile Include="_ViewModels\FilterPageVM.cs" />
-    <Page Include="_Pages\SizePage.xaml">
+    <Page Include="_Pages\DataPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
