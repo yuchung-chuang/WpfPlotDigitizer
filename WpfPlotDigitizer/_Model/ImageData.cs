@@ -14,6 +14,7 @@ namespace WpfPlotDigitizer
     public PixelBitmap PBFilterW { get; set; }
     public PixelBitmap PBInput { get; set; }
 
+    public Rect AxLim { get; set; }
     public Rect Axis { get; set; }
     public AxisType AxisType { get; set; }
 

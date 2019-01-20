@@ -8,8 +8,8 @@ namespace WpfPlotDigitizer
   public enum ApplicationPages
   {
     Browse,
+    AxLim,
     Axis,
-    AxisLimit,
     Filter,
     Erase,
     Size,
@@ -36,11 +36,11 @@ namespace WpfPlotDigitizer
         case ApplicationPages.Browse:
           CurrentPage = browsePage;
           break;
+        case ApplicationPages.AxLim:
+          CurrentPage = axLimPage;
+          break;
         case ApplicationPages.Axis:
           CurrentPage = axisPage;
-          break;
-        case ApplicationPages.AxisLimit:
-          CurrentPage = axLimPage;
           break;
         case ApplicationPages.Filter:
           CurrentPage = filterPage;

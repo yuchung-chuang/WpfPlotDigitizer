@@ -156,15 +156,11 @@
         <ColumnDefinition Width="auto" />
       </Grid.ColumnDefinitions>
       <Grid Grid.Column="1"
-            Grid.Row="1">
-        <Image Source="{Binding ImageSource}"
+            Grid.Row="1"
+            Margin="0,40,40,0">
+        <Image Source="{Binding imageSource}"
                cycMVVM:Pan.IsEnabled="True"
-               cycMVVM:Zoom.IsEnabled="True">
-          <Image.InputBindings>
-            <MouseBinding MouseAction="LeftDoubleClick"
-                          Command="{Binding GetAxisLimitCommand}" />
-          </Image.InputBindings>
-        </Image>
+               cycMVVM:Zoom.IsEnabled="True" />
       </Grid>
       <Grid Grid.Column="0"
             Grid.Row="1"
@@ -191,7 +187,7 @@
             </i:EventTrigger>
           </i:Interaction.Triggers>
           <TextBox.Text>
-            <Binding Path="YMaxL"
+            <Binding Path="YMax"
                      Mode="TwoWay"
                      Converter="{cycMVVM:NumStrConverter}">
               <Binding.ValidationRules>
@@ -209,7 +205,7 @@
             </i:EventTrigger>
           </i:Interaction.Triggers>
           <TextBox.Text>
-            <Binding Path="YLogL"
+            <Binding Path="YLog"
                      Mode="TwoWay"
                      Converter="{cycMVVM:NumStrConverter}">
               <Binding.ValidationRules>
@@ -227,154 +223,7 @@
             </i:EventTrigger>
           </i:Interaction.Triggers>
           <TextBox.Text>
-            <Binding Path="YMinL"
-                     Mode="TwoWay"
-                     Converter="{cycMVVM:NumStrConverter}">
-              <Binding.ValidationRules>
-                <cycMVVM:DoubleValidation />
-              </Binding.ValidationRules>
-            </Binding>
-          </TextBox.Text>
-        </TextBox>
-      </Grid>
-      <Grid Grid.Column="2"
-            Grid.Row="1"
-            Width="120">
-        <Grid.InputBindings>
-          <MouseBinding MouseAction="LeftClick"
-                        Command="{Binding EnableLimitRCommand}" />
-        </Grid.InputBindings>
-        <Grid.Resources>
-          <Style TargetType="TextBox"
-                 BasedOn="{StaticResource TextBoxStyleBase}" />
-        </Grid.Resources>
-        <Grid.RowDefinitions>
-          <RowDefinition Height="*" />
-          <RowDefinition Height="*" />
-          <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <TextBox Grid.Row="0"
-                 md:HintAssist.Hint="Y-Axis: Max"
-                 IsEnabled="{Binding EnableR}">
-          <i:Interaction.Triggers>
-            <i:EventTrigger EventName="TextChanged">
-              <i:InvokeCommandAction Command="{Binding EnableLimitRCommand}" />
-            </i:EventTrigger>
-          </i:Interaction.Triggers>
-          <TextBox.Text>
-            <Binding Path="YMaxR"
-                     Mode="TwoWay"
-                     Converter="{cycMVVM:NumStrConverter}">
-              <Binding.ValidationRules>
-                <cycMVVM:DoubleValidation />
-              </Binding.ValidationRules>
-            </Binding>
-          </TextBox.Text>
-        </TextBox>
-        <TextBox Grid.Row="1"
-                 md:HintAssist.Hint="Y-Axis: Log Base"
-                 IsEnabled="{Binding EnableR}">
-          <i:Interaction.Triggers>
-            <i:EventTrigger EventName="TextChanged">
-              <i:InvokeCommandAction Command="{Binding EnableLimitRCommand}" />
-            </i:EventTrigger>
-          </i:Interaction.Triggers>
-          <TextBox.Text>
-            <Binding Path="YLogR"
-                     Mode="TwoWay"
-                     Converter="{cycMVVM:NumStrConverter}">
-              <Binding.ValidationRules>
-                <cycMVVM:LogBaseValidation />
-              </Binding.ValidationRules>
-            </Binding>
-          </TextBox.Text>
-        </TextBox>
-        <TextBox Grid.Row="2"
-                 md:HintAssist.Hint="Y-Axis: Min"
-                 IsEnabled="{Binding EnableR}">
-          <i:Interaction.Triggers>
-            <i:EventTrigger EventName="TextChanged">
-              <i:InvokeCommandAction Command="{Binding EnableLimitRCommand}" />
-            </i:EventTrigger>
-          </i:Interaction.Triggers>
-          <TextBox.Text>
-            <Binding Path="YMinR"
-                     Mode="TwoWay"
-                     Converter="{cycMVVM:NumStrConverter}">
-              <Binding.ValidationRules>
-                <cycMVVM:DoubleValidation />
-              </Binding.ValidationRules>
-            </Binding>
-          </TextBox.Text>
-        </TextBox>
-      </Grid>
-      <Grid Grid.Column="1"
-            Grid.Row="0"
-            Height="100">
-        <Grid.InputBindings>
-          <MouseBinding MouseAction="LeftClick"
-                        Command="{Binding EnableLimitTCommand}" />
-        </Grid.InputBindings>
-        <Grid.Resources>
-          <Style TargetType="TextBox"
-                 BasedOn="{StaticResource TextBoxStyleBase}">
-            <Setter Property="Margin"
-                    Value="0,0,0,20" />
-            <Setter Property="VerticalAlignment"
-                    Value="Top" />
-          </Style>
-        </Grid.Resources>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*" />
-          <ColumnDefinition Width="*" />
-          <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <TextBox Grid.Column="0"
-                 md:HintAssist.Hint="X-Axis: Min"
-                 IsEnabled="{Binding EnableT}">
-          <i:Interaction.Triggers>
-            <i:EventTrigger EventName="TextChanged">
-              <i:InvokeCommandAction Command="{Binding EnableLimitTCommand}" />
-            </i:EventTrigger>
-          </i:Interaction.Triggers>
-          <TextBox.Text>
-            <Binding Path="XMinT"
-                     Mode="TwoWay"
-                     Converter="{cycMVVM:NumStrConverter}">
-              <Binding.ValidationRules>
-                <cycMVVM:DoubleValidation />
-              </Binding.ValidationRules>
-            </Binding>
-          </TextBox.Text>
-        </TextBox>
-        <TextBox Grid.Column="1"
-                 md:HintAssist.Hint="X-Axis: Log Base"
-                 IsEnabled="{Binding EnableT}">
-          <i:Interaction.Triggers>
-            <i:EventTrigger EventName="TextChanged">
-              <i:InvokeCommandAction Command="{Binding EnableLimitTCommand}" />
-            </i:EventTrigger>
-          </i:Interaction.Triggers>
-          <TextBox.Text>
-            <Binding Path="XLogT"
-                     Mode="TwoWay"
-                     Converter="{cycMVVM:NumStrConverter}">
-              <Binding.ValidationRules>
-                <cycMVVM:LogBaseValidation />
-              </Binding.ValidationRules>
-            </Binding>
-          </TextBox.Text>
-        </TextBox>
-        <TextBox Grid.Column="2"
-                 md:HintAssist.Hint="X-Axis: Max"
-                 IsEnabled="{Binding EnableT}">
-          <i:Interaction.Triggers>
-            <i:EventTrigger EventName="TextChanged">
-              <i:InvokeCommandAction Command="{Binding EnableLimitTCommand}" />
-            </i:EventTrigger>
-          </i:Interaction.Triggers>
-          <TextBox.Text>
-            <Binding Path="XMaxT"
+            <Binding Path="YMin"
                      Mode="TwoWay"
                      Converter="{cycMVVM:NumStrConverter}">
               <Binding.ValidationRules>
@@ -414,7 +263,7 @@
             </i:EventTrigger>
           </i:Interaction.Triggers>
           <TextBox.Text>
-            <Binding Path="XMinB"
+            <Binding Path="XMin"
                      Mode="TwoWay"
                      Converter="{cycMVVM:NumStrConverter}">
               <Binding.ValidationRules>
@@ -432,7 +281,7 @@
             </i:EventTrigger>
           </i:Interaction.Triggers>
           <TextBox.Text>
-            <Binding Path="XLogB"
+            <Binding Path="XLog"
                      Mode="TwoWay"
                      Converter="{cycMVVM:NumStrConverter}">
               <Binding.ValidationRules>
@@ -450,7 +299,7 @@
             </i:EventTrigger>
           </i:Interaction.Triggers>
           <TextBox.Text>
-            <Binding Path="XMaxB"
+            <Binding Path="XMax"
                      Mode="TwoWay"
                      Converter="{cycMVVM:NumStrConverter}">
               <Binding.ValidationRules>

@@ -5,6 +5,7 @@ using CycWpfLibrary.Media;
 using CycWpfLibrary.MVVM;
 using Emgu.CV;
 using Emgu.CV.Structure;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using static CycWpfLibrary.NativeMethod;
@@ -26,21 +27,53 @@ namespace WpfPlotDigitizer
     /// </summary>
     private void OnTurnNext()
     {
+      TurnFrom();
+      TurnTo();
+    }
+
+    private void TurnFrom()
+    {
+      switch ((ApplicationPages)PageManager.Index)
+      {
+        case ApplicationPages.Browse:
+          break;
+        case ApplicationPages.AxLim:
+          imageData.AxLim = axLimPageVM.AxLim;
+          break;
+        case ApplicationPages.Axis:
+          imageData.PBAxis = imageData.PBInput.Bitmap
+                                        .Crop(imageData.Axis)
+                                        .ToPixelBitmap();
+          break;
+        case ApplicationPages.Filter:
+          break;
+        case ApplicationPages.Erase:
+          break;
+        case ApplicationPages.Size:
+          break;
+        case ApplicationPages.Save:
+          break;
+        case ApplicationPages.NumOfPages:
+          break;
+        default:
+          break;
+      }
+    }
+
+    private void TurnTo()
+    {
       // call before actually turned next
       switch ((ApplicationPages)PageManager.Index + 1)
       {
+        case ApplicationPages.AxLim:
+          //axLimPageVM.GetAxisLimit();
+          break;
         case ApplicationPages.Axis:
           imageData.PBFilterW = new PixelBitmap(imageData.PBInput.Size)
           {
             Pixel = ImageProcessing.FilterW(imageData.PBInput)
           };
           axisPageVM.GetAxis();
-          break;
-        case ApplicationPages.AxisLimit:
-          imageData.PBAxis = imageData.PBInput.Bitmap
-                                        .Crop(imageData.Axis)
-                                        .ToPixelBitmap();
-          axLimPageVM.GetAxisLimit();
           break;
         case ApplicationPages.Filter:
           imageData.ImageAxis = imageData.PBAxis.ToImage<Bgra, byte>();
