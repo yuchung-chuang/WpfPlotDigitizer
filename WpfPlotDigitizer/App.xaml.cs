@@ -38,6 +38,8 @@ namespace WpfPlotDigitizer
       //Filter
       appManager.PageManager.TurnNext();
       //Erase
+      appManager.PageManager.TurnNext();
+      //Size
 #endif
     }
   }

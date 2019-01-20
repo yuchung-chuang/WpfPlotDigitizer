@@ -4,11 +4,30 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:WpfPlotDigitizer"
+             xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:cycControl="clr-namespace:CycWpfLibrary.Controls;assembly=CycWpfLibrary"
+             xmlns:mvvm="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800"
              d:DataContext="{d:DesignInstance local:SizePageVM, IsDesignTimeCreatable=True}">
   <Grid>
-    
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="auto" />
+    </Grid.ColumnDefinitions>
+    <Grid>
+      <Image Source="{Binding imageSource}"
+             mvvm:Zoom.IsEnabled="True"
+             mvvm:Pan.IsEnabled="True" />
+    </Grid>
+    <Slider Grid.Column="1"
+            Orientation="Vertical"
+            Margin="40"
+            Minimum="2"
+            Maximum="50"
+            Value="{Binding DataSize }"
+            mahapps:SliderHelper.TrackValueFillBrush="Black" />
   </Grid>
 </UserControl>

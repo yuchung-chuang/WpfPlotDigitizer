@@ -403,53 +403,57 @@ namespace WpfPlotDigitizer
     private static bool IsData(Image<Bgra, byte> image, Rect rect)
     {
       var area = rect.Width * rect.Height;
+      var colMax = rect.Right;
+      var rowMax = rect.Bottom;
       int count = 0;
-      for (int x = (int)rect.X; x < rect.Right; x++)
-        for (int y = (int)rect.Y; y < rect.Bottom; y++)
-          if (image.Data[x, y, 3] != 0)
+      for (int col = (int)rect.X; col < rect.Right; col++)
+        for (int row = (int)rect.Y; row < rect.Bottom; row++)
+          if (image.Data[row, col, 3] != 0)
             count++;
-      return count > area / 2 ? true : false;
+      return count == area ? true : false;
     }
-    public static List<Point> GetData(Image<Bgra, byte> image, Rect axLim, Point @base, int size)
+    public static (List<Point> data, List<Point> pos) GetData(Image<Bgra, byte> image, Rect axLim, Point @base, int size)
     {
       var width = image.Width;
       var height = image.Height;
-      Point axisPos;
-      Point data;
-      List<Point> dataList = new List<Point>();
-      for (int x = 0; x < width; x += size)
+      var xMax = width - size;
+      var yMax = height - size;
+      Point data, pos;
+      List<Point> dataList = new List<Point>(), posList = new List<Point>();
+      for (int x = 0; x < xMax; x += size)
       {
-        for (int y = 0; y < height; y += size)
+        for (int y = 0; y < yMax; y += size)
         {
-          if (IsData(image, new Rect(x, y, size, size)))
+          if (!IsData(image, new Rect(x, y, size, size)))
             continue;
 
-          axisPos = new Point(x, height - y);
+          pos = new Point(x, y);
           data = new Point
           {
-            X = LinConvert(axisPos.X, width, 0, axLim.Right, axLim.Left),
-            Y = LinConvert(axisPos.Y, height, 0, axLim.Bottom, axLim.Top),
+            X = LinConvert(x, width, 0, axLim.Right, axLim.Left),
+            Y = LinConvert(height - y, height, 0, axLim.Bottom, axLim.Top),
           };
 
-          if (@base.X > 0)
-            data.X = (float)Pow(
-              @base.X,
-              LinConvert(data.X, axLim.Left, axLim.Right,
-                LogBase(@base.X, axLim.Left),
-                LogBase(@base.X, axLim.Right))
-              );
-          if (@base.Y > 0)
-            data.Y = (float)Pow(
-              @base.Y,
-              LinConvert(data.Y, axLim.Top, axLim.Bottom,
-                LogBase(@base.Y, axLim.Top),
-                LogBase(@base.Y, axLim.Bottom))
-              );
+          //if (@base.X > 0)
+          //  data.X = (float)Pow(
+          //    @base.X,
+          //    LinConvert(data.X, axLim.Left, axLim.Right,
+          //      LogBase(@base.X, axLim.Left),
+          //      LogBase(@base.X, axLim.Right))
+          //    );
+          //if (@base.Y > 0)
+          //  data.Y = (float)Pow(
+          //    @base.Y,
+          //    LinConvert(data.Y, axLim.Top, axLim.Bottom,
+          //      LogBase(@base.Y, axLim.Top),
+          //      LogBase(@base.Y, axLim.Bottom))
+          //    );
 
           dataList.Add(data);
+          posList.Add(pos);
         }
       }
-      return dataList;
+      return (dataList, posList);
     }
 
     #region Deprecated methods

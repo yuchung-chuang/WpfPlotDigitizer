@@ -5,6 +5,7 @@
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                      xmlns:local="clr-namespace:WpfPlotDigitizer"
                      mc:Ignorable="d"
+                     xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
                      xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
                      xmlns:mvvm="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
                      xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
@@ -16,6 +17,12 @@
   <Grid Name="gridMain">
 
     <cycControls:PageControl PageManager="{Binding PageManager}" />
-
+    
+      <!--<Image Source="images/data.png"
+             mvvm:Zoom.IsEnabled="True"
+             mvvm:Zoom.Maximum="5"
+             mvvm:Pan.IsEnabled="True"
+             mvvm:Pan.MouseButton="Left" />-->
+      
   </Grid>
 </mahapps:MetroWindow>

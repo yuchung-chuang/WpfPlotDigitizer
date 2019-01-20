@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:WpfPlotDigitizer"
              xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:mvvm="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
              mc:Ignorable="d"
              d:DesignHeight="600"
              d:DesignWidth="900"
@@ -15,9 +16,11 @@
       <ColumnDefinition Width="*" />
       <ColumnDefinition Width="auto" />
     </Grid.ColumnDefinitions>
-    <Border Grid.Column="0">
-      <Image Source="{Binding ImageSource}" />
-    </Border>
+    <Grid Grid.Column="0">
+      <Image Source="{Binding ImageSource}" 
+             mvvm:Zoom.IsEnabled="True"
+             mvvm:Pan.IsEnabled="True"/>
+    </Grid>
     <StackPanel Grid.Column="1"
                 Orientation="Horizontal">
       <StackPanel.Resources>

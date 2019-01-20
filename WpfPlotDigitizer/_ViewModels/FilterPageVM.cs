@@ -27,11 +27,11 @@ namespace WpfPlotDigitizer
     }
     public BitmapSource ImageSource => imageFilterRGB?.ToBitmapSource();
 
-    public byte FilterRMax { get; set; } = 255;
+    public byte FilterRMax { get; set; } = 254;
     public byte FilterRMin { get; set; } = 0;
-    public byte FilterGMax { get; set; } = 255;
+    public byte FilterGMax { get; set; } = 254;
     public byte FilterGMin { get; set; } = 0;
-    public byte FilterBMax { get; set; } = 255;
+    public byte FilterBMax { get; set; } = 254;
     public byte FilterBMin { get; set; } = 0;
     public Color FilterMax => Color.FromRgb(FilterRMax, FilterGMax, FilterBMax);
     public Color FilterMin => Color.FromRgb(FilterRMin, FilterGMin, FilterBMin);

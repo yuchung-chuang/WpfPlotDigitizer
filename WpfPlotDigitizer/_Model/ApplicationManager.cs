@@ -51,7 +51,8 @@ namespace WpfPlotDigitizer
           erasePageVM.editManager.Init(imageData.ImageErase);
           break;
         case ApplicationPages.Size:
-
+          sizePageVM.imageDisplay = imageData.ImageErase.Clone();
+          sizePageVM.SizeChanged();
           break;
         default:
           break;

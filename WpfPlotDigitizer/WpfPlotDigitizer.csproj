@@ -171,7 +171,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="_Model\DIConstructExtensions.cs" />
-    <Compile Include="ViewModelBase.cs" />
     <Compile Include="_ViewModels\SizePageVM.cs" />
     <Compile Include="_Pages\SizePage.xaml.cs">
       <DependentUpon>SizePage.xaml</DependentUpon>

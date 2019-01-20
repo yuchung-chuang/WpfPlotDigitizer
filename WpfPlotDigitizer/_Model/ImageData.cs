@@ -3,12 +3,13 @@ using CycWpfLibrary.MVVM;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer
 {
-  public class ImageData : NotifyableObject
+  public class ImageData : ObservableObject
   {
     public PixelBitmap PBFilterW { get; set; }
     public PixelBitmap PBInput { get; set; }
@@ -22,5 +23,7 @@ namespace WpfPlotDigitizer
     public Image<Bgra, byte> ImageFilterRGB { get; set; }
 
     public Image<Bgra, byte> ImageErase { get; set; }
+
+    public List<Point> Data { get; set; }
   }
 }
