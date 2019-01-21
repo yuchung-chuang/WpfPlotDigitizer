@@ -165,10 +165,6 @@
       <Grid Grid.Column="0"
             Grid.Row="1"
             Width="120">
-        <Grid.InputBindings>
-          <MouseBinding MouseAction="LeftClick"
-                        Command="{Binding EnableLimitLCommand}" />
-        </Grid.InputBindings>
         <Grid.Resources>
           <Style TargetType="TextBox"
                  BasedOn="{StaticResource TextBoxStyleBase}" />
@@ -179,13 +175,7 @@
           <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <TextBox Grid.Row="0"
-                 md:HintAssist.Hint="Y-Axis: Max"
-                 IsEnabled="{Binding EnableL}">
-          <i:Interaction.Triggers>
-            <i:EventTrigger EventName="TextChanged">
-              <i:InvokeCommandAction Command="{Binding EnableLimitLCommand}" />
-            </i:EventTrigger>
-          </i:Interaction.Triggers>
+                 md:HintAssist.Hint="Y-Axis: Max">
           <TextBox.Text>
             <Binding Path="YMax"
                      Mode="TwoWay"
@@ -197,13 +187,7 @@
           </TextBox.Text>
         </TextBox>
         <TextBox Grid.Row="1"
-                 md:HintAssist.Hint="Y-Axis: Log Base"
-                 IsEnabled="{Binding EnableL}">
-          <i:Interaction.Triggers>
-            <i:EventTrigger EventName="TextChanged">
-              <i:InvokeCommandAction Command="{Binding EnableLimitLCommand}" />
-            </i:EventTrigger>
-          </i:Interaction.Triggers>
+                 md:HintAssist.Hint="Y-Axis: Log Base">
           <TextBox.Text>
             <Binding Path="YLog"
                      Mode="TwoWay"
@@ -215,13 +199,7 @@
           </TextBox.Text>
         </TextBox>
         <TextBox Grid.Row="2"
-                 md:HintAssist.Hint="Y-Axis: Min"
-                 IsEnabled="{Binding EnableL}">
-          <i:Interaction.Triggers>
-            <i:EventTrigger EventName="TextChanged">
-              <i:InvokeCommandAction Command="{Binding EnableLimitLCommand}" />
-            </i:EventTrigger>
-          </i:Interaction.Triggers>
+                 md:HintAssist.Hint="Y-Axis: Min">
           <TextBox.Text>
             <Binding Path="YMin"
                      Mode="TwoWay"
@@ -236,10 +214,6 @@
       <Grid Grid.Column="1"
             Grid.Row="2"
             Height="100">
-        <Grid.InputBindings>
-          <MouseBinding MouseAction="LeftClick"
-                        Command="{Binding EnableLimitBCommand}" />
-        </Grid.InputBindings>
         <Grid.Resources>
           <Style TargetType="TextBox"
                  BasedOn="{StaticResource TextBoxStyleBase}">
@@ -255,13 +229,7 @@
           <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <TextBox Grid.Column="0"
-                 md:HintAssist.Hint="X-Axis: Min"
-                 IsEnabled="{Binding EnableB}">
-          <i:Interaction.Triggers>
-            <i:EventTrigger EventName="TextChanged">
-              <i:InvokeCommandAction Command="{Binding EnableLimitBCommand}" />
-            </i:EventTrigger>
-          </i:Interaction.Triggers>
+                 md:HintAssist.Hint="X-Axis: Min">
           <TextBox.Text>
             <Binding Path="XMin"
                      Mode="TwoWay"
@@ -273,13 +241,7 @@
           </TextBox.Text>
         </TextBox>
         <TextBox Grid.Column="1"
-                 md:HintAssist.Hint="X-Axis: Log Base"
-                 IsEnabled="{Binding EnableB}">
-          <i:Interaction.Triggers>
-            <i:EventTrigger EventName="TextChanged">
-              <i:InvokeCommandAction Command="{Binding EnableLimitBCommand}" />
-            </i:EventTrigger>
-          </i:Interaction.Triggers>
+                 md:HintAssist.Hint="X-Axis: Log Base">
           <TextBox.Text>
             <Binding Path="XLog"
                      Mode="TwoWay"
@@ -291,13 +253,7 @@
           </TextBox.Text>
         </TextBox>
         <TextBox Grid.Column="2"
-                 md:HintAssist.Hint="X-Axis: Max"
-                 IsEnabled="{Binding EnableB}">
-          <i:Interaction.Triggers>
-            <i:EventTrigger EventName="TextChanged">
-              <i:InvokeCommandAction Command="{Binding EnableLimitBCommand}" />
-            </i:EventTrigger>
-          </i:Interaction.Triggers>
+                 md:HintAssist.Hint="X-Axis: Max">
           <TextBox.Text>
             <Binding Path="XMax"
                      Mode="TwoWay"

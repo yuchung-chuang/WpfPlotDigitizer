@@ -23,58 +23,27 @@ namespace WpfPlotDigitizer
   {
     public AxLimPageVM()
     {
-      //GetAxisLimitCommand = new RelayCommand(GetAxisLimit);
-      EnableLimitLCommand = new RelayCommand(EnableLimitL);
-      EnableLimitTCommand = new RelayCommand(EnableLimitT);
-      EnableLimitRCommand = new RelayCommand(EnableLimitR);
-      EnableLimitBCommand = new RelayCommand(EnableLimitB);
+      
     }
 
     public PixelBitmap PBInput => imageData.PBInput;
     public BitmapSource imageSource => PBInput?.ToBitmapSource();
 
-    public double? YMax { get; set; }
-    public double? YMin { get; set; }
-    public double? YLog { get; set; }
     public double? XMax { get; set; }
     public double? XMin { get; set; }
-    public double? XLog { get; set; }
-
+    public double? YMax { get; set; }
+    public double? YMin { get; set; }
     public Rect AxLim => 
       (XMin == null || YMin == null || XMax == null || YMax == null) ?
           Rect.Empty :
           new Rect(new Point((double)XMin, (double)YMin), 
             new Point((double)XMax, (double)YMax));
 
-    public bool EnableL { get; set; } = false;
-    public bool EnableR { get; set; } = false;
-    public bool EnableT { get; set; } = false;
-    public bool EnableB { get; set; } = false;
-
-    public ICommand EnableLimitRCommand { get; set; }
-    public void EnableLimitR()
-    {
-      EnableR = true;
-      EnableL = false;
-    }
-    public ICommand EnableLimitLCommand { get; set; }
-    public void EnableLimitL()
-    {
-      EnableL = true;
-      EnableR = false;
-    }
-    public ICommand EnableLimitTCommand { get; set; }
-    public void EnableLimitT()
-    {
-      EnableT = true;
-      EnableB = false;
-    }
-    public ICommand EnableLimitBCommand { get; set; }
-    public void EnableLimitB()
-    {
-      EnableB = true;
-      EnableT = false;
-    }
+    public double? XLog { get; set; }
+    public double? YLog { get; set; }
+    public Point AxLogBase =>
+      (XLog == null || YLog == null) ?
+          new Point(-1, -1) : new Point((double)XLog, (double)YLog);
 
     #region Deprecated
     public double? XMaxT { get; set; }
@@ -114,7 +83,6 @@ namespace WpfPlotDigitizer
 
       if (AxisType.Left)
       {
-        EnableL = true;
         var rectangleLT = new Rect(Axis.Left - ocrLength.width / 2, Axis.Top - ocrLength.height / 2, ocrLength.width / 2, ocrLength.height).ToWinForm();
         var rectangleLB = new Rect(Axis.Left - ocrLength.width / 2, Axis.Bottom - ocrLength.height / 2, ocrLength.width / 2, ocrLength.height).ToWinForm();
         var charLT = GetLocalAxisLimit(image, rectangleLT);
@@ -127,7 +95,6 @@ namespace WpfPlotDigitizer
       }
       if (AxisType.Bottom)
       {
-        EnableB = true;
         var rectangleBL = new Rect(Axis.Left - ocrLength.width / 2, Axis.Bottom, ocrLength.width, ocrLength.height / 2).ToWinForm();
         var rectangleBR = new Rect(Axis.Right - ocrLength.width / 2, Axis.Bottom, ocrLength.width, ocrLength.height / 2).ToWinForm();
         var charBL = GetLocalAxisLimit(image, rectangleBL);
@@ -136,7 +103,6 @@ namespace WpfPlotDigitizer
       }
       if (AxisType.Right)
       {
-        EnableR = true;
         var rectangleRB = new Rect(Axis.Right, Axis.Bottom - ocrLength.height / 2, ocrLength.width / 2, ocrLength.height).ToWinForm();
         var rectangleRT = new Rect(Axis.Right, Axis.Top - ocrLength.height / 2, ocrLength.width / 2, ocrLength.height).ToWinForm();
         var charRB = GetLocalAxisLimit(image, rectangleRB);
@@ -144,7 +110,6 @@ namespace WpfPlotDigitizer
       }
       if (AxisType.Top)
       {
-        EnableT = true;
         var rectangleTR = new Rect(Axis.Right - ocrLength.width / 2, Axis.Top - ocrLength.height / 2, ocrLength.width, ocrLength.height / 2).ToWinForm();
         var rectangleTL = new Rect(Axis.Left - ocrLength.width / 2, Axis.Top - ocrLength.height / 2, ocrLength.width, ocrLength.height / 2).ToWinForm();
         var charTR = GetLocalAxisLimit(image, rectangleTR);
