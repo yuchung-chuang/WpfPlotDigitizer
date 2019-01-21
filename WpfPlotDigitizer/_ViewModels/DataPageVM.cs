@@ -1,4 +1,5 @@
 ﻿using CycWpfLibrary.Emgu;
+using CycWpfLibrary.Media;
 using CycWpfLibrary.MVVM;
 using CycWpfLibrary.WinForm;
 using Emgu.CV;
@@ -17,13 +18,19 @@ using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer
 {
-  public class SizePageVM : ViewModelBase
+  public class DataPageVM : ViewModelBase
   {
     private Image<Bgra, byte> imageOrigin => imageData.ImageErase;
     public Image<Bgra, byte> imageDisplay { get; set; }
-    public BitmapSource imageSource => imageDisplay?.ToBitmapSource();
+    public BitmapSource imageSource
+    {
+      get => imageDisplay?.ToBitmapSource();
+      set => imageDisplay = value.ToBitmap().ToImage<Bgra, byte>();
+    }
+    public Rect axLim => imageData.AxLim;
+    public Point axLogBase => imageData.AxLogBase;
 
-    private int dataSize = 1;
+    private int dataSize = 3;
     public int DataSize
     {
       get => dataSize;
@@ -34,7 +41,7 @@ namespace WpfPlotDigitizer
       }
     }
     private double ratio => ratioInt / 100d;
-    private int ratioInt = 100;
+    private int ratioInt = 90;
     public int RatioInt
     {
       get => ratioInt;
@@ -55,7 +62,7 @@ namespace WpfPlotDigitizer
     {
       var posLists = ImageProcessing.GetDataList(imageOrigin, dataSize);
       var Pos = ImageProcessing.GetData(imageOrigin, posLists, dataSize, ratio);
-      Data = ImageProcessing.TransformData(imageOrigin, Pos, imageData.Axis, new Point(1, 1));
+      Data = ImageProcessing.TransformData(imageOrigin, Pos, axLim, axLogBase);
       imageDisplay = imageOrigin.Clone();
       var dotSize = DataSize == 1 ? 1 : DataSize / 2;
       foreach (var pos in Pos)

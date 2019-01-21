@@ -17,80 +17,91 @@ namespace WpfPlotDigitizer
   {
     public ApplicationManager()
     {
-      PageManager.TurnNextEvent += OnTurnNext;
+      PageManager.TurnNextEvent += PageManager_TurnNextEvent;
+      PageManager.TurnToEvent += PageManager_TurnToEvent;
     }
 
     public PageManagerBase PageManager { get; private set; } = new PageManager();
 
-    /// <summary>
-    /// Called whenever <see cref="PageManager.TurnNext"/> is fired.
-    /// </summary>
-    private void OnTurnNext()
+    private void PageManager_TurnNextEvent(object sender, EventArgs e)
     {
-      TurnFrom();
-      TurnTo();
-    }
+      var pageManager = sender as PageManager;
+      TurnNextFrom();
+      TurnNextTo();
 
-    private void TurnFrom()
-    {
-      switch ((ApplicationPages)PageManager.Index)
+      void TurnNextFrom() 
       {
-        case ApplicationPages.Browse:
-          break;
-        case ApplicationPages.AxLim:
-          imageData.AxLim = axLimPageVM.AxLim;
-          break;
-        case ApplicationPages.Axis:
-          imageData.PBAxis = imageData.PBInput.Bitmap
-                                        .Crop(imageData.Axis)
-                                        .ToPixelBitmap();
-          break;
-        case ApplicationPages.Filter:
-          break;
-        case ApplicationPages.Erase:
-          break;
-        case ApplicationPages.Size:
-          break;
-        case ApplicationPages.Save:
-          break;
-        case ApplicationPages.NumOfPages:
-          break;
-        default:
-          break;
+        switch ((ApplicationPages)pageManager.Index)
+        {
+          case ApplicationPages.Browse:
+            imageData.PBFilterW = new PixelBitmap(imageData.PBInput.Size)
+            {
+              Pixel = ImageProcessing.FilterW(imageData.PBInput)
+            };
+            break;
+          case ApplicationPages.AxLim:
+            imageData.AxLim = axLimPageVM.AxLim;
+            imageData.AxLogBase = axLimPageVM.AxLogBase;
+            break;
+          case ApplicationPages.Axis:
+            imageData.PBAxis = imageData.PBInput.Bitmap
+                                          .Crop(imageData.Axis)
+                                          .ToPixelBitmap();
+            imageData.ImageAxis = imageData.PBAxis.ToImage<Bgra, byte>();
+            break;
+          case ApplicationPages.Filter:
+            break;
+          case ApplicationPages.Erase:
+            imageData.ImageErase = erasePageVM.editManager.Object as Image<Bgra, byte>;
+            break;
+          case ApplicationPages.Data:
+            break;
+          default:
+            break;
+        }
+      }
+      void TurnNextTo()
+      {
+        // call before actually turned next
+        switch ((ApplicationPages)pageManager.Index + 1)
+        {
+          case ApplicationPages.AxLim:
+            //axLimPageVM.GetAxisLimit();
+            break;
+          case ApplicationPages.Axis:
+            axisPageVM.GetAxis();
+            break;
+          case ApplicationPages.Filter:
+            imageData.ImageFilterRGB = imageData.ImageAxis.Clone();
+            filterPageVM.InRange();
+            break;
+          case ApplicationPages.Erase:
+            imageData.ImageErase = imageData.ImageFilterRGB.Clone();
+            erasePageVM.editManager.Init(imageData.ImageErase);
+            break;
+          case ApplicationPages.Data:
+            dataPageVM.imageDisplay = imageData.ImageErase.Clone();
+            dataPageVM.ParamChanged();
+            break;
+          case ApplicationPages.Save:
+            savePageVM.imageSave = imageData.ImageErase.Clone();
+            break;
+          default:
+            break;
+        }
       }
     }
 
-    private void TurnTo()
+    private void PageManager_TurnToEvent(object sender, int index)
     {
-      // call before actually turned next
-      switch ((ApplicationPages)PageManager.Index + 1)
+      var pageManager = sender as PageManager;
+      if (index > pageManager.Index)
       {
-        case ApplicationPages.AxLim:
-          //axLimPageVM.GetAxisLimit();
-          break;
-        case ApplicationPages.Axis:
-          imageData.PBFilterW = new PixelBitmap(imageData.PBInput.Size)
-          {
-            Pixel = ImageProcessing.FilterW(imageData.PBInput)
-          };
-          axisPageVM.GetAxis();
-          break;
-        case ApplicationPages.Filter:
-          imageData.ImageAxis = imageData.PBAxis.ToImage<Bgra, byte>();
-          imageData.ImageFilterRGB = imageData.ImageAxis.Clone();
-          filterPageVM.InRange();
-          break;
-        case ApplicationPages.Erase:
-          imageData.ImageErase = imageData.ImageFilterRGB.Clone();
-          erasePageVM.editManager.Init(imageData.ImageErase);
-          break;
-        case ApplicationPages.Size:
-          imageData.ImageErase = erasePageVM.editManager.Object as Image<Bgra, byte>;
-          sizePageVM.imageDisplay = imageData.ImageErase.Clone();
-          sizePageVM.ParamChanged();
-          break;
-        default:
-          break;
+        var turns = index - pageManager.Index;
+        for (int i = 0; i < turns; i++)
+        {
+          pageManager.TurnNext();
+        }
       }
     }
   }
