@@ -23,6 +23,7 @@ namespace WpfPlotDigitizer
     public SavePage()
     {
       InitializeComponent();
+      DataContext = DI.savePageVM;
     }
   }
 }

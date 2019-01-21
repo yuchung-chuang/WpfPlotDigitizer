@@ -4,11 +4,35 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:WpfPlotDigitizer"
+             xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:mvvm="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800"
              d:DataContext="{d:DesignInstance local:SavePageVM, IsDesignTimeCreatable=True}">
   <Grid>
-
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="auto" />
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*" />
+      <RowDefinition Height="auto" />
+    </Grid.RowDefinitions>
+    <Image Source="{Binding imageSource}" 
+           Margin="20"/>
+    <DataGrid Grid.Column="1"
+              ItemsSource="{Binding data}" 
+              AutoGenerateColumns="True"
+              mahapps:DataGridHelper.EnableCellEditAssist="False" />
+    <Button Grid.ColumnSpan="2"
+            Grid.Row="1" 
+            Content="Save" 
+            FontSize="40"
+            FontWeight="Medium"
+            Width="150"
+            Margin="20"
+            mahapps:ButtonHelper.PreserveTextCase="True"
+            Command="{Binding SaveCommand}"/>
   </Grid>
 </UserControl>

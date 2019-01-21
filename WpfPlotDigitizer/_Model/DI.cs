@@ -38,7 +38,7 @@ namespace WpfPlotDigitizer
     public static AxLimPageVM axLimPageVM => Framework.Service<AxLimPageVM>();
     public static FilterPageVM filterPageVM => Framework.Service<FilterPageVM>();
     public static ErasePageVM erasePageVM => Framework.Service<ErasePageVM>();
-    public static SizePageVM sizePageVM => Framework.Service<SizePageVM>();
+    public static DataPageVM dataPageVM => Framework.Service<DataPageVM>();
     public static SavePageVM savePageVM => Framework.Service<SavePageVM>();
 
     public static MainWindow mainWindow => Framework.Service<MainWindow>();
@@ -47,7 +47,7 @@ namespace WpfPlotDigitizer
     public static AxLimPage axLimPage => Framework.Service<AxLimPage>(); 
     public static FilterPage filterPage => Framework.Service<FilterPage>(); 
     public static ErasePage erasePage => Framework.Service<ErasePage>(); 
-    public static DataPage sizePage => Framework.Service<DataPage>(); 
+    public static DataPage dataPage => Framework.Service<DataPage>(); 
     public static SavePage savePage => Framework.Service<SavePage>();
     public static readonly UserControl emptyPage = new UserControl();
 
@@ -62,7 +62,7 @@ namespace WpfPlotDigitizer
       construction.Services.AddSingleton<AxLimPageVM>();
       construction.Services.AddSingleton<FilterPageVM>();
       construction.Services.AddSingleton<ErasePageVM>();
-      construction.Services.AddSingleton<SizePageVM>();
+      construction.Services.AddSingleton<DataPageVM>();
       construction.Services.AddSingleton<SavePageVM>();
 
       construction.Services.AddSingleton<MainWindow>();
@@ -72,7 +72,7 @@ namespace WpfPlotDigitizer
       construction.Services.AddSingleton<FilterPage>();
       construction.Services.AddSingleton<ErasePage>();
       construction.Services.AddSingleton<DataPage>();
-      construction.Services.AddSingleton<SavePageVM>();
+      construction.Services.AddSingleton<SavePage>();
 
       return construction;
     }
