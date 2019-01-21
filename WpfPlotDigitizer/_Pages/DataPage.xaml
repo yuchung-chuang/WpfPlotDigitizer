@@ -11,19 +11,22 @@
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800"
-             d:DataContext="{d:DesignInstance local:SizePageVM, IsDesignTimeCreatable=True}">
+             d:DataContext="{d:DesignInstance local:DataPageVM, IsDesignTimeCreatable=True}">
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*" />
       <ColumnDefinition Width="auto" />
     </Grid.ColumnDefinitions>
+
     <Grid>
-      <Image Source="{Binding imageSource}"
+      <Image Source="{Binding imageSource, Mode=TwoWay}"
              mvvm:Zoom.IsEnabled="True"
              mvvm:Zoom.IsLeaveReset="False"
              mvvm:Zoom.Maximum="100"
-             mvvm:Pan.IsEnabled="True" />
+             mvvm:Pan.IsEnabled="True"
+             mvvm:Pan.MouseButton="Left" />
     </Grid>
+
     <StackPanel Grid.Column="1"
                 Orientation="Horizontal">
       <Slider Orientation="Vertical"

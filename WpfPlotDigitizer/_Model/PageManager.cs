@@ -12,7 +12,7 @@ namespace WpfPlotDigitizer
     Axis,
     Filter,
     Erase,
-    Size,
+    Data,
     Save,
     /// <summary>
     /// Number of pages, should always be the last element of enum
@@ -48,8 +48,8 @@ namespace WpfPlotDigitizer
         case ApplicationPages.Erase:
           CurrentPage = erasePage;
           break;
-        case ApplicationPages.Size:
-          CurrentPage = sizePage;
+        case ApplicationPages.Data:
+          CurrentPage = dataPage;
           break;
         case ApplicationPages.Save:
           CurrentPage = savePage;

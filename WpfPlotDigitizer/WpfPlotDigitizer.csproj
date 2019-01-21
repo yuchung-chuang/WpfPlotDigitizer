@@ -170,7 +170,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="_Model\DIConstructExtensions.cs" />
     <Compile Include="_ViewModels\DataPageVM.cs" />
     <Compile Include="_Pages\DataPage.xaml.cs">
       <DependentUpon>DataPage.xaml</DependentUpon>

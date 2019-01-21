@@ -29,17 +29,8 @@ namespace WpfPlotDigitizer
       Current.MainWindow.Show();
 
 #if DEBUG
-      //Browse
       browsePageVM.PBInput = new BitmapImage(new Uri($"pack://application:,,,/images/data.png")).ToPixelBitmap();
-      ////AxisLimit
-      //appManager.PageManager.TurnNext();
-      ////Axis
-      //appManager.PageManager.TurnNext();
-      ////Filter
-      //appManager.PageManager.TurnNext();
-      ////Erase
-      //appManager.PageManager.TurnNext();
-      //Size
+      appManager.PageManager.TurnTo((int)ApplicationPages.Save);
 #endif
     }
   }
