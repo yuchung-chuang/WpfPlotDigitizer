@@ -174,7 +174,6 @@
     <Compile Include="_Pages\DataPage.xaml.cs">
       <DependentUpon>DataPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ToBeImproved\IsObserveSize.cs" />
     <Compile Include="_Model\DI.cs" />
     <Compile Include="_ViewModels\AxLimPageVM.cs" />
     <Compile Include="_ViewModels\SavePageVM.cs" />
@@ -277,6 +276,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CycWpfLibrary\CycWpfLibrary.CustomControls\CycWpfLibrary.CustomControls.csproj">
+      <Project>{1b0190c8-083c-4c23-9862-66c520641264}</Project>
+      <Name>CycWpfLibrary.CustomControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CycWpfLibrary\CycWpfLibrary.UserControls\CycWpfLibrary.UserControls.csproj">
+      <Project>{7aa8fe4a-4554-4b43-b9b5-38edc992db09}</Project>
+      <Name>CycWpfLibrary.UserControls</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\CycWpfLibrary\CycWpfLibrary\CycWpfLibrary.csproj">
       <Project>{dc9b1571-60b9-48d4-a147-24820d8e895b}</Project>
       <Name>CycWpfLibrary</Name>

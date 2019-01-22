@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CycWpfLibraryTests", "..\Cy
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BindingTester", "BindingTester\BindingTester.csproj", "{E69C2138-BF01-4A45-ADB6-FED71A2B92D6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CycWpfLibrary.CustomControls", "..\CycWpfLibrary\CycWpfLibrary.CustomControls\CycWpfLibrary.CustomControls.csproj", "{1B0190C8-083C-4C23-9862-66C520641264}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CycWpfLibrary.UserControls", "..\CycWpfLibrary\CycWpfLibrary.UserControls\CycWpfLibrary.UserControls.csproj", "{7AA8FE4A-4554-4B43-B9B5-38EDC992DB09}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{E69C2138-BF01-4A45-ADB6-FED71A2B92D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E69C2138-BF01-4A45-ADB6-FED71A2B92D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E69C2138-BF01-4A45-ADB6-FED71A2B92D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B0190C8-083C-4C23-9862-66C520641264}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B0190C8-083C-4C23-9862-66C520641264}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B0190C8-083C-4C23-9862-66C520641264}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B0190C8-083C-4C23-9862-66C520641264}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AA8FE4A-4554-4B43-B9B5-38EDC992DB09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AA8FE4A-4554-4B43-B9B5-38EDC992DB09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AA8FE4A-4554-4B43-B9B5-38EDC992DB09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AA8FE4A-4554-4B43-B9B5-38EDC992DB09}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

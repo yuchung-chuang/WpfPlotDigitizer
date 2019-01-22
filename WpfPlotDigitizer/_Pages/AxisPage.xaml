@@ -5,37 +5,38 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:WpfPlotDigitizer"
              xmlns:cycControls="clr-namespace:CycWpfLibrary.Controls;assembly=CycWpfLibrary"
-             xmlns:cycMVVM="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
+             xmlns:mvvm="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:uc="clr-namespace:CycWpfLibrary.UserControls;assembly=CycWpfLibrary.UserControls"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800"
              d:DataContext="{d:DesignInstance local:AxisPageVM, IsDesignTimeCreatable=True}">
   <Grid>
-    <cycControls:PanZoomBorder>
-      <Viewbox>
-        <Grid Name="gridBase2">
-          <Image Name="imageAxis"
-                 Source="{Binding ImageSource}"
-                 Stretch="None" />
-          <cycControls:Axis AxisLeft="{Binding AxisLeft, Mode=TwoWay}"
-                            AxisTop="{Binding AxisTop, Mode=TwoWay}"
-                            AxisWidth="{Binding AxisWidth, Mode=TwoWay}"
-                            AxisHeight="{Binding AxisHeight, Mode=TwoWay}"
-                            Width="{Binding ElementName=imageAxis, Path=ActualWidth}"
-                            Height="{Binding ElementName=imageAxis, Path=ActualHeight}"
-                            ShadowBrush="#99999999"
-                            AxisBrush="Red"
-                            Panel.ZIndex="1">
-            <i:Interaction.Triggers>
-              <i:EventTrigger EventName="MouseDoubleClick">
-                <i:InvokeCommandAction Command="{Binding GetAxisCommand}" />
-              </i:EventTrigger>
-            </i:Interaction.Triggers>
-          </cycControls:Axis>
-        </Grid>
-      </Viewbox>
-    </cycControls:PanZoomBorder>
+    <Viewbox>
+      <Grid Name="gridBase2"
+            mvvm:Pan.IsEnabled="True"
+            mvvm:Pan.MouseButton="Left"
+            mvvm:Zoom.IsEnabled="True">
+        <Image Name="imageAxis"
+               Source="{Binding ImageSource}"
+               Stretch="None" />
+        <cycControls:Axis AxisLeft="{Binding AxisLeft, Mode=TwoWay}"
+                          AxisTop="{Binding AxisTop, Mode=TwoWay}"
+                          AxisWidth="{Binding AxisWidth, Mode=TwoWay}"
+                          AxisHeight="{Binding AxisHeight, Mode=TwoWay}"
+                          Width="{Binding ElementName=imageAxis, Path=ActualWidth}"
+                          Height="{Binding ElementName=imageAxis, Path=ActualHeight}"
+                          ShadowBrush="#99999999"
+                          AxisBrush="Red"
+                          Panel.ZIndex="1">
+          <i:Interaction.Triggers>
+            <i:EventTrigger EventName="MouseDoubleClick">
+              <i:InvokeCommandAction Command="{Binding GetAxisCommand}" />
+            </i:EventTrigger>
+          </i:Interaction.Triggers>
+        </cycControls:Axis>
+      </Grid>
+    </Viewbox>
   </Grid>
-
 </UserControl>

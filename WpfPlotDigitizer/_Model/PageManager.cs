@@ -1,4 +1,5 @@
-﻿using CycWpfLibrary.Controls;
+﻿using CycWpfLibrary;
+using CycWpfLibrary.Controls;
 using CycWpfLibrary.MVVM;
 using System.Windows.Controls;
 using static WpfPlotDigitizer.DI;

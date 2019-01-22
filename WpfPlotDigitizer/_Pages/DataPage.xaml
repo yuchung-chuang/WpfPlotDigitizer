@@ -24,7 +24,7 @@
              mvvm:Zoom.IsLeaveReset="False"
              mvvm:Zoom.Maximum="100"
              mvvm:Pan.IsEnabled="True"
-             mvvm:Pan.MouseButton="Left" />
+             mvvm:Pan.MouseButton="Left"/>
     </Grid>
 
     <StackPanel Grid.Column="1"

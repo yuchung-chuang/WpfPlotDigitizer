@@ -11,18 +11,13 @@
                      xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
                      xmlns:cycControls="clr-namespace:CycWpfLibrary.Controls;assembly=CycWpfLibrary"
                      WindowStartupLocation="CenterScreen"
+                     d:DataContext="{d:DesignInstance local:MainWindowVM, IsDesignTimeCreatable=True}"
                      Title="MainWindow"
                      Height="600"
                      Width="900">
   <Grid Name="gridMain">
 
     <cycControls:PageControl PageManager="{Binding PageManager}" />
-    
-      <!--<Image Source="images/data.png"
-             mvvm:Zoom.IsEnabled="True"
-             mvvm:Zoom.Maximum="5"
-             mvvm:Pan.IsEnabled="True"
-             mvvm:Pan.MouseButton="Left" />-->
-      
+
   </Grid>
 </mahapps:MetroWindow>

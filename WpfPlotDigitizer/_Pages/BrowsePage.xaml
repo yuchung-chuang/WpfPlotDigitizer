@@ -6,33 +6,35 @@
              xmlns:local="clr-namespace:WpfPlotDigitizer"
              xmlns:cycControls="clr-namespace:CycWpfLibrary.Controls;assembly=CycWpfLibrary"
              xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:custom="clr-namespace:CycWpfLibrary.CustomControls;assembly=CycWpfLibrary.CustomControls"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800"
              d:DataContext="{d:DesignInstance local:BrowsePageVM, IsDesignTimeCreatable=True}">
-  
+
   <Grid Name="gridBase">
-
-    <cycControls:DropImageReceiver DropPixelBitmap="{Binding PBInput, Mode=OneWayToSource}" />
-
-    <StackPanel Visibility="Visible"
-                Orientation="Vertical"
-                VerticalAlignment="Center">
-      <TextBlock Text="Drag your image here"
-                 TextAlignment="Center"
-                 IsHitTestVisible="False"
-                 FontSize="40" />
-      <TextBlock Text="Or"
-                 Margin="10"
-                 TextAlignment="Center"
-                 IsHitTestVisible="False"
-                 FontSize="30" />
-      <Button Content="Browse"
-              FontSize="40"
-              FontWeight="Medium"
-              Width="200"
-              mahapps:ButtonHelper.PreserveTextCase="True"
-              Command="{Binding OpenFileCommand}" />
-    </StackPanel>
+    <custom:DropBorder DropFileName="{Binding FileName, Mode=TwoWay}">
+      <StackPanel Visibility="Visible"
+                  Orientation="Vertical"
+                  VerticalAlignment="Center">
+        <TextBlock Text="Drag your image here"
+                   TextAlignment="Center"
+                   IsHitTestVisible="False"
+                   FontSize="40" />
+        <TextBlock Text="Or"
+                   Margin="10"
+                   TextAlignment="Center"
+                   IsHitTestVisible="False"
+                   FontSize="30" />
+        <Button Content="Browse"
+                FontSize="40"
+                FontWeight="Medium"
+                Width="200"
+                Height="70"
+                mahapps:ButtonHelper.PreserveTextCase="True"
+                Command="{Binding OpenFileCommand}" />
+      </StackPanel>
+    </custom:DropBorder>
   </Grid>
 </UserControl>
