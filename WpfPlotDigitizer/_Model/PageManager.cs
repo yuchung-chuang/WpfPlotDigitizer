@@ -25,8 +25,8 @@ namespace WpfPlotDigitizer
   {
     public PageManager()
     {
-      TurnNextCommand = new RelayCommand(TurnNext, CanTurnNext);
-      TurnBackCommand = new RelayCommand(TurnBack, CanTurnBack);
+      TurnNextCommand = new RelayCommand<object, bool>(TurnNext, CanTurnNext);
+      TurnBackCommand = new RelayCommand<object, bool>(TurnBack, CanTurnBack);
     }
 
     private UserControl GetCurrentPage()
@@ -74,6 +74,6 @@ namespace WpfPlotDigitizer
     public override UserControl CurrentPage => GetCurrentPage();
 
     private readonly int NumOfPages = (int)ApplicationPages.NumOfPages;
-    public override bool CanTurnNext() => Index < NumOfPages - 1;
+    public override bool CanTurnNext(object param = null) => Index < NumOfPages - 1;
   }
 }

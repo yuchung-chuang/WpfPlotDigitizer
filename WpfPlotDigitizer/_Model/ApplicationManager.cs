@@ -8,6 +8,7 @@ using Emgu.CV.Structure;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using static CycWpfLibrary.NativeMethod;
 using static WpfPlotDigitizer.DI;
 
@@ -23,13 +24,17 @@ namespace WpfPlotDigitizer
 
     public PageManagerBase PageManager { get; private set; } = new PageManager();
 
-    private void PageManager_TurnNextEvent(object sender, EventArgs e)
+    private bool PageManager_TurnNextEvent(object sender, EventArgs e)
     {
+      var isCanceled = false;
       var pageManager = sender as PageManager;
       TurnNextFrom();
+      if (isCanceled)
+        return isCanceled;
       TurnNextTo();
+      return isCanceled;
 
-      void TurnNextFrom() 
+      void TurnNextFrom()
       {
         switch ((ApplicationPages)pageManager.Index)
         {
@@ -40,8 +45,16 @@ namespace WpfPlotDigitizer
             };
             break;
           case ApplicationPages.AxLim:
-            imageData.AxLim = axLimPageVM.AxLim;
-            imageData.AxLogBase = axLimPageVM.AxLogBase;
+            if (!AxLimCheck())
+            {
+              imageData.AxLim = axLimPageVM.AxLim;
+              imageData.AxLogBase = axLimPageVM.AxLogBase;
+            }
+            else
+            {
+              MessageBox.Show("Please type in all axis limits.", "Warning", MessageBoxButton.OK);
+              isCanceled = true;
+            }
             break;
           case ApplicationPages.Axis:
             imageData.PBAxis = imageData.PBInput.Bitmap
@@ -90,9 +103,10 @@ namespace WpfPlotDigitizer
             break;
         }
       }
+      bool AxLimCheck() => axLimPageVM.AxLim == Rect.Empty;
     }
 
-    private void PageManager_TurnToEvent(object sender, int index)
+    private bool PageManager_TurnToEvent(object sender, int index)
     {
       var pageManager = sender as PageManager;
       if (index > pageManager.Index)
@@ -100,9 +114,12 @@ namespace WpfPlotDigitizer
         var turns = index - pageManager.Index;
         for (int i = 0; i < turns; i++)
         {
-          pageManager.TurnNext();
+          var isCanceled = pageManager.TurnNext();
+          if (isCanceled)
+            return true;
         }
       }
+      return false;
     }
   }
 }

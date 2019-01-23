@@ -33,11 +33,20 @@ namespace WpfPlotDigitizer
     public double? XMin { get; set; }
     public double? YMax { get; set; }
     public double? YMin { get; set; }
-    public Rect AxLim => 
-      (XMin == null || YMin == null || XMax == null || YMax == null) ?
+    public Rect AxLim
+    {
+      get => (XMin == null || YMin == null || XMax == null || YMax == null) ?
           Rect.Empty :
-          new Rect(new Point((double)XMin, (double)YMin), 
+          new Rect(new Point((double)XMin, (double)YMin),
             new Point((double)XMax, (double)YMax));
+      set
+      {
+        XMax = value.Right;
+        XMin = value.Left;
+        YMax = value.Bottom;
+        YMin = value.Top;
+      }
+    }
 
     public double? XLog { get; set; }
     public double? YLog { get; set; }

@@ -26,8 +26,8 @@
 
       </ResourceDictionary.MergedDictionaries>
 
-      <Style TargetType="cycControls:PanZoomBorder"
-             BasedOn="{StaticResource NormalPanZoomBorder}" />
+      <!--<Style TargetType="cycControls:PanZoomBorder"
+             BasedOn="{StaticResource NormalPanZoomBorder}" />-->
     </ResourceDictionary>
   </Application.Resources>
 </Application>
