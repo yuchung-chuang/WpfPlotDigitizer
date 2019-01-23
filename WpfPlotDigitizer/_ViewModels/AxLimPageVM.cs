@@ -7,7 +7,9 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.OCR;
 using Emgu.CV.Structure;
 using System;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -23,7 +25,27 @@ namespace WpfPlotDigitizer
   {
     public AxLimPageVM()
     {
-      
+      imageData.PropertyChanged += ImageData_PropertyChanged;
+    }
+
+    public object this[string propertyName]
+    {
+      get
+      {
+        PropertyInfo property = GetType().GetProperty(propertyName);
+        return property.GetValue(this, null);
+      }
+      set
+      {
+        PropertyInfo property = GetType().GetProperty(propertyName);
+        property.SetValue(this, value, null);
+      }
+    }
+
+    private void ImageData_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+      if (e.PropertyName == nameof(imageData.PBInput))
+        OnPropertyChanged(nameof(imageSource));
     }
 
     public PixelBitmap PBInput => imageData.PBInput;

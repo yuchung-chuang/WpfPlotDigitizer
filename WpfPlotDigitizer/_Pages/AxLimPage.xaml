@@ -175,11 +175,13 @@
           <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <TextBox Grid.Row="0"
-                 md:HintAssist.Hint="Y-Axis: Max">
+                 Tag="YMax"
+                 md:HintAssist.Hint="Y-Axis: Max"
+                 Validation.Error="TextBox_Error">
           <TextBox.Text>
             <Binding Path="YMax"
-                     Mode="TwoWay"
-                     Converter="{cycMVVM:NumStrConverter}">
+                     Converter="{cycMVVM:NumStrConverter}"
+                     NotifyOnValidationError="True">
               <Binding.ValidationRules>
                 <cycMVVM:DoubleValidation />
               </Binding.ValidationRules>
@@ -187,11 +189,13 @@
           </TextBox.Text>
         </TextBox>
         <TextBox Grid.Row="1"
+                 Tag="YLog"
+                 Validation.Error="TextBox_Error"
                  md:HintAssist.Hint="Y-Axis: Log Base">
           <TextBox.Text>
             <Binding Path="YLog"
-                     Mode="TwoWay"
-                     Converter="{cycMVVM:NumStrConverter}">
+                     Converter="{cycMVVM:NumStrConverter}"
+                     NotifyOnValidationError="True">
               <Binding.ValidationRules>
                 <cycMVVM:LogBaseValidation />
               </Binding.ValidationRules>
@@ -199,11 +203,13 @@
           </TextBox.Text>
         </TextBox>
         <TextBox Grid.Row="2"
+                 Tag="YMin"
+                 Validation.Error="TextBox_Error"
                  md:HintAssist.Hint="Y-Axis: Min">
           <TextBox.Text>
             <Binding Path="YMin"
-                     Mode="TwoWay"
-                     Converter="{cycMVVM:NumStrConverter}">
+                     Converter="{cycMVVM:NumStrConverter}"
+                     NotifyOnValidationError="True">
               <Binding.ValidationRules>
                 <cycMVVM:DoubleValidation />
               </Binding.ValidationRules>
@@ -229,35 +235,51 @@
           <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <TextBox Grid.Column="0"
+                 Tag="XMin"
+                 Validation.Error="TextBox_Error"
                  md:HintAssist.Hint="X-Axis: Min">
           <TextBox.Text>
             <Binding Path="XMin"
-                     Mode="TwoWay"
-                     Converter="{cycMVVM:NumStrConverter}">
+                     Converter="{cycMVVM:NumStrConverter}"
+                     NotifyOnValidationError="True">
               <Binding.ValidationRules>
                 <cycMVVM:DoubleValidation />
               </Binding.ValidationRules>
             </Binding>
           </TextBox.Text>
+          <i:Interaction.Triggers>
+            <i:EventTrigger EventName="LostFocus">
+              <i:InvokeCommandAction Command="{Binding ValidateCommand}"/>
+            </i:EventTrigger>
+          </i:Interaction.Triggers>
         </TextBox>
         <TextBox Grid.Column="1"
+                 Tag="XLog"
+                 Validation.Error="TextBox_Error"
                  md:HintAssist.Hint="X-Axis: Log Base">
           <TextBox.Text>
             <Binding Path="XLog"
-                     Mode="TwoWay"
-                     Converter="{cycMVVM:NumStrConverter}">
+                     Converter="{cycMVVM:NumStrConverter}"
+                     NotifyOnValidationError="True">
               <Binding.ValidationRules>
                 <cycMVVM:LogBaseValidation />
               </Binding.ValidationRules>
             </Binding>
           </TextBox.Text>
+          <i:Interaction.Triggers>
+            <i:EventTrigger EventName="LostFocus">
+              <i:InvokeCommandAction Command="{Binding ValidateCommand}" />
+            </i:EventTrigger>
+          </i:Interaction.Triggers>
         </TextBox>
         <TextBox Grid.Column="2"
+                 Tag="XMax"
+                 Validation.Error="TextBox_Error"
                  md:HintAssist.Hint="X-Axis: Max">
           <TextBox.Text>
             <Binding Path="XMax"
-                     Mode="TwoWay"
-                     Converter="{cycMVVM:NumStrConverter}">
+                     Converter="{cycMVVM:NumStrConverter}"
+                     NotifyOnValidationError="True">
               <Binding.ValidationRules>
                 <cycMVVM:DoubleValidation />
               </Binding.ValidationRules>
