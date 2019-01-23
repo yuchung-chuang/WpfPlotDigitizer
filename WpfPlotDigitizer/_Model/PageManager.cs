@@ -29,37 +29,19 @@ namespace WpfPlotDigitizer
       TurnBackCommand = new RelayCommand<object, bool>(TurnBack, CanTurnBack);
     }
 
-    private UserControl GetCurrentPage()
+    /// <summary>
+    /// Should be consistent with <see cref="ApplicationPages"/>.
+    /// </summary>
+    private static readonly UserControl[] allPages = new UserControl[]
     {
-      UserControl CurrentPage = emptyPage;
-      switch ((ApplicationPages)Index)
-      {
-        case ApplicationPages.Browse:
-          CurrentPage = browsePage;
-          break;
-        case ApplicationPages.AxLim:
-          CurrentPage = axLimPage;
-          break;
-        case ApplicationPages.Axis:
-          CurrentPage = axisPage;
-          break;
-        case ApplicationPages.Filter:
-          CurrentPage = filterPage;
-          break;
-        case ApplicationPages.Erase:
-          CurrentPage = erasePage;
-          break;
-        case ApplicationPages.Data:
-          CurrentPage = dataPage;
-          break;
-        case ApplicationPages.Save:
-          CurrentPage = savePage;
-          break;
-        default:
-          break;
-      }
-      return CurrentPage;
-    }
+      browsePage,
+      axLimPage,
+      axisPage,
+      filterPage,
+      erasePage,
+      dataPage,
+      savePage,
+    };
 
     private int index;
     public override int Index
@@ -71,7 +53,7 @@ namespace WpfPlotDigitizer
         OnPropertyChanged(nameof(CurrentPage));
       }
     }
-    public override UserControl CurrentPage => GetCurrentPage();
+    public override UserControl CurrentPage => allPages[Index];
 
     private readonly int NumOfPages = (int)ApplicationPages.NumOfPages;
     public override bool CanTurnNext(object param = null) => Index < NumOfPages - 1;

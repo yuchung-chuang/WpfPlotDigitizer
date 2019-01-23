@@ -26,16 +26,12 @@ namespace WpfPlotDigitizer
 
     private bool PageManager_TurnNextEvent(object sender, EventArgs e)
     {
-      var isCanceled = false;
       var pageManager = sender as PageManager;
-      TurnNextFrom();
-      if (isCanceled)
-        return isCanceled;
-      TurnNextTo();
-      return isCanceled;
+      return TurnNextFrom() && TurnNextTo();
 
-      void TurnNextFrom()
+      bool TurnNextFrom()
       {
+        var turnResult = true;
         switch ((ApplicationPages)pageManager.Index)
         {
           case ApplicationPages.Browse:
@@ -52,8 +48,8 @@ namespace WpfPlotDigitizer
             }
             else
             {
-              MessageBox.Show("Please type in all axis limits.", "Warning", MessageBoxButton.OK);
-              isCanceled = true;
+              MessageBox.Show("Please type in all valid axis limits.", "Warning", MessageBoxButton.OK);
+              turnResult = false;
             }
             break;
           case ApplicationPages.Axis:
@@ -72,9 +68,11 @@ namespace WpfPlotDigitizer
           default:
             break;
         }
+        return turnResult;
       }
-      void TurnNextTo()
+      bool TurnNextTo()
       {
+        var turnResult = true;
         // call before actually turned next
         switch ((ApplicationPages)pageManager.Index + 1)
         {
@@ -102,6 +100,7 @@ namespace WpfPlotDigitizer
           default:
             break;
         }
+        return turnResult;
       }
       bool AxLimCheck() => axLimPageVM.AxLim == Rect.Empty;
     }
@@ -114,9 +113,8 @@ namespace WpfPlotDigitizer
         var turns = index - pageManager.Index;
         for (int i = 0; i < turns; i++)
         {
-          var isCanceled = pageManager.TurnNext();
-          if (isCanceled)
-            return true;
+          if (!pageManager.TurnNext()) // turn is cancelled
+            return false;
         }
       }
       return false;
