@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="WpfPlotDigitizer.FilterPage"
+﻿<Page x:Class="WpfPlotDigitizer.FilterPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -81,4 +81,4 @@
       </mahapps:RangeSlider>
     </StackPanel>
   </Grid>
-</UserControl>
+</Page>

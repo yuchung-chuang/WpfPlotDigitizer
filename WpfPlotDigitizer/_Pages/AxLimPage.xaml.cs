@@ -7,7 +7,7 @@ namespace WpfPlotDigitizer
   /// <summary>
   /// AxisLimitPage.xaml 的互動邏輯
   /// </summary>
-  public partial class AxLimPage : UserControl
+  public partial class AxLimPage : Page
   {
     public AxLimPage()
     {

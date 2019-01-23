@@ -6,7 +6,7 @@ namespace WpfPlotDigitizer
   /// <summary>
   /// AxisPage.xaml 的互動邏輯
   /// </summary>
-  public partial class AxisPage : UserControl
+  public partial class AxisPage : Page
   {
     public AxisPage()
     {

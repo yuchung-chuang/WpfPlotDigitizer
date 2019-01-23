@@ -32,7 +32,7 @@ namespace WpfPlotDigitizer
     /// <summary>
     /// Should be consistent with <see cref="ApplicationPages"/>.
     /// </summary>
-    private static readonly UserControl[] allPages = new UserControl[]
+    private static readonly Page[] allPages = new Page[]
     {
       browsePage,
       axLimPage,
@@ -53,7 +53,7 @@ namespace WpfPlotDigitizer
         OnPropertyChanged(nameof(CurrentPage));
       }
     }
-    public override UserControl CurrentPage => allPages[Index];
+    public override Page CurrentPage => allPages[Index];
 
     private readonly int NumOfPages = (int)ApplicationPages.NumOfPages;
     public override bool CanTurnNext(object param = null) => Index < NumOfPages - 1;

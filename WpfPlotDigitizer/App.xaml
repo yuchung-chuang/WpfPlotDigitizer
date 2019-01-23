@@ -24,10 +24,30 @@
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Fonts.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Flyout.xaml" />
 
+        <!--FontAwesome-->
+        <ResourceDictionary Source="pack://application:,,,/CycWpfLibrary;component/Controls/Styles/Fonts.xaml" />
       </ResourceDictionary.MergedDictionaries>
 
-      <!--<Style TargetType="cycControls:PanZoomBorder"
-             BasedOn="{StaticResource NormalPanZoomBorder}" />-->
+
+      <ControlTemplate x:Key="ButtonTemplate"
+                       TargetType="{x:Type ButtonBase}">
+        <Border x:Name="border"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                Background="{TemplateBinding Background}"
+                SnapsToDevicePixels="True">
+          <ContentPresenter x:Name="contentPresenter"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            Content="{TemplateBinding Content}"
+                            ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                            Focusable="False"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            Margin="{TemplateBinding Padding}"
+                            RecognizesAccessKey="True"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+        </Border>
+      </ControlTemplate>
     </ResourceDictionary>
   </Application.Resources>
 </Application>

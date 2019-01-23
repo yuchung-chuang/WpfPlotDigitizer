@@ -17,7 +17,145 @@
                      Width="900">
   <Grid Name="gridMain">
 
-    <cycControls:PageControl PageManager="{Binding PageManager}" />
+    <!--<cycControls:PageControl PageManager="{Binding PageManager}" />-->
+    <Grid.Resources>
+      <Style TargetType="Button">
+        <Setter Property="FontFamily"
+                Value="{StaticResource FontAwesome}" />
+        <Setter Property="FontSize"
+                Value="100" />
+        <Setter Property="FontWeight"
+                Value="ExtraBold" />
+        <Setter Property="Foreground"
+                Value="WhiteSmoke" />
+        <Setter Property="Opacity"
+                Value="0" />
+        <Setter Property="BorderBrush"
+                Value="{x:Null}" />
+        <Setter Property="Template"
+                Value="{StaticResource ButtonTemplate}" />
+        <Style.Triggers>
+          <Trigger Property="IsMouseOver"
+                   Value="true">
+            <Trigger.EnterActions>
+              <BeginStoryboard>
+                <Storyboard>
+                  <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                   To="1"
+                                   Duration="0:0:0.5" />
+                </Storyboard>
+              </BeginStoryboard>
+            </Trigger.EnterActions>
+            <Trigger.ExitActions>
+              <BeginStoryboard>
+                <Storyboard>
+                  <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                   To="0"
+                                   Duration="0:0:0.5" />
+                </Storyboard>
+              </BeginStoryboard>
+            </Trigger.ExitActions>
+          </Trigger>
+        </Style.Triggers>
+      </Style>
+    </Grid.Resources>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="0.1*" />
+      <ColumnDefinition Width="0.1*" />
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="0.1*" />
+      <ColumnDefinition Width="0.1*" />
+    </Grid.ColumnDefinitions>
+    <Frame Grid.Column="1"
+           Grid.ColumnSpan="3"
+           Name="frameMain"
+           Content="{Binding PageManager.CurrentPage}"
+           NavigationUIVisibility="Hidden" />
+
+    <Button Name="BackButton"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Content="&#xf104;"
+            Command="{Binding PageManager.TurnBackCommand}">
+      <Button.Background>
+        <LinearGradientBrush EndPoint="1,0.5"
+                             StartPoint="0,0.5">
+          <GradientStop Color="#DD000000"
+                        Offset="0" />
+          <GradientStop Color="#00000000"
+                        Offset="1" />
+        </LinearGradientBrush>
+      </Button.Background>
+      <Button.RenderTransform>
+        <TranslateTransform X="{Binding ActualWidth, ElementName=BackButton, Converter={mvvm:MathConverter}, ConverterParameter=-x/2}" />
+      </Button.RenderTransform>
+      <Button.Triggers>
+        <EventTrigger RoutedEvent="MouseEnter">
+          <BeginStoryboard>
+            <Storyboard>
+              <DoubleAnimation Storyboard.TargetName="BackButton"
+                               Storyboard.TargetProperty="(Button.RenderTransform).(TranslateTransform.X)"
+                               To="0"
+                               Duration="0:0:0.5" />
+            </Storyboard>
+          </BeginStoryboard>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="MouseLeave">
+          <BeginStoryboard>
+            <Storyboard>
+              <DoubleAnimation Storyboard.TargetName="BackButton"
+                               Storyboard.TargetProperty="(Button.RenderTransform).(TranslateTransform.X)"
+                               To="{Binding ActualWidth, ElementName=BackButton, Converter={mvvm:MathConverter}, ConverterParameter=-x/2}"
+                               Duration="0:0:0.5" />
+            </Storyboard>
+          </BeginStoryboard>
+        </EventTrigger>
+
+      </Button.Triggers>
+
+    </Button>
+
+    <Button Name="NextButton"
+            Grid.Column="3"
+            Grid.ColumnSpan="2"
+            Content="&#xf105;"
+            Command="{Binding PageManager.TurnNextCommand}">
+      <Button.RenderTransform>
+        <TranslateTransform X="{Binding ActualWidth, ElementName=NextButton, Converter={mvvm:MathConverter}, ConverterParameter=x/2}" />
+      </Button.RenderTransform>
+      <Button.Background>
+        <LinearGradientBrush EndPoint="1,0.5"
+                             StartPoint="0,0.5">
+          <GradientStop Color="#DD000000"
+                        Offset="1" />
+          <GradientStop Color="#00000000"
+                        Offset="0" />
+        </LinearGradientBrush>
+      </Button.Background>
+      <Button.Triggers>
+        <EventTrigger RoutedEvent="MouseEnter">
+          <BeginStoryboard>
+            <Storyboard>
+              <DoubleAnimation Storyboard.TargetName="NextButton"
+                               Storyboard.TargetProperty="(Button.RenderTransform).(TranslateTransform.X)"
+                               To="0"
+                               Duration="0:0:0.5" />
+            </Storyboard>
+          </BeginStoryboard>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="MouseLeave">
+          <BeginStoryboard>
+            <Storyboard>
+              <DoubleAnimation Storyboard.TargetName="NextButton"
+                               Storyboard.TargetProperty="(Button.RenderTransform).(TranslateTransform.X)"
+                               To="{Binding ActualWidth, ElementName=BackButton, Converter={mvvm:MathConverter}, ConverterParameter=x/2}"
+                               Duration="0:0:0.5" />
+            </Storyboard>
+          </BeginStoryboard>
+        </EventTrigger>
+
+      </Button.Triggers>
+    </Button>
 
   </Grid>
 </mahapps:MetroWindow>
