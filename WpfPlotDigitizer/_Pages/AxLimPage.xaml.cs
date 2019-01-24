@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using CycWpfLibrary.Media;
+using System.Linq;
 using System.Windows.Controls;
 using static WpfPlotDigitizer.DI;
 
@@ -7,7 +8,7 @@ namespace WpfPlotDigitizer
   /// <summary>
   /// AxisLimitPage.xaml 的互動邏輯
   /// </summary>
-  public partial class AxLimPage : Page
+  public partial class AxLimPage : AnimatedPage
   {
     public AxLimPage()
     {

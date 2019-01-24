@@ -2,6 +2,7 @@
 using DIConstruct = Dna.FrameworkConstruction;
 using System.Windows.Controls;
 using Microsoft.Extensions.DependencyInjection;
+using CycWpfLibrary.Media;
 
 namespace WpfPlotDigitizer
 {
@@ -49,7 +50,7 @@ namespace WpfPlotDigitizer
     public static ErasePage erasePage => Framework.Service<ErasePage>(); 
     public static DataPage dataPage => Framework.Service<DataPage>(); 
     public static SavePage savePage => Framework.Service<SavePage>();
-    public static readonly UserControl emptyPage = new UserControl();
+    public static readonly AnimatedPage emptyPage = new AnimatedPage();
 
     public static DIConstruct AddWpfPlotDigitizerViewModels(this DIConstruct construction)
     {

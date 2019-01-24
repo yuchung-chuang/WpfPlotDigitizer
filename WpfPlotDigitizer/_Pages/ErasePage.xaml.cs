@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using CycWpfLibrary.Media;
+using System.Windows.Controls;
 using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer
@@ -6,7 +7,7 @@ namespace WpfPlotDigitizer
   /// <summary>
   /// ErasePage.xaml 的互動邏輯
   /// </summary>
-  public partial class ErasePage : Page
+  public partial class ErasePage : AnimatedPage
   {
     public ErasePage()
     {

@@ -19,29 +19,67 @@ namespace WpfPlotDigitizer
     public ApplicationManager()
     {
       PageManager.TurnNextEvent += PageManager_TurnNextEvent;
+      PageManager.TurnBackEvent += PageManager_TurnBackEvent;
       PageManager.TurnToEvent += PageManager_TurnToEvent;
     }
 
+
     public PageManagerBase PageManager { get; private set; } = new PageManager();
 
+    private bool PageManager_TurnBackEvent(object sender, EventArgs e)
+    {
+      var pageManager = sender as PageManager;
+      SetAnimationProperty();
+      return true;
+
+      void SetAnimationProperty()
+      {
+        var currentPage = pageManager.CurrentPage as AnimatedPage;
+        currentPage.SlideType = PageSlideType.Right;
+        currentPage.TransitionType = PageTransitionType.Out;
+        var previousPage = pageManager.PreviousPage as AnimatedPage;
+        previousPage.SlideType = PageSlideType.Left;
+        previousPage.TransitionType = PageTransitionType.In;
+      }
+    }
     private bool PageManager_TurnNextEvent(object sender, EventArgs e)
     {
       var pageManager = sender as PageManager;
-      return TurnNextFrom() && TurnNextTo();
+      var result = TurnNextFrom() && TurnNextTo();
+      if (result)
+        SetAnimationProperty();
+      return result;
 
+      void SetAnimationProperty()
+      {
+        var currentPage = pageManager.CurrentPage as AnimatedPage;
+        currentPage.SlideType = PageSlideType.Left;
+        currentPage.TransitionType = PageTransitionType.Out;
+        var nextPage = pageManager.NextPage as AnimatedPage;
+        nextPage.SlideType = PageSlideType.Right;
+        nextPage.TransitionType = PageTransitionType.In;
+      }
       bool TurnNextFrom()
       {
         var turnResult = true;
         switch ((ApplicationPages)pageManager.Index)
         {
           case ApplicationPages.Browse:
-            imageData.PBFilterW = new PixelBitmap(imageData.PBInput.Size)
+            if (PBInputCheck())
             {
-              Pixel = ImageProcessing.FilterW(imageData.PBInput)
-            };
+              imageData.PBFilterW = new PixelBitmap(imageData.PBInput.Size)
+              {
+                Pixel = ImageProcessing.FilterW(imageData.PBInput)
+              };
+            }
+            else
+            {
+              MessageBox.Show("Please select an image.", "Warning", MessageBoxButton.OK);
+              turnResult = false;
+            }
             break;
           case ApplicationPages.AxLim:
-            if (!AxLimCheck())
+            if (AxLimCheck())
             {
               imageData.AxLim = axLimPageVM.AxLim;
               imageData.AxLogBase = axLimPageVM.AxLogBase;
@@ -102,7 +140,8 @@ namespace WpfPlotDigitizer
         }
         return turnResult;
       }
-      bool AxLimCheck() => axLimPageVM.AxLim == Rect.Empty;
+      bool AxLimCheck() => axLimPageVM.AxLim != Rect.Empty;
+      bool PBInputCheck() => imageData.PBInput != null;
     }
 
     private bool PageManager_TurnToEvent(object sender, int index)

@@ -1,4 +1,4 @@
-﻿<Page x:Class="WpfPlotDigitizer.ErasePage"
+﻿<media:AnimatedPage x:Class="WpfPlotDigitizer.ErasePage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -6,6 +6,7 @@
              xmlns:cycControls="clr-namespace:CycWpfLibrary.Controls;assembly=CycWpfLibrary"
              xmlns:local="clr-namespace:WpfPlotDigitizer"
              xmlns:cycMvvm="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
+                    xmlns:media="clr-namespace:CycWpfLibrary.Media;assembly=CycWpfLibrary"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="400"
@@ -29,4 +30,4 @@
                              Name="imageEraser"
                              Image="{Binding imageErase, Mode=TwoWay}"/>
   </Grid>
-</Page>
+</media:AnimatedPage>

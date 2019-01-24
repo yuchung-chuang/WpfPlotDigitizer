@@ -1,25 +1,26 @@
-﻿<Page x:Class="WpfPlotDigitizer.AxLimPage"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:WpfPlotDigitizer"
-             xmlns:cycMVVM="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
-             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:controlzEx="clr-namespace:ControlzEx;assembly=MaterialDesignThemes.Wpf"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:cycControl="clr-namespace:CycWpfLibrary.Controls;assembly=CycWpfLibrary"
-             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-             TextElement.FontWeight="Regular"
-             TextElement.FontSize="13"
-             TextOptions.TextFormattingMode="Ideal"
-             TextOptions.TextRenderingMode="Auto"
-             Background="{DynamicResource MaterialDesignPaper}"
-             FontFamily="{DynamicResource MaterialDesignFont}"
-             mc:Ignorable="d"
-             d:DesignHeight="600"
-             d:DesignWidth="900"
-             d:DataContext="{d:DesignInstance local:AxLimPageVM, IsDesignTimeCreatable=True}">
+﻿<media:AnimatedPage x:Class="WpfPlotDigitizer.AxLimPage"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:local="clr-namespace:WpfPlotDigitizer"
+                    xmlns:cycMVVM="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
+                    xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+                    xmlns:controlzEx="clr-namespace:ControlzEx;assembly=MaterialDesignThemes.Wpf"
+                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                    xmlns:cycControl="clr-namespace:CycWpfLibrary.Controls;assembly=CycWpfLibrary"
+                    xmlns:media="clr-namespace:CycWpfLibrary.Media;assembly=CycWpfLibrary"
+                    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+                    TextElement.FontWeight="Regular"
+                    TextElement.FontSize="13"
+                    TextOptions.TextFormattingMode="Ideal"
+                    TextOptions.TextRenderingMode="Auto"
+                    Background="{DynamicResource MaterialDesignPaper}"
+                    FontFamily="{DynamicResource MaterialDesignFont}"
+                    mc:Ignorable="d"
+                    d:DesignHeight="600"
+                    d:DesignWidth="900"
+                    d:DataContext="{d:DesignInstance local:AxLimPageVM, IsDesignTimeCreatable=True}">
   <AdornerDecorator>
     <Grid Margin="20,0">
       <Grid.Resources>
@@ -249,7 +250,7 @@
           </TextBox.Text>
           <i:Interaction.Triggers>
             <i:EventTrigger EventName="LostFocus">
-              <i:InvokeCommandAction Command="{Binding ValidateCommand}"/>
+              <i:InvokeCommandAction Command="{Binding ValidateCommand}" />
             </i:EventTrigger>
           </i:Interaction.Triggers>
         </TextBox>
@@ -289,4 +290,4 @@
       </Grid>
     </Grid>
   </AdornerDecorator>
-</Page>
+</media:AnimatedPage>

@@ -1,6 +1,7 @@
 ﻿using CycWpfLibrary;
 using CycWpfLibrary.Controls;
 using CycWpfLibrary.MVVM;
+using System.Windows;
 using System.Windows.Controls;
 using static WpfPlotDigitizer.DI;
 
@@ -32,7 +33,7 @@ namespace WpfPlotDigitizer
     /// <summary>
     /// Should be consistent with <see cref="ApplicationPages"/>.
     /// </summary>
-    private static readonly Page[] allPages = new Page[]
+    private static readonly FrameworkElement[] allPages = new FrameworkElement[]
     {
       browsePage,
       axLimPage,
@@ -53,7 +54,10 @@ namespace WpfPlotDigitizer
         OnPropertyChanged(nameof(CurrentPage));
       }
     }
-    public override Page CurrentPage => allPages[Index];
+
+    public override FrameworkElement CurrentPage => allPages[Index];
+    public FrameworkElement NextPage => allPages[Index + 1];
+    public FrameworkElement PreviousPage => allPages[Index - 1];
 
     private readonly int NumOfPages = (int)ApplicationPages.NumOfPages;
     public override bool CanTurnNext(object param = null) => Index < NumOfPages - 1;

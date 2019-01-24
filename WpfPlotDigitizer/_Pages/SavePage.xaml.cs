@@ -1,11 +1,12 @@
-﻿using System.Windows.Controls;
+﻿using CycWpfLibrary.Media;
+using System.Windows.Controls;
 
 namespace WpfPlotDigitizer
 {
   /// <summary>
   /// SavePage.xaml 的互動邏輯
   /// </summary>
-  public partial class SavePage : Page
+  public partial class SavePage : AnimatedPage
   {
     public SavePage()
     {
