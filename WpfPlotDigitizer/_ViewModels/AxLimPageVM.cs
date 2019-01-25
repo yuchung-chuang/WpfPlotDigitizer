@@ -8,14 +8,12 @@ using Emgu.CV.OCR;
 using Emgu.CV.Structure;
 using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using static WpfPlotDigitizer.DI;
-using Bitmap = System.Drawing.Bitmap;
 using IP = WpfPlotDigitizer.ImageProcessing;
 using Rectangle = System.Drawing.Rectangle;
 
@@ -25,7 +23,6 @@ namespace WpfPlotDigitizer
   {
     public AxLimPageVM()
     {
-      imageData.PropertyChanged += ImageData_PropertyChanged;
     }
 
     public object this[string propertyName]
@@ -40,12 +37,6 @@ namespace WpfPlotDigitizer
         PropertyInfo property = GetType().GetProperty(propertyName);
         property.SetValue(this, value, null);
       }
-    }
-
-    private void ImageData_PropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-      if (e.PropertyName == nameof(imageData.PBInput))
-        OnPropertyChanged(nameof(imageSource));
     }
 
     public PixelBitmap PBInput => imageData.PBInput;
@@ -84,7 +75,9 @@ namespace WpfPlotDigitizer
     public double? YMinR { get; set; }
     public double? YLogR { get; set; }
 
+    [Obsolete]
     public PixelBitmap PBModified { get; set; }
+    [Obsolete]
     public BitmapSource ImageSource => PBModified?.ToBitmapSource();
 
     private readonly Tesseract ocr = IP.InitializeOcr("", "eng", OcrEngineMode.TesseractOnly, "0123456789");

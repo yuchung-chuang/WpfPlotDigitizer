@@ -115,10 +115,11 @@ namespace WpfPlotDigitizer
         switch ((ApplicationPages)pageManager.Index + 1)
         {
           case ApplicationPages.AxLim:
-            //axLimPageVM.GetAxisLimit();
+            axLimPageVM.OnPropertyChanged(nameof(axLimPageVM.imageSource));
             break;
           case ApplicationPages.Axis:
             axisPageVM.GetAxis();
+            axisPageVM.OnPropertyChanged(nameof(axisPageVM.ImageSource));
             break;
           case ApplicationPages.Filter:
             imageData.ImageFilterRGB = imageData.ImageAxis.Clone();
@@ -134,6 +135,7 @@ namespace WpfPlotDigitizer
             break;
           case ApplicationPages.Save:
             savePageVM.imageSave = imageData.ImageErase.Clone();
+            savePageVM.OnPropertyChanged(nameof(savePageVM.data));
             break;
           default:
             break;

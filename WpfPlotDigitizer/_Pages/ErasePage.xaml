@@ -1,16 +1,17 @@
 ﻿<media:AnimatedPage x:Class="WpfPlotDigitizer.ErasePage"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:cycControls="clr-namespace:CycWpfLibrary.Controls;assembly=CycWpfLibrary"
-             xmlns:local="clr-namespace:WpfPlotDigitizer"
-             xmlns:cycMvvm="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:cycControls="clr-namespace:CycWpfLibrary.Controls;assembly=CycWpfLibrary"
+                    xmlns:local="clr-namespace:WpfPlotDigitizer"
+                    xmlns:cycMvvm="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
                     xmlns:media="clr-namespace:CycWpfLibrary.Media;assembly=CycWpfLibrary"
-             mc:Ignorable="d"
-             d:DesignHeight="450"
-             d:DesignWidth="400"
-             d:DataContext="{d:DesignInstance local:ErasePageVM, IsDesignTimeCreatable=True}">
+                    xmlns:uc="clr-namespace:CycWpfLibrary.UserControls;assembly=CycWpfLibrary.UserControls"
+                    mc:Ignorable="d"
+                    d:DesignHeight="450"
+                    d:DesignWidth="400"
+                    d:DataContext="{d:DesignInstance local:ErasePageVM, IsDesignTimeCreatable=True}">
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="auto" />
@@ -26,8 +27,8 @@
               Command="{Binding DebugCommand}" />
     </WrapPanel>
 
-    <cycControls:ImageEraser Grid.Column="1"
-                             Name="imageEraser"
-                             Image="{Binding imageErase, Mode=TwoWay}"/>
+    <uc:ImageEraser Grid.Column="1"
+                    Name="imageEraser"
+                    Image="{Binding imageErase, Mode=TwoWay}" />
   </Grid>
 </media:AnimatedPage>

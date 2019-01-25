@@ -25,13 +25,14 @@
     <DataGrid Grid.Column="1"
               ItemsSource="{Binding data}"
               AutoGenerateColumns="True"
-              mahapps:DataGridHelper.EnableCellEditAssist="False" />
+              Margin="40" />
     <Button Grid.ColumnSpan="2"
             Grid.Row="1"
             Content="Save"
-            FontSize="40"
+            FontSize="30"
             FontWeight="Medium"
             Width="150"
+            Height="50"
             Margin="20"
             mahapps:ButtonHelper.PreserveTextCase="True"
             Command="{Binding SaveCommand}" />

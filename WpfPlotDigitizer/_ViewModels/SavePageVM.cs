@@ -2,14 +2,12 @@
 using CycWpfLibrary.MVVM;
 using Emgu.CV;
 using Emgu.CV.Structure;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer
 {
@@ -22,14 +20,14 @@ namespace WpfPlotDigitizer
 
     public Image<Bgra, byte> imageSave
     {
-      get => DI.imageData.ImageSave;
-      set => DI.imageData.ImageSave = value;
+      get => imageData.ImageSave;
+      set => imageData.ImageSave = value;
     }
 
     public List<Point> data
     {
-      get => DI.imageData.Data;
-      set => DI.imageData.Data = value;
+      get => imageData.Data;
+      set => imageData.Data = value;
     }
 
     public BitmapSource imageSource => imageSave?.ToBitmapSource();

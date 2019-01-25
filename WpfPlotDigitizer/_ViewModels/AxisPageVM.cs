@@ -13,15 +13,6 @@ namespace WpfPlotDigitizer
     public AxisPageVM()
     {
       GetAxisCommand = new RelayCommand(GetAxis);
-      imageData.PropertyChanged += ImageData_PropertyChanged;
-    }
-
-    private void ImageData_PropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-      if (e.PropertyName == nameof(imageData.PBInput))
-      {
-        OnPropertyChanged(nameof(ImageSource));
-      }
     }
 
     public PixelBitmap PBInput => imageData?.PBInput;
