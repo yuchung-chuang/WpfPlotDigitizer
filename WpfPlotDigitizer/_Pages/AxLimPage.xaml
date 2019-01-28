@@ -249,11 +249,6 @@
               </Binding.ValidationRules>
             </Binding>
           </TextBox.Text>
-          <i:Interaction.Triggers>
-            <i:EventTrigger EventName="LostFocus">
-              <i:InvokeCommandAction Command="{Binding ValidateCommand}" />
-            </i:EventTrigger>
-          </i:Interaction.Triggers>
         </TextBox>
         <TextBox Grid.Column="1"
                  Tag="XLog"
@@ -268,11 +263,6 @@
               </Binding.ValidationRules>
             </Binding>
           </TextBox.Text>
-          <i:Interaction.Triggers>
-            <i:EventTrigger EventName="LostFocus">
-              <i:InvokeCommandAction Command="{Binding ValidateCommand}" />
-            </i:EventTrigger>
-          </i:Interaction.Triggers>
         </TextBox>
         <TextBox Grid.Column="2"
                  Tag="XMax"

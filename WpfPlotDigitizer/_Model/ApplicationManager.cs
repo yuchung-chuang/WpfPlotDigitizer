@@ -23,6 +23,23 @@ namespace WpfPlotDigitizer
       PageManager.TurnToEvent += PageManager_TurnToEvent;
     }
 
+    public bool IsBusy { get; set; } = false;
+    public async Task TaskAsync(Action action)
+    {
+      IsBusy = true;
+      try //in case there is any error in the action
+      {
+        await CursorWaitForAsync(action);
+      }
+      catch (Exception e)
+      {
+        throw e;
+      }
+      finally
+      {
+        IsBusy = false;
+      }
+    }
 
     public PageManagerBase PageManager { get; private set; } = new PageManager();
 
@@ -74,7 +91,7 @@ namespace WpfPlotDigitizer
             }
             else
             {
-              MessageBox.Show("Please select an image.", "Warning", MessageBoxButton.OK);
+              MessageBox.Show("Please select an image.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
               turnResult = false;
             }
             break;

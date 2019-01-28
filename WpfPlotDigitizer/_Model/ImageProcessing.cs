@@ -18,6 +18,7 @@ using static CycWpfLibrary.Math;
 using static System.Math;
 using ct = System.Threading.CancellationToken;
 using PB = CycWpfLibrary.Media.PixelBitmap;
+using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer
 {

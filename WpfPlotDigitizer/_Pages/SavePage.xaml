@@ -20,11 +20,10 @@
       <RowDefinition Height="*" />
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
-    <Viewbox>
+    <Viewbox Margin="0,0,20,0">
       <Grid>
         <Image Name="image"
                Source="{Binding imageSource}"
-               Margin="0,0,20,0"
                mvvm:Pan.IsEnabled="True"
                mvvm:Zoom.IsEnabled="True" />
       </Grid>
@@ -35,6 +34,8 @@
               MaxHeight="{Binding ElementName=image, Path=ActualHeight}"
               ItemsSource="{Binding data}"
               AutoGenerateColumns="True"
+              CanUserResizeColumns="False"
+              CanUserResizeRows="False"
               IsReadOnly="True" />
     <Button Grid.ColumnSpan="2"
             Grid.Row="1"

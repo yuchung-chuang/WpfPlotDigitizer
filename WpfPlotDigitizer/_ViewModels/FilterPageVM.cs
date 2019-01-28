@@ -16,7 +16,7 @@ namespace WpfPlotDigitizer
   {
     public FilterPageVM()
     {
-      FilterRGBCommand = new RelayCommand<object, Task>(InRangeAsync);
+      InRangeCommand = new RelayCommand<object, Task>(InRangeAsync);
     }
 
     private Image<Bgra, byte> imageAxis => appData?.ImageAxis;
@@ -36,7 +36,7 @@ namespace WpfPlotDigitizer
     public Color FilterMax => Color.FromRgb(FilterRMax, FilterGMax, FilterBMax);
     public Color FilterMin => Color.FromRgb(FilterRMin, FilterGMin, FilterBMin);
 
-    public ICommand FilterRGBCommand { get; set; }
+    public ICommand InRangeCommand { get; set; }
     public async Task InRangeAsync(object param = null)
     {
       imageFilterRGB = await IP.InRangeAsync(imageAxis, FilterMax, FilterMin);
