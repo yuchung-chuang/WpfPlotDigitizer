@@ -9,7 +9,7 @@ using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer
 {
-  public class ImageData : ObservableObject
+  public class ApplicationData : ObservableObject
   {
     //Browse
     public PixelBitmap PBInput { get; set; }
@@ -28,6 +28,7 @@ namespace WpfPlotDigitizer
     public Image<Bgra, byte> ImageErase { get; set; }
     //Data
     public List<Point> Data { get; set; }
+    public Image<Bgra, byte> ImageData { get; set; }
     //Save 
     public Image<Bgra, byte> ImageSave { get; set; }
   }

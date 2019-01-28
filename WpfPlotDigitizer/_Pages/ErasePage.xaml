@@ -8,6 +8,7 @@
                     xmlns:cycMvvm="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
                     xmlns:media="clr-namespace:CycWpfLibrary.Media;assembly=CycWpfLibrary"
                     xmlns:uc="clr-namespace:CycWpfLibrary.UserControls;assembly=CycWpfLibrary.UserControls"
+                    xmlns:mvvm="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
                     mc:Ignorable="d"
                     d:DesignHeight="450"
                     d:DesignWidth="400"
@@ -27,8 +28,16 @@
               Command="{Binding DebugCommand}" />
     </WrapPanel>
 
-    <uc:ImageEraser Grid.Column="1"
-                    Name="imageEraser"
-                    Image="{Binding imageErase, Mode=TwoWay}" />
+    <Viewbox Grid.Column="1">
+      <Grid>
+        <uc:ImageEraser Name="imageEraser"
+                        Image="{Binding imageErase, Mode=TwoWay}"
+                        MouseButton="Right"
+                        mvvm:Pan.IsEnabled="True"
+                        mvvm:Pan.MouseButton="Left"
+                        mvvm:Zoom.IsEnabled="True" />
+      </Grid>
+    </Viewbox>
+
   </Grid>
 </media:AnimatedPage>

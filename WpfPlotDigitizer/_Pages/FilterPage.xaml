@@ -1,27 +1,29 @@
 ﻿<media:AnimatedPage x:Class="WpfPlotDigitizer.FilterPage"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:WpfPlotDigitizer"
-             xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:mvvm="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:local="clr-namespace:WpfPlotDigitizer"
+                    xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
+                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                    xmlns:mvvm="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
                     xmlns:media="clr-namespace:CycWpfLibrary.Media;assembly=CycWpfLibrary"
-             mc:Ignorable="d"
-             d:DesignHeight="600"
-             d:DesignWidth="900"
-             d:DataContext="{d:DesignInstance local:FilterPageVM, IsDesignTimeCreatable=True}">
+                    mc:Ignorable="d"
+                    d:DesignHeight="600"
+                    d:DesignWidth="900"
+                    d:DataContext="{d:DesignInstance local:FilterPageVM, IsDesignTimeCreatable=True}">
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*" />
       <ColumnDefinition Width="auto" />
     </Grid.ColumnDefinitions>
-    <Grid Grid.Column="0">
-      <Image Source="{Binding ImageSource}" 
-             mvvm:Zoom.IsEnabled="True"
-             mvvm:Pan.IsEnabled="True"/>
-    </Grid>
+    <Viewbox Grid.Column="0">
+      <Grid>
+        <Image Source="{Binding ImageSource}"
+               mvvm:Zoom.IsEnabled="True"
+               mvvm:Pan.IsEnabled="True" />
+      </Grid>
+    </Viewbox>
     <StackPanel Grid.Column="1"
                 Orientation="Horizontal">
       <StackPanel.Resources>

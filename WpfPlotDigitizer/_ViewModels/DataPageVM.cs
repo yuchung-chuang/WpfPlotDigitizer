@@ -15,20 +15,21 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using static WpfPlotDigitizer.DI;
+using IP = WpfPlotDigitizer.ImageProcessing;
 
 namespace WpfPlotDigitizer
 {
   public class DataPageVM : ViewModelBase
   {
-    private Image<Bgra, byte> imageOrigin => imageData.ImageErase;
+    public Rect axLim => appData.AxLim;
+    public Point axLogBase => appData.AxLogBase;
+    private Image<Bgra, byte> imageOrigin => appData.ImageErase;
     public Image<Bgra, byte> imageDisplay { get; set; }
     public BitmapSource imageSource
     {
       get => imageDisplay?.ToBitmapSource();
       set => imageDisplay = value.ToBitmap().ToImage<Bgra, byte>();
     }
-    public Rect axLim => imageData.AxLim;
-    public Point axLogBase => imageData.AxLogBase;
 
     private int dataSize = 3;
     public int DataSize
@@ -54,23 +55,26 @@ namespace WpfPlotDigitizer
 
     public List<Point> Data
     {
-      get => imageData.Data;
-      set => imageData.Data = value;
+      get => appData.Data;
+      set => appData.Data = value;
+    }
+    public Image<Bgra, byte> imageData
+    {
+      get => appData.ImageData;
+      set => appData.ImageData = value;
     }
 
     public void ParamChanged()
     {
-      var posLists = ImageProcessing.GetDataList(imageOrigin, dataSize);
-      var Pos = ImageProcessing.GetData(imageOrigin, posLists, dataSize, ratio);
-      Data = ImageProcessing.TransformData(imageOrigin, Pos, axLim, axLogBase);
-      imageDisplay = imageOrigin.Clone();
+      var posLists = IP.GetDataList(imageOrigin, dataSize);
+      var Pos = IP.GetData(imageOrigin, posLists, dataSize, ratio);
+      Data = IP.TransformData(imageOrigin, Pos, axLim, axLogBase);
       var dotSize = DataSize == 1 ? 1 : DataSize / 2;
-      foreach (var pos in Pos)
-      {
-        CvInvoke.Circle(imageDisplay, pos.ToWinForm(), dotSize, Colors.Red.ToMCvScalar(), -1, LineType.AntiAlias);
-        CvInvoke.Circle(imageDisplay, pos.ToWinForm(), dotSize, Colors.Black.ToMCvScalar(), 1, LineType.AntiAlias);
-      }
-      OnPropertyChanged(nameof(imageSource));
+      imageDisplay = imageOrigin.Clone();
+      imageData = imageDisplay.CopyBlank();
+      IP.DrawData(imageDisplay, Pos, dotSize);
+      IP.DrawData(imageData, Pos, dotSize);
+      imageDisplay = imageDisplay.Copy(); // invoke twoway binding
     }
   }
 }

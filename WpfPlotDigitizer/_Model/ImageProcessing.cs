@@ -403,6 +403,7 @@ namespace WpfPlotDigitizer
       }
     }
 
+
     public static List<List<Point>> GetDataList(Image<Bgra, byte> image, int size)
     {
       var width = image.Width;
@@ -553,23 +554,31 @@ namespace WpfPlotDigitizer
           Y = LinConvert(height - pos.Y, height, 0, axLim.Bottom, axLim.Top),
         };
 
-        //if (@base.X > 0)
-        //  data.X = (float)Pow(
-        //    @base.X,
-        //    LinConvert(data.X, axLim.Left, axLim.Right,
-        //      LogBase(@base.X, axLim.Left),
-        //      LogBase(@base.X, axLim.Right))
-        //    );
-        //if (@base.Y > 0)
-        //  data.Y = (float)Pow(
-        //    @base.Y,
-        //    LinConvert(data.Y, axLim.Top, axLim.Bottom,
-        //      LogBase(@base.Y, axLim.Top),
-        //      LogBase(@base.Y, axLim.Bottom))
-        //    );
+        if (@base.X > 0)
+          data.X = (float)Pow(
+            @base.X,
+            LinConvert(data.X, axLim.Left, axLim.Right,
+              LogBase(@base.X, axLim.Left),
+              LogBase(@base.X, axLim.Right))
+            );
+        if (@base.Y > 0)
+          data.Y = (float)Pow(
+            @base.Y,
+            LinConvert(data.Y, axLim.Top, axLim.Bottom,
+              LogBase(@base.Y, axLim.Top),
+              LogBase(@base.Y, axLim.Bottom))
+            );
         dataList.Add(data);
       }
       return dataList;
+    }
+    public static void DrawData(Image<Bgra, byte> image, List<Point> Pos, int dotSize)
+    {
+      foreach (var pos in Pos)
+      {
+        CvInvoke.Circle(image, pos.ToWinForm(), dotSize, Colors.Red.ToMCvScalar(), -1, LineType.AntiAlias);
+        CvInvoke.Circle(image, pos.ToWinForm(), dotSize, Colors.Black.ToMCvScalar(), 1, LineType.AntiAlias);
+      }
     }
 
     #region Deprecated methods

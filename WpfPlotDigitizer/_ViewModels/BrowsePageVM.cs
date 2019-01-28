@@ -43,10 +43,10 @@ namespace WpfPlotDigitizer
 
     public PixelBitmap PBInput
     {
-      get => imageData?.PBInput;
+      get => appData?.PBInput;
       set
       {
-        imageData.PBInput = value;
+        appData.PBInput = value;
         appManager.PageManager.TurnNext(); //設定好就直接翻頁
       }
     }

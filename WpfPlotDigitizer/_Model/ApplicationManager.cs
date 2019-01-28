@@ -67,9 +67,9 @@ namespace WpfPlotDigitizer
           case ApplicationPages.Browse:
             if (PBInputCheck())
             {
-              imageData.PBFilterW = new PixelBitmap(imageData.PBInput.Size)
+              appData.PBFilterW = new PixelBitmap(appData.PBInput.Size)
               {
-                Pixel = ImageProcessing.FilterW(imageData.PBInput)
+                Pixel = ImageProcessing.FilterW(appData.PBInput)
               };
             }
             else
@@ -81,8 +81,8 @@ namespace WpfPlotDigitizer
           case ApplicationPages.AxLim:
             if (AxLimCheck())
             {
-              imageData.AxLim = axLimPageVM.AxLim;
-              imageData.AxLogBase = axLimPageVM.AxLogBase;
+              appData.AxLim = axLimPageVM.AxLim;
+              appData.AxLogBase = axLimPageVM.AxLogBase;
             }
             else
             {
@@ -91,15 +91,15 @@ namespace WpfPlotDigitizer
             }
             break;
           case ApplicationPages.Axis:
-            imageData.PBAxis = imageData.PBInput.Bitmap
-                                          .Crop(imageData.Axis)
+            appData.PBAxis = appData.PBInput.Bitmap
+                                          .Crop(appData.Axis)
                                           .ToPixelBitmap();
-            imageData.ImageAxis = imageData.PBAxis.ToImage<Bgra, byte>();
+            appData.ImageAxis = appData.PBAxis.ToImage<Bgra, byte>();
             break;
           case ApplicationPages.Filter:
             break;
           case ApplicationPages.Erase:
-            imageData.ImageErase = erasePageVM.editManager.Object as Image<Bgra, byte>;
+            appData.ImageErase = erasePageVM.editManager.Object as Image<Bgra, byte>;
             break;
           case ApplicationPages.Data:
             break;
@@ -122,19 +122,19 @@ namespace WpfPlotDigitizer
             axisPageVM.OnPropertyChanged(nameof(axisPageVM.ImageSource));
             break;
           case ApplicationPages.Filter:
-            imageData.ImageFilterRGB = imageData.ImageAxis.Clone();
+            appData.ImageFilterRGB = appData.ImageAxis.Clone();
             filterPageVM.InRange();
             break;
           case ApplicationPages.Erase:
-            imageData.ImageErase = imageData.ImageFilterRGB.Clone();
-            erasePageVM.editManager.Init(imageData.ImageErase);
+            appData.ImageErase = appData.ImageFilterRGB.Clone();
+            erasePageVM.editManager.Init(appData.ImageErase);
             break;
           case ApplicationPages.Data:
-            dataPageVM.imageDisplay = imageData.ImageErase.Clone();
+            dataPageVM.imageDisplay = appData.ImageErase.Clone();
             dataPageVM.ParamChanged();
             break;
           case ApplicationPages.Save:
-            savePageVM.imageSave = imageData.ImageErase.Clone();
+            savePageVM.imageSave = appData.ImageData.Clone();
             savePageVM.OnPropertyChanged(nameof(savePageVM.data));
             break;
           default:
@@ -143,7 +143,7 @@ namespace WpfPlotDigitizer
         return turnResult;
       }
       bool AxLimCheck() => axLimPageVM.AxLim != Rect.Empty;
-      bool PBInputCheck() => imageData.PBInput != null;
+      bool PBInputCheck() => appData.PBInput != null;
     }
 
     private bool PageManager_TurnToEvent(object sender, int index)

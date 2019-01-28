@@ -11,7 +11,7 @@
                     d:DesignHeight="450"
                     d:DesignWidth="800"
                     d:DataContext="{d:DesignInstance local:SavePageVM, IsDesignTimeCreatable=True}">
-  <Grid>
+  <Grid Margin="20">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*" />
       <ColumnDefinition Width="auto" />
@@ -20,12 +20,22 @@
       <RowDefinition Height="*" />
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
-    <Image Source="{Binding imageSource}"
-           Margin="20" />
+    <Viewbox>
+      <Grid>
+        <Image Name="image"
+               Source="{Binding imageSource}"
+               Margin="0,0,20,0"
+               mvvm:Pan.IsEnabled="True"
+               mvvm:Zoom.IsEnabled="True" />
+      </Grid>
+    </Viewbox>
+    <!--DataGrid: Need to set height manually to allow data virtualization!!-->
     <DataGrid Grid.Column="1"
+              MaxColumnWidth="100"
+              MaxHeight="{Binding ElementName=image, Path=ActualHeight}"
               ItemsSource="{Binding data}"
               AutoGenerateColumns="True"
-              Margin="40" />
+              IsReadOnly="True" />
     <Button Grid.ColumnSpan="2"
             Grid.Row="1"
             Content="Save"
@@ -33,7 +43,7 @@
             FontWeight="Medium"
             Width="150"
             Height="50"
-            Margin="20"
+            Margin="0,20"
             mahapps:ButtonHelper.PreserveTextCase="True"
             Command="{Binding SaveCommand}" />
   </Grid>

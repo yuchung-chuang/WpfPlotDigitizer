@@ -20,14 +20,14 @@ namespace WpfPlotDigitizer
 
     public Image<Bgra, byte> imageSave
     {
-      get => imageData.ImageSave;
-      set => imageData.ImageSave = value;
+      get => appData.ImageSave;
+      set => appData.ImageSave = value;
     }
 
     public List<Point> data
     {
-      get => imageData.Data;
-      set => imageData.Data = value;
+      get => appData.Data;
+      set => appData.Data = value;
     }
 
     public BitmapSource imageSource => imageSave?.ToBitmapSource();

@@ -156,13 +156,14 @@
         <ColumnDefinition Width="*" />
         <ColumnDefinition Width="auto" />
       </Grid.ColumnDefinitions>
-      <Grid Grid.Column="1"
-            Grid.Row="1"
-            Margin="0,40,40,0">
-        <Image Source="{Binding imageSource}"
-               cycMVVM:Pan.IsEnabled="True"
-               cycMVVM:Zoom.IsEnabled="True" />
-      </Grid>
+      <Viewbox Grid.Column="1"
+               Grid.Row="1">
+        <Grid>
+          <Image Source="{Binding imageSource}"
+                 cycMVVM:Pan.IsEnabled="True"
+                 cycMVVM:Zoom.IsEnabled="True" />
+        </Grid>
+      </Viewbox>
       <Grid Grid.Column="0"
             Grid.Row="1"
             Width="120">

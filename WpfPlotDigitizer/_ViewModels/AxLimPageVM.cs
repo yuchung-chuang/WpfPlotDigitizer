@@ -39,7 +39,7 @@ namespace WpfPlotDigitizer
       }
     }
 
-    public PixelBitmap PBInput => imageData.PBInput;
+    public PixelBitmap PBInput => appData.PBInput;
     public BitmapSource imageSource => PBInput?.ToBitmapSource();
 
     public double? XMax { get; set; }
@@ -63,9 +63,16 @@ namespace WpfPlotDigitizer
 
     public double? XLog { get; set; }
     public double? YLog { get; set; }
-    public Point AxLogBase =>
-      (XLog == null || YLog == null) ?
+    public Point AxLogBase
+    {
+      get => (XLog == null || YLog == null) ?
           new Point(-1, -1) : new Point((double)XLog, (double)YLog);
+      set
+      {
+        XLog = value.X;
+        YLog = value.Y;
+      }
+    }
 
     #region Deprecated
     public double? XMaxT { get; set; }
@@ -81,8 +88,8 @@ namespace WpfPlotDigitizer
     public BitmapSource ImageSource => PBModified?.ToBitmapSource();
 
     private readonly Tesseract ocr = IP.InitializeOcr("", "eng", OcrEngineMode.TesseractOnly, "0123456789");
-    private AxisType AxisType => imageData.AxisType;
-    private Rect Axis => imageData.Axis;
+    private AxisType AxisType => appData.AxisType;
+    private Rect Axis => appData.Axis;
     private (double width, double height) ocrLength => (Axis.Width / 5, Axis.Height / 5);
     private Tesseract.Character[] GetLocalAxisLimit(Image<Bgr, byte> image, Rectangle rectangle)
     {

@@ -15,23 +15,23 @@ namespace WpfPlotDigitizer
       GetAxisCommand = new RelayCommand(GetAxis);
     }
 
-    public PixelBitmap PBInput => imageData?.PBInput;
-    public PixelBitmap PBFilterW => imageData?.PBFilterW;
+    public PixelBitmap PBInput => appData?.PBInput;
+    public PixelBitmap PBFilterW => appData?.PBFilterW;
     public Rect Axis
     {
       get
       {
-        if (imageData == null)
+        if (appData == null)
           return new Rect(0, 0, 0, 0);
         else
-          return imageData.Axis;
+          return appData.Axis;
       }
-      set => imageData.Axis = value;
+      set => appData.Axis = value;
     }
     public AxisType AxisType
     {
-      get => imageData.AxisType;
-      set => imageData.AxisType = value;
+      get => appData.AxisType;
+      set => appData.AxisType = value;
     }
 
     public BitmapSource ImageSource => PBInput?.ToBitmapSource();

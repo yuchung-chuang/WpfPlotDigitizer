@@ -30,8 +30,8 @@ namespace WpfPlotDigitizer
 
     public static ApplicationManager appManager
       => Framework.Service<ApplicationManager>();
-    public static ImageData imageData
-      => Framework.Service<ImageData>();
+    public static ApplicationData appData
+      => Framework.Service<ApplicationData>();
 
     public static MainWindowVM mainWindowVM => Framework.Service<MainWindowVM>();
     public static BrowsePageVM browsePageVM => Framework.Service<BrowsePageVM>();
@@ -55,7 +55,7 @@ namespace WpfPlotDigitizer
     public static DIConstruct AddWpfPlotDigitizerViewModels(this DIConstruct construction)
     {
       construction.Services.AddSingleton<ApplicationManager>();
-      construction.Services.AddSingleton<ImageData>();
+      construction.Services.AddSingleton<ApplicationData>();
 
       construction.Services.AddSingleton<MainWindowVM>();
       construction.Services.AddSingleton<BrowsePageVM>();
