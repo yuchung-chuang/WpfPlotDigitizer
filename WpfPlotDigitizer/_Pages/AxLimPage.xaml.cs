@@ -25,5 +25,15 @@ namespace WpfPlotDigitizer
         axLimPageVM[tb.Tag as string] = null;
       }
     }
+
+    private void TextBox_GotKeyboardFocus(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
+    {
+      (sender as TextBox).SelectAll();
+    }
+
+    private void TextBox_GotMouseCapture(object sender, System.Windows.Input.MouseEventArgs e)
+    {
+      (sender as TextBox).SelectAll();
+    }
   }
 }

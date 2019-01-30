@@ -179,6 +179,8 @@
         <TextBox Grid.Row="0"
                  Tag="YMax"
                  md:HintAssist.Hint="Y-Axis: Max"
+                 GotKeyboardFocus="TextBox_GotKeyboardFocus"
+                 GotMouseCapture="TextBox_GotMouseCapture"
                  Validation.Error="TextBox_Error">
           <TextBox.Text>
             <Binding Path="YMax"
@@ -192,6 +194,8 @@
         </TextBox>
         <TextBox Grid.Row="1"
                  Tag="YLog"
+                 GotKeyboardFocus="TextBox_GotKeyboardFocus"
+                 GotMouseCapture="TextBox_GotMouseCapture"
                  Validation.Error="TextBox_Error"
                  md:HintAssist.Hint="Y-Axis: Log Base">
           <TextBox.Text>
@@ -206,6 +210,8 @@
         </TextBox>
         <TextBox Grid.Row="2"
                  Tag="YMin"
+                 GotKeyboardFocus="TextBox_GotKeyboardFocus"
+                 GotMouseCapture="TextBox_GotMouseCapture"
                  Validation.Error="TextBox_Error"
                  md:HintAssist.Hint="Y-Axis: Min">
           <TextBox.Text>
@@ -238,6 +244,8 @@
         </Grid.ColumnDefinitions>
         <TextBox Grid.Column="0"
                  Tag="XMin"
+                 GotKeyboardFocus="TextBox_GotKeyboardFocus"
+                 GotMouseCapture="TextBox_GotMouseCapture"
                  Validation.Error="TextBox_Error"
                  md:HintAssist.Hint="X-Axis: Min">
           <TextBox.Text>
@@ -252,6 +260,8 @@
         </TextBox>
         <TextBox Grid.Column="1"
                  Tag="XLog"
+                 GotKeyboardFocus="TextBox_GotKeyboardFocus"
+                 GotMouseCapture="TextBox_GotMouseCapture"
                  Validation.Error="TextBox_Error"
                  md:HintAssist.Hint="X-Axis: Log Base">
           <TextBox.Text>
@@ -266,6 +276,8 @@
         </TextBox>
         <TextBox Grid.Column="2"
                  Tag="XMax"
+                 GotKeyboardFocus="TextBox_GotKeyboardFocus"
+                 GotMouseCapture="TextBox_GotMouseCapture"
                  Validation.Error="TextBox_Error"
                  md:HintAssist.Hint="X-Axis: Max">
           <TextBox.Text>
