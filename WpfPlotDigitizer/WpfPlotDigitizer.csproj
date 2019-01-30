@@ -170,6 +170,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="_Model\MessageBoxManager.cs" />
+    <Compile Include="_ViewModels\SplashPageVM.cs" />
+    <Compile Include="_Pages\SplashPage.xaml.cs">
+      <DependentUpon>SplashPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="_ViewModels\DataPageVM.cs" />
     <Compile Include="_Pages\DataPage.xaml.cs">
       <DependentUpon>DataPage.xaml</DependentUpon>
@@ -242,6 +247,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="_Pages\SplashPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="_Model\ImageData.cs" />
@@ -330,6 +339,20 @@
   <ItemGroup>
     <Resource Include="images\ocr.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\icon_cyc.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\robotVoice.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="resources\splashText.mp4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="resources\startSound.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -341,4 +364,14 @@
   </Target>
   <Import Project="..\packages\EMGU.CV.3.4.3.3016\build\EMGU.CV.targets" Condition="Exists('..\packages\EMGU.CV.3.4.3.3016\build\EMGU.CV.targets')" />
   <Import Project="..\packages\Fody.3.3.1\build\Fody.targets" Condition="Exists('..\packages\Fody.3.3.1\build\Fody.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>
+			mkdir dll
+			move *.dll dll\
+			mkdir xml
+			move *.xml xml\
+			mkdir pdb
+			move *.pdb pdb\
+		</PostBuildEvent>
+  </PropertyGroup>
 </Project>
