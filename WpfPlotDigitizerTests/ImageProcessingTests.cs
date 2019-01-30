@@ -41,7 +41,6 @@ namespace WpfPlotDigitizer.Tests
       Assert.AreEqual(expectedAxis, actualAxis);
     }
 
-    [TestMethod()]
     [Obsolete]
     public void FilterRGBTest()
     {
@@ -63,7 +62,6 @@ namespace WpfPlotDigitizer.Tests
 
     }
 
-    [TestMethod]
     [Obsolete]
     public void FilterRGB_EmguTest()
     {

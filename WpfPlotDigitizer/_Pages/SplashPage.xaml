@@ -1,0 +1,69 @@
+﻿<Page x:Class="WpfPlotDigitizer.SplashPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:WpfPlotDigitizer"
+      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+      mc:Ignorable="d"
+      d:DesignHeight="450"
+      d:DesignWidth="800"
+      d:DataContext="{d:DesignInstance local:SplashPageVM, IsDesignTimeCreatable=True}"
+      Background="Black"
+      Title="SplashPage">
+  <Page.Triggers>
+    <EventTrigger RoutedEvent="Loaded">
+      <BeginStoryboard>
+        <Storyboard Completed="Storyboard_Completed">
+          <DoubleAnimation Storyboard.TargetName="Logo"
+                           Storyboard.TargetProperty="Opacity"
+                           From="0"
+                           To="1"
+                           Duration="0:0:2"/>
+          <DoubleAnimation Storyboard.TargetName="Logo"
+                           Storyboard.TargetProperty="Opacity"
+                           From="1"
+                           To="0"
+                           BeginTime="0:0:2.5"
+                           Duration="0:0:2" />
+        </Storyboard>
+      </BeginStoryboard>
+      <!--Storyboard.Completed not firing with mediaTimeLine!?-->
+      <BeginStoryboard>
+        <Storyboard>
+          <MediaTimeline Source="resources/robotVoice.wav"
+                         Storyboard.TargetName="robotVoice"
+                         Duration="0:0:3.5" />
+          <DoubleAnimation Storyboard.TargetName="splashText"
+                           Storyboard.TargetProperty="Opacity"
+                           From="0"
+                           To="1"
+                           Duration="0:0:1" />
+          <DoubleAnimation Storyboard.TargetName="splashText"
+                           Storyboard.TargetProperty="Opacity"
+                           From="1"
+                           To="0"
+                           BeginTime="0:0:2.5"
+                           Duration="0:0:2" />
+          <MediaTimeline Source="resources/splashText.mp4"
+                         Storyboard.TargetName="splashText"
+                         Duration="0:0:2"
+                         BeginTime="0:0:0.5" />
+        </Storyboard>
+      </BeginStoryboard>
+    </EventTrigger>
+  </Page.Triggers>
+  <Grid>
+    <StackPanel VerticalAlignment="Center">
+      <Image Name="Logo"
+             Source="/resources/icon_cyc.png"
+             Width="150"
+             Height="150" />
+      <MediaElement Name="splashText"
+                    Stretch="Fill"
+                    Height="45"
+                    Width="214" />
+      <MediaElement Name="robotVoice" />
+    </StackPanel>
+  </Grid>
+</Page>

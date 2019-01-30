@@ -11,7 +11,7 @@
                      xmlns:uc="clr-namespace:CycWpfLibrary.UserControls;assembly=CycWpfLibrary.UserControls"
                      WindowStartupLocation="CenterScreen"
                      d:DataContext="{d:DesignInstance local:MainWindowVM, IsDesignTimeCreatable=True}"
-                     Title="MainWindow"
+                     Title="Plot Digitizer"
                      Height="600"
                      Width="900">
   <Grid Name="gridMain">
@@ -57,8 +57,10 @@
       </Style>
     </Grid.Resources>
 
+    <Frame Name="splashFrame"
+           Panel.ZIndex="1"/>
     <uc:PageControl CurrentPage="{Binding PageManager.CurrentPage}" 
                     TurnBackCommand="{Binding PageManager.TurnBackCommand}"
-                    TurnNextCommand="{Binding PageManager.TurnNextCommand}"/>
+                    TurnNextCommand="{Binding PageManager.TurnNextCommand}" />
   </Grid>
 </mahapps:MetroWindow>
