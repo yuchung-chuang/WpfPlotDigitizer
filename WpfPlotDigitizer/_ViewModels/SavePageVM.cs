@@ -67,13 +67,9 @@ namespace WpfPlotDigitizer
       }
 
       if (IsSucessfulSave)
-      {
-        MessageBox.Show("Sucessfully saved!", "DataCapturer Message", MessageBoxButton.OK, MessageBoxImage.Information);
-      }
+        MessageBoxManager.Information("Sucessfully saved!");
       else
-      {
-        MessageBox.Show("Sorry... there's something wrong while saving...", "DataCapturer Message", MessageBoxButton.OK, MessageBoxImage.Information);
-      }
+        MessageBoxManager.Warning("Sorry... there's something wrong while saving...");
 
       async Task<bool> SaveAsExcelAsync()
       {
@@ -96,7 +92,7 @@ namespace WpfPlotDigitizer
         var wSheet = (Excel._Worksheet)wBook.Worksheets[1];
         try
         {
-          await appManager.TaskAsync(() =>
+          await appManager.BackgroundTaskAsync(() =>
           {
             wBook.Activate();
             wSheet.Activate();

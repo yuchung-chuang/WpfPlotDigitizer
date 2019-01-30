@@ -18,13 +18,14 @@ namespace WpfPlotDigitizer
   {
     public ApplicationManager()
     {
+      splashPageVM.CompleteEvent += SplashPageVM_CompleteEvent;
       PageManager.TurnNextEvent += PageManager_TurnNextEvent;
       PageManager.TurnBackEvent += PageManager_TurnBackEvent;
       PageManager.TurnToEvent += PageManager_TurnToEvent;
     }
 
     public bool IsBusy { get; set; } = false;
-    public async Task TaskAsync(Action action)
+    public async Task BackgroundTaskAsync(Action action)
     {
       IsBusy = true;
       try //in case there is any error in the action
@@ -43,6 +44,10 @@ namespace WpfPlotDigitizer
 
     public PageManagerBase PageManager { get; private set; } = new PageManager();
 
+    private void SplashPageVM_CompleteEvent(object sender, EventArgs e)
+    {
+      mainWindow.gridMain.Children.Remove(mainWindow.splashFrame);
+    }
     private bool PageManager_TurnBackEvent(object sender, EventArgs e)
     {
       var pageManager = sender as PageManager;
@@ -91,7 +96,7 @@ namespace WpfPlotDigitizer
             }
             else
             {
-              MessageBox.Show("Please select an image.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+              MessageBoxManager.Warning("Please select an image.");
               turnResult = false;
             }
             break;
@@ -103,7 +108,7 @@ namespace WpfPlotDigitizer
             }
             else
             {
-              MessageBox.Show("Please type in all valid axis limits.", "Warning", MessageBoxButton.OK);
+              MessageBoxManager.Warning("Please type in all valid axis limits.");
               turnResult = false;
             }
             break;
@@ -162,7 +167,6 @@ namespace WpfPlotDigitizer
       bool AxLimCheck() => axLimPageVM.AxLim != Rect.Empty;
       bool PBInputCheck() => appData.PBInput != null;
     }
-
     private bool PageManager_TurnToEvent(object sender, int index)
     {
       var pageManager = sender as PageManager;

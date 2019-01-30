@@ -36,7 +36,7 @@ namespace WpfPlotDigitizer
         }
         else
         {
-          MessageBox.Show("Input file should be an image.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+          MessageBoxManager.Warning("Input file should be an image.");
         }
       }
     }
