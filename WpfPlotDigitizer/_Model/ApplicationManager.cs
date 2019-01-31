@@ -18,12 +18,11 @@ namespace WpfPlotDigitizer
   public class ApplicationManager
   {
     public ApplicationManager()
-      {
-        splashPageVM.CompleteEvent += OnSplashScreenCompleted;
-        PageManager.TurnNextEvent += PageManager_TurnNextEvent;
-        PageManager.TurnBackEvent += PageManager_TurnBackEvent;
-        PageManager.TurnToEvent += PageManager_TurnToEvent;
-      }
+    {
+      PageManager.TurnNextEvent += PageManager_TurnNextEvent;
+      PageManager.TurnBackEvent += PageManager_TurnBackEvent;
+      PageManager.TurnToEvent += PageManager_TurnToEvent;
+    }
 
     public bool IsBusy { get; set; } = false;
     public async Task BackgroundTaskAsync(Action action)
@@ -43,18 +42,8 @@ namespace WpfPlotDigitizer
       }
     }
 
-    public PageManagerBase PageManager { get; private set; } = new PageManager();
+    public PageManagerBase PageManager { get; private set; } = pageManager;
 
-    private void OnSplashScreenCompleted(object sender, EventArgs e)
-    {
-      mainWindow.gridMain.Children.Remove(mainWindow.splashFrame);
-#if DEBUG
-      browsePageVM.PBInput = new BitmapImage(new Uri($"pack://application:,,,/images/data.png")).ToPixelBitmap();
-      axLimPageVM.AxLim = new Rect(new Point(1e-4, 1e-4), new Point(1e6, 1e7));
-      axLimPageVM.AxLogBase = new Point(10, 10);
-      appManager.PageManager.TurnTo((int)ApplicationPages.Filter);
-#endif
-    }
     private bool PageManager_TurnBackEvent(object sender, EventArgs e)
     {
       var pageManager = sender as PageManager;

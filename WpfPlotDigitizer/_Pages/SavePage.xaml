@@ -20,18 +20,18 @@
       <RowDefinition Height="*" />
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
-    <Viewbox Margin="0,0,20,0">
+    <!--<Viewbox Margin="0,0,20,0">
       <Grid>
         <Image Name="image"
                Source="{Binding imageSource}"
                mvvm:Pan.IsEnabled="True"
                mvvm:Zoom.IsEnabled="True" />
       </Grid>
-    </Viewbox>
+    </Viewbox>-->
     <!--DataGrid: Need to set height manually to allow data virtualization!!-->
     <DataGrid Grid.Column="1"
               MaxColumnWidth="100"
-              MaxHeight="{Binding ElementName=image, Path=ActualHeight}"
+              MaxHeight="600"
               ItemsSource="{Binding data}"
               AutoGenerateColumns="True"
               CanUserResizeColumns="False"

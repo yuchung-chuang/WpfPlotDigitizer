@@ -14,7 +14,7 @@ namespace WpfPlotDigitizer
     {
       DI.mainWindow.ShowMessageAsync("Plot Digitizer Warning", message, MessageDialogStyle.Affirmative, new MetroDialogSettings
       {
-        ColorScheme = MetroDialogColorScheme.Inverted, 
+        ColorScheme = MetroDialogColorScheme.Inverted,
       });
     }
 

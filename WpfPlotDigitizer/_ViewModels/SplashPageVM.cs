@@ -15,12 +15,15 @@ namespace WpfPlotDigitizer
       CompleteCommand = new RelayCommand(Complete);
     }
 
+    public bool IsComplete { get; private set; }
+
     public ICommand CompleteCommand { set; get; }
 
     public event EventHandler CompleteEvent;
 
     private void Complete()
     {
+      IsComplete = true;
       CompleteEvent?.Invoke(this, null);
     }
   }

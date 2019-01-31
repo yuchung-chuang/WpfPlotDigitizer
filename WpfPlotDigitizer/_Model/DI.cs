@@ -8,6 +8,7 @@ namespace WpfPlotDigitizer
 {
   public static class DI
   {
+    public static PageManager pageManager => Framework.Service<PageManager>();
     public static ApplicationManager appManager
       => Framework.Service<ApplicationManager>();
     public static ApplicationData appData
@@ -25,17 +26,18 @@ namespace WpfPlotDigitizer
 
     public static MainWindow mainWindow => Framework.Service<MainWindow>();
     public static SplashPage splashPage => Framework.Service<SplashPage>();
-    public static BrowsePage browsePage => Framework.Service<BrowsePage>(); 
-    public static AxisPage axisPage => Framework.Service<AxisPage>(); 
-    public static AxLimPage axLimPage => Framework.Service<AxLimPage>(); 
-    public static FilterPage filterPage => Framework.Service<FilterPage>(); 
-    public static ErasePage erasePage => Framework.Service<ErasePage>(); 
-    public static DataPage dataPage => Framework.Service<DataPage>(); 
+    public static BrowsePage browsePage => Framework.Service<BrowsePage>();
+    public static AxisPage axisPage => Framework.Service<AxisPage>();
+    public static AxLimPage axLimPage => Framework.Service<AxLimPage>();
+    public static FilterPage filterPage => Framework.Service<FilterPage>();
+    public static ErasePage erasePage => Framework.Service<ErasePage>();
+    public static DataPage dataPage => Framework.Service<DataPage>();
     public static SavePage savePage => Framework.Service<SavePage>();
     public static readonly AnimatedPage emptyPage = new AnimatedPage();
 
     public static DIConstruct AddWpfPlotDigitizerServices(this DIConstruct construction)
     {
+      construction.Services.AddSingleton<PageManager>();
       construction.Services.AddSingleton<ApplicationManager>();
       construction.Services.AddSingleton<ApplicationData>();
 
@@ -62,24 +64,30 @@ namespace WpfPlotDigitizer
       return construction;
     }
 
+    //public static readonly PageManager pageManager = new PageManager();
+    //public static readonly SplashPageVM splashPageVM = new SplashPageVM();
     //public static readonly ApplicationManager appManager = new ApplicationManager();
-    //public static readonly ImageData imageData = new ImageData();
+    //public static readonly ApplicationData appData = new ApplicationData();
 
     //public static readonly MainWindowVM mainWindowVM = new MainWindowVM();
+    
     //public static readonly BrowsePageVM browsePageVM = new BrowsePageVM();
     //public static readonly AxisPageVM axisPageVM = new AxisPageVM();
     //public static readonly AxLimPageVM axLimPageVM = new AxLimPageVM();
     //public static readonly FilterPageVM filterPageVM = new FilterPageVM();
     //public static readonly ErasePageVM erasePageVM = new ErasePageVM();
-    //public static readonly SizePageVM sizePageVM = new SizePageVM();
+    //public static readonly DataPageVM dataPageVM = new DataPageVM();
+    //public static readonly SavePageVM savePageVM = new SavePageVM();
 
+    //public static readonly MainWindow mainWindow = new MainWindow();
+    //public static readonly SplashPage splashPage = new SplashPage();
     //public static readonly BrowsePage browsePage = new BrowsePage();
     //public static readonly AxisPage axisPage = new AxisPage();
     //public static readonly AxLimPage axLimPage = new AxLimPage();
     //public static readonly FilterPage filterPage = new FilterPage();
     //public static readonly ErasePage erasePage = new ErasePage();
-    //public static readonly SizePage sizePage = new SizePage();
+    //public static readonly DataPage dataPage = new DataPage();
     //public static readonly SavePage savePage = new SavePage();
-    //public static readonly UserControl emptyPage = new UserControl();
+    //public static readonly AnimatedPage emptyPage = new AnimatedPage();
   }
 }
