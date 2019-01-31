@@ -1,6 +1,9 @@
-﻿using CycWpfLibrary.Media;
+﻿using CycWpfLibrary.Input;
+using CycWpfLibrary.Media;
+using CycWpfLibrary.MVVM;
 using System.Linq;
 using System.Windows.Controls;
+using System.Windows.Input;
 using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer
@@ -20,20 +23,22 @@ namespace WpfPlotDigitizer
     private void TextBox_Error(object sender, ValidationErrorEventArgs e)
     {
       var tb = sender as TextBox;
-      if (Validation.GetHasError(tb))
-      {
-        axLimPageVM[tb.Tag as string] = null;
-      }
+      axLimPageVM.IsValid = ValidationHelpers.IsValid(this);
     }
 
-    private void TextBox_GotKeyboardFocus(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
+    private void TextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
     {
-      (sender as TextBox).SelectAll();
+      TextBoxBehaviors.TextBox_GotKeyboardFocus(sender, e);
     }
 
-    private void TextBox_GotMouseCapture(object sender, System.Windows.Input.MouseEventArgs e)
+    private void TextBox_GotMouseCapture(object sender, MouseEventArgs e)
     {
-      (sender as TextBox).SelectAll();
+      TextBoxBehaviors.TextBox_GotMouseCapture(sender, e);
+    }
+
+    private void TextBox_KeyDown(object sender, KeyEventArgs e)
+    {
+      TextBoxBehaviors.TextBox_KeyDown(sender, e);
     }
   }
 }

@@ -9,6 +9,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media.Imaging;
 using static CycWpfLibrary.NativeMethod;
 using static WpfPlotDigitizer.DI;
 
@@ -17,12 +18,12 @@ namespace WpfPlotDigitizer
   public class ApplicationManager
   {
     public ApplicationManager()
-    {
-      splashPageVM.CompleteEvent += SplashPageVM_CompleteEvent;
-      PageManager.TurnNextEvent += PageManager_TurnNextEvent;
-      PageManager.TurnBackEvent += PageManager_TurnBackEvent;
-      PageManager.TurnToEvent += PageManager_TurnToEvent;
-    }
+      {
+        splashPageVM.CompleteEvent += OnSplashScreenCompleted;
+        PageManager.TurnNextEvent += PageManager_TurnNextEvent;
+        PageManager.TurnBackEvent += PageManager_TurnBackEvent;
+        PageManager.TurnToEvent += PageManager_TurnToEvent;
+      }
 
     public bool IsBusy { get; set; } = false;
     public async Task BackgroundTaskAsync(Action action)
@@ -44,9 +45,15 @@ namespace WpfPlotDigitizer
 
     public PageManagerBase PageManager { get; private set; } = new PageManager();
 
-    private void SplashPageVM_CompleteEvent(object sender, EventArgs e)
+    private void OnSplashScreenCompleted(object sender, EventArgs e)
     {
       mainWindow.gridMain.Children.Remove(mainWindow.splashFrame);
+#if DEBUG
+      browsePageVM.PBInput = new BitmapImage(new Uri($"pack://application:,,,/images/data.png")).ToPixelBitmap();
+      axLimPageVM.AxLim = new Rect(new Point(1e-4, 1e-4), new Point(1e6, 1e7));
+      axLimPageVM.AxLogBase = new Point(10, 10);
+      appManager.PageManager.TurnTo((int)ApplicationPages.Filter);
+#endif
     }
     private bool PageManager_TurnBackEvent(object sender, EventArgs e)
     {
@@ -101,7 +108,7 @@ namespace WpfPlotDigitizer
             }
             break;
           case ApplicationPages.AxLim:
-            if (AxLimCheck())
+            if (axLimPageVM.IsValid)
             {
               appData.AxLim = axLimPageVM.AxLim;
               appData.AxLogBase = axLimPageVM.AxLogBase;
@@ -164,7 +171,6 @@ namespace WpfPlotDigitizer
         }
         return turnResult;
       }
-      bool AxLimCheck() => axLimPageVM.AxLim != Rect.Empty;
       bool PBInputCheck() => appData.PBInput != null;
     }
     private bool PageManager_TurnToEvent(object sender, int index)

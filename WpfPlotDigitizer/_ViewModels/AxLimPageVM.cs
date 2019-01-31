@@ -25,22 +25,10 @@ namespace WpfPlotDigitizer
     {
     }
 
-    public object this[string propertyName]
-    {
-      get
-      {
-        PropertyInfo property = GetType().GetProperty(propertyName);
-        return property.GetValue(this, null);
-      }
-      set
-      {
-        PropertyInfo property = GetType().GetProperty(propertyName);
-        property.SetValue(this, value, null);
-      }
-    }
-
     public PixelBitmap PBInput => appData.PBInput;
     public BitmapSource imageSource => PBInput?.ToBitmapSource();
+
+    public bool IsValid { get; set; }
 
     public double? XMax { get; set; }
     public double? XMin { get; set; }
@@ -48,7 +36,7 @@ namespace WpfPlotDigitizer
     public double? YMin { get; set; }
     public Rect AxLim
     {
-      get => (XMin == null || YMin == null || XMax == null || YMax == null) ?
+      get => (!IsValid) ?
           Rect.Empty :
           new Rect(new Point((double)XMin, (double)YMin),
             new Point((double)XMax, (double)YMax));
@@ -65,7 +53,7 @@ namespace WpfPlotDigitizer
     public double? YLog { get; set; }
     public Point AxLogBase
     {
-      get => (XLog == null || YLog == null) ?
+      get => (!IsValid) ?
           new Point(-1, -1) : new Point((double)XLog, (double)YLog);
       set
       {

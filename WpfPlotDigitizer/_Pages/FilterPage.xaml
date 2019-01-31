@@ -24,13 +24,21 @@
                mvvm:Pan.IsEnabled="True" />
       </Grid>
     </Viewbox>
-    <StackPanel Grid.Column="1"
-                Orientation="Horizontal">
-      <StackPanel.Resources>
-        <Style TargetType="mahapps:RangeSlider">
+    <Grid Grid.Column="1">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="auto" />
+        <RowDefinition Height="*" />
+        <RowDefinition Height="auto" />
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      <Grid.Resources>
+        <Style TargetType="mahapps:RangeSlider"
+               BasedOn="{StaticResource MaterialDesignRangeSlider}">
           <Setter Property="Width"
-                  Value="20" />
-          <Setter Property="Margin"
                   Value="20" />
           <Setter Property="Maximum"
                   Value="255" />
@@ -41,9 +49,31 @@
           <Setter Property="MinRangeWidth"
                   Value="5" />
         </Style>
-      </StackPanel.Resources>
-      <mahapps:RangeSlider Orientation="Vertical"
-                           mahapps:SliderHelper.TrackValueFillBrush="Red"
+        <Style TargetType="TextBox"
+               BasedOn="{StaticResource MaterialDesignTextBox}">
+          <Setter Property="Margin"
+                  Value="5" />
+          <Setter Property="Width"
+                  Value="25" />
+          <Setter Property="Validation.ErrorTemplate"
+                  Value="{StaticResource ValidationErrorTemplate}" />
+          <Setter Property="TextAlignment"
+                  Value="Center" />
+          <EventSetter Event="GotKeyboardFocus"
+                       Handler="TextBox_GotKeyboardFocus" />
+          <EventSetter Event="GotMouseCapture"
+                       Handler="TextBox_GotMouseCapture" />
+          <EventSetter Event="KeyDown"
+                       Handler="TextBox_KeyDown" />
+        </Style>
+      </Grid.Resources>
+      <TextBox mvvm:RangeValidator.IsEnabled="True"
+               mvvm:RangeValidator.Maximum="255"
+               mvvm:RangeValidator.Minimum="{Binding FilterRMin}"
+               Text="{Binding FilterRMax, Converter={mvvm:NumStrConverter}}" />
+      <mahapps:RangeSlider Grid.Row="1"
+                           Orientation="Vertical"
+                           Foreground="Red"
                            LowerValue="{Binding FilterRMin}"
                            UpperValue="{Binding FilterRMax}">
         <i:Interaction.Triggers>
@@ -55,9 +85,21 @@
           </i:EventTrigger>
         </i:Interaction.Triggers>
       </mahapps:RangeSlider>
+      <TextBox Grid.Row="2"
+               mvvm:RangeValidator.IsEnabled="True"
+               mvvm:RangeValidator.Maximum="{Binding FilterRMax}"
+               mvvm:RangeValidator.Minimum="0"
+               Text="{Binding FilterRMin, Converter={mvvm:NumStrConverter}}" />
 
-      <mahapps:RangeSlider Orientation="Vertical"
-                           mahapps:SliderHelper.TrackValueFillBrush="Green"
+      <TextBox Grid.Column="1"
+               mvvm:RangeValidator.IsEnabled="True"
+               mvvm:RangeValidator.Maximum="255"
+               mvvm:RangeValidator.Minimum="{Binding FilterGMin}"
+               Text="{Binding FilterGMax, Converter={mvvm:NumStrConverter}}" />
+      <mahapps:RangeSlider Grid.Column="1"
+                           Grid.Row="1"
+                           Orientation="Vertical"
+                           Foreground="Green"
                            LowerValue="{Binding FilterGMin}"
                            UpperValue="{Binding FilterGMax}">
         <i:Interaction.Triggers>
@@ -69,8 +111,22 @@
           </i:EventTrigger>
         </i:Interaction.Triggers>
       </mahapps:RangeSlider>
-      <mahapps:RangeSlider Orientation="Vertical"
-                           mahapps:SliderHelper.TrackValueFillBrush="Blue"
+      <TextBox Grid.Column="1"
+               Grid.Row="2"
+               mvvm:RangeValidator.IsEnabled="True"
+               mvvm:RangeValidator.Maximum="{Binding FilterGMax}"
+               mvvm:RangeValidator.Minimum="0"
+               Text="{Binding FilterGMin, Converter={mvvm:NumStrConverter}}" />
+
+      <TextBox Grid.Column="2"
+               mvvm:RangeValidator.IsEnabled="True"
+               mvvm:RangeValidator.Maximum="255"
+               mvvm:RangeValidator.Minimum="{Binding FilterBMin}"
+               Text="{Binding FilterBMax, Converter={mvvm:NumStrConverter}}" />
+      <mahapps:RangeSlider Grid.Column="2"
+                           Grid.Row="1"
+                           Orientation="Vertical"
+                           Foreground="Blue"
                            LowerValue="{Binding FilterBMin}"
                            UpperValue="{Binding FilterBMax}">
         <i:Interaction.Triggers>
@@ -82,6 +138,12 @@
           </i:EventTrigger>
         </i:Interaction.Triggers>
       </mahapps:RangeSlider>
-    </StackPanel>
+      <TextBox Grid.Column="2"
+               Grid.Row="2"
+               mvvm:RangeValidator.IsEnabled="True"
+               mvvm:RangeValidator.Maximum="{Binding FilterBMax}"
+               mvvm:RangeValidator.Minimum="0"
+               Text="{Binding FilterBMin, Converter={mvvm:NumStrConverter}}" />
+    </Grid>
   </Grid>
 </media:AnimatedPage>

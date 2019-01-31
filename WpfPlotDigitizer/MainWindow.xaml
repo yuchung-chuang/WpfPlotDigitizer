@@ -56,10 +56,10 @@
         </Style.Triggers>
       </Style>
     </Grid.Resources>
-
+    
     <Frame Name="splashFrame"
-           Panel.ZIndex="1"/>
-    <uc:PageControl CurrentPage="{Binding PageManager.CurrentPage}" 
+           Panel.ZIndex="1" />
+    <uc:PageControl CurrentPage="{Binding PageManager.CurrentPage}"
                     TurnBackCommand="{Binding PageManager.TurnBackCommand}"
                     TurnNextCommand="{Binding PageManager.TurnNextCommand}" />
   </Grid>

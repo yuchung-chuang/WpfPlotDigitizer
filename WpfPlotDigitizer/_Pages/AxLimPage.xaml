@@ -24,113 +24,6 @@
   <AdornerDecorator>
     <Grid Margin="20,0">
       <Grid.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <ControlTemplate x:Key="ValidationErrorTemplate">
-          <ControlTemplate.Resources>
-            <DataTemplate DataType="{x:Type ValidationError}">
-              <TextBlock Foreground="{DynamicResource ValidationErrorBrush}"
-                         FontSize="10"
-                         MaxWidth="{Binding ElementName=Placeholder, Path=ActualWidth}"
-                         HorizontalAlignment="Left"
-                         Margin="2"
-                         TextWrapping="Wrap"
-                         Text="{Binding ErrorContent}"
-                         UseLayoutRounding="false" />
-            </DataTemplate>
-          </ControlTemplate.Resources>
-          <StackPanel>
-            <AdornedElementPlaceholder Name="Placeholder" />
-            <Border x:Name="DefaultErrorViewer"
-                    Visibility="Collapsed"
-                    Background="Transparent">
-              <TextBlock Foreground="{DynamicResource ValidationErrorBrush}"
-                         FontSize="10"
-                         MaxWidth="{Binding ElementName=Placeholder, Path=ActualWidth}"
-                         HorizontalAlignment="Left"
-                         Margin="0 2"
-                         TextWrapping="Wrap"
-                         Text="{Binding CurrentItem.ErrorContent}"
-                         UseLayoutRounding="false" />
-            </Border>
-            <controlzEx:PopupEx x:Name="ValidationPopup"
-                                IsOpen="False"
-                                Placement="Bottom"
-                                PlacementTarget="{Binding ElementName=Placeholder, Mode=OneWay}"
-                                AllowsTransparency="True">
-              <Border x:Name="PopupBorder"
-                      Background="Transparent">
-                <TextBlock Foreground="{DynamicResource ValidationErrorBrush}"
-                           FontSize="10"
-                           HorizontalAlignment="Left"
-                           Margin="0 2"
-                           TextWrapping="Wrap"
-                           Text="{Binding CurrentItem.ErrorContent}"
-                           UseLayoutRounding="false" />
-              </Border>
-            </controlzEx:PopupEx>
-          </StackPanel>
-          <ControlTemplate.Triggers>
-            <MultiDataTrigger>
-              <MultiDataTrigger.Conditions>
-                <Condition Binding="{Binding ElementName=Placeholder, Path=AdornedElement.(md:ValidationAssist.OnlyShowOnFocus)}"
-                           Value="False" />
-                <Condition Binding="{Binding ElementName=Placeholder, Path=AdornedElement.(md:ValidationAssist.UsePopup)}"
-                           Value="True" />
-                <Condition Binding="{Binding ElementName=Placeholder, Path=AdornedElement.(md:ValidationAssist.Suppress)}"
-                           Value="False" />
-              </MultiDataTrigger.Conditions>
-              <MultiDataTrigger.Setters>
-                <Setter TargetName="ValidationPopup"
-                        Property="IsOpen"
-                        Value="True" />
-              </MultiDataTrigger.Setters>
-            </MultiDataTrigger>
-
-            <MultiDataTrigger>
-              <MultiDataTrigger.Conditions>
-                <Condition Binding="{Binding ElementName=Placeholder, Path=AdornedElement.(md:ValidationAssist.OnlyShowOnFocus)}"
-                           Value="False" />
-                <Condition Binding="{Binding ElementName=Placeholder, Path=AdornedElement.(md:ValidationAssist.UsePopup)}"
-                           Value="False" />
-                <Condition Binding="{Binding ElementName=Placeholder, Path=AdornedElement.(md:ValidationAssist.Suppress)}"
-                           Value="False" />
-              </MultiDataTrigger.Conditions>
-              <MultiDataTrigger.Setters>
-                <Setter TargetName="DefaultErrorViewer"
-                        Property="Visibility"
-                        Value="Visible" />
-              </MultiDataTrigger.Setters>
-            </MultiDataTrigger>
-
-            <MultiDataTrigger>
-              <MultiDataTrigger.Conditions>
-                <Condition Binding="{Binding ElementName=Placeholder, Path=AdornedElement.(md:ValidationAssist.OnlyShowOnFocus)}"
-                           Value="True" />
-                <Condition Binding="{Binding ElementName=Placeholder, Path=AdornedElement.(md:ValidationAssist.UsePopup)}"
-                           Value="True" />
-              </MultiDataTrigger.Conditions>
-              <MultiDataTrigger.Setters>
-                <Setter TargetName="ValidationPopup"
-                        Property="IsOpen"
-                        Value="{Binding ElementName=Placeholder, Path=AdornedElement.IsKeyboardFocusWithin, Mode=OneWay}" />
-              </MultiDataTrigger.Setters>
-            </MultiDataTrigger>
-
-            <MultiDataTrigger>
-              <MultiDataTrigger.Conditions>
-                <Condition Binding="{Binding ElementName=Placeholder, Path=AdornedElement.(md:ValidationAssist.OnlyShowOnFocus)}"
-                           Value="True" />
-                <Condition Binding="{Binding ElementName=Placeholder, Path=AdornedElement.(md:ValidationAssist.UsePopup)}"
-                           Value="False" />
-              </MultiDataTrigger.Conditions>
-              <MultiDataTrigger.Setters>
-                <Setter TargetName="DefaultErrorViewer"
-                        Property="Visibility"
-                        Value="{Binding ElementName=Placeholder, Path=AdornedElement.IsKeyboardFocusWithin, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
-              </MultiDataTrigger.Setters>
-            </MultiDataTrigger>
-          </ControlTemplate.Triggers>
-        </ControlTemplate>
         <Style x:Key="TextBoxStyleBase"
                TargetType="TextBox"
                BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
@@ -139,7 +32,13 @@
           <Setter Property="Height"
                   Value="40" />
           <Setter Property="Validation.ErrorTemplate"
-                  Value="{StaticResource ValidationErrorTemplate}" />
+                  Value="{StaticResource MaterialDesignValidationErrorTemplate}" />
+          <EventSetter Event="GotKeyboardFocus"
+                       Handler="TextBox_GotKeyboardFocus" />
+          <EventSetter Event="GotMouseCapture"
+                       Handler="TextBox_GotMouseCapture" />
+          <EventSetter Event="KeyDown"
+                       Handler="TextBox_KeyDown" />
         </Style>
         <Style TargetType="Grid">
           <Setter Property="Background"
@@ -179,23 +78,19 @@
         <TextBox Grid.Row="0"
                  Tag="YMax"
                  md:HintAssist.Hint="Y-Axis: Max"
-                 GotKeyboardFocus="TextBox_GotKeyboardFocus"
-                 GotMouseCapture="TextBox_GotMouseCapture"
                  Validation.Error="TextBox_Error">
           <TextBox.Text>
             <Binding Path="YMax"
                      Converter="{cycMVVM:NumStrConverter}"
                      NotifyOnValidationError="True">
               <Binding.ValidationRules>
-                <cycMVVM:DoubleValidation />
+                <cycMVVM:DoubleValidation ValidatesOnTargetUpdated="True" />
               </Binding.ValidationRules>
             </Binding>
           </TextBox.Text>
         </TextBox>
         <TextBox Grid.Row="1"
                  Tag="YLog"
-                 GotKeyboardFocus="TextBox_GotKeyboardFocus"
-                 GotMouseCapture="TextBox_GotMouseCapture"
                  Validation.Error="TextBox_Error"
                  md:HintAssist.Hint="Y-Axis: Log Base">
           <TextBox.Text>
@@ -203,15 +98,13 @@
                      Converter="{cycMVVM:NumStrConverter}"
                      NotifyOnValidationError="True">
               <Binding.ValidationRules>
-                <cycMVVM:LogBaseValidation />
+                <cycMVVM:LogBaseValidation ValidatesOnTargetUpdated="True" />
               </Binding.ValidationRules>
             </Binding>
           </TextBox.Text>
         </TextBox>
         <TextBox Grid.Row="2"
                  Tag="YMin"
-                 GotKeyboardFocus="TextBox_GotKeyboardFocus"
-                 GotMouseCapture="TextBox_GotMouseCapture"
                  Validation.Error="TextBox_Error"
                  md:HintAssist.Hint="Y-Axis: Min">
           <TextBox.Text>
@@ -219,7 +112,7 @@
                      Converter="{cycMVVM:NumStrConverter}"
                      NotifyOnValidationError="True">
               <Binding.ValidationRules>
-                <cycMVVM:DoubleValidation />
+                <cycMVVM:DoubleValidation ValidatesOnTargetUpdated="True" />
               </Binding.ValidationRules>
             </Binding>
           </TextBox.Text>
@@ -244,8 +137,6 @@
         </Grid.ColumnDefinitions>
         <TextBox Grid.Column="0"
                  Tag="XMin"
-                 GotKeyboardFocus="TextBox_GotKeyboardFocus"
-                 GotMouseCapture="TextBox_GotMouseCapture"
                  Validation.Error="TextBox_Error"
                  md:HintAssist.Hint="X-Axis: Min">
           <TextBox.Text>
@@ -253,15 +144,13 @@
                      Converter="{cycMVVM:NumStrConverter}"
                      NotifyOnValidationError="True">
               <Binding.ValidationRules>
-                <cycMVVM:DoubleValidation />
+                <cycMVVM:DoubleValidation ValidatesOnTargetUpdated="True" />
               </Binding.ValidationRules>
             </Binding>
           </TextBox.Text>
         </TextBox>
         <TextBox Grid.Column="1"
                  Tag="XLog"
-                 GotKeyboardFocus="TextBox_GotKeyboardFocus"
-                 GotMouseCapture="TextBox_GotMouseCapture"
                  Validation.Error="TextBox_Error"
                  md:HintAssist.Hint="X-Axis: Log Base">
           <TextBox.Text>
@@ -269,15 +158,13 @@
                      Converter="{cycMVVM:NumStrConverter}"
                      NotifyOnValidationError="True">
               <Binding.ValidationRules>
-                <cycMVVM:LogBaseValidation />
+                <cycMVVM:LogBaseValidation ValidatesOnTargetUpdated="True" />
               </Binding.ValidationRules>
             </Binding>
           </TextBox.Text>
         </TextBox>
         <TextBox Grid.Column="2"
                  Tag="XMax"
-                 GotKeyboardFocus="TextBox_GotKeyboardFocus"
-                 GotMouseCapture="TextBox_GotMouseCapture"
                  Validation.Error="TextBox_Error"
                  md:HintAssist.Hint="X-Axis: Max">
           <TextBox.Text>
@@ -285,7 +172,7 @@
                      Converter="{cycMVVM:NumStrConverter}"
                      NotifyOnValidationError="True">
               <Binding.ValidationRules>
-                <cycMVVM:DoubleValidation />
+                <cycMVVM:DoubleValidation ValidatesOnTargetUpdated="True" />
               </Binding.ValidationRules>
             </Binding>
           </TextBox.Text>
