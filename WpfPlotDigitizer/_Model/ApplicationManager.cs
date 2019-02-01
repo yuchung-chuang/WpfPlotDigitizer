@@ -154,6 +154,7 @@ namespace WpfPlotDigitizer
           case ApplicationPages.Save:
             savePageVM.imageSave = appData.ImageData.Clone();
             savePageVM.OnPropertyChanged(nameof(savePageVM.data));
+            savePageVM.PlotData();
             break;
           default:
             break;

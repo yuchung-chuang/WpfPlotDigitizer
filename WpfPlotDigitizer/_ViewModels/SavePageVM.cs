@@ -4,6 +4,9 @@ using CycWpfLibrary.MVVM;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using Microsoft.Win32;
+using OxyPlot;
+using OxyPlot.Axes;
+using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -185,6 +188,40 @@ namespace WpfPlotDigitizer
       }
     }
 
-    
+    public PlotModel plotModel { get; set; }
+    public void PlotData()
+    {
+      var model = new PlotModel("Captured data");
+      var series = new LineSeries
+      {
+        StrokeThickness = 0,
+        MarkerSize = 3,
+        MarkerFill = OxyColors.Red,
+        MarkerStroke = OxyColors.Black,
+        MarkerType = MarkerType.Circle
+      };
+
+      foreach (var d in data)
+        series.Points.Add(new DataPoint(d.X, d.Y));
+
+      var xMax = series.Points.Max(p => p.X);
+      var xMin = series.Points.Min(p => p.X);
+      var yMax = series.Points.Max(p => p.Y);
+      var yMin = series.Points.Min(p => p.Y);
+      model.Axes.Add(new LogarithmicAxis
+      {
+        Position = AxisPosition.Bottom,
+        AbsoluteMaximum = xMax,
+        AbsoluteMinimum = xMin,
+      });
+      model.Axes.Add(new LogarithmicAxis
+      {
+        Position = AxisPosition.Left,
+        AbsoluteMaximum = yMax,
+        AbsoluteMinimum = yMin,
+      });
+      model.Series.Add(series);
+      plotModel = model;
+    }
   }
 }
