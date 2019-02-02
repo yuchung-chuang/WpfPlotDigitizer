@@ -123,12 +123,6 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="OxyPlot">
-      <HintPath>..\..\DLLs\OxyPlot.dll</HintPath>
-    </Reference>
-    <Reference Include="OxyPlot.Wpf">
-      <HintPath>..\..\DLLs\OxyPlot.Wpf.dll</HintPath>
-    </Reference>
     <Reference Include="PropertyChanged, Version=2.5.14.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
       <HintPath>..\packages\PropertyChanged.Fody.2.5.14\lib\net452\PropertyChanged.dll</HintPath>
     </Reference>
@@ -295,6 +289,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\source\repos\oxyplot\Source\OxyPlot.Wpf\OxyPlot.Wpf_NET40.csproj">
+      <Project>{0d7c7710-c58b-4713-ba18-8231a2f35a12}</Project>
+      <Name>OxyPlot.Wpf_NET40</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\source\repos\oxyplot\Source\OxyPlot\OxyPlot.csproj">
+      <Project>{7a0b35c0-dd17-4964-8e9a-44d6cecdc692}</Project>
+      <Name>OxyPlot</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\CycWpfLibrary\CycWpfLibrary.CustomControls\CycWpfLibrary.CustomControls.csproj">
       <Project>{1b0190c8-083c-4c23-9862-66c520641264}</Project>
       <Name>CycWpfLibrary.CustomControls</Name>

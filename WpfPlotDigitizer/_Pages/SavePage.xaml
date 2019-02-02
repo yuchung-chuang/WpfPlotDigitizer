@@ -22,16 +22,20 @@
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
     <oxy:Plot Margin="0,0,20,0"
-              Model="{Binding plotModel}" />
+              Model="{Binding plotModel}"
+              ResetInput="mouse:left, 2"
+              ZoomInput="mouse:middle"
+              PanInput="mouse:left"
+              TrackerInput="mouse:right" />
     <!--DataGrid: Need to set height manually to allow data virtualization!!-->
-    <DataGrid Grid.Column="1"
+    <!--<DataGrid Grid.Column="1"
               MaxColumnWidth="100"
               MaxHeight="600"
               ItemsSource="{Binding data}"
               AutoGenerateColumns="True"
               CanUserResizeColumns="False"
               CanUserResizeRows="False"
-              IsReadOnly="True" />
+              IsReadOnly="True" />-->
     <Button Grid.ColumnSpan="2"
             Grid.Row="1"
             Content="Save"

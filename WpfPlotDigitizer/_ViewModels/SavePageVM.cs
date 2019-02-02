@@ -38,11 +38,11 @@ namespace WpfPlotDigitizer
       set => appData.ImageSave = value;
     }
 
-    public List<Point> data
-    {
-      get => appData.Data;
-      set => appData.Data = value;
-    }
+    //public List<Point> data
+    //{
+    //  get => appData.Data;
+    //  set => appData.Data = value;
+    //}
 
     public BitmapSource imageSource => imageSave?.ToBitmapSource();
 
@@ -213,12 +213,14 @@ namespace WpfPlotDigitizer
         Position = AxisPosition.Bottom,
         AbsoluteMaximum = xMax,
         AbsoluteMinimum = xMin,
+        MajorGridlineStyle = LineStyle.Solid,
       });
       model.Axes.Add(new LogarithmicAxis
       {
         Position = AxisPosition.Left,
         AbsoluteMaximum = yMax,
         AbsoluteMinimum = yMin,
+        MajorGridlineStyle = LineStyle.Solid,
       });
       model.Series.Add(series);
       plotModel = model;
