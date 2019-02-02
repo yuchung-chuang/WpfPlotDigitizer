@@ -21,14 +21,6 @@
       <RowDefinition Height="*" />
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
-    <!--<Viewbox Margin="0,0,20,0">
-      <Grid>
-        <Image Name="image"
-               Source="{Binding imageSource}"
-               mvvm:Pan.IsEnabled="True"
-               mvvm:Zoom.IsEnabled="True" />
-      </Grid>
-    </Viewbox>-->
     <oxy:Plot Margin="0,0,20,0"
               Model="{Binding plotModel}" />
     <!--DataGrid: Need to set height manually to allow data virtualization!!-->

@@ -1,4 +1,5 @@
-﻿using CycWpfLibrary.Input;
+﻿using CycWpfLibrary;
+using CycWpfLibrary.Input;
 using CycWpfLibrary.Media;
 using CycWpfLibrary.MVVM;
 using System.Linq;

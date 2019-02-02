@@ -4,12 +4,9 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:local="clr-namespace:WpfPlotDigitizer"
-                    xmlns:cycMVVM="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
                     xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-                    xmlns:controlzEx="clr-namespace:ControlzEx;assembly=MaterialDesignThemes.Wpf"
-                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-                    xmlns:cycControl="clr-namespace:CycWpfLibrary.Controls;assembly=CycWpfLibrary"
                     xmlns:media="clr-namespace:CycWpfLibrary.Media;assembly=CycWpfLibrary"
+                    xmlns:cyc="clr-namespace:CycWpfLibrary;assembly=CycWpfLibrary"
                     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
                     TextElement.FontWeight="Regular"
                     TextElement.FontSize="13"
@@ -59,8 +56,9 @@
                Grid.Row="1">
         <Grid>
           <Image Source="{Binding imageSource}"
-                 cycMVVM:Pan.IsEnabled="True"
-                 cycMVVM:Zoom.IsEnabled="True" />
+                 cyc:Pan.IsEnabled="True"
+                 cyc:Pan.Input="mouse:left"
+                 cyc:Zoom.IsEnabled="True" />
         </Grid>
       </Viewbox>
       <Grid Grid.Column="0"
@@ -81,10 +79,10 @@
                  Validation.Error="TextBox_Error">
           <TextBox.Text>
             <Binding Path="YMax"
-                     Converter="{cycMVVM:NumStrConverter}"
+                     Converter="{cyc:NumStrConverter}"
                      NotifyOnValidationError="True">
               <Binding.ValidationRules>
-                <cycMVVM:DoubleValidation ValidatesOnTargetUpdated="True" />
+                <cyc:DoubleValidation ValidatesOnTargetUpdated="True" />
               </Binding.ValidationRules>
             </Binding>
           </TextBox.Text>
@@ -95,10 +93,10 @@
                  md:HintAssist.Hint="Y-Axis: Log Base">
           <TextBox.Text>
             <Binding Path="YLog"
-                     Converter="{cycMVVM:NumStrConverter}"
+                     Converter="{cyc:NumStrConverter}"
                      NotifyOnValidationError="True">
               <Binding.ValidationRules>
-                <cycMVVM:LogBaseValidation ValidatesOnTargetUpdated="True" />
+                <cyc:LogBaseValidation ValidatesOnTargetUpdated="True" />
               </Binding.ValidationRules>
             </Binding>
           </TextBox.Text>
@@ -109,10 +107,10 @@
                  md:HintAssist.Hint="Y-Axis: Min">
           <TextBox.Text>
             <Binding Path="YMin"
-                     Converter="{cycMVVM:NumStrConverter}"
+                     Converter="{cyc:NumStrConverter}"
                      NotifyOnValidationError="True">
               <Binding.ValidationRules>
-                <cycMVVM:DoubleValidation ValidatesOnTargetUpdated="True" />
+                <cyc:DoubleValidation ValidatesOnTargetUpdated="True" />
               </Binding.ValidationRules>
             </Binding>
           </TextBox.Text>
@@ -141,10 +139,10 @@
                  md:HintAssist.Hint="X-Axis: Min">
           <TextBox.Text>
             <Binding Path="XMin"
-                     Converter="{cycMVVM:NumStrConverter}"
+                     Converter="{cyc:NumStrConverter}"
                      NotifyOnValidationError="True">
               <Binding.ValidationRules>
-                <cycMVVM:DoubleValidation ValidatesOnTargetUpdated="True" />
+                <cyc:DoubleValidation ValidatesOnTargetUpdated="True" />
               </Binding.ValidationRules>
             </Binding>
           </TextBox.Text>
@@ -155,10 +153,10 @@
                  md:HintAssist.Hint="X-Axis: Log Base">
           <TextBox.Text>
             <Binding Path="XLog"
-                     Converter="{cycMVVM:NumStrConverter}"
+                     Converter="{cyc:NumStrConverter}"
                      NotifyOnValidationError="True">
               <Binding.ValidationRules>
-                <cycMVVM:LogBaseValidation ValidatesOnTargetUpdated="True" />
+                <cyc:LogBaseValidation ValidatesOnTargetUpdated="True" />
               </Binding.ValidationRules>
             </Binding>
           </TextBox.Text>
@@ -169,10 +167,10 @@
                  md:HintAssist.Hint="X-Axis: Max">
           <TextBox.Text>
             <Binding Path="XMax"
-                     Converter="{cycMVVM:NumStrConverter}"
+                     Converter="{cyc:NumStrConverter}"
                      NotifyOnValidationError="True">
               <Binding.ValidationRules>
-                <cycMVVM:DoubleValidation ValidatesOnTargetUpdated="True" />
+                <cyc:DoubleValidation ValidatesOnTargetUpdated="True" />
               </Binding.ValidationRules>
             </Binding>
           </TextBox.Text>

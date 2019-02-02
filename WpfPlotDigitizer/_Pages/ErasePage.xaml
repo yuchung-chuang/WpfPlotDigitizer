@@ -9,6 +9,7 @@
                     xmlns:media="clr-namespace:CycWpfLibrary.Media;assembly=CycWpfLibrary"
                     xmlns:uc="clr-namespace:CycWpfLibrary.UserControls;assembly=CycWpfLibrary.UserControls"
                     xmlns:mvvm="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
+                    xmlns:cyc="clr-namespace:CycWpfLibrary;assembly=CycWpfLibrary"
                     mc:Ignorable="d"
                     d:DesignHeight="450"
                     d:DesignWidth="400"
@@ -33,9 +34,9 @@
         <uc:ImageEraser Name="imageEraser"
                         Image="{Binding imageErase, Mode=TwoWay}"
                         MouseButton="Right"
-                        mvvm:Pan.IsEnabled="True"
-                        mvvm:Pan.MouseButton="Left"
-                        mvvm:Zoom.IsEnabled="True" />
+                        cyc:Pan.IsEnabled="True"
+                        cyc:Pan.Input="mouse:left"
+                        cyc:Zoom.IsEnabled="True" />
       </Grid>
     </Viewbox>
 

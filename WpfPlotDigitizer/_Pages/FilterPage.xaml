@@ -6,8 +6,8 @@
                     xmlns:local="clr-namespace:WpfPlotDigitizer"
                     xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-                    xmlns:mvvm="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
                     xmlns:media="clr-namespace:CycWpfLibrary.Media;assembly=CycWpfLibrary"
+                    xmlns:cyc="clr-namespace:CycWpfLibrary;assembly=CycWpfLibrary"
                     mc:Ignorable="d"
                     d:DesignHeight="600"
                     d:DesignWidth="900"
@@ -20,8 +20,9 @@
     <Viewbox Grid.Column="0">
       <Grid>
         <Image Source="{Binding ImageSource}"
-               mvvm:Zoom.IsEnabled="True"
-               mvvm:Pan.IsEnabled="True" />
+               cyc:Zoom.IsEnabled="True"
+               cyc:Pan.IsEnabled="True"
+               cyc:Pan.Input="mouse:left"/>
       </Grid>
     </Viewbox>
     <Grid Grid.Column="1">
@@ -67,10 +68,10 @@
                        Handler="TextBox_KeyDown" />
         </Style>
       </Grid.Resources>
-      <TextBox mvvm:RangeValidator.IsEnabled="True"
-               mvvm:RangeValidator.Maximum="255"
-               mvvm:RangeValidator.Minimum="{Binding FilterRMin}"
-               Text="{Binding FilterRMax, Converter={mvvm:NumStrConverter}}" />
+      <TextBox cyc:RangeValidator.IsEnabled="True"
+               cyc:RangeValidator.Maximum="255"
+               cyc:RangeValidator.Minimum="{Binding FilterRMin}"
+               Text="{Binding FilterRMax, Converter={cyc:NumStrConverter}}" />
       <mahapps:RangeSlider Grid.Row="1"
                            Orientation="Vertical"
                            Foreground="Red"
@@ -86,16 +87,16 @@
         </i:Interaction.Triggers>
       </mahapps:RangeSlider>
       <TextBox Grid.Row="2"
-               mvvm:RangeValidator.IsEnabled="True"
-               mvvm:RangeValidator.Maximum="{Binding FilterRMax}"
-               mvvm:RangeValidator.Minimum="0"
-               Text="{Binding FilterRMin, Converter={mvvm:NumStrConverter}}" />
+               cyc:RangeValidator.IsEnabled="True"
+               cyc:RangeValidator.Maximum="{Binding FilterRMax}"
+               cyc:RangeValidator.Minimum="0"
+               Text="{Binding FilterRMin, Converter={cyc:NumStrConverter}}" />
 
       <TextBox Grid.Column="1"
-               mvvm:RangeValidator.IsEnabled="True"
-               mvvm:RangeValidator.Maximum="255"
-               mvvm:RangeValidator.Minimum="{Binding FilterGMin}"
-               Text="{Binding FilterGMax, Converter={mvvm:NumStrConverter}}" />
+               cyc:RangeValidator.IsEnabled="True"
+               cyc:RangeValidator.Maximum="255"
+               cyc:RangeValidator.Minimum="{Binding FilterGMin}"
+               Text="{Binding FilterGMax, Converter={cyc:NumStrConverter}}" />
       <mahapps:RangeSlider Grid.Column="1"
                            Grid.Row="1"
                            Orientation="Vertical"
@@ -113,16 +114,16 @@
       </mahapps:RangeSlider>
       <TextBox Grid.Column="1"
                Grid.Row="2"
-               mvvm:RangeValidator.IsEnabled="True"
-               mvvm:RangeValidator.Maximum="{Binding FilterGMax}"
-               mvvm:RangeValidator.Minimum="0"
-               Text="{Binding FilterGMin, Converter={mvvm:NumStrConverter}}" />
+               cyc:RangeValidator.IsEnabled="True"
+               cyc:RangeValidator.Maximum="{Binding FilterGMax}"
+               cyc:RangeValidator.Minimum="0"
+               Text="{Binding FilterGMin, Converter={cyc:NumStrConverter}}" />
 
       <TextBox Grid.Column="2"
-               mvvm:RangeValidator.IsEnabled="True"
-               mvvm:RangeValidator.Maximum="255"
-               mvvm:RangeValidator.Minimum="{Binding FilterBMin}"
-               Text="{Binding FilterBMax, Converter={mvvm:NumStrConverter}}" />
+               cyc:RangeValidator.IsEnabled="True"
+               cyc:RangeValidator.Maximum="255"
+               cyc:RangeValidator.Minimum="{Binding FilterBMin}"
+               Text="{Binding FilterBMax, Converter={cyc:NumStrConverter}}" />
       <mahapps:RangeSlider Grid.Column="2"
                            Grid.Row="1"
                            Orientation="Vertical"
@@ -140,10 +141,10 @@
       </mahapps:RangeSlider>
       <TextBox Grid.Column="2"
                Grid.Row="2"
-               mvvm:RangeValidator.IsEnabled="True"
-               mvvm:RangeValidator.Maximum="{Binding FilterBMax}"
-               mvvm:RangeValidator.Minimum="0"
-               Text="{Binding FilterBMin, Converter={mvvm:NumStrConverter}}" />
+               cyc:RangeValidator.IsEnabled="True"
+               cyc:RangeValidator.Maximum="{Binding FilterBMax}"
+               cyc:RangeValidator.Minimum="0"
+               Text="{Binding FilterBMin, Converter={cyc:NumStrConverter}}" />
     </Grid>
   </Grid>
 </media:AnimatedPage>

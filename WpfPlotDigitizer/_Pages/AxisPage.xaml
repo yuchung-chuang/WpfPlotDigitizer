@@ -9,6 +9,7 @@
                     xmlns:media="clr-namespace:CycWpfLibrary.Media;assembly=CycWpfLibrary"
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                     xmlns:uc="clr-namespace:CycWpfLibrary.UserControls;assembly=CycWpfLibrary.UserControls"
+                    xmlns:cyc="clr-namespace:CycWpfLibrary;assembly=CycWpfLibrary"
                     mc:Ignorable="d"
                     d:DesignHeight="450"
                     d:DesignWidth="800"
@@ -20,9 +21,9 @@
     </Grid.RowDefinitions>
     <Viewbox>
       <Grid Name="gridBase2"
-            mvvm:Pan.IsEnabled="True"
-            mvvm:Pan.MouseButton="Left"
-            mvvm:Zoom.IsEnabled="True">
+            cyc:Pan.IsEnabled="True"
+            cyc:Pan.Input="mouse:left"
+            cyc:Zoom.IsEnabled="True">
         <Image Name="imageAxis"
                Source="{Binding ImageSource}"
                Stretch="None" />
