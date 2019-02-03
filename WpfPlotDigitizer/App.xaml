@@ -210,13 +210,14 @@
                   </Thumb>
                   <Thumb x:Name="PART_MiddleThumb"
                          Cursor="Hand"
+                         Foreground="{TemplateBinding Foreground}"
                          MinWidth="{TemplateBinding MinRangeWidth}">
                     <Thumb.Style>
                       <Style TargetType="{x:Type Thumb}">
                         <Setter Property="Template">
                           <Setter.Value>
                             <ControlTemplate>
-                              <Rectangle Fill="{DynamicResource PrimaryHueMidBrush}"
+                              <Rectangle Fill="{TemplateBinding Foreground}"
                                          Height="2"
                                          Margin="0" />
                             </ControlTemplate>

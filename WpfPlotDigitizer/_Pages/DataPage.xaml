@@ -15,35 +15,69 @@
                     d:DesignWidth="800"
                     d:DataContext="{d:DesignInstance local:DataPageVM, IsDesignTimeCreatable=True}">
   <Grid>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="*" />
-      <ColumnDefinition Width="auto" />
-    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*" />
+      <RowDefinition Height="auto" />
+    </Grid.RowDefinitions>
 
-    <Viewbox>
+    <Viewbox Margin="10">
       <Grid>
         <Image Source="{Binding imageSource}"
                cyc:Zoom.IsEnabled="True"
                cyc:Zoom.IsLeaveReset="False"
                cyc:Zoom.Maximum="100"
-               cyc:Pan.IsEnabled="True" 
-               cyc:Pan.Input="mouse:left"/>
+               cyc:Pan.IsEnabled="True"
+               cyc:Pan.Input="mouse:left" />
       </Grid>
     </Viewbox>
 
-    <StackPanel Grid.Column="1"
-                Orientation="Horizontal">
-      <Slider Orientation="Vertical"
-              Margin="10,40"
+    <Grid Grid.Row="1"
+          Margin="10,0">
+      <Grid.Resources>
+        <Style TargetType="TextBlock">
+          <Setter Property="TextAlignment"
+                  Value="Center" />
+          <Setter Property="Margin"
+                  Value="10" />
+        </Style>
+        <Style TargetType="Slider"
+               BasedOn="{StaticResource MaterialDesignSlider}">
+          <Setter Property="Orientation"
+                  Value="Horizontal" />
+          <Setter Property="Margin"
+                  Value="10" />
+          <Setter Property="VerticalAlignment"
+                  Value="Center" />
+        </Style>
+      </Grid.Resources>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="auto" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+      <TextBlock>
+          <Span>
+            Data <LineBreak />
+            Size
+          </Span>
+      </TextBlock>
+      <Slider Value="{Binding DataSize }"
+              Grid.Column="1"
               Minimum="1"
-              Maximum="50"
-              Value="{Binding DataSize }" />
-      <Slider Orientation="Vertical"
-              Margin="10,40,40,40"
+              Maximum="50" />
+      <TextBlock Grid.Row="1">
+          Cover <LineBreak />
+          Ratio
+      </TextBlock>
+      <Slider Value="{Binding RatioInt}"
+              Grid.Row="1"
+              Grid.Column="1"
               Minimum="0"
-              Maximum="100"
-              Value="{Binding RatioInt}" />
-    </StackPanel>
+              Maximum="100" />
+    </Grid>
 
   </Grid>
 </media:AnimatedPage>

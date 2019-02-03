@@ -17,6 +17,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using static WpfPlotDigitizer.DI;
@@ -38,11 +39,15 @@ namespace WpfPlotDigitizer
       set => appData.ImageSave = value;
     }
 
-    //public List<Point> data
-    //{
-    //  get => appData.Data;
-    //  set => appData.Data = value;
-    //}
+    public List<Point> data
+    {
+      get => appData.Data;
+    }
+
+    public Rect axLim
+    {
+      get => appData.AxLim;
+    }
 
     public BitmapSource imageSource => imageSave?.ToBitmapSource();
 
@@ -191,7 +196,7 @@ namespace WpfPlotDigitizer
     public PlotModel plotModel { get; set; }
     public void PlotData()
     {
-      var model = new PlotModel("Captured data");
+      var model = new PlotModel("Captured Data");
       var series = new LineSeries
       {
         StrokeThickness = 0,
@@ -200,26 +205,22 @@ namespace WpfPlotDigitizer
         MarkerStroke = OxyColors.Black,
         MarkerType = MarkerType.Circle
       };
-
+      
       foreach (var d in data)
         series.Points.Add(new DataPoint(d.X, d.Y));
 
-      var xMax = series.Points.Max(p => p.X);
-      var xMin = series.Points.Min(p => p.X);
-      var yMax = series.Points.Max(p => p.Y);
-      var yMin = series.Points.Min(p => p.Y);
       model.Axes.Add(new LogarithmicAxis
       {
         Position = AxisPosition.Bottom,
-        AbsoluteMaximum = xMax,
-        AbsoluteMinimum = xMin,
+        AbsoluteMaximum = axLim.Right,
+        AbsoluteMinimum = axLim.Left,
         MajorGridlineStyle = LineStyle.Solid,
       });
       model.Axes.Add(new LogarithmicAxis
       {
         Position = AxisPosition.Left,
-        AbsoluteMaximum = yMax,
-        AbsoluteMinimum = yMin,
+        AbsoluteMaximum = axLim.Bottom,
+        AbsoluteMinimum = axLim.Top,
         MajorGridlineStyle = LineStyle.Solid,
       });
       model.Series.Add(series);

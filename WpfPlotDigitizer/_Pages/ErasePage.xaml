@@ -10,26 +10,32 @@
                     xmlns:uc="clr-namespace:CycWpfLibrary.UserControls;assembly=CycWpfLibrary.UserControls"
                     xmlns:mvvm="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
                     xmlns:cyc="clr-namespace:CycWpfLibrary;assembly=CycWpfLibrary"
+                    xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
                     mc:Ignorable="d"
                     d:DesignHeight="450"
                     d:DesignWidth="400"
                     d:DataContext="{d:DesignInstance local:ErasePageVM, IsDesignTimeCreatable=True}">
-  <Grid>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="auto" />
-      <ColumnDefinition Width="*" />
-    </Grid.ColumnDefinitions>
-    <WrapPanel Orientation="Vertical"
-               Margin="20">
-      <Button Content="Undo"
-              Command="{Binding UndoCommand}" />
-      <Button Content="Redo"
-              Command="{Binding RedoCommand}" />
-      <Button Content="Debug"
-              Command="{Binding DebugCommand}" />
-    </WrapPanel>
 
-    <Viewbox Grid.Column="1">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*" />
+      <RowDefinition Height="auto" />
+    </Grid.RowDefinitions>
+    
+    <StackPanel Grid.Row="1"
+               Orientation="Horizontal"
+               HorizontalAlignment="Center">
+      <Button Margin="20"
+              Command="{Binding UndoCommand}">
+        <md:PackIcon Kind="UndoVariant" />
+      </Button>
+      <Button Margin="20"
+              Command="{Binding RedoCommand}">
+        <md:PackIcon Kind="RedoVariant" />
+      </Button>
+    </StackPanel>
+
+    <Viewbox Margin="10">
       <Grid>
         <uc:ImageEraser Name="imageEraser"
                         Image="{Binding imageErase, Mode=TwoWay}"
