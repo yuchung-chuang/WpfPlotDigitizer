@@ -1,4 +1,4 @@
-﻿using CycWpfLibrary.Input;
+﻿using CycWpfLibrary;
 using CycWpfLibrary.Media;
 using System.Windows.Controls;
 using System.Windows.Input;

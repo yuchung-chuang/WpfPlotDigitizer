@@ -36,9 +36,7 @@ namespace WpfPlotDigitizer
     public double? YMin { get; set; }
     public Rect AxLim
     {
-      get => (!IsValid) ?
-          Rect.Empty :
-          new Rect(new Point((double)XMin, (double)YMin),
+      get => new Rect(new Point((double)XMin, (double)YMin),
             new Point((double)XMax, (double)YMax));
       set
       {
@@ -52,9 +50,8 @@ namespace WpfPlotDigitizer
     public double? XLog { get; set; }
     public double? YLog { get; set; }
     public Point AxLogBase
-    {
-      get => (!IsValid) ?
-          new Point(-1, -1) : new Point((double)XLog, (double)YLog);
+    { 
+      get => new Point(XLog ?? -1, YLog ?? -1);
       set
       {
         XLog = value.X;

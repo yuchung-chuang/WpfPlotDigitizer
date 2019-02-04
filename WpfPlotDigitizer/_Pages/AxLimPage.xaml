@@ -12,7 +12,6 @@
                     TextElement.FontSize="13"
                     TextOptions.TextFormattingMode="Ideal"
                     TextOptions.TextRenderingMode="Auto"
-                    Background="{DynamicResource MaterialDesignPaper}"
                     FontFamily="{DynamicResource MaterialDesignFont}"
                     mc:Ignorable="d"
                     d:DesignHeight="600"
@@ -53,7 +52,8 @@
         <ColumnDefinition Width="auto" />
       </Grid.ColumnDefinitions>
       <Viewbox Grid.Column="1"
-               Grid.Row="1">
+               Grid.Row="1"
+               Margin="10">
         <Grid>
           <Image Source="{Binding imageSource}"
                  cyc:Pan.IsEnabled="True"
@@ -76,13 +76,18 @@
         <TextBox Grid.Row="0"
                  Tag="YMax"
                  md:HintAssist.Hint="Y-Axis: Max"
-                 Validation.Error="TextBox_Error">
+                 Validation.Error="TextBox_Error"
+                 LostFocus="TextBox_LostFocus"
+                 cyc:RangeValidator.IsEnabled="True"
+                 cyc:RangeValidator.Minimum="{Binding YMin}">
           <TextBox.Text>
             <Binding Path="YMax"
                      Converter="{cyc:NumStrConverter}"
-                     NotifyOnValidationError="True">
+                     NotifyOnValidationError="True"
+                     NotifyOnTargetUpdated="True">
               <Binding.ValidationRules>
-                <cyc:DoubleValidation ValidatesOnTargetUpdated="True" />
+                <cyc:DoubleValidation />
+                <cyc:NotNullValidation />
               </Binding.ValidationRules>
             </Binding>
           </TextBox.Text>
@@ -90,13 +95,14 @@
         <TextBox Grid.Row="1"
                  Tag="YLog"
                  Validation.Error="TextBox_Error"
+                 LostFocus="TextBox_LostFocus"
                  md:HintAssist.Hint="Y-Axis: Log Base">
           <TextBox.Text>
             <Binding Path="YLog"
                      Converter="{cyc:NumStrConverter}"
                      NotifyOnValidationError="True">
               <Binding.ValidationRules>
-                <cyc:LogBaseValidation ValidatesOnTargetUpdated="True" />
+                <cyc:LogBaseValidation  />
               </Binding.ValidationRules>
             </Binding>
           </TextBox.Text>
@@ -104,13 +110,17 @@
         <TextBox Grid.Row="2"
                  Tag="YMin"
                  Validation.Error="TextBox_Error"
-                 md:HintAssist.Hint="Y-Axis: Min">
+                 LostFocus="TextBox_LostFocus"
+                 md:HintAssist.Hint="Y-Axis: Min"
+                 cyc:RangeValidator.IsEnabled="True"
+                 cyc:RangeValidator.Maximum="{Binding YMax}">
           <TextBox.Text>
             <Binding Path="YMin"
                      Converter="{cyc:NumStrConverter}"
                      NotifyOnValidationError="True">
               <Binding.ValidationRules>
-                <cyc:DoubleValidation ValidatesOnTargetUpdated="True" />
+                <cyc:DoubleValidation  />
+                <cyc:NotNullValidation  />
               </Binding.ValidationRules>
             </Binding>
           </TextBox.Text>
@@ -136,13 +146,17 @@
         <TextBox Grid.Column="0"
                  Tag="XMin"
                  Validation.Error="TextBox_Error"
-                 md:HintAssist.Hint="X-Axis: Min">
+                 LostFocus="TextBox_LostFocus"
+                 md:HintAssist.Hint="X-Axis: Min"
+                 cyc:RangeValidator.IsEnabled="True"
+                 cyc:RangeValidator.Maximum="{Binding XMax}">
           <TextBox.Text>
             <Binding Path="XMin"
                      Converter="{cyc:NumStrConverter}"
                      NotifyOnValidationError="True">
               <Binding.ValidationRules>
-                <cyc:DoubleValidation ValidatesOnTargetUpdated="True" />
+                <cyc:DoubleValidation  />
+                <cyc:NotNullValidation  />
               </Binding.ValidationRules>
             </Binding>
           </TextBox.Text>
@@ -150,13 +164,14 @@
         <TextBox Grid.Column="1"
                  Tag="XLog"
                  Validation.Error="TextBox_Error"
+                 LostFocus="TextBox_LostFocus"
                  md:HintAssist.Hint="X-Axis: Log Base">
           <TextBox.Text>
             <Binding Path="XLog"
                      Converter="{cyc:NumStrConverter}"
                      NotifyOnValidationError="True">
               <Binding.ValidationRules>
-                <cyc:LogBaseValidation ValidatesOnTargetUpdated="True" />
+                <cyc:LogBaseValidation  />
               </Binding.ValidationRules>
             </Binding>
           </TextBox.Text>
@@ -164,13 +179,17 @@
         <TextBox Grid.Column="2"
                  Tag="XMax"
                  Validation.Error="TextBox_Error"
-                 md:HintAssist.Hint="X-Axis: Max">
+                 LostFocus="TextBox_LostFocus"
+                 md:HintAssist.Hint="X-Axis: Max"
+                 cyc:RangeValidator.IsEnabled="True"
+                 cyc:RangeValidator.Minimum="{Binding XMin}">
           <TextBox.Text>
             <Binding Path="XMax"
                      Converter="{cyc:NumStrConverter}"
                      NotifyOnValidationError="True">
               <Binding.ValidationRules>
-                <cyc:DoubleValidation ValidatesOnTargetUpdated="True" />
+                <cyc:DoubleValidation />
+                <cyc:NotNullValidation />
               </Binding.ValidationRules>
             </Binding>
           </TextBox.Text>
