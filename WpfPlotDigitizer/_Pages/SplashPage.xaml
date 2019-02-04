@@ -6,64 +6,361 @@
       xmlns:local="clr-namespace:WpfPlotDigitizer"
       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
       mc:Ignorable="d"
-      d:DesignHeight="450"
-      d:DesignWidth="800"
+      d:DesignHeight="600"
+      d:DesignWidth="900"
       d:DataContext="{d:DesignInstance local:SplashPageVM, IsDesignTimeCreatable=True}"
       Background="Black"
+      Name="page"
       Title="SplashPage">
+  <Page.Resources>
+    <Storyboard x:Key="Storyboard"
+                Completed="Storyboard_Completed">
+      <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)"
+                                     Storyboard.TargetName="cyc">
+        <EasingDoubleKeyFrame KeyTime="0"
+                              Value="0" />
+        <EasingDoubleKeyFrame KeyTime="0:0:0.5"
+                              Value="0" />
+        <EasingDoubleKeyFrame KeyTime="0:0:1.5"
+                              Value="1" />
+        <EasingDoubleKeyFrame KeyTime="0:0:2.5"
+                              Value="1" />
+        <EasingDoubleKeyFrame KeyTime="0:0:3"
+                              Value="0" />
+      </DoubleAnimationUsingKeyFrames>
+      <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                     Storyboard.TargetName="digitizer">
+        <DiscreteObjectKeyFrame KeyTime="0:0:3.5"
+                                Value="{x:Static Visibility.Visible}" />
+      </ObjectAnimationUsingKeyFrames>
+      <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)"
+                                     Storyboard.TargetName="digitizer">
+        <EasingDoubleKeyFrame KeyTime="0:0:3.5"
+                              Value="0" />
+        <EasingDoubleKeyFrame KeyTime="0:0:4.5"
+                              Value="1" />
+        <EasingDoubleKeyFrame KeyTime="0:0:5.5"
+                              Value="1" />
+        <EasingDoubleKeyFrame KeyTime="0:0:6.5"
+                              Value="0" />
+      </DoubleAnimationUsingKeyFrames>
+      <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                    Storyboard.TargetName="page">
+        <EasingColorKeyFrame KeyTime="0:0:3"
+                             Value="Black" />
+        <EasingColorKeyFrame KeyTime="0:0:4.5"
+                             Value="White" />
+      </ColorAnimationUsingKeyFrames>
+      <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)"
+                                     Storyboard.TargetName="text_cyc">
+        <EasingDoubleKeyFrame KeyTime="0"
+                              Value="0" />
+        <EasingDoubleKeyFrame KeyTime="0:0:0.5"
+                              Value="0" />
+        <EasingDoubleKeyFrame KeyTime="0:0:1.5"
+                              Value="1" />
+        <EasingDoubleKeyFrame KeyTime="0:0:2.5"
+                              Value="1" />
+        <EasingDoubleKeyFrame KeyTime="0:0:3"
+                              Value="0" />
+      </DoubleAnimationUsingKeyFrames>
+      <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)"
+                                     Storyboard.TargetName="text_cyc">
+        <EasingDoubleKeyFrame KeyTime="0:0:0.5"
+                              Value="42.667" />
+        <EasingDoubleKeyFrame KeyTime="0:0:1"
+                              Value="0" />
+      </DoubleAnimationUsingKeyFrames>
+      <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)"
+                                     Storyboard.TargetName="text_cyc">
+        <EasingDoubleKeyFrame KeyTime="0:0:0.5"
+                              Value="1.333" />
+        <EasingDoubleKeyFrame KeyTime="0:0:1"
+                              Value="0" />
+      </DoubleAnimationUsingKeyFrames>
+      <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                     Storyboard.TargetName="text_digitizer">
+        <DiscreteObjectKeyFrame KeyTime="0"
+                                Value="{x:Static Visibility.Hidden}" />
+        <DiscreteObjectKeyFrame KeyTime="0:0:3.5"
+                                Value="{x:Static Visibility.Visible}" />
+      </ObjectAnimationUsingKeyFrames>
+      <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)"
+                                     Storyboard.TargetName="text_digitizer">
+        <EasingDoubleKeyFrame KeyTime="0"
+                              Value="1" />
+        <EasingDoubleKeyFrame KeyTime="0:0:3.5"
+                              Value="0" />
+        <EasingDoubleKeyFrame KeyTime="0:0:4.5"
+                              Value="1" />
+        <EasingDoubleKeyFrame KeyTime="0:0:5.5"
+                              Value="1" />
+        <EasingDoubleKeyFrame KeyTime="0:0:6.5"
+                              Value="0" />
+      </DoubleAnimationUsingKeyFrames>
+      <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(GradientBrush.GradientStops)[0].(GradientStop.Offset)"
+                                     Storyboard.TargetName="text_digitizer">
+        <EasingDoubleKeyFrame KeyTime="0:0:3.5"
+                              Value="0.005" />
+        <EasingDoubleKeyFrame KeyTime="0:0:4.5"
+                              Value="0.175" />
+        <EasingDoubleKeyFrame KeyTime="0:0:5.5"
+                              Value="0.351" />
+        <EasingDoubleKeyFrame KeyTime="0:0:6.5"
+                              Value="0.626" />
+      </DoubleAnimationUsingKeyFrames>
+      <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(GradientBrush.GradientStops)[1].(GradientStop.Offset)"
+                                     Storyboard.TargetName="text_digitizer">
+        <EasingDoubleKeyFrame KeyTime="0:0:3.5"
+                              Value="0.203" />
+        <EasingDoubleKeyFrame KeyTime="0:0:4.5"
+                              Value="0.369" />
+        <EasingDoubleKeyFrame KeyTime="0:0:5.5"
+                              Value="0.555" />
+        <EasingDoubleKeyFrame KeyTime="0:0:6.5"
+                              Value="0.804" />
+      </DoubleAnimationUsingKeyFrames>
+      <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(GradientBrush.GradientStops)[2].(GradientStop.Offset)"
+                                     Storyboard.TargetName="text_digitizer">
+        <EasingDoubleKeyFrame KeyTime="0:0:3.5"
+                              Value="0.398" />
+        <EasingDoubleKeyFrame KeyTime="0:0:4.5"
+                              Value="0.581" />
+        <EasingDoubleKeyFrame KeyTime="0:0:5.5"
+                              Value="0.777" />
+        <EasingDoubleKeyFrame KeyTime="0:0:6.5"
+                              Value="0.995" />
+      </DoubleAnimationUsingKeyFrames>
+      <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(GradientBrush.GradientStops)[3].(GradientStop.Offset)"
+                                     Storyboard.TargetName="text_digitizer">
+        <EasingDoubleKeyFrame KeyTime="0:0:3.5"
+                              Value="0.599" />
+        <EasingDoubleKeyFrame KeyTime="0:0:4.5"
+                              Value="0.798" />
+        <EasingDoubleKeyFrame KeyTime="0:0:5.5"
+                              Value="0.995" />
+        <EasingDoubleKeyFrame KeyTime="0:0:6.5"
+                              Value="1" />
+      </DoubleAnimationUsingKeyFrames>
+      <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(GradientBrush.GradientStops)[4].(GradientStop.Offset)"
+                                     Storyboard.TargetName="text_digitizer">
+        <EasingDoubleKeyFrame KeyTime="0:0:3.5"
+                              Value="0.814" />
+        <EasingDoubleKeyFrame KeyTime="0:0:4.5"
+                              Value="0.995" />
+        <EasingDoubleKeyFrame KeyTime="0:0:5.5"
+                              Value="0.995" />
+        <EasingDoubleKeyFrame KeyTime="0:0:6.5"
+                              Value="1" />
+      </DoubleAnimationUsingKeyFrames>
+      <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(GradientBrush.GradientStops)[5].(GradientStop.Color)"
+                                    Storyboard.TargetName="text_digitizer">
+        <EasingColorKeyFrame KeyTime="0:0:3.5"
+                             Value="Magenta" />
+        <EasingColorKeyFrame KeyTime="0:0:4.5"
+                             Value="Magenta" />
+      </ColorAnimationUsingKeyFrames>
+      <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(GradientBrush.GradientStops)[5].(GradientStop.Offset)"
+                                     Storyboard.TargetName="text_digitizer">
+        <EasingDoubleKeyFrame KeyTime="0"
+                              Value="0.008" />
+        <EasingDoubleKeyFrame KeyTime="0:0:3.5"
+                              Value="0" />
+        <EasingDoubleKeyFrame KeyTime="0:0:4.5"
+                              Value="0.001" />
+        <EasingDoubleKeyFrame KeyTime="0:0:5.5"
+                              Value="0.16" />
+        <EasingDoubleKeyFrame KeyTime="0:0:6.5"
+                              Value="0.419" />
+      </DoubleAnimationUsingKeyFrames>
+      <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(GradientBrush.GradientStops)[0].(GradientStop.Color)"
+                                    Storyboard.TargetName="text_digitizer">
+        <EasingColorKeyFrame KeyTime="0"
+                             Value="Red" />
+        <EasingColorKeyFrame KeyTime="0:0:3.5"
+                             Value="Red" />
+        <EasingColorKeyFrame KeyTime="0:0:4.5"
+                             Value="Red" />
+      </ColorAnimationUsingKeyFrames>
+      <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(GradientBrush.GradientStops)[6].(GradientStop.Color)"
+                                    Storyboard.TargetName="text_digitizer">
+        <EasingColorKeyFrame KeyTime="0"
+                             Value="Blue" />
+        <EasingColorKeyFrame KeyTime="0:0:3.5"
+                             Value="Magenta" />
+        <EasingColorKeyFrame KeyTime="0:0:4.5"
+                             Value="Magenta" />
+      </ColorAnimationUsingKeyFrames>
+      <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(GradientBrush.GradientStops)[6].(GradientStop.Offset)"
+                                     Storyboard.TargetName="text_digitizer">
+        <EasingDoubleKeyFrame KeyTime="0"
+                              Value="0.979" />
+        <EasingDoubleKeyFrame KeyTime="0:0:3.5"
+                              Value="1" />
+        <EasingDoubleKeyFrame KeyTime="0:0:4.5"
+                              Value="1" />
+        <EasingDoubleKeyFrame KeyTime="0:0:5.5"
+                              Value="1" />
+        <EasingDoubleKeyFrame KeyTime="0:0:6.5"
+                              Value="1" />
+      </DoubleAnimationUsingKeyFrames>
+      <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(GradientBrush.GradientStops)[4].(GradientStop.Color)"
+                                    Storyboard.TargetName="text_digitizer">
+        <EasingColorKeyFrame KeyTime="0:0:3.5"
+                             Value="Blue" />
+        <EasingColorKeyFrame KeyTime="0:0:4.5"
+                             Value="Blue" />
+      </ColorAnimationUsingKeyFrames>
+      <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(GradientBrush.GradientStops)[7].(GradientStop.Color)"
+                                    Storyboard.TargetName="text_digitizer">
+        <EasingColorKeyFrame KeyTime="0"
+                             Value="Magenta" />
+        <EasingColorKeyFrame KeyTime="0:0:3.5"
+                             Value="Blue" />
+        <EasingColorKeyFrame KeyTime="0:0:4.5"
+                             Value="Blue" />
+        <EasingColorKeyFrame KeyTime="0:0:5.5"
+                             Value="Blue" />
+        <EasingColorKeyFrame KeyTime="0:0:6.5"
+                             Value="Blue" />
+      </ColorAnimationUsingKeyFrames>
+      <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(GradientBrush.GradientStops)[7].(GradientStop.Offset)"
+                                     Storyboard.TargetName="text_digitizer">
+        <EasingDoubleKeyFrame KeyTime="0"
+                              Value="0.06" />
+        <EasingDoubleKeyFrame KeyTime="0:0:3.5"
+                              Value="0" />
+        <EasingDoubleKeyFrame KeyTime="0:0:4.5"
+                              Value="0" />
+        <EasingDoubleKeyFrame KeyTime="0:0:5.5"
+                              Value="0.001" />
+        <EasingDoubleKeyFrame KeyTime="0:0:6.5"
+                              Value="0.215" />
+      </DoubleAnimationUsingKeyFrames>
+      <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(GradientBrush.GradientStops)[8].(GradientStop.Offset)"
+                                     Storyboard.TargetName="text_digitizer">
+        <EasingDoubleKeyFrame KeyTime="0:0:3.5"
+                              Value="0" />
+        <EasingDoubleKeyFrame KeyTime="0:0:4.5"
+                              Value="0" />
+        <EasingDoubleKeyFrame KeyTime="0:0:5.5"
+                              Value="0" />
+        <EasingDoubleKeyFrame KeyTime="0:0:6.5"
+                              Value="0" />
+      </DoubleAnimationUsingKeyFrames>
+      <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(GradientBrush.GradientStops)[8].(GradientStop.Color)"
+                                    Storyboard.TargetName="text_digitizer">
+        <EasingColorKeyFrame KeyTime="0:0:5.5"
+                             Value="Cyan" />
+        <EasingColorKeyFrame KeyTime="0:0:6.5"
+                             Value="Cyan" />
+      </ColorAnimationUsingKeyFrames>
+    </Storyboard>
+    <Storyboard x:Key="MediaStoryboard">
+      <MediaTimeline Source="pack://siteoforigin:,,,/resources/robotVoice.wav"
+                     Storyboard.TargetName="robotVoice_wav"
+                     d:DesignTimeNaturalDuration="3.1439999999999997" />
+      <MediaTimeline Source="pack://siteoforigin:,,,/resources/startSound.wav"
+                     Storyboard.TargetName="startSound_wav"
+                     d:DesignTimeNaturalDuration="3.7616326"
+                     BeginTime="0:0:3.2" />
+    </Storyboard>
+  </Page.Resources>
   <Page.Triggers>
-    <EventTrigger RoutedEvent="Loaded">
-      <BeginStoryboard>
-        <Storyboard Completed="Storyboard_Completed">
-          <DoubleAnimation Storyboard.TargetName="Logo"
-                           Storyboard.TargetProperty="Opacity"
-                           From="0"
-                           To="1"
-                           Duration="0:0:2"/>
-          <DoubleAnimation Storyboard.TargetName="Logo"
-                           Storyboard.TargetProperty="Opacity"
-                           From="1"
-                           To="0"
-                           BeginTime="0:0:2.5"
-                           Duration="0:0:2" />
-        </Storyboard>
-      </BeginStoryboard>
-      <!--Storyboard.Completed not firing with mediaTimeLine!?-->
-      <BeginStoryboard>
-        <Storyboard>
-          <MediaTimeline Source="resources/robotVoice.wav"
-                         Storyboard.TargetName="robotVoice"
-                         Duration="0:0:3.5" />
-          <DoubleAnimation Storyboard.TargetName="splashText"
-                           Storyboard.TargetProperty="Opacity"
-                           From="0"
-                           To="1"
-                           Duration="0:0:1" />
-          <DoubleAnimation Storyboard.TargetName="splashText"
-                           Storyboard.TargetProperty="Opacity"
-                           From="1"
-                           To="0"
-                           BeginTime="0:0:2.5"
-                           Duration="0:0:2" />
-          <MediaTimeline Source="resources/splashText.mp4"
-                         Storyboard.TargetName="splashText"
-                         Duration="0:0:2"
-                         BeginTime="0:0:0.5" />
-        </Storyboard>
-      </BeginStoryboard>
+    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+      <BeginStoryboard x:Name="Storyboard1_BeginStoryboard"
+                       Storyboard="{StaticResource Storyboard}" />
+      <BeginStoryboard Storyboard="{StaticResource MediaStoryboard}" />
     </EventTrigger>
   </Page.Triggers>
+  <!--Storyboard.Completed not firing with mediaTimeLine!?-->
   <Grid>
-    <StackPanel VerticalAlignment="Center">
-      <Image Name="Logo"
-             Source="/resources/icon_cyc.png"
-             Width="150"
-             Height="150" />
-      <MediaElement Name="splashText"
-                    Stretch="Fill"
-                    Height="45"
-                    Width="214" />
-      <MediaElement Name="robotVoice" />
-    </StackPanel>
+    <Image x:Name="digitizer"
+           Source="/resources/icon_digitizer.png"
+           Width="200"
+           Height="200"
+           Stretch="Uniform"
+           Visibility="Hidden" />
+
+    <Image x:Name="cyc"
+           Source="/resources/icon_cyc.png"
+           Width="150"
+           Height="150" />
+    <MediaElement x:Name="robotVoice_wav"
+                  Margin="0,0,800,450"
+                  Stretch="Fill"
+                  d:IsLocked="True" />
+    <MediaElement x:Name="startSound_wav"
+                  Margin="0,0,800,450"
+                  Stretch="Fill"
+                  d:IsLocked="True" />
+    <TextBlock x:Name="text_cyc"
+               Width="300"
+               Height="40"
+               Foreground="White"
+               FontSize="30"
+               FontFamily="OCR A Extended"
+               TextAlignment="Center"
+               Margin="300,0,300,178"
+               VerticalAlignment="Bottom"
+               RenderTransformOrigin="0.5,0.5">
+      <TextBlock.RenderTransform>
+        <TransformGroup>
+          <ScaleTransform />
+          <SkewTransform />
+          <RotateTransform />
+          <TranslateTransform />
+        </TransformGroup>
+      </TextBlock.RenderTransform>
+      <Run Text="C.Y.C Products" />
+    </TextBlock>
+    <TextBlock x:Name="text_digitizer"
+               HorizontalAlignment="Left"
+               Margin="224.334,405,0,0"
+               TextWrapping="Wrap"
+               Text="Plot Digitizer"
+               VerticalAlignment="Top"
+               Width="451.332"
+               Height="70.626"
+               FontSize="48"
+               TextAlignment="Center"
+               FontFamily="Magneto">
+      <TextBlock.Foreground>
+        <LinearGradientBrush MappingMode="RelativeToBoundingBox"
+                             StartPoint="0,0.5"
+                             EndPoint="1,0.5">
+          <LinearGradientBrush.RelativeTransform>
+            <TransformGroup>
+              <ScaleTransform CenterY="0.5"
+                              CenterX="0.5" />
+              <SkewTransform CenterY="0.5"
+                             CenterX="0.5" />
+              <RotateTransform CenterY="0.5"
+                               CenterX="0.5" />
+              <TranslateTransform />
+            </TransformGroup>
+          </LinearGradientBrush.RelativeTransform>
+          <GradientStop Color="Red"
+                        Offset="0" />
+          <GradientStop Color="Yellow"
+                        Offset="0.203" />
+          <GradientStop Color="Lime"
+                        Offset="0.398" />
+          <GradientStop Color="Cyan"
+                        Offset="0.599" />
+          <GradientStop Color="Blue"
+                        Offset="0.814" />
+          <GradientStop Color="Red"
+                        Offset="0.008" />
+          <GradientStop Color="Blue"
+                        Offset="0.979" />
+          <GradientStop Color="Magenta"
+                        Offset="0.06" />
+          <GradientStop Color="Blue"
+                        Offset="0.039" />
+        </LinearGradientBrush>
+      </TextBlock.Foreground>
+    </TextBlock>
+
   </Grid>
 </Page>

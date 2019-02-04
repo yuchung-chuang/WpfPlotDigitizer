@@ -24,6 +24,7 @@ namespace WpfPlotDigitizer
     {
       InitializeComponent();
       DataContext = DI.splashPageVM;
+      
     }
 
     /// <summary>
@@ -33,5 +34,6 @@ namespace WpfPlotDigitizer
     {
       DI.splashPageVM.CompleteCommand.Execute(null);
     }
+    
   }
 }
