@@ -42,7 +42,7 @@
       <Grid>
         <uc:ImageEraser Name="imageEraser"
                         Image="{Binding imageErase, Mode=TwoWay}"
-                        MouseButton="Right"
+                        Input="mouse:right"
                         cyc:Pan.IsEnabled="True"
                         cyc:Pan.Input="mouse:left"
                         cyc:Zoom.IsEnabled="True" />

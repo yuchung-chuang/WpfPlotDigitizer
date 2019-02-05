@@ -14,7 +14,10 @@
                     d:DesignHeight="450"
                     d:DesignWidth="800"
                     d:DataContext="{d:DesignInstance local:AxisPageVM, IsDesignTimeCreatable=True}">
-  <Grid Margin="20">
+  <Grid Margin="20"
+        cyc:Pan.IsEnabled="True"
+        cyc:Pan.Input="mouse:left"
+        cyc:Zoom.IsEnabled="True">
     <Grid.RowDefinitions>
       <RowDefinition Height="*" />
       <RowDefinition Height="auto" />
@@ -23,7 +26,8 @@
              AxisLeft="{Binding AxisLeft, Mode=TwoWay}"
              AxisTop="{Binding AxisTop, Mode=TwoWay}"
              AxisWidth="{Binding AxisWidth, Mode=TwoWay}"
-             AxisHeight="{Binding AxisHeight, Mode=TwoWay}">
+             AxisHeight="{Binding AxisHeight, Mode=TwoWay}"
+             Input="mouse:left">
     </uc:Axis>
   </Grid>
 </media:AnimatedPage>
