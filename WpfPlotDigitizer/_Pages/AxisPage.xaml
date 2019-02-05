@@ -19,50 +19,11 @@
       <RowDefinition Height="*" />
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
-    <Viewbox>
-      <Grid Name="gridBase2"
-            cyc:Pan.IsEnabled="True"
-            cyc:Pan.Input="mouse:left"
-            cyc:Zoom.IsEnabled="True">
-        <Image Name="imageAxis"
-               Source="{Binding ImageSource}"
-               Stretch="None" />
-        <!--<uc:Axis2 Name="axis2"
-                  AxisLeft="{Binding AxisLeft, Mode=TwoWay}"
-                  AxisTop="{Binding AxisTop, Mode=TwoWay}"
-                  AxisWidth="{Binding AxisWidth, Mode=TwoWay}"
-                  AxisHeight="{Binding AxisHeight, Mode=TwoWay}"
-                  Width="{Binding ElementName=imageAxis, Path=ActualWidth}"
-                  Height="{Binding ElementName=imageAxis, Path=ActualHeight}"
-                  ShadowBrush="#99999999"
-                  AxisBrush="Red"
-                  Panel.ZIndex="1">
-          <i:Interaction.Triggers>
-            <i:EventTrigger EventName="MouseDoubleClick">
-              <i:InvokeCommandAction Command="{Binding GetAxisCommand}" />
-            </i:EventTrigger>
-          </i:Interaction.Triggers>
-        </uc:Axis2>-->
-        <cycControls:Axis Name="axis"
-                          AxisLeft="{Binding AxisLeft, Mode=TwoWay}"
-                          AxisTop="{Binding AxisTop, Mode=TwoWay}"
-                          AxisWidth="{Binding AxisWidth, Mode=TwoWay}"
-                          AxisHeight="{Binding AxisHeight, Mode=TwoWay}"
-                          Width="{Binding ElementName=imageAxis, Path=ActualWidth}"
-                          Height="{Binding ElementName=imageAxis, Path=ActualHeight}"
-                          ShadowBrush="#99999999"
-                          AxisBrush="Red"
-                          Panel.ZIndex="1">
-          <i:Interaction.Triggers>
-            <i:EventTrigger EventName="MouseDoubleClick">
-              <i:InvokeCommandAction Command="{Binding GetAxisCommand}" />
-            </i:EventTrigger>
-          </i:Interaction.Triggers>
-        </cycControls:Axis>
-      </Grid>
-    </Viewbox>
-    <!--<Button Grid.Row="1"
-            Content="debug"
-            Click="Button_Click" />-->
+    <uc:Axis ImageSource="{Binding ImageSource}"
+             AxisLeft="{Binding AxisLeft, Mode=TwoWay}"
+             AxisTop="{Binding AxisTop, Mode=TwoWay}"
+             AxisWidth="{Binding AxisWidth, Mode=TwoWay}"
+             AxisHeight="{Binding AxisHeight, Mode=TwoWay}">
+    </uc:Axis>
   </Grid>
 </media:AnimatedPage>

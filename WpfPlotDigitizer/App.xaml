@@ -1,7 +1,7 @@
 ﻿<Application x:Class="WpfPlotDigitizer.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:cycControls="clr-namespace:CycWpfLibrary.Controls;assembly=CycWpfLibrary"
+             xmlns:uc="clr-namespace:CycWpfLibrary.UserControls;assembly=CycWpfLibrary.UserControls"
              xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:local="clr-namespace:WpfPlotDigitizer">
   <Application.Resources>
@@ -25,6 +25,8 @@
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Fonts.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Flyout.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Defaults.xaml" />
+
+        <!--<ResourceDictionary Source="pack://application:,,,/CycWpfLibrary.UserControls;component/Styles/Fonts.xaml" />-->
       </ResourceDictionary.MergedDictionaries>
 
 

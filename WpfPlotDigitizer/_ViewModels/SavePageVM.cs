@@ -39,15 +39,9 @@ namespace WpfPlotDigitizer
       set => appData.ImageSave = value;
     }
 
-    public List<Point> data
-    {
-      get => appData.Data;
-    }
+    public List<Point> data => appData.Data;
 
-    public Rect axLim
-    {
-      get => appData.AxLim;
-    }
+    public Rect GetaxLim => appData.AxLim;
 
     public BitmapSource imageSource => imageSave?.ToBitmapSource();
 
@@ -212,15 +206,15 @@ namespace WpfPlotDigitizer
       model.Axes.Add(new LogarithmicAxis
       {
         Position = AxisPosition.Bottom,
-        AbsoluteMaximum = axLim.Right,
-        AbsoluteMinimum = axLim.Left,
+        AbsoluteMaximum = GetaxLim.Right,
+        AbsoluteMinimum = GetaxLim.Left,
         MajorGridlineStyle = LineStyle.Solid,
       });
       model.Axes.Add(new LogarithmicAxis
       {
         Position = AxisPosition.Left,
-        AbsoluteMaximum = axLim.Bottom,
-        AbsoluteMinimum = axLim.Top,
+        AbsoluteMaximum = GetaxLim.Bottom,
+        AbsoluteMinimum = GetaxLim.Top,
         MajorGridlineStyle = LineStyle.Solid,
       });
       model.Series.Add(series);

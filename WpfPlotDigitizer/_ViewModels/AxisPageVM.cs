@@ -76,6 +76,11 @@ namespace WpfPlotDigitizer
       }
     }
 
+    public double imageWidth => PBInput?.Width ?? 0;
+    public double imageHeight => PBInput?.Height ?? 0;
+    public Rect AxisRelative => new Rect(AxisLeft / imageWidth, AxisTop / imageHeight, AxisWidth / imageWidth, AxisHeight / imageHeight);
+    public Thickness AxisMargin => new Thickness(AxisLeft, AxisTop, 0, 0);
+
     public ICommand GetAxisCommand { get; set; }
     public void GetAxis()
     {

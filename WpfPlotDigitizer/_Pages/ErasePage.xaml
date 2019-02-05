@@ -11,6 +11,7 @@
                     xmlns:mvvm="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
                     xmlns:cyc="clr-namespace:CycWpfLibrary;assembly=CycWpfLibrary"
                     xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+                    xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
                     mc:Ignorable="d"
                     d:DesignHeight="450"
                     d:DesignWidth="400"
@@ -27,11 +28,13 @@
                HorizontalAlignment="Center">
       <Button Margin="20"
               Command="{Binding UndoCommand}">
-        <md:PackIcon Kind="UndoVariant" />
+        <!--<md:PackIcon Kind="UndoVariant" />-->
+        <icon:PackIconFontAwesome Kind="UndoAltSolid" />
       </Button>
       <Button Margin="20"
               Command="{Binding RedoCommand}">
-        <md:PackIcon Kind="RedoVariant" />
+        <!--<md:PackIcon Kind="RedoVariant" />-->
+        <icon:PackIconFontAwesome Kind="RedoAltSolid" />
       </Button>
     </StackPanel>
 

@@ -1,6 +1,11 @@
 ﻿using CycWpfLibrary.Media;
+using System.Windows;
 using System.Windows.Controls;
 using static WpfPlotDigitizer.DI;
+using static CycWpfLibrary.Math;
+using CycWpfLibrary;
+using System.Windows.Input;
+using System.Diagnostics;
 
 namespace WpfPlotDigitizer
 {
@@ -16,9 +21,5 @@ namespace WpfPlotDigitizer
       DataContext = axisPageVM;
     }
 
-    private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
-    {
-
-    }
   }
 }
