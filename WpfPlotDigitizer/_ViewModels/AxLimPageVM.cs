@@ -28,7 +28,10 @@ namespace WpfPlotDigitizer
     public PixelBitmap PBInput => appData.PBInput;
     public BitmapSource imageSource => PBInput?.ToBitmapSource();
 
-    public bool IsValid { get; set; }
+    public bool IsValid => IsViewValid && IsDataValid;
+    public bool IsViewValid { get; set; } = true;
+    public bool IsDataValid => XMin != null && XMax != null && YMin != null && YMax != null &&
+      XMin <= XMax && YMin <= YMax;
 
     public double? XMax { get; set; }
     public double? XMin { get; set; }
@@ -36,8 +39,8 @@ namespace WpfPlotDigitizer
     public double? YMin { get; set; }
     public Rect AxLim
     {
-      get => new Rect(new Point((double)XMin, (double)YMin),
-            new Point((double)XMax, (double)YMax));
+      get => new Rect(new Point(XMin ?? 0, YMin ?? 0),
+            new Point(XMax ?? 1, YMax ?? 1));
       set
       {
         XMax = value.Right;
@@ -50,7 +53,7 @@ namespace WpfPlotDigitizer
     public double? XLog { get; set; }
     public double? YLog { get; set; }
     public Point AxLogBase
-    { 
+    {
       get => new Point(XLog ?? -1, YLog ?? -1);
       set
       {

@@ -43,7 +43,7 @@ namespace WpfPlotDigitizer
 
     private void TextBox_LostFocus(object sender, RoutedEventArgs e)
     {
-      axLimPageVM.IsValid = ValidationHelpers.IsValid(this);
+      axLimPageVM.IsViewValid = ValidationHelpers.IsValid(this);
     }
   }
 }
