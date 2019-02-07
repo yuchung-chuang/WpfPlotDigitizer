@@ -10,6 +10,8 @@
                      xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
                      xmlns:cyc="clr-namespace:CycWpfLibrary;assembly=CycWpfLibrary"
                      xmlns:Converters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
+                     xmlns:controlzEx="clr-namespace:ControlzEx;assembly=MaterialDesignThemes.Wpf"
+                     xmlns:re="clr-namespace:CycWpfLibrary.Resources;assembly=CycWpfLibrary.Resources"
                      x:Class="WpfPlotDigitizer.MainWindow"
                      mc:Ignorable="d"
                      WindowStartupLocation="CenterScreen"
@@ -22,21 +24,19 @@
                      Width="900">
   <mahapps:MetroWindow.RightWindowCommands>
     <mahapps:WindowCommands>
-      <Button>
+      <Button Background="{StaticResource HighlightBrush}"
+              Click="Button_Click">
         <Button.RenderTransform>
           <TranslateTransform Y="-2" />
         </Button.RenderTransform>
-        <icon:PackIconModern Kind="Information"
+        <icon:PackIconModern Kind="Question"
                              VerticalAlignment="Center"
                              HorizontalAlignment="Center"
                              Width="24"
                              Height="20" />
       </Button>
       <Button>
-        <Button.RenderTransform>
-          <TranslateTransform Y="-2" />
-        </Button.RenderTransform>
-        <icon:PackIconModern Kind="HomeQuestion"
+        <icon:PackIconModern Kind="Information"
                              VerticalAlignment="Center"
                              HorizontalAlignment="Center"
                              Width="24"
@@ -44,32 +44,67 @@
       </Button>
     </mahapps:WindowCommands>
   </mahapps:MetroWindow.RightWindowCommands>
+  <mahapps:MetroWindow.Resources>
+    <re:ResourceManager x:Key="resources" />
+  </mahapps:MetroWindow.Resources>
   <Grid x:Name="gridMain">
-    <Image Name="image"
-           Width="100"
-           Height="100"
-           Source="images/data.png" 
-           Opacity="1"/>
-    <Border Width="{Binding ElementName=image, Path=ActualWidth}"
-            Height="{Binding ElementName=image, Path=ActualHeight}"
-            Background="#4C000000" />
-    <Rectangle Width="{Binding ElementName=image, Path=ActualWidth}"
-               Height="{Binding ElementName=image, Path=ActualHeight}"
-               Opacity="1">
-      <Rectangle.Fill>
-        <VisualBrush Visual="{Binding ElementName=image}"
-                     Viewbox="0,0,0.5,0.5"
-                     Viewport="0,0,0.5,0.5"/>
-      </Rectangle.Fill>
-    </Rectangle>
-    <Rectangle Width="50"
-               Height="50"
-               Stroke="Red" />
     <Frame Name="splashFrame"
            Panel.ZIndex="1" />
 
     <uc:PageControl CurrentPage="{Binding PageManager.CurrentPage}"
                     TurnBackCommand="{Binding PageManager.TurnBackCommand}"
                     TurnNextCommand="{Binding PageManager.TurnNextCommand}" />
+
+    <md:Card x:Name="PART_PopupContentElement"
+             Panel.ZIndex="1000"
+             VerticalAlignment="Center"
+             Width="200"
+             Visibility="Hidden"
+             md:ShadowAssist.ShadowDepth="Depth3"
+             UniformCornerRadius="4"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             TextElement.FontWeight="Regular"
+             TextElement.FontSize="15"
+             TextOptions.TextFormattingMode="Ideal"
+             TextOptions.TextRenderingMode="Auto"
+             FocusManager.IsFocusScope="False"
+             Foreground="White"
+             FontFamily="{StaticResource MaterialDesignFont}"
+             Focusable="True"
+             IsTabStop="False"
+             RenderTransformOrigin=".5,.5">
+      <md:Card.Background>
+        <LinearGradientBrush EndPoint="0.5,1"
+                             MappingMode="RelativeToBoundingBox"
+                             StartPoint="0.5,0">
+          <LinearGradientBrush.RelativeTransform>
+            <TransformGroup>
+              <ScaleTransform CenterY="0.5"
+                              CenterX="0.5" />
+              <SkewTransform CenterY="0.5"
+                             CenterX="0.5" />
+              <RotateTransform Angle="18"
+                               CenterY="0.5"
+                               CenterX="0.5" />
+              <TranslateTransform />
+            </TransformGroup>
+          </LinearGradientBrush.RelativeTransform>
+          <GradientStop Color="#FF8F00E0" />
+          <GradientStop Color="#FF53FFFF"
+                        Offset="1" />
+        </LinearGradientBrush>
+      </md:Card.Background>
+      <StackPanel Orientation="Vertical">
+        <TextBlock Name="PART_TextBlock"
+                   Text="Click this button to browse your image!"
+                   TextWrapping="Wrap"
+                   Margin="10"
+                   TextAlignment="Center" />
+        <Button Name="PART_CloseButton"
+                Content="Got it!"
+                Margin="10"
+                Width="100" />
+      </StackPanel>
+    </md:Card>
   </Grid>
 </mahapps:MetroWindow>

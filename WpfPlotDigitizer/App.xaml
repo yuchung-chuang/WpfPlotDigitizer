@@ -3,7 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:uc="clr-namespace:CycWpfLibrary.UserControls;assembly=CycWpfLibrary.UserControls"
              xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:local="clr-namespace:WpfPlotDigitizer">
+             xmlns:local="clr-namespace:WpfPlotDigitizer"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:cc="clr-namespace:CycWpfLibrary.CustomControls;assembly=CycWpfLibrary.CustomControls"
+             xmlns:cyc="clr-namespace:CycWpfLibrary;assembly=CycWpfLibrary">
   <Application.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
@@ -28,7 +31,6 @@
 
         <!--<ResourceDictionary Source="pack://application:,,,/CycWpfLibrary.UserControls;component/Styles/Fonts.xaml" />-->
       </ResourceDictionary.MergedDictionaries>
-
 
       <ControlTemplate x:Key="ButtonTemplate"
                        TargetType="{x:Type ButtonBase}">
@@ -744,6 +746,34 @@
             </Setter>
           </Trigger>
         </Style.Triggers>
+      </Style>
+
+      <Style TargetType="cc:PopupWindow">
+        <Setter Property="Background">
+          <Setter.Value>
+            <LinearGradientBrush EndPoint="0.5,1"
+                                 MappingMode="RelativeToBoundingBox"
+                                 StartPoint="0.5,0">
+              <LinearGradientBrush.RelativeTransform>
+                <TransformGroup>
+                  <ScaleTransform CenterY="0.5"
+                                  CenterX="0.5" />
+                  <SkewTransform CenterY="0.5"
+                                 CenterX="0.5" />
+                  <RotateTransform Angle="18"
+                                   CenterY="0.5"
+                                   CenterX="0.5" />
+                  <TranslateTransform />
+                </TransformGroup>
+              </LinearGradientBrush.RelativeTransform>
+              <GradientStop Color="#FF8F00E0" />
+              <GradientStop Color="#FF53FFFF"
+                            Offset="1" />
+            </LinearGradientBrush>
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Foreground"
+                Value="White" />
       </Style>
     </ResourceDictionary>
   </Application.Resources>
