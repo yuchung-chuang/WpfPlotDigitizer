@@ -20,7 +20,7 @@
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
 
-    <Viewbox Margin="10">
+    <Viewbox>
       <Grid>
         <Image Source="{Binding imageSource}"
                cyc:Zoom.IsEnabled="True"

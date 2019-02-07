@@ -38,7 +38,7 @@
       </Button>
     </StackPanel>
 
-    <Viewbox Margin="10">
+    <Viewbox>
       <Grid>
         <uc:ImageEraser Name="imageEraser"
                         Image="{Binding imageErase, Mode=TwoWay}"
