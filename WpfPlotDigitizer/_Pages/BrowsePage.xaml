@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:WpfPlotDigitizer"
-             xmlns:cycControls="clr-namespace:CycWpfLibrary.Controls;assembly=CycWpfLibrary"
              xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:custom="clr-namespace:CycWpfLibrary.CustomControls;assembly=CycWpfLibrary.CustomControls"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"

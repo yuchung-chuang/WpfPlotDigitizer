@@ -18,7 +18,7 @@
                     d:DesignWidth="900"
                     d:DataContext="{d:DesignInstance local:AxLimPageVM, IsDesignTimeCreatable=True}">
   <AdornerDecorator>
-    <Grid Margin="20,0">
+    <Grid Margin="20,0,0,0">
       <Grid.Resources>
         <Style x:Key="TextBoxStyleBase"
                TargetType="TextBox"
@@ -80,7 +80,8 @@
                  Validation.Error="TextBox_Error"
                  LostFocus="TextBox_LostFocus"
                  cyc:RangeValidator.IsEnabled="True"
-                 cyc:RangeValidator.Minimum="{Binding YMin}">
+                 cyc:RangeValidator.Minimum="{Binding YMin}"
+                 cyc:RangeValidator.ExcludeMin="True">
           <TextBox.Text>
             <Binding Path="YMax"
                      Converter="{cyc:NumStrConverter}"
@@ -114,7 +115,8 @@
                  LostFocus="TextBox_LostFocus"
                  md:HintAssist.Hint="Y-Axis: Min"
                  cyc:RangeValidator.IsEnabled="True"
-                 cyc:RangeValidator.Maximum="{Binding YMax}">
+                 cyc:RangeValidator.Maximum="{Binding YMax}"
+                 cyc:RangeValidator.ExcludeMax="True">
           <TextBox.Text>
             <Binding Path="YMin"
                      Converter="{cyc:NumStrConverter}"
@@ -136,7 +138,7 @@
             <Setter Property="Margin"
                     Value="0,0,0,20" />
             <Setter Property="VerticalAlignment"
-                    Value="Top" />
+                    Value="Center" />
           </Style>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
@@ -150,7 +152,8 @@
                  LostFocus="TextBox_LostFocus"
                  md:HintAssist.Hint="X-Axis: Min"
                  cyc:RangeValidator.IsEnabled="True"
-                 cyc:RangeValidator.Maximum="{Binding XMax}">
+                 cyc:RangeValidator.Maximum="{Binding XMax}"
+                 cyc:RangeValidator.ExcludeMax="True">
           <TextBox.Text>
             <Binding Path="XMin"
                      Converter="{cyc:NumStrConverter}"
@@ -183,7 +186,8 @@
                  LostFocus="TextBox_LostFocus"
                  md:HintAssist.Hint="X-Axis: Max"
                  cyc:RangeValidator.IsEnabled="True"
-                 cyc:RangeValidator.Minimum="{Binding XMin}">
+                 cyc:RangeValidator.Minimum="{Binding XMin}"
+                 cyc:RangeValidator.ExcludeMin="True">
           <TextBox.Text>
             <Binding Path="XMax"
                      Converter="{cyc:NumStrConverter}"
