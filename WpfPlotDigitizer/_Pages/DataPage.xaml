@@ -27,7 +27,8 @@
                cyc:Zoom.IsLeaveReset="False"
                cyc:Zoom.Maximum="100"
                cyc:Pan.IsEnabled="True"
-               cyc:Pan.Input="mouse:left" />
+               cyc:Pan.Input="mouse:left" 
+               cyc:Pan.ClipToParent="True"/>
       </Grid>
     </Viewbox>
 

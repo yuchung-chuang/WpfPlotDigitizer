@@ -16,8 +16,9 @@
              d:DesignWidth="800"
              d:DataContext="{d:DesignInstance local:BrowsePageVM, IsDesignTimeCreatable=True}">
 
-  <Grid Name="gridBase">
-    <custom:DropBorder DropFileName="{Binding FileName, Mode=TwoWay}">
+  <Grid Name="gridMain">
+    <custom:DropBorder Name="dropBorder"
+                       DropFileName="{Binding FileName, Mode=TwoWay}">
       <StackPanel Visibility="Visible"
                   Orientation="Vertical"
                   VerticalAlignment="Center">
@@ -30,12 +31,15 @@
                    TextAlignment="Center"
                    IsHitTestVisible="False"
                    FontSize="30" />
-        <Button Content="Browse"
+        <Button Name="browseButton"
+                Content="Browse"
                 FontSize="40"
                 FontWeight="Medium"
                 Width="200"
                 Height="70"
-                Command="{Binding OpenFileCommand}" />
+                Command="{Binding OpenFileCommand}"
+                TabIndex="0"
+                ToolTip="Browse an image to digitize it!"/>
       </StackPanel>
     </custom:DropBorder>
   </Grid>
