@@ -26,38 +26,7 @@ namespace WpfPlotDigitizer
 
     private void Button_Click(object sender, RoutedEventArgs e)
     {
-      switch ((ApplicationPages)pageManager.Index)
-      {
-        case ApplicationPages.Browse:
-          new PopupWindow
-          {
-            PlacementTarget = browsePage.browseButton,
-            Text = "Click the button to browse your image!",
-          }.ShowDialog();
-          new PopupWindow
-          {
-            PlacementTarget = browsePage.dropBorder,
-            Text = "Or you can simply drag and drop your image onto this area!",
-          }.ShowDialog();
-
-          break;
-        case ApplicationPages.AxLim:
-          break;
-        case ApplicationPages.Axis:
-          break;
-        case ApplicationPages.Filter:
-          break;
-        case ApplicationPages.Erase:
-          break;
-        case ApplicationPages.Data:
-          break;
-        case ApplicationPages.Save:
-          break;
-        case ApplicationPages.NumOfPages:
-          break;
-        default:
-          break;
-      }
+      mainWindowVM.TutorialCommand.Execute(null);
     }
   }
 }
