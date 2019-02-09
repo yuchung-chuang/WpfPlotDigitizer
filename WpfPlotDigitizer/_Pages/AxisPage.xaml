@@ -23,7 +23,8 @@
       <RowDefinition Height="*" />
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
-    <uc:Axis ImageSource="{Binding ImageSource}"
+    <uc:Axis Name="axisControl"
+             ImageSource="{Binding ImageSource}"
              AxisLeft="{Binding AxisLeft, Mode=TwoWay}"
              AxisTop="{Binding AxisTop, Mode=TwoWay}"
              AxisWidth="{Binding AxisWidth, Mode=TwoWay}"

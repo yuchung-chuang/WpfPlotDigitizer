@@ -23,7 +23,7 @@ namespace WpfPlotDigitizer
     public MainWindow()
     {
       InitializeComponent();
-
+      resources.InitializeComponent();
       DataContext = mainWindowVM;
     }
 
@@ -32,6 +32,7 @@ namespace WpfPlotDigitizer
       Tutorial();
     }
 
+    private PopupWindowResources resources = new PopupWindowResources();
     private void Tutorial()
     {
       switch ((ApplicationPages)pageManager.Index)
@@ -53,14 +54,18 @@ namespace WpfPlotDigitizer
           }.ShowDialog();
           new PopupWindow
           {
-            PlacementTarget = mainWindow.pageControl.TurnNextButton,
-            Text = "After you finish, you can use your mouse to click inside this area, and turn to next page."
+            PlacementTargets = new FrameworkElement[]
+            {
+              mainWindow.pageControl.TurnNextButton,
+              mainWindow.pageControl.TurnBackButton,
+            },
+            Text = "In the entire application, you can click inside both sides of the screen to turn next/back to the other pages."
           }.ShowDialog();
           break;
         case ApplicationPages.AxLim:
           new PopupWindow
           {
-            Text = "This is axis limit page. Please type in all axis limits into the text boxes."
+            Text = "This is Axis Limit Page."
           }.ShowDialog();
           new PopupWindow
           {
@@ -69,21 +74,36 @@ namespace WpfPlotDigitizer
             {
               new Run("Here you can view your image."),
               new LineBreak(),
-              new Run("Besides, you can use your mouse to manipulate all the image through the entire application as follow."),
+              new Run("You are allowed to manipulate all the image through the entire application by your mouse as follow."),
             },
-            Content = MakeContent(),
+            Content = MakeContentAxLim(),
           }.ShowDialog();
           new PopupWindow
           {
-            PlacementTarget = axLimPage.YMax,
+            PlacementTargets = new FrameworkElement[] 
+            {
+              axLimPage.YMax,
+              axLimPage.YMin,
+              axLimPage.XMax,
+              axLimPage.XMin,
+            },
+            Text = "According to your image, please type in all axis limits into the text boxes."
+          }.ShowDialog();
+          new PopupWindow
+          {
+            PlacementTargets = new FrameworkElement[]
+            {
+              axLimPage.YLog,
+              axLimPage.XLog,
+            },
+            Text = "If the axis in your image is in logarithm scale, you can specify its base through these text boxes."
+          }.ShowDialog();
 
-          };
-
-          Grid MakeContent()
+          Grid MakeContentAxLim()
           {
             var grid = new Grid
             {
-              HorizontalAlignment = HorizontalAlignment.Center,
+              Style = resources["gridStyle"] as Style,
             };
             grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
             grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
@@ -92,7 +112,7 @@ namespace WpfPlotDigitizer
             var leftImage = new Image
             {
               Source = CycResources.MouseLeftButtonUri.ToBitmapSource(),
-              Height = 30,
+              Style = resources["gridImageStyle"] as Style,
               Margin = new Thickness(5),
             };
             Grid.SetRow(leftImage, 0);
@@ -100,21 +120,21 @@ namespace WpfPlotDigitizer
             var wheelImage = new Image
             {
               Source = CycResources.MouseWheelUri.ToBitmapSource(),
-              Height = 30,
+              Style = resources["gridImageStyle"] as Style,
             };
             Grid.SetRow(wheelImage, 1);
             Grid.SetColumn(wheelImage, 0);
             var leftText = new TextBlock
             {
               Text = "Pan Image",
-              VerticalAlignment = VerticalAlignment.Center,
+              Style = resources["gridTextStyle"] as Style,
             };
             Grid.SetRow(leftText, 0);
             Grid.SetColumn(leftText, 1);
             var wheelText = new TextBlock
             {
               Text = "Zoom Image",
-              VerticalAlignment = VerticalAlignment.Center,
+              Style = resources["gridTextStyle"] as Style,
             };
             Grid.SetRow(wheelText, 1);
             Grid.SetColumn(wheelText, 1);
@@ -126,6 +146,69 @@ namespace WpfPlotDigitizer
           }
           break;
         case ApplicationPages.Axis:
+          new PopupWindow
+          {
+            Text = "Here we are in the Axis Page."
+          }.ShowDialog();
+          new PopupWindow
+          {
+            PlacementTarget = axisPage.axisControl,
+            Text = "The application can automatically find the axis position for you.",
+            Content = MakeContentAxis(),
+          }.ShowDialog();
+
+          Grid MakeContentAxis()
+          {
+            var grid = new Grid
+            {
+              Style = resources["gridStyle"] as Style,
+            };
+            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            var imageAdjust = new Image
+            {
+              Source = CycResources.MouseLeftButtonUri.ToBitmapSource(),
+              Style = resources["gridImageStyle"] as Style,
+              Margin = new Thickness(5),
+            };
+            grid.Children.Add(imageAdjust);
+            var textAdjust = new TextBlock
+            {
+              Text = "If it's not accurate enough, you can manually adjust the axis by dragging it with your mouse.",
+              Style = resources["gridTextStyle"] as Style,
+            };
+            Grid.SetColumn(textAdjust, 1);
+            grid.Children.Add(textAdjust);
+            var stack = new StackPanel
+            {
+              Orientation = Orientation.Horizontal,
+            };
+            Grid.SetRow(stack, 1);
+            var imageReset1 = new Image
+            {
+              Source = CycResources.MouseLeftButtonUri.ToBitmapSource(),
+              Style = resources["gridImageStyle"] as Style,
+            };
+            stack.Children.Add(imageReset1);
+            var imageReset2 = new Image
+            {
+              Source = CycResources.MouseLeftButtonUri.ToBitmapSource(),
+              Style = resources["gridImageStyle"] as Style,
+            };
+            stack.Children.Add(imageReset2);
+            grid.Children.Add(stack);
+            var textReset = new TextBlock
+            {
+              Text = "If you accidently adjust the axis, you can do a double click to automatically find the axis again.",
+              Style = resources["gridTextStyle"] as Style,
+            };
+            Grid.SetRow(textReset, 1);
+            Grid.SetColumn(textReset, 1);
+            grid.Children.Add(textReset);
+            return grid;
+          }
           break;
         case ApplicationPages.Filter:
           break;
