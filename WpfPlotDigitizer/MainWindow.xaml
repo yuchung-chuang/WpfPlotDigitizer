@@ -25,7 +25,7 @@
   <mahapps:MetroWindow.RightWindowCommands>
     <mahapps:WindowCommands>
       <Button Background="{StaticResource HighlightBrush}"
-              Command="{Binding TutorialCommand}">
+              Click="Button_Click">
         <Button.RenderTransform>
           <TranslateTransform Y="-2" />
         </Button.RenderTransform>
@@ -45,7 +45,7 @@
     </mahapps:WindowCommands>
   </mahapps:MetroWindow.RightWindowCommands>
   <mahapps:MetroWindow.Resources>
-    <re:ResourceManager x:Key="resources" />
+    <re:CycResources x:Key="cycResources" />
   </mahapps:MetroWindow.Resources>
   <Grid x:Name="gridMain">
     <Frame Name="splashFrame"
@@ -55,57 +55,5 @@
                     CurrentPage="{Binding PageManager.CurrentPage}"
                     TurnBackCommand="{Binding PageManager.TurnBackCommand}"
                     TurnNextCommand="{Binding PageManager.TurnNextCommand}" />
-
-    <md:Card x:Name="PART_PopupContentElement"
-             Panel.ZIndex="1000"
-             VerticalAlignment="Center"
-             Width="200"
-             Visibility="Hidden"
-             md:ShadowAssist.ShadowDepth="Depth3"
-             UniformCornerRadius="4"
-             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-             TextElement.FontWeight="Regular"
-             TextElement.FontSize="15"
-             TextOptions.TextFormattingMode="Ideal"
-             TextOptions.TextRenderingMode="Auto"
-             FocusManager.IsFocusScope="False"
-             Foreground="White"
-             FontFamily="{StaticResource MaterialDesignFont}"
-             Focusable="True"
-             IsTabStop="False"
-             RenderTransformOrigin=".5,.5">
-      <md:Card.Background>
-        <LinearGradientBrush EndPoint="0.5,1"
-                             MappingMode="RelativeToBoundingBox"
-                             StartPoint="0.5,0">
-          <LinearGradientBrush.RelativeTransform>
-            <TransformGroup>
-              <ScaleTransform CenterY="0.5"
-                              CenterX="0.5" />
-              <SkewTransform CenterY="0.5"
-                             CenterX="0.5" />
-              <RotateTransform Angle="18"
-                               CenterY="0.5"
-                               CenterX="0.5" />
-              <TranslateTransform />
-            </TransformGroup>
-          </LinearGradientBrush.RelativeTransform>
-          <GradientStop Color="#FF8F00E0" />
-          <GradientStop Color="#FF53FFFF"
-                        Offset="1" />
-        </LinearGradientBrush>
-      </md:Card.Background>
-      <StackPanel Orientation="Vertical">
-        <TextBlock Name="PART_TextBlock"
-                   Text="Click this button to browse your image!"
-                   TextWrapping="Wrap"
-                   Margin="10"
-                   TextAlignment="Center" />
-        <Button Name="PART_CloseButton"
-                Content="Got it!"
-                Margin="10"
-                Width="100" />
-      </StackPanel>
-    </md:Card>
   </Grid>
 </mahapps:MetroWindow>

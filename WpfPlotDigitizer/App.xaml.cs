@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using static WpfPlotDigitizer.DI;
+using CycWpfLibrary.Resources;
 
 namespace WpfPlotDigitizer
 {
@@ -38,7 +39,7 @@ namespace WpfPlotDigitizer
       mainWindow.gridMain.Children.Remove(mainWindow.splashFrame);
 
 #if DEBUG
-      browsePageVM.PBInput = new BitmapImage(new Uri($"pack://application:,,,/images/data.png")).ToPixelBitmap();
+      browsePageVM.PBInput = new Uri(CycResources.PackUri + @"images/data.png").ToPixelBitmap();
       axLimPageVM.AxLim = new Rect(new Point(1e-4, 1e-4), new Point(1e6, 1e7));
       axLimPageVM.AxLogBase = new Point(10, 10);
       appManager.PageManager.TurnTo((int)ApplicationPages.Browse);

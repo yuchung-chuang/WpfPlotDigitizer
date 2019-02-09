@@ -29,7 +29,7 @@ namespace WpfPlotDigitizer
       get => fileName;
       set
       {
-        if (ImageExts.List.Contains(Path.GetExtension(value)))
+        if (ImageFileExtensions.List.Contains(Path.GetExtension(value)))
         {
           fileName = value;
           PBInput = new Bitmap(fileName).ToPixelBitmap();
@@ -55,7 +55,7 @@ namespace WpfPlotDigitizer
     public void OpenFile()
     {
       var dialog = new OpenFileDialog();
-      var imageExtensions = ImageExts.String;
+      var imageExtensions = ImageFileExtensions.String;
       dialog.Filter = "Images|" + imageExtensions + "|All|*.*";
       if (dialog.ShowDialog() == false)
       {

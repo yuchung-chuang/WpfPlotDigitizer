@@ -51,7 +51,8 @@
         <ColumnDefinition Width="*" />
         <ColumnDefinition Width="auto" />
       </Grid.ColumnDefinitions>
-      <Viewbox Grid.Column="1"
+      <Viewbox Name="imageViewBox"
+               Grid.Column="1"
                Grid.Row="1"
                Margin="10">
         <Grid>
@@ -74,8 +75,8 @@
           <RowDefinition Height="*" />
           <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <TextBox Grid.Row="0"
-                 Tag="YMax"
+        <TextBox Name="YMax"
+                 Grid.Row="0"
                  md:HintAssist.Hint="Y-Axis: Max"
                  Validation.Error="TextBox_Error"
                  LostFocus="TextBox_LostFocus"
@@ -94,8 +95,8 @@
             </Binding>
           </TextBox.Text>
         </TextBox>
-        <TextBox Grid.Row="1"
-                 Tag="YLog"
+        <TextBox Name="YLog"
+                 Grid.Row="1"
                  Validation.Error="TextBox_Error"
                  LostFocus="TextBox_LostFocus"
                  md:HintAssist.Hint="Y-Axis: Log Base">
@@ -109,8 +110,8 @@
             </Binding>
           </TextBox.Text>
         </TextBox>
-        <TextBox Grid.Row="2"
-                 Tag="YMin"
+        <TextBox Name="YMin"
+                 Grid.Row="2"
                  Validation.Error="TextBox_Error"
                  LostFocus="TextBox_LostFocus"
                  md:HintAssist.Hint="Y-Axis: Min"
@@ -146,8 +147,8 @@
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <TextBox Grid.Column="0"
-                 Tag="XMin"
+        <TextBox Name="XMin"
+                 Grid.Column="0"
                  Validation.Error="TextBox_Error"
                  LostFocus="TextBox_LostFocus"
                  md:HintAssist.Hint="X-Axis: Min"
@@ -165,8 +166,8 @@
             </Binding>
           </TextBox.Text>
         </TextBox>
-        <TextBox Grid.Column="1"
-                 Tag="XLog"
+        <TextBox Name="XLog"
+                 Grid.Column="1"
                  Validation.Error="TextBox_Error"
                  LostFocus="TextBox_LostFocus"
                  md:HintAssist.Hint="X-Axis: Log Base">
@@ -180,8 +181,8 @@
             </Binding>
           </TextBox.Text>
         </TextBox>
-        <TextBox Grid.Column="2"
-                 Tag="XMax"
+        <TextBox Name="XMax"
+                 Grid.Column="2"
                  Validation.Error="TextBox_Error"
                  LostFocus="TextBox_LostFocus"
                  md:HintAssist.Hint="X-Axis: Max"
