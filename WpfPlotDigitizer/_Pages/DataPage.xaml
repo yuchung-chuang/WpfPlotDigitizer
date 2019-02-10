@@ -6,7 +6,6 @@
                     xmlns:local="clr-namespace:WpfPlotDigitizer"
                     xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-                    xmlns:cycControl="clr-namespace:CycWpfLibrary.Controls;assembly=CycWpfLibrary"
                     xmlns:mvvm="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
                     xmlns:media="clr-namespace:CycWpfLibrary.Media;assembly=CycWpfLibrary"
                     xmlns:cyc="clr-namespace:CycWpfLibrary;assembly=CycWpfLibrary"
@@ -20,7 +19,7 @@
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
 
-    <Viewbox>
+    <Viewbox Name="imageViewBox">
       <Grid>
         <Image Source="{Binding imageSource}"
                cyc:Zoom.IsEnabled="True"
@@ -33,7 +32,7 @@
     </Viewbox>
 
     <Grid Grid.Row="1"
-          Margin="10,0">
+          Margin="40,0">
       <Grid.Resources>
         <Style TargetType="TextBlock">
           <Setter Property="TextAlignment"
@@ -59,25 +58,27 @@
         <RowDefinition Height="*" />
         <RowDefinition Height="*" />
       </Grid.RowDefinitions>
+      <Slider Name="sliderDataSize"
+              Value="{Binding DataSize }"
+              Grid.Column="1"
+              Minimum="1"
+              Maximum="50" />
+      <Slider Name="sliderCoverRatio"
+              Value="{Binding RatioInt}"
+              Grid.Row="1"
+              Grid.Column="1"
+              Minimum="0"
+              Maximum="100" />
       <TextBlock>
           <Span>
             Data <LineBreak />
             Size
           </Span>
       </TextBlock>
-      <Slider Value="{Binding DataSize }"
-              Grid.Column="1"
-              Minimum="1"
-              Maximum="50" />
       <TextBlock Grid.Row="1">
           Cover <LineBreak />
           Ratio
       </TextBlock>
-      <Slider Value="{Binding RatioInt}"
-              Grid.Row="1"
-              Grid.Column="1"
-              Minimum="0"
-              Maximum="100" />
     </Grid>
 
   </Grid>

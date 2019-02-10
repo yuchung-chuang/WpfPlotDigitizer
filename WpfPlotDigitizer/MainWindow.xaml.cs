@@ -65,9 +65,9 @@ namespace WpfPlotDigitizer
         case ApplicationPages.AxLim:
           new PopupWindow
           {
-            Text = "This is Axis Limit Page."
+            Text = "This is Axis Limit Page, where you should input the axis limits."
           }.ShowDialog();
-          new PopupWindow
+          new AxLimPopup
           {
             PlacementTarget = axLimPage.imageViewBox,
             Inlines = new List<Inline>
@@ -76,7 +76,6 @@ namespace WpfPlotDigitizer
               new LineBreak(),
               new Run("You are allowed to manipulate all the image through the entire application by your mouse as follow."),
             },
-            Content = MakeContentAxLim(),
           }.ShowDialog();
           new PopupWindow
           {
@@ -99,126 +98,107 @@ namespace WpfPlotDigitizer
             Text = "If the axis in your image is in logarithm scale, you can specify its base through these text boxes."
           }.ShowDialog();
 
-          Grid MakeContentAxLim()
-          {
-            var grid = new Grid
-            {
-              Style = resources["gridStyle"] as Style,
-            };
-            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            var leftImage = new Image
-            {
-              Source = CycResources.MouseLeftButtonUri.ToBitmapSource(),
-              Style = resources["gridImageStyle"] as Style,
-              Margin = new Thickness(5),
-            };
-            Grid.SetRow(leftImage, 0);
-            Grid.SetColumn(leftImage, 0);
-            var wheelImage = new Image
-            {
-              Source = CycResources.MouseWheelUri.ToBitmapSource(),
-              Style = resources["gridImageStyle"] as Style,
-            };
-            Grid.SetRow(wheelImage, 1);
-            Grid.SetColumn(wheelImage, 0);
-            var leftText = new TextBlock
-            {
-              Text = "Pan Image",
-              Style = resources["gridTextStyle"] as Style,
-            };
-            Grid.SetRow(leftText, 0);
-            Grid.SetColumn(leftText, 1);
-            var wheelText = new TextBlock
-            {
-              Text = "Zoom Image",
-              Style = resources["gridTextStyle"] as Style,
-            };
-            Grid.SetRow(wheelText, 1);
-            Grid.SetColumn(wheelText, 1);
-            grid.Children.Add(leftImage);
-            grid.Children.Add(wheelImage);
-            grid.Children.Add(leftText);
-            grid.Children.Add(wheelText);
-            return grid;
-          }
           break;
         case ApplicationPages.Axis:
           new PopupWindow
           {
-            Text = "Here we are in the Axis Page."
+            Text = "Here we are in the Axis Page, where you should input the axis position."
+          }.ShowDialog();
+          new AxisPopup
+          {
+            PlacementTarget = axisPage.axisControl,
+            Text = "The application can automatically find the axis position for you, where you can also manually adjust the axis.",
+          }.ShowDialog();
+
+          break;
+        case ApplicationPages.Filter:
+          new PopupWindow
+          {
+            Text = "Here is Filter Page, where you can filter out unwanted information of certain colors."
           }.ShowDialog();
           new PopupWindow
           {
-            PlacementTarget = axisPage.axisControl,
-            Text = "The application can automatically find the axis position for you.",
-            Content = MakeContentAxis(),
+            PlacementTargets = new FrameworkElement[]
+            {
+              filterPage.sliderRed,
+              filterPage.sliderGreen,
+              filterPage.sliderBlue,
+            },
+            Text = "You can either drag red, green, and blue range sliders to filter out colors outside the range,"
+          }.ShowDialog();
+          new PopupWindow
+          {
+            PlacementTargets = new FrameworkElement[]
+            {
+              filterPage.textBoxRMax,
+              filterPage.textBoxRMin,
+              filterPage.textBoxGMax,
+              filterPage.textBoxGMin,
+              filterPage.textBoxBMax,
+              filterPage.textBoxBMin,
+            },
+            Text = "or you can type in color code directly to select colors within specific range."
           }.ShowDialog();
 
-          Grid MakeContentAxis()
-          {
-            var grid = new Grid
-            {
-              Style = resources["gridStyle"] as Style,
-            };
-            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            var imageAdjust = new Image
-            {
-              Source = CycResources.MouseLeftButtonUri.ToBitmapSource(),
-              Style = resources["gridImageStyle"] as Style,
-              Margin = new Thickness(5),
-            };
-            grid.Children.Add(imageAdjust);
-            var textAdjust = new TextBlock
-            {
-              Text = "If it's not accurate enough, you can manually adjust the axis by dragging it with your mouse.",
-              Style = resources["gridTextStyle"] as Style,
-            };
-            Grid.SetColumn(textAdjust, 1);
-            grid.Children.Add(textAdjust);
-            var stack = new StackPanel
-            {
-              Orientation = Orientation.Horizontal,
-            };
-            Grid.SetRow(stack, 1);
-            var imageReset1 = new Image
-            {
-              Source = CycResources.MouseLeftButtonUri.ToBitmapSource(),
-              Style = resources["gridImageStyle"] as Style,
-            };
-            stack.Children.Add(imageReset1);
-            var imageReset2 = new Image
-            {
-              Source = CycResources.MouseLeftButtonUri.ToBitmapSource(),
-              Style = resources["gridImageStyle"] as Style,
-            };
-            stack.Children.Add(imageReset2);
-            grid.Children.Add(stack);
-            var textReset = new TextBlock
-            {
-              Text = "If you accidently adjust the axis, you can do a double click to automatically find the axis again.",
-              Style = resources["gridTextStyle"] as Style,
-            };
-            Grid.SetRow(textReset, 1);
-            Grid.SetColumn(textReset, 1);
-            grid.Children.Add(textReset);
-            return grid;
-          }
-          break;
-        case ApplicationPages.Filter:
           break;
         case ApplicationPages.Erase:
+          new PopupWindow
+          {
+            Text = "Here is Erase Page, where you can erase out unwanted information by an eraser tool."
+          }.ShowDialog();
+          new ErasePopup
+          {
+            PlacementTarget = erasePage.imageViewBox,
+            Text = "You can erase the image by holding mouse right button. Besides, you can also pan and zoom image as usual!",
+          }.ShowDialog();
+          new PopupWindow
+          {
+            PlacementTargets = new FrameworkElement[]
+            {
+              erasePage.undoButton,
+              erasePage.redoButton,
+            },
+            Text = "You can also use undo and redo buttons to edit the image at your convenience.",
+          }.ShowDialog();
+
           break;
         case ApplicationPages.Data:
+          new PopupWindow
+          {
+            Text = "Here is Data Page, where you can adjust the data captured from the image."
+          }.ShowDialog();
+          new PopupWindow
+          {
+            PlacementTarget = dataPage.imageViewBox,
+            Text = "The captured data is displayed as red dots here."
+          }.ShowDialog();
+          new PopupWindow
+          {
+            PlacementTarget = dataPage.sliderDataSize,
+            Text = "You can drag this slider to adjust the size of each data point.",
+          }.ShowDialog();
+          new PopupWindow
+          {
+            PlacementTarget = dataPage.sliderCoverRatio,
+            Text = "Or you can adjust the cover ratio (how much covered area counts a data point) by dragging this slider.",
+          }.ShowDialog();
+
           break;
         case ApplicationPages.Save:
-          break;
-        case ApplicationPages.NumOfPages:
+          new PopupWindow
+          {
+            Text = "Here is Save Page, where you can check your captured data and save it into a file.",
+          }.ShowDialog();
+          new SavePopup
+          {
+            PlacementTarget = savePage.dataPlot,
+            Text = "Take a look at your data points here, you can also track the data coordinate and reset the view port.",
+          }.ShowDialog();
+          new PopupWindow
+          {
+            PlacementTarget = savePage.saveButton,
+            Text = "Finally, You can save your data into several formats by clicking it. Well done!",
+          }.ShowDialog();
           break;
         default:
           break;

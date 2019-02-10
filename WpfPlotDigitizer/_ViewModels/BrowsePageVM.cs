@@ -1,5 +1,4 @@
-﻿using CycWpfLibrary.Controls;
-using CycWpfLibrary.Media;
+﻿using CycWpfLibrary.Media;
 using CycWpfLibrary.MVVM;
 using Microsoft.Win32;
 using System;

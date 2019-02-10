@@ -31,7 +31,7 @@ namespace WpfPlotDigitizer
       set => imageDisplay = value.ToBitmap().ToImage<Bgra, byte>();
     }
 
-    private int dataSize = 3;
+    private int dataSize = 6;
     public int DataSize
     {
       get => dataSize;

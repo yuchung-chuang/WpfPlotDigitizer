@@ -181,6 +181,18 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="_Model\MessageBoxManager.cs" />
+    <Compile Include="_TutorialPopups\SavePopup.xaml.cs">
+      <DependentUpon>SavePopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="_TutorialPopups\ErasePopup.xaml.cs">
+      <DependentUpon>ErasePopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="_TutorialPopups\AxisPopup.xaml.cs">
+      <DependentUpon>AxisPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="_TutorialPopups\AxLimPopup.xaml.cs">
+      <DependentUpon>AxLimPopup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="_ViewModels\SplashPageVM.cs" />
     <Compile Include="_Pages\SplashPage.xaml.cs">
       <DependentUpon>SplashPage.xaml</DependentUpon>
@@ -258,6 +270,22 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="_Pages\SplashPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="_TutorialPopups\SavePopup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="_TutorialPopups\ErasePopup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="_TutorialPopups\AxisPopup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="_TutorialPopups\AxLimPopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -190,7 +190,7 @@ namespace WpfPlotDigitizer
     public PlotModel plotModel { get; set; }
     public void PlotData()
     {
-      var model = new PlotModel("Captured Data");
+      var model = new PlotModel();
       var series = new LineSeries
       {
         StrokeThickness = 0,

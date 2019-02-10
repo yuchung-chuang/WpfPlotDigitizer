@@ -29,7 +29,7 @@
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Flyout.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Defaults.xaml" />
 
-        <!--<ResourceDictionary Source="pack://application:,,,/CycWpfLibrary.UserControls;component/Styles/Fonts.xaml" />-->
+        <ResourceDictionary Source="pack://application:,,,/CycWpfLibrary.CustomControls;component/Themes/PopupWindow.xaml" />
       </ResourceDictionary.MergedDictionaries>
 
       <ControlTemplate x:Key="ButtonTemplate"
@@ -748,7 +748,8 @@
         </Style.Triggers>
       </Style>
 
-      <Style TargetType="cc:PopupWindow">
+      <Style x:Key="PopupWindowStyle"
+             TargetType="cc:PopupWindow">
         <Setter Property="Background">
           <Setter.Value>
             <LinearGradientBrush EndPoint="0.5,1"
@@ -774,6 +775,35 @@
         </Setter>
         <Setter Property="Foreground"
                 Value="White" />
+        <Setter Property="SizeToContent"
+                Value="WidthAndHeight" />
+      </Style>
+
+      <Style TargetType="cc:PopupWindow"
+             BasedOn="{StaticResource PopupWindowStyle}" />
+
+      <Style x:Key="PopupGridTextStyle"
+             TargetType="TextBlock">
+        <Setter Property="TextWrapping"
+                Value="Wrap" />
+        <Setter Property="VerticalAlignment"
+                Value="Center" />
+      </Style>
+
+      <Style x:Key="PopupGridImageStyle"
+             TargetType="Image">
+        <Setter Property="Height"
+                Value="30" />
+      </Style>
+
+      <Style x:Key="PopupGridStyle"
+             TargetType="Grid">
+        <Setter Property="HorizontalAlignment"
+                Value="Center" />
+        <Setter Property="MaxWidth"
+                Value="{StaticResource PopupMaxWidth}" />
+        <Setter Property="Margin"
+                Value="10" />
       </Style>
     </ResourceDictionary>
   </Application.Resources>

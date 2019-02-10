@@ -1,9 +1,7 @@
-﻿<media:AnimatedPage x:Class="WpfPlotDigitizer.ErasePage"
-                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<media:AnimatedPage xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                    xmlns:cycControls="clr-namespace:CycWpfLibrary.Controls;assembly=CycWpfLibrary"
                     xmlns:local="clr-namespace:WpfPlotDigitizer"
                     xmlns:cycMvvm="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
                     xmlns:media="clr-namespace:CycWpfLibrary.Media;assembly=CycWpfLibrary"
@@ -12,35 +10,21 @@
                     xmlns:cyc="clr-namespace:CycWpfLibrary;assembly=CycWpfLibrary"
                     xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
                     xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                    x:Class="WpfPlotDigitizer.ErasePage"
                     mc:Ignorable="d"
-                    d:DesignHeight="450"
-                    d:DesignWidth="400"
-                    d:DataContext="{d:DesignInstance local:ErasePageVM, IsDesignTimeCreatable=True}">
+                    d:DesignHeight="600"
+                    d:DesignWidth="900"
+                    d:DataContext="{d:DesignInstance {x:Type local:ErasePageVM}, IsDesignTimeCreatable=True}">
 
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="*" />
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
-    
-    <StackPanel Grid.Row="1"
-               Orientation="Horizontal"
-               HorizontalAlignment="Center">
-      <Button Margin="20"
-              Command="{Binding UndoCommand}">
-        <!--<md:PackIcon Kind="UndoVariant" />-->
-        <icon:PackIconFontAwesome Kind="UndoAltSolid" />
-      </Button>
-      <Button Margin="20"
-              Command="{Binding RedoCommand}">
-        <!--<md:PackIcon Kind="RedoVariant" />-->
-        <icon:PackIconFontAwesome Kind="RedoAltSolid" />
-      </Button>
-    </StackPanel>
-
-    <Viewbox>
+    <Viewbox Name="imageViewBox">
       <Grid>
-        <uc:ImageEraser Name="imageEraser"
+        <uc:ImageEraser x:Name="imageEraser"
                         Image="{Binding imageErase, Mode=TwoWay}"
                         Input="mouse:right"
                         cyc:Pan.IsEnabled="True"
@@ -49,6 +33,36 @@
                         cyc:Zoom.IsEnabled="True" />
       </Grid>
     </Viewbox>
-
+    <StackPanel Grid.Row="1"
+                Orientation="Horizontal"
+                HorizontalAlignment="Center">
+      <StackPanel.Resources>
+        <Style TargetType="Button"
+               BasedOn="{StaticResource MaterialDesignRaisedButton}">
+          <Setter Property="Width"
+                  Value="100" />
+          <Setter Property="Height"
+                  Value="70" />
+          <Setter Property="Padding"
+                  Value="15" />
+          <Setter Property="Margin"
+                  Value="30" />
+        </Style>
+        <Style TargetType="icon:PackIconFontAwesome">
+          <Setter Property="Width"
+                  Value="auto" />
+          <Setter Property="Height"
+                  Value="auto" />
+        </Style>
+      </StackPanel.Resources>
+      <Button Name="undoButton"
+              Command="{Binding UndoCommand}">
+        <icon:PackIconFontAwesome Kind="UndoAltSolid" />
+      </Button>
+      <Button Name="redoButton"
+              Command="{Binding RedoCommand}">
+        <icon:PackIconFontAwesome Kind="RedoAltSolid" />
+      </Button>
+    </StackPanel>
   </Grid>
 </media:AnimatedPage>
