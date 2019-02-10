@@ -33,17 +33,8 @@ namespace WpfPlotDigitizer
       SaveCommand = new RelayCommand<object, Task>(SaveAsync);
     }
 
-    public Image<Bgra, byte> imageSave
-    {
-      get => appData.ImageSave;
-      set => appData.ImageSave = value;
-    }
-
     public List<Point> data => appData.Data;
-
-    public Rect GetaxLim => appData.AxLim;
-
-    public BitmapSource imageSource => imageSave?.ToBitmapSource();
+    public PlotModel plotModel { get; set; }
 
     public ICommand SaveCommand { get; set; }
     public async Task SaveAsync(object param = null)
@@ -187,7 +178,8 @@ namespace WpfPlotDigitizer
       }
     }
 
-    public PlotModel plotModel { get; set; }
+    private Point AxLogBase => appData.AxLogBase;
+    private Rect AxLim => appData.AxLim;
     public void PlotData()
     {
       var model = new PlotModel();
@@ -199,24 +191,26 @@ namespace WpfPlotDigitizer
         MarkerStroke = OxyColors.Black,
         MarkerType = MarkerType.Circle
       };
-      
+
       foreach (var d in data)
         series.Points.Add(new DataPoint(d.X, d.Y));
 
-      model.Axes.Add(new LogarithmicAxis
-      {
-        Position = AxisPosition.Bottom,
-        AbsoluteMaximum = GetaxLim.Right,
-        AbsoluteMinimum = GetaxLim.Left,
-        MajorGridlineStyle = LineStyle.Solid,
-      });
-      model.Axes.Add(new LogarithmicAxis
-      {
-        Position = AxisPosition.Left,
-        AbsoluteMaximum = GetaxLim.Bottom,
-        AbsoluteMinimum = GetaxLim.Top,
-        MajorGridlineStyle = LineStyle.Solid,
-      });
+      Axis axisX = AxLogBase.X > 0 ? (Axis)new LogarithmicAxis() : new LinearAxis();
+      Axis axisY = AxLogBase.Y > 0 ? (Axis)new LogarithmicAxis() : new LinearAxis();
+
+      axisX.Position = AxisPosition.Bottom;
+      axisX.AbsoluteMaximum = AxLim.Right;
+      axisX.AbsoluteMinimum = AxLim.Left;
+      axisX.MajorGridlineStyle = LineStyle.Solid;
+
+      axisY.Position = AxisPosition.Left;
+      axisY.AbsoluteMaximum = AxLim.Bottom;
+      axisY.AbsoluteMinimum = AxLim.Top;
+      axisY.MajorGridlineStyle = LineStyle.Solid;
+
+      model.Axes.Add(axisX);
+      model.Axes.Add(axisY);
+
       model.Series.Add(series);
       plotModel = model;
     }
