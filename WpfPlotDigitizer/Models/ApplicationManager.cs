@@ -163,16 +163,20 @@ namespace WpfPlotDigitizer
     private bool PageManager_TurnToEvent(object sender, int index)
     {
       var pageManager = sender as PageManager;
-      if (index > pageManager.Index)
+      var turns = index - pageManager.Index;
+      if (turns > 0)
       {
-        var turns = index - pageManager.Index;
         for (int i = 0; i < turns; i++)
-        {
-          if (!pageManager.TurnNext()) // turn is cancelled
+          if (!pageManager.TurnNext())
             return false;
-        }
       }
-      return false;
+      else if (turns < 0)
+      {
+        for (int i = 0; i > turns; i--)
+          if (!pageManager.TurnBack())
+            return false;
+      }
+      return true;
     }
   }
 }
