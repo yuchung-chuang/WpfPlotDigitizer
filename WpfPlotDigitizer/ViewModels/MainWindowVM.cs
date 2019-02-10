@@ -19,7 +19,9 @@ namespace WpfPlotDigitizer
     {
 
     }
-
-    public PageManagerBase PageManager => pageManager;    
+    /// <summary>
+    /// 必須透過<see cref="ApplicationManager"/>來取得<see cref="PageManager"/>，否則會無法實例化<see cref="ApplicationManager"/>!
+    /// </summary>
+    public PageManagerBase PageManager => appManager.PageManager; 
   }
 }
