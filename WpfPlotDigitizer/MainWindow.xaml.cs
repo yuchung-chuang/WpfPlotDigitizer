@@ -5,6 +5,7 @@ using CycWpfLibrary.Resources;
 using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -24,6 +25,33 @@ namespace WpfPlotDigitizer
     {
       InitializeComponent();
       DataContext = mainWindowVM;
+      pageControl.PageAnimated += PageControl_PageAnimated;
+    }
+
+    private bool[] isFirstVisit = new bool[]
+    {
+      Properties.Settings.Default.FirstBrowse,
+      Properties.Settings.Default.FirstAxLim,
+      Properties.Settings.Default.FirstAxis,
+      Properties.Settings.Default.FirstFilter,
+      Properties.Settings.Default.FirstErase,
+      Properties.Settings.Default.FirstData,
+      Properties.Settings.Default.FirstSave,
+    };
+
+    private void PageControl_PageAnimated(object sender, EventArgs e)
+    {
+      var settings = Properties.Settings.Default;
+      var page = (ApplicationPages)pageManager.Index;
+      var a = page.ToString();
+      var isFirstPropInfo = settings.GetType().GetProperty("First" + page.ToString());
+      if ((bool)isFirstPropInfo.GetValue(settings))
+      {
+        isFirstPropInfo.SetValue(settings, false);
+        settings.Save();
+        Tutorial();
+      }
+      
     }
 
     private void Button_Click(object sender, RoutedEventArgs e)
@@ -31,7 +59,7 @@ namespace WpfPlotDigitizer
       Tutorial();
     }
 
-    private void Tutorial()
+    public void Tutorial()
     {
       switch ((ApplicationPages)pageManager.Index)
       {
@@ -77,7 +105,7 @@ namespace WpfPlotDigitizer
           }.ShowDialog();
           new PopupWindow
           {
-            PlacementTargets = new FrameworkElement[] 
+            PlacementTargets = new FrameworkElement[]
             {
               axLimPage.YMax,
               axLimPage.YMin,
@@ -146,7 +174,7 @@ namespace WpfPlotDigitizer
           }.ShowDialog();
           new ErasePopup
           {
-            PlacementTarget = erasePage.imageGrid,
+            PlacementTarget = erasePage.imageViewBox,
             Text = "You can erase the image by holding mouse right button. Besides, you can also pan and zoom image as usual!",
           }.ShowDialog();
           new PopupWindow

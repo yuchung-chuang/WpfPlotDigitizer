@@ -23,7 +23,7 @@
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
     <Viewbox Name="imageViewBox">
-      <Grid Name="imageGrid">
+      <Grid>
         <uc:ImageEraser x:Name="imageEraser"
                         Image="{Binding imageErase, Mode=TwoWay}"
                         Input="mouse:right"
