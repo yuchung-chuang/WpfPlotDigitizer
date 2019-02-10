@@ -404,6 +404,9 @@
     <Resource Include="app\resources\icon_digitizer.ico" />
     <Resource Include="app\resources\icon_digitizer.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\data2.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
