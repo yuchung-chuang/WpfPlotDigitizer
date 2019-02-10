@@ -14,23 +14,30 @@
                     d:DataContext="{d:DesignInstance local:SavePageVM, IsDesignTimeCreatable=True}">
   <Grid>
     <Grid.RowDefinitions>
+      <RowDefinition Height="auto" />
       <RowDefinition Height="*" />
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
+    <TextBlock Name="headerText"
+               Text="Well Done!"
+               Style="{StaticResource HeaderTextStyle}" />
     <oxy:Plot Name="dataPlot"
+              Grid.Row="1"
               Model="{Binding plotModel}"
               ResetInput="mouse:left, 2"
               ZoomInput="mouse:middle"
               PanInput="mouse:left"
-              TrackerInput="mouse:right" />
+              TrackerInput="mouse:right"
+              ToolTip="Your captured data points are displayed here."/>
     <Button Name="saveButton"
-            Grid.Row="1"
+            Grid.Row="2"
             Content="Save"
             FontSize="30"
             FontWeight="Medium"
             Width="150"
             Height="50"
             Margin="20"
-            Command="{Binding SaveCommand}" />
+            Command="{Binding SaveCommand}"
+            ToolTip="Save your data to a file."/>
   </Grid>
 </media:AnimatedPage>

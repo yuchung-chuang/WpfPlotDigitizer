@@ -19,10 +19,16 @@
 
   <Grid>
     <Grid.RowDefinitions>
+      <RowDefinition Height="auto" />
       <RowDefinition Height="*" />
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
-    <Viewbox Name="imageViewBox">
+    <TextBlock Name="headerText"
+               Text="Erase!"
+               Style="{StaticResource HeaderTextStyle}" />
+    <Viewbox Name="imageViewBox"
+             Grid.Row="1"
+             ToolTip="Erase unwanted information in the image.">
       <Grid>
         <uc:ImageEraser x:Name="imageEraser"
                         Image="{Binding imageErase, Mode=TwoWay}"
@@ -34,20 +40,20 @@
                         cyc:Zoom.Maximum="20" />
       </Grid>
     </Viewbox>
-    <StackPanel Grid.Row="1"
+    <StackPanel Grid.Row="2"
                 Orientation="Horizontal"
                 HorizontalAlignment="Center">
       <StackPanel.Resources>
         <Style TargetType="Button"
                BasedOn="{StaticResource MaterialDesignRaisedButton}">
           <Setter Property="Width"
-                  Value="100" />
-          <Setter Property="Height"
                   Value="70" />
+          <Setter Property="Height"
+                  Value="50" />
           <Setter Property="Padding"
                   Value="15" />
           <Setter Property="Margin"
-                  Value="30" />
+                  Value="20, 10" />
         </Style>
         <Style TargetType="icon:PackIconFontAwesome">
           <Setter Property="Width"
@@ -57,11 +63,13 @@
         </Style>
       </StackPanel.Resources>
       <Button Name="undoButton"
-              Command="{Binding UndoCommand}">
+              Command="{Binding UndoCommand}"
+              ToolTip="Undo">
         <icon:PackIconFontAwesome Kind="UndoAltSolid" />
       </Button>
       <Button Name="redoButton"
-              Command="{Binding RedoCommand}">
+              Command="{Binding RedoCommand}"
+              ToolTip="Redo">
         <icon:PackIconFontAwesome Kind="RedoAltSolid" />
       </Button>
     </StackPanel>

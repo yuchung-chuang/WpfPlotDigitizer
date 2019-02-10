@@ -9,7 +9,7 @@
                     xmlns:cyc="clr-namespace:CycWpfLibrary;assembly=CycWpfLibrary"
                     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
                     TextElement.FontWeight="Regular"
-                    TextElement.FontSize="13"
+                    TextElement.FontSize="15"
                     TextOptions.TextFormattingMode="Ideal"
                     TextOptions.TextRenderingMode="Auto"
                     FontFamily="{DynamicResource MaterialDesignFont}"
@@ -18,7 +18,7 @@
                     d:DesignWidth="900"
                     d:DataContext="{d:DesignInstance local:AxLimPageVM, IsDesignTimeCreatable=True}">
   <AdornerDecorator>
-    <Grid Margin="20,0,0,0">
+    <Grid>
       <Grid.Resources>
         <Style x:Key="TextBoxStyleBase"
                TargetType="TextBox"
@@ -49,12 +49,15 @@
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="auto" />
         <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="auto" />
       </Grid.ColumnDefinitions>
+      <TextBlock Name="headerText"
+                 Text="Axis Limits!" 
+                 Style="{StaticResource HeaderTextStyle}"/>
       <Viewbox Name="imageViewBox"
                Grid.Column="1"
                Grid.Row="1"
-               Margin="10">
+               Margin="10"
+               ToolTip="Please type in all axis limits according to your image.">
         <Grid>
           <Image Source="{Binding imageSource}"
                  cyc:Pan.IsEnabled="True"
@@ -82,7 +85,8 @@
                  LostFocus="TextBox_LostFocus"
                  cyc:RangeValidator.IsEnabled="True"
                  cyc:RangeValidator.Minimum="{Binding YMin}"
-                 cyc:RangeValidator.ExcludeMin="True">
+                 cyc:RangeValidator.ExcludeMin="True"
+                 ToolTip="Please type in the Maximum value of Y-axis.">
           <TextBox.Text>
             <Binding Path="YMax"
                      Converter="{cyc:NumStrConverter}"
@@ -99,7 +103,8 @@
                  Grid.Row="1"
                  Validation.Error="TextBox_Error"
                  LostFocus="TextBox_LostFocus"
-                 md:HintAssist.Hint="Y-Axis: Log Base">
+                 md:HintAssist.Hint="Y-Axis: Log Base"
+                 ToolTip="If Y-axis is logarithmic, please type in the base value of logarithm Y-axis, otherwise please leave it empty.">
           <TextBox.Text>
             <Binding Path="YLog"
                      Converter="{cyc:NumStrConverter}"
@@ -117,7 +122,8 @@
                  md:HintAssist.Hint="Y-Axis: Min"
                  cyc:RangeValidator.IsEnabled="True"
                  cyc:RangeValidator.Maximum="{Binding YMax}"
-                 cyc:RangeValidator.ExcludeMax="True">
+                 cyc:RangeValidator.ExcludeMax="True"
+                 ToolTip="Please type in the Minimum value of Y-axis.">
           <TextBox.Text>
             <Binding Path="YMin"
                      Converter="{cyc:NumStrConverter}"
@@ -154,7 +160,8 @@
                  md:HintAssist.Hint="X-Axis: Min"
                  cyc:RangeValidator.IsEnabled="True"
                  cyc:RangeValidator.Maximum="{Binding XMax}"
-                 cyc:RangeValidator.ExcludeMax="True">
+                 cyc:RangeValidator.ExcludeMax="True"
+                 ToolTip="Please type in the Minimum value of X-axis.">
           <TextBox.Text>
             <Binding Path="XMin"
                      Converter="{cyc:NumStrConverter}"
@@ -170,7 +177,8 @@
                  Grid.Column="1"
                  Validation.Error="TextBox_Error"
                  LostFocus="TextBox_LostFocus"
-                 md:HintAssist.Hint="X-Axis: Log Base">
+                 md:HintAssist.Hint="X-Axis: Log Base"
+                 ToolTip="If X-axis is logarithmic, please type in the base value of logarithm Y-axis, otherwise please leave it empty.">
           <TextBox.Text>
             <Binding Path="XLog"
                      Converter="{cyc:NumStrConverter}"
@@ -188,7 +196,8 @@
                  md:HintAssist.Hint="X-Axis: Max"
                  cyc:RangeValidator.IsEnabled="True"
                  cyc:RangeValidator.Minimum="{Binding XMin}"
-                 cyc:RangeValidator.ExcludeMin="True">
+                 cyc:RangeValidator.ExcludeMin="True"
+                 ToolTip="Please type in the Maximum value of X-axis.">
           <TextBox.Text>
             <Binding Path="XMax"
                      Converter="{cyc:NumStrConverter}"

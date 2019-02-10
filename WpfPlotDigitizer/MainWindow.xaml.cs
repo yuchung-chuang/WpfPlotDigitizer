@@ -132,7 +132,7 @@ namespace WpfPlotDigitizer
           }.ShowDialog();
           new AxisPopup
           {
-            PlacementTarget = axisPage.axisControl,
+            PlacementTarget = axisPage.imageViewBox,
             Text = "The application can automatically find the axis position for you, where you can also manually adjust the axis.",
           }.ShowDialog();
 

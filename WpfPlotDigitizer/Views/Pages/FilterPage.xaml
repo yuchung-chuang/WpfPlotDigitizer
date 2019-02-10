@@ -14,11 +14,16 @@
                     d:DataContext="{d:DesignInstance local:FilterPageVM, IsDesignTimeCreatable=True}">
   <Grid>
     <Grid.RowDefinitions>
+      <RowDefinition Height="auto" />
       <RowDefinition Height="*" />
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
-    
-    <Viewbox Name="imageViewBox">
+    <TextBlock Name="headerText"
+               Text="Filter!"
+               Style="{StaticResource HeaderTextStyle}" />
+    <Viewbox Name="imageViewBox"
+             Grid.Row="1"
+             ToolTip="Please adjust the sliders to filter out unwanted colors.">
       <Grid>
         <Image Source="{Binding ImageSource}"
                cyc:Zoom.IsEnabled="True"
@@ -27,7 +32,7 @@
                cyc:Pan.Input="mouse:left"/>
       </Grid>
     </Viewbox>
-    <Grid Grid.Row="1"
+    <Grid Grid.Row="2"
           Margin="40,0">
       <Grid.RowDefinitions>
         <RowDefinition Height="*" />
@@ -79,19 +84,22 @@
                cyc:RangeValidator.Maximum="255"
                cyc:RangeValidator.Minimum="{Binding FilterRMin}"
                cyc:RangeValidator.ExcludeMin="True"
-               Text="{Binding FilterRMax, Converter={cyc:NumStrConverter}}" />
+               Text="{Binding FilterRMax, Converter={cyc:NumStrConverter}}"
+               ToolTip="Maximum value of red color." />
       <TextBox Name="textBoxRMin"
                Grid.Column="0"
                cyc:RangeValidator.IsEnabled="True"
                cyc:RangeValidator.Maximum="{Binding FilterRMax}"
                cyc:RangeValidator.Minimum="0"
                cyc:RangeValidator.ExcludeMax="True"
-               Text="{Binding FilterRMin, Converter={cyc:NumStrConverter}}" />
+               Text="{Binding FilterRMin, Converter={cyc:NumStrConverter}}"
+               ToolTip="Minimum value of red color."/>
       <mahapps:RangeSlider Name="sliderRed"
                            Grid.Column="1"
                            Foreground="Red"
                            LowerValue="{Binding FilterRMin}"
-                           UpperValue="{Binding FilterRMax}">
+                           UpperValue="{Binding FilterRMax}"
+                           ToolTip="Filter out red colors beyond the range.">
         <i:Interaction.Triggers>
           <i:EventTrigger EventName="UpperValueChanged">
             <i:InvokeCommandAction Command="{Binding InRangeCommand}" />
@@ -109,7 +117,8 @@
                cyc:RangeValidator.Maximum="255"
                cyc:RangeValidator.Minimum="{Binding FilterGMin}"
                cyc:RangeValidator.ExcludeMin="True"
-               Text="{Binding FilterGMax, Converter={cyc:NumStrConverter}}" />
+               Text="{Binding FilterGMax, Converter={cyc:NumStrConverter}}"
+               ToolTip="Maximum value of green color." />
       <TextBox Name="textBoxGMin" 
                Grid.Row="1"
                Grid.Column="0"
@@ -117,13 +126,15 @@
                cyc:RangeValidator.Maximum="{Binding FilterGMax}"
                cyc:RangeValidator.Minimum="0"
                cyc:RangeValidator.ExcludeMax="True"
-               Text="{Binding FilterGMin, Converter={cyc:NumStrConverter}}" />
+               Text="{Binding FilterGMin, Converter={cyc:NumStrConverter}}"
+               ToolTip="Minimum value of green color." />
       <mahapps:RangeSlider Name="sliderGreen"
                            Grid.Column="1"
                            Grid.Row="1"
                            Foreground="Green"
                            LowerValue="{Binding FilterGMin}"
-                           UpperValue="{Binding FilterGMax}">
+                           UpperValue="{Binding FilterGMax}"
+                           ToolTip="Filter out green colors beyond the range.">
         <i:Interaction.Triggers>
           <i:EventTrigger EventName="UpperValueChanged">
             <i:InvokeCommandAction Command="{Binding InRangeCommand}" />
@@ -141,7 +152,8 @@
                cyc:RangeValidator.Maximum="255"
                cyc:RangeValidator.Minimum="{Binding FilterBMin}"
                cyc:RangeValidator.ExcludeMin="True"
-               Text="{Binding FilterBMax, Converter={cyc:NumStrConverter}}" />
+               Text="{Binding FilterBMax, Converter={cyc:NumStrConverter}}"
+               ToolTip="Maximum value of blue color."/>
       <TextBox Name="textBoxBMin"
                Grid.Row="2"
                Grid.Column="0"
@@ -149,13 +161,15 @@
                cyc:RangeValidator.Maximum="{Binding FilterBMax}"
                cyc:RangeValidator.Minimum="0"
                cyc:RangeValidator.ExcludeMax="True"
-               Text="{Binding FilterBMin, Converter={cyc:NumStrConverter}}" />
+               Text="{Binding FilterBMin, Converter={cyc:NumStrConverter}}"
+               ToolTip="Minimum value of blue color."/>
       <mahapps:RangeSlider Name="sliderBlue"
                            Grid.Row="2"
                            Grid.Column="1"
                            Foreground="Blue"
                            LowerValue="{Binding FilterBMin}"
-                           UpperValue="{Binding FilterBMax}">
+                           UpperValue="{Binding FilterBMax}"
+                           ToolTip="Filter out blue colors beyond the range.">
         <i:Interaction.Triggers>
           <i:EventTrigger EventName="UpperValueChanged">
             <i:InvokeCommandAction Command="{Binding InRangeCommand}" />
