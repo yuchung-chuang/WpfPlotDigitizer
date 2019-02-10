@@ -23,14 +23,15 @@
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
     <Viewbox Name="imageViewBox">
-      <Grid>
+      <Grid Name="imageGrid">
         <uc:ImageEraser x:Name="imageEraser"
                         Image="{Binding imageErase, Mode=TwoWay}"
                         Input="mouse:right"
                         cyc:Pan.IsEnabled="True"
                         cyc:Pan.Input="mouse:left"
                         cyc:Pan.ClipToParent="True"
-                        cyc:Zoom.IsEnabled="True" />
+                        cyc:Zoom.IsEnabled="True"
+                        cyc:Zoom.Maximum="20" />
       </Grid>
     </Viewbox>
     <StackPanel Grid.Row="1"

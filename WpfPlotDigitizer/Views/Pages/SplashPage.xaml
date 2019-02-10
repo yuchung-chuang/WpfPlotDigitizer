@@ -257,10 +257,10 @@
       </ColorAnimationUsingKeyFrames>
     </Storyboard>
     <Storyboard x:Key="MediaStoryboard">
-      <MediaTimeline Source="pack://siteoforigin:,,,/resources/robotVoice.wav"
+      <MediaTimeline Source="pack://siteoforigin:,,,/app/resources/robotVoice.wav"
                      Storyboard.TargetName="robotVoice_wav"
                      d:DesignTimeNaturalDuration="3.1439999999999997" />
-      <MediaTimeline Source="pack://siteoforigin:,,,/resources/startSound.wav"
+      <MediaTimeline Source="pack://siteoforigin:,,,/app/resources/startSound.wav"
                      Storyboard.TargetName="startSound_wav"
                      d:DesignTimeNaturalDuration="3.7616326"
                      BeginTime="0:0:3.2" />
@@ -276,14 +276,14 @@
   <!--Storyboard.Completed not firing with mediaTimeLine!?-->
   <Grid>
     <Image x:Name="digitizer"
-           Source="/resources/icon_digitizer.png"
+           Source="/app/resources/icon_digitizer.png"
            Width="200"
            Height="200"
            Stretch="Uniform"
            Visibility="Hidden" />
 
     <Image x:Name="cyc"
-           Source="/resources/icon_cyc.png"
+           Source="/app/resources/icon_cyc.png"
            Width="150"
            Height="150" />
     <MediaElement x:Name="robotVoice_wav"
