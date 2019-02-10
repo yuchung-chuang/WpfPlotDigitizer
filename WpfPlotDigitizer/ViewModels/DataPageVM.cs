@@ -58,11 +58,6 @@ namespace WpfPlotDigitizer
       get => appData.Data;
       set => appData.Data = value;
     }
-    public Image<Bgra, byte> imageData
-    {
-      get => appData.ImageData;
-      set => appData.ImageData = value;
-    }
 
     public void ParamChanged()
     {
@@ -71,9 +66,7 @@ namespace WpfPlotDigitizer
       Data = IP.TransformData(imageOrigin, Pos, axLim, axLogBase);
       var dotSize = DataSize == 1 ? 1 : DataSize / 2;
       imageDisplay = imageOrigin.Clone();
-      imageData = imageDisplay.CopyBlank();
-      IP.DrawData(imageDisplay, Pos, dotSize);
-      IP.DrawData(imageData, Pos, dotSize);
+      IP.DrawData(imageDisplay, Pos, dotSize, Colors.Yellow, Colors.Black);
       imageDisplay = imageDisplay.Copy(); // invoke twoway binding
     }
   }

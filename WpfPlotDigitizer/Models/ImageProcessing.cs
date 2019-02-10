@@ -573,12 +573,12 @@ namespace WpfPlotDigitizer
       }
       return dataList;
     }
-    public static void DrawData(Image<Bgra, byte> image, List<Point> Pos, int dotSize)
+    public static void DrawData(Image<Bgra, byte> image, List<Point> Pos, int dotSize, Color fill, Color stroke)
     {
       foreach (var pos in Pos)
       {
-        CvInvoke.Circle(image, pos.ToWinForm(), dotSize, Colors.Red.ToMCvScalar(), -1, LineType.AntiAlias);
-        CvInvoke.Circle(image, pos.ToWinForm(), dotSize, Colors.Black.ToMCvScalar(), 1, LineType.AntiAlias);
+        CvInvoke.Circle(image, pos.ToWinForm(), dotSize, fill.ToMCvScalar(), -1, LineType.AntiAlias);
+        CvInvoke.Circle(image, pos.ToWinForm(), dotSize, stroke.ToMCvScalar(), 1, LineType.AntiAlias);
       }
     }
 
