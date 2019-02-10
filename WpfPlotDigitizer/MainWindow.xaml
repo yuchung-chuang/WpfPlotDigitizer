@@ -25,7 +25,7 @@
   <mahapps:MetroWindow.RightWindowCommands>
     <mahapps:WindowCommands>
       <Button Background="{StaticResource HighlightBrush}"
-              Click="Button_Click">
+              Click="Tutorial_Click">
         <Button.RenderTransform>
           <TranslateTransform Y="-2" />
         </Button.RenderTransform>
@@ -35,7 +35,7 @@
                              Width="24"
                              Height="20" />
       </Button>
-      <Button>
+      <Button Click="About_Click">
         <icon:PackIconModern Kind="Information"
                              VerticalAlignment="Center"
                              HorizontalAlignment="Center"

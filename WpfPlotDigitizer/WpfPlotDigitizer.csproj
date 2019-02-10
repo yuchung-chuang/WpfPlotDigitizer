@@ -69,6 +69,9 @@
     <Reference Include="MaterialDesignThemes.Wpf, Version=2.5.0.1205, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignThemes.2.5.0.1205\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\Microsoft.Expression.Interactions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Extensions.Configuration, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Configuration.2.1.1\lib\netstandard2.0\Microsoft.Extensions.Configuration.dll</HintPath>
     </Reference>
@@ -156,8 +159,8 @@
     </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -180,17 +183,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Models\MessageBoxManager.cs" />
-    <Compile Include="Views\TutorialPopups\SavePopup.xaml.cs">
+    <Compile Include="IoC\MessageBoxManager.cs" />
+    <Compile Include="IoC\TutorialManager.cs" />
+    <Compile Include="Views\Popups\AboutPopup.xaml.cs">
+      <DependentUpon>AboutPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Popups\SavePopup.xaml.cs">
       <DependentUpon>SavePopup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TutorialPopups\ErasePopup.xaml.cs">
+    <Compile Include="Views\Popups\ErasePopup.xaml.cs">
       <DependentUpon>ErasePopup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TutorialPopups\AxisPopup.xaml.cs">
+    <Compile Include="Views\Popups\AxisPopup.xaml.cs">
       <DependentUpon>AxisPopup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TutorialPopups\AxLimPopup.xaml.cs">
+    <Compile Include="Views\Popups\AxLimPopup.xaml.cs">
       <DependentUpon>AxLimPopup.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\SplashPageVM.cs" />
@@ -201,7 +208,7 @@
     <Compile Include="Views\Pages\DataPage.xaml.cs">
       <DependentUpon>DataPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\DI.cs" />
+    <Compile Include="IoC\DI.cs" />
     <Compile Include="ViewModels\AxLimPageVM.cs" />
     <Compile Include="ViewModels\SavePageVM.cs" />
     <Compile Include="ViewModels\ErasePageVM.cs" />
@@ -249,7 +256,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Models\PageManager.cs" />
+    <Compile Include="IoC\PageManager.cs" />
     <Compile Include="Models\ApplicationManager.cs" />
     <Compile Include="ViewModels\BrowsePageVM.cs" />
     <Compile Include="Views\Pages\ErasePage.xaml.cs">
@@ -273,19 +280,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TutorialPopups\SavePopup.xaml">
+    <Page Include="Views\Popups\AboutPopup.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\TutorialPopups\ErasePopup.xaml">
+    <Page Include="Views\Popups\SavePopup.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\TutorialPopups\AxisPopup.xaml">
+    <Page Include="Views\Popups\ErasePopup.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\TutorialPopups\AxLimPopup.xaml">
+    <Page Include="Views\Popups\AxisPopup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Popups\AxLimPopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
