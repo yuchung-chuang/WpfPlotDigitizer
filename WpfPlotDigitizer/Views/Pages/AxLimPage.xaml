@@ -68,10 +68,12 @@
       </Viewbox>
       <Grid Grid.Column="0"
             Grid.Row="1"
-            Width="120">
+            Width="120"
+            Margin="30,0,0,0">
         <Grid.Resources>
           <Style TargetType="TextBox"
-                 BasedOn="{StaticResource TextBoxStyleBase}" />
+                 BasedOn="{StaticResource TextBoxStyleBase}">
+          </Style>
         </Grid.Resources>
         <Grid.RowDefinitions>
           <RowDefinition Height="*" />

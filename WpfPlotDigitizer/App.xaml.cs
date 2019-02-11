@@ -19,10 +19,10 @@ namespace WpfPlotDigitizer
     /// <summary>
     /// custom startup so we load the iocContainer immediately after startup
     /// </summary>
-    /// <param name="e"></param>
     protected override async void OnStartup(StartupEventArgs e)
     {
       base.OnStartup(e);
+      QuickConverterHelpers.Setup();
       Framework.Construct<DefaultFrameworkConstruction>()
         .AddWpfPlotDigitizerServices()
         .Build();
@@ -32,7 +32,7 @@ namespace WpfPlotDigitizer
       Current.MainWindow.Show();
 
 #if DEBUG
-      //splashPageVM.CompleteCommand.Execute(null);
+      splashPageVM.CompleteCommand.Execute(null);
 #endif
 
       await NativeMethod.WaitAsync(obj => (obj as SplashPageVM).IsComplete, splashPageVM);
