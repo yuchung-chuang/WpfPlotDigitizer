@@ -6,26 +6,41 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
+using WpfPlotDigitizer.Properties;
 using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer
 {
   public class TutorialManager
   {
-    private bool[] isFirstVisit = new bool[]
+    public TutorialManager()
     {
-      Properties.Settings.Default.FirstBrowse,
-      Properties.Settings.Default.FirstAxLim,
-      Properties.Settings.Default.FirstAxis,
-      Properties.Settings.Default.FirstFilter,
-      Properties.Settings.Default.FirstErase,
-      Properties.Settings.Default.FirstData,
-      Properties.Settings.Default.FirstSave,
+      CheckFirstVisitApp();
+    }
+
+    private static readonly Settings settings = Settings.Default;
+    public bool IsFirstVisitApp = settings.FirstApp;
+    private bool[] isFirstVisitPage = new bool[]
+    {
+      settings.FirstBrowse,
+      settings.FirstAxLim,
+      settings.FirstAxis,
+      settings.FirstFilter,
+      settings.FirstErase,
+      settings.FirstData,
+      settings.FirstSave,
     };
 
-    public void FirstVisit()
+    public void CheckFirstVisitApp()
     {
-      var settings = Properties.Settings.Default;
+      if (settings.FirstApp)
+      {
+        settings.FirstApp = false;
+        settings.Save();
+      }
+    }
+    public void CheckFirstVisitPage()
+    {
       var page = (ApplicationPages)pageManager.Index;
       var isFirstPropInfo = settings.GetType().GetProperty("First" + page.ToString());
       if ((bool)isFirstPropInfo.GetValue(settings))

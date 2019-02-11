@@ -5,13 +5,18 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:WpfPlotDigitizer"
       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+      xmlns:cyc="clr-namespace:CycWpfLibrary;assembly=CycWpfLibrary"
       mc:Ignorable="d"
       d:DesignHeight="600"
       d:DesignWidth="900"
       d:DataContext="{d:DesignInstance local:SplashPageVM, IsDesignTimeCreatable=True}"
       Background="Black"
       Name="page"
-      Title="SplashPage">
+      Title="SplashPage"
+      KeyDown="page_KeyDown"
+      MouseDown="page_MouseDown"
+      Loaded="page_Loaded"
+      Unloaded="page_Unloaded">
   <Page.Resources>
     <Storyboard x:Key="Storyboard"
                 Completed="Storyboard_Completed">
@@ -361,6 +366,30 @@
         </LinearGradientBrush>
       </TextBlock.Foreground>
     </TextBlock>
-
+    <TextBlock x:Name="text_skip"
+               Margin="5"
+               FontSize="15"
+               FontWeight="Bold"
+               FontStyle="Italic"
+               Foreground="Gray"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Bottom"
+               Visibility="{Binding NotFirstVisit, Converter={cyc:VisibilityConverter}}"
+               Text="Press any key to skip...">
+      <TextBlock.Triggers>
+        <EventTrigger RoutedEvent="Loaded">
+          <BeginStoryboard>
+            <Storyboard>
+              <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                               From="1"
+                               To="0"
+                               Duration="0:0:1"
+                               RepeatBehavior="Forever"
+                               AutoReverse="True" />
+            </Storyboard>
+          </BeginStoryboard>
+        </EventTrigger>
+      </TextBlock.Triggers>
+    </TextBlock>
   </Grid>
 </Page>

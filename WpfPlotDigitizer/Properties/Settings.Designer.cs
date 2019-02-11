@@ -106,5 +106,17 @@ namespace WpfPlotDigitizer.Properties {
                 this["FirstSave"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FirstApp {
+            get {
+                return ((bool)(this["FirstApp"]));
+            }
+            set {
+                this["FirstApp"] = value;
+            }
+        }
     }
 }

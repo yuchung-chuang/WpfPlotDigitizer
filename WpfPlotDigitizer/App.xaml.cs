@@ -32,7 +32,7 @@ namespace WpfPlotDigitizer
       Current.MainWindow.Show();
 
 #if DEBUG
-      splashPageVM.CompleteCommand.Execute(null);
+      //splashPageVM.CompleteCommand.Execute(null);
 #endif
 
       await NativeMethod.WaitAsync(obj => (obj as SplashPageVM).IsComplete, splashPageVM);
@@ -42,7 +42,7 @@ namespace WpfPlotDigitizer
       browsePageVM.PBInput = new Uri(CycResources.PackUri + @"images/data2.png").ToPixelBitmap();
       axLimPageVM.AxLim = new Rect(new Point(1e-4, 1e-4), new Point(1e6, 1e7));
       axLimPageVM.AxLogBase = new Point(10, 0);
-      appManager.PageManager.TurnTo((int)ApplicationPages.Browse);
+      appManager.PageManager.TurnTo((int)ApplicationPages.Axis);
 #endif
     }
   }

@@ -15,6 +15,7 @@ namespace WpfPlotDigitizer
       CompleteCommand = new RelayCommand(Complete);
     }
 
+    public bool NotFirstVisit => !DI.tutorialManager.IsFirstVisitApp;
     public bool IsComplete { get; private set; }
 
     public ICommand CompleteCommand { set; get; }

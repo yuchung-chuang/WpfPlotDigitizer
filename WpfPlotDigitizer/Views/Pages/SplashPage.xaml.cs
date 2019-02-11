@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer
 {
@@ -23,8 +24,7 @@ namespace WpfPlotDigitizer
     public SplashPage()
     {
       InitializeComponent();
-      DataContext = DI.splashPageVM;
-      
+      DataContext = splashPageVM;
     }
 
     /// <summary>
@@ -32,8 +32,26 @@ namespace WpfPlotDigitizer
     /// </summary>
     private void Storyboard_Completed(object sender, EventArgs e)
     {
-      DI.splashPageVM.CompleteCommand.Execute(null);
+      splashPageVM.CompleteCommand.Execute(null);
     }
-    
+
+    private void page_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+      splashPageVM.CompleteCommand.Execute(null);
+    }
+    private void page_KeyDown(object sender, KeyEventArgs e)
+    {
+      splashPageVM.CompleteCommand.Execute(null);
+    }
+
+    private void page_Loaded(object sender, RoutedEventArgs e)
+    {
+      mainWindow.KeyDown += page_KeyDown;
+    }
+    private void page_Unloaded(object sender, RoutedEventArgs e)
+    {
+      mainWindow.KeyDown -= page_KeyDown;
+    }
+
   }
 }

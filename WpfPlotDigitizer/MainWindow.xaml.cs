@@ -30,7 +30,7 @@ namespace WpfPlotDigitizer
 
     private void PageControl_PageAnimated(object sender, EventArgs e)
     {
-      tutorialManager.FirstVisit();
+      tutorialManager.CheckFirstVisitPage();
     }
 
     private void Tutorial_Click(object sender, RoutedEventArgs e)
