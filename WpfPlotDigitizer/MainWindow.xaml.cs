@@ -40,7 +40,7 @@ namespace WpfPlotDigitizer
 
     private void About_Click(object sender, RoutedEventArgs e)
     {
-      new AboutPopup().ShowDialog();
+      //new AboutPopup().ShowDialog();
     }
   }
 }
