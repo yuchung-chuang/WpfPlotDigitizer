@@ -7,73 +7,102 @@
                 xmlns:cc="clr-namespace:CycWpfLibrary.CustomControls;assembly=CycWpfLibrary.CustomControls"
                 xmlns:re="clr-namespace:CycWpfLibrary.Resources;assembly=CycWpfLibrary.Resources"
                 xmlns:sys="clr-namespace:System;assembly=mscorlib"
-                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-                xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
                 xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
                 mc:Ignorable="d"
                 Title="AxLimPopup"
                 Style="{StaticResource PopupWindowStyle}">
-  <Grid>
-    <Button Name="closeButton"
-            VerticalAlignment="Top"
-            HorizontalAlignment="Right"
-            Background="Transparent"
-            Foreground="WhiteSmoke"
-            BorderBrush="Transparent"
-            Margin="5"
-            Click="closeButton_Click">
-      <icon:PackIconMaterial Kind="Close" />
-    </Button>
-    <Grid Margin="20"
-          TextElement.Foreground="Black">
+  <Grid Margin="20"
+        TextElement.Foreground="Black">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="auto" />
+    </Grid.RowDefinitions>
+    <Border Background="Transparent"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Grid.ColumnSpan="2">
+      <Image Source="/WpfPlotDigitizer;component/app/resources/icon_cyc.png"
+             Width="150" />
+    </Border>
+    <TextBlock Text="C.Y.C Products"
+               Foreground="White"
+               FontFamily="OCR A Extended"
+               FontSize="30"
+               Grid.Row="1"
+               Grid.ColumnSpan="2"
+               TextAlignment="Center"
+               Margin="0,0,0,20" />
+    <Grid Grid.Row="3">
       <Grid.RowDefinitions>
-        <RowDefinition Height="auto" />
         <RowDefinition Height="*" />
-        <RowDefinition Height="auto" />
-        <RowDefinition Height="auto" />
-        <RowDefinition Height="auto" />
+        <RowDefinition Height="*" />
       </Grid.RowDefinitions>
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*" />
         <ColumnDefinition Width="*" />
       </Grid.ColumnDefinitions>
-      <Border Background="Transparent"
-              HorizontalAlignment="Center"
-              VerticalAlignment="Center"
-              Grid.ColumnSpan="2">
-        <Image Source="/WpfPlotDigitizer;component/app/resources/icon_cyc.png"
-               Width="150" />
-      </Border>
-      <TextBlock Text="C.Y.C Products"
-                 Foreground="Black"
-                 FontFamily="OCR A Extended"
-                 FontSize="30"
-                 Grid.Row="1"
-                 Grid.ColumnSpan="2"
-                 TextAlignment="Center"
-                 Margin="0,0,0,20" />
+      <Grid.Resources>
+        <Style TargetType="Button">
+          <Setter Property="Margin"
+                  Value="5" />
+          <Setter Property="Background"
+                  Value="Transparent" />
+          <Setter Property="BorderBrush"
+                  Value="Transparent" />
+          <Setter Property="HorizontalContentAlignment"
+                  Value="Left" />
+        </Style>
+        <Style TargetType="TextBlock">
+          <Setter Property="Margin"
+                  Value="10" />
+          <Setter Property="FontSize"
+                  Value="20" />
+        </Style>
+        <Style TargetType="icon:PackIconMaterial">
+          <Setter Property="VerticalAlignment"
+                  Value="Center" />
+          <Setter Property="Width"
+                  Value="30" />
+          <Setter Property="Height"
+                  Value="auto" />
+          <Setter Property="Margin"
+                  Value="5" />
+        </Style>
+      </Grid.Resources>
       <Button Name="githubButton"
-              Grid.Row="3"
-              Margin="5">Github</Button>
-      <Button Name="websiteButton"
-              Grid.Row="3"
-              Grid.Column="2"
-              Margin="5">Website</Button>
-      <Button Name="blogButton"
-              Grid.Row="4"
-              Margin="5">Blog</Button>
-      <Button Name="emailButton"
-              Grid.Row="4"
-              Grid.Column="1"
-              Margin="5">
-        Email
-        <i:Interaction.Triggers>
-          <i:EventTrigger EventName="MouseLeftButtonUp">
-            <ei:LaunchUriOrFileAction Path="mailto:yuchung.chuang@gmail.com" />
-          </i:EventTrigger>
-        </i:Interaction.Triggers>
+              Click="githubButton_Click">
+        <StackPanel Orientation="Horizontal">
+          <icon:PackIconMaterial Kind="GithubCircle" />
+          <TextBlock Text="Github Page" />
+        </StackPanel>
       </Button>
-
+      <Button Name="websiteButton"
+              Grid.Column="2"
+              Click="websiteButton_Click">
+        <StackPanel Orientation="Horizontal">
+          <icon:PackIconMaterial Kind="Web" />
+          <TextBlock Text="My Website" />
+        </StackPanel>
+      </Button>
+      <Button Name="blogButton"
+              Grid.Row="1"
+              Click="blogButton_Click">
+        <StackPanel Orientation="Horizontal">
+          <icon:PackIconMaterial Kind="Wordpress" />
+          <TextBlock Text="My Blog" />
+        </StackPanel>
+      </Button>
+      <Button Name="emailButton"
+              Grid.Row="1"
+              Grid.Column="1"
+              Click="emailButton_Click">
+        <StackPanel Orientation="Horizontal">
+          <icon:PackIconMaterial Kind="EmailOutline" />
+          <TextBlock Text="Contact Me" />
+        </StackPanel>
+      </Button>
     </Grid>
+
   </Grid>
 </cc:PopupWindow>

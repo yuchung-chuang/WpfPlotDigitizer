@@ -9,7 +9,7 @@
                 xmlns:sys="clr-namespace:System;assembly=mscorlib"
                 mc:Ignorable="d"
                 Title="AxLimPopup"
-                Style="{StaticResource PopupWindowStyle}">
+                Style="{StaticResource TutorialPopupStyle}">
   <cc:PopupWindow.Resources>
     <re:CycResources x:Key="resources" />
   </cc:PopupWindow.Resources>

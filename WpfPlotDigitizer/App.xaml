@@ -779,8 +779,15 @@
                 Value="WidthAndHeight" />
       </Style>
 
+      <Style x:Key="TutorialPopupStyle"
+             TargetType="cc:PopupWindow"
+             BasedOn="{StaticResource PopupWindowStyle}">
+        <Setter Property="MaxWidth"
+                Value="{StaticResource PopupMaxWidth}" />
+      </Style>
+
       <Style TargetType="cc:PopupWindow"
-             BasedOn="{StaticResource PopupWindowStyle}" />
+             BasedOn="{StaticResource TutorialPopupStyle}" />
 
       <Style x:Key="PopupGridTextStyle"
              TargetType="TextBlock">
@@ -800,8 +807,8 @@
              TargetType="Grid">
         <Setter Property="HorizontalAlignment"
                 Value="Center" />
-        <Setter Property="MaxWidth"
-                Value="{StaticResource PopupMaxWidth}" />
+        <!--<Setter Property="MaxWidth"
+                Value="{StaticResource PopupMaxWidth}" />-->
         <Setter Property="Margin"
                 Value="10" />
       </Style>

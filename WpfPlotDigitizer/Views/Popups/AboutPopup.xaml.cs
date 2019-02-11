@@ -1,6 +1,7 @@
 ﻿using CycWpfLibrary.CustomControls;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,9 +26,24 @@ namespace WpfPlotDigitizer
       InitializeComponent();
     }
 
-    private void closeButton_Click(object sender, RoutedEventArgs e)
+    private void githubButton_Click(object sender, RoutedEventArgs e)
     {
-      this.Close();
+      Process.Start("https://github.com/alex1392");
+    }
+
+    private void websiteButton_Click(object sender, RoutedEventArgs e)
+    {
+      Process.Start("https://yuchung-chuang.webnode.tw/");
+    }
+
+    private void blogButton_Click(object sender, RoutedEventArgs e)
+    {
+      Process.Start("https://yuchungchuang.wordpress.com/");
+    }
+
+    private void emailButton_Click(object sender, RoutedEventArgs e)
+    {
+      Process.Start("mailto:yuchung.chuang@gmail.com?subject=[WpfPlotDigitizer]Report");
     }
   }
 }
