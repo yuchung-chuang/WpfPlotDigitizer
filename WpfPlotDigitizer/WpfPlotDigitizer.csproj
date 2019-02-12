@@ -183,10 +183,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="IoC\MessageManager.cs" />
+    <Compile Include="Controllers\MessageManager.cs" />
     <Compile Include="Models\MessageTypes.cs" />
     <Compile Include="Models\QuickConverterSetup.cs" />
-    <Compile Include="IoC\TutorialManager.cs" />
+    <Compile Include="Controllers\TutorialManager.cs" />
     <Compile Include="Models\ViewModelBase.cs" />
     <Compile Include="Views\Popups\AboutPopup.xaml.cs">
       <DependentUpon>AboutPopup.xaml</DependentUpon>
@@ -211,7 +211,7 @@
     <Compile Include="Views\Pages\DataPage.xaml.cs">
       <DependentUpon>DataPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="IoC\DI.cs" />
+    <Compile Include="Controllers\DI.cs" />
     <Compile Include="ViewModels\AxLimPageVM.cs" />
     <Compile Include="ViewModels\SavePageVM.cs" />
     <Compile Include="ViewModels\ErasePageVM.cs" />
@@ -259,7 +259,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IoC\PageManager.cs" />
+    <Compile Include="Controllers\PageManager.cs" />
     <Compile Include="Models\ApplicationManager.cs" />
     <Compile Include="ViewModels\BrowsePageVM.cs" />
     <Compile Include="Views\Pages\ErasePage.xaml.cs">
