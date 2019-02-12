@@ -51,13 +51,13 @@
         <ColumnDefinition Width="*" />
       </Grid.ColumnDefinitions>
       <TextBlock Name="headerText"
-                 Text="Axis Limits!" 
+                 Text="{StaticResource AxLimHeader}" 
                  Style="{StaticResource HeaderTextStyle}"/>
       <Viewbox Name="imageViewBox"
                Grid.Column="1"
                Grid.Row="1"
                Margin="10"
-               ToolTip="Please type in all axis limits according to your image.">
+               ToolTip="{StaticResource AxLimImageToolTip}">
         <Grid>
           <Image Source="{Binding imageSource}"
                  cyc:Pan.IsEnabled="True"
@@ -82,13 +82,13 @@
         </Grid.RowDefinitions>
         <TextBox Name="YMax"
                  Grid.Row="0"
-                 md:HintAssist.Hint="Y-Axis: Max"
+                 md:HintAssist.Hint="{StaticResource AxLimYMaxHint}"
                  Validation.Error="TextBox_Error"
                  LostFocus="TextBox_LostFocus"
                  cyc:RangeValidator.IsEnabled="True"
                  cyc:RangeValidator.Minimum="{Binding YMin}"
                  cyc:RangeValidator.ExcludeMin="True"
-                 ToolTip="Please type in the Maximum value of Y-axis.">
+                 ToolTip="{StaticResource AxLimYMaxToolTip}">
           <TextBox.Text>
             <Binding Path="YMax"
                      Converter="{cyc:NumStrConverter}"
@@ -105,8 +105,8 @@
                  Grid.Row="1"
                  Validation.Error="TextBox_Error"
                  LostFocus="TextBox_LostFocus"
-                 md:HintAssist.Hint="Y-Axis: Log Base"
-                 ToolTip="If Y-axis is logarithmic, please type in the base value of logarithm Y-axis, otherwise please leave it empty.">
+                 md:HintAssist.Hint="{StaticResource AxLimYLogHint}"
+                 ToolTip="{StaticResource AxLimYLogToolTip}">
           <TextBox.Text>
             <Binding Path="YLog"
                      Converter="{cyc:NumStrConverter}"
@@ -121,11 +121,11 @@
                  Grid.Row="2"
                  Validation.Error="TextBox_Error"
                  LostFocus="TextBox_LostFocus"
-                 md:HintAssist.Hint="Y-Axis: Min"
+                 md:HintAssist.Hint="{StaticResource AxLimYMinHint}"
                  cyc:RangeValidator.IsEnabled="True"
                  cyc:RangeValidator.Maximum="{Binding YMax}"
                  cyc:RangeValidator.ExcludeMax="True"
-                 ToolTip="Please type in the Minimum value of Y-axis.">
+                 ToolTip="{StaticResource AxLimYMinToolTip}">
           <TextBox.Text>
             <Binding Path="YMin"
                      Converter="{cyc:NumStrConverter}"
@@ -155,22 +155,22 @@
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <TextBox Name="XMin"
-                 Grid.Column="0"
+        <TextBox Name="XMax"
+                 Grid.Column="2"
                  Validation.Error="TextBox_Error"
                  LostFocus="TextBox_LostFocus"
-                 md:HintAssist.Hint="X-Axis: Min"
+                 md:HintAssist.Hint="{StaticResource AxLimXMaxHint}"
                  cyc:RangeValidator.IsEnabled="True"
-                 cyc:RangeValidator.Maximum="{Binding XMax}"
-                 cyc:RangeValidator.ExcludeMax="True"
-                 ToolTip="Please type in the Minimum value of X-axis.">
+                 cyc:RangeValidator.Minimum="{Binding XMin}"
+                 cyc:RangeValidator.ExcludeMin="True"
+                 ToolTip="{StaticResource AxLimXMaxToolTip}">
           <TextBox.Text>
-            <Binding Path="XMin"
+            <Binding Path="XMax"
                      Converter="{cyc:NumStrConverter}"
                      NotifyOnValidationError="True">
               <Binding.ValidationRules>
-                <cyc:DoubleValidation  />
-                <cyc:NotNullValidation  />
+                <cyc:DoubleValidation />
+                <cyc:NotNullValidation />
               </Binding.ValidationRules>
             </Binding>
           </TextBox.Text>
@@ -179,8 +179,8 @@
                  Grid.Column="1"
                  Validation.Error="TextBox_Error"
                  LostFocus="TextBox_LostFocus"
-                 md:HintAssist.Hint="X-Axis: Log Base"
-                 ToolTip="If X-axis is logarithmic, please type in the base value of logarithm Y-axis, otherwise please leave it empty.">
+                 md:HintAssist.Hint="{StaticResource AxLimXLogHint}"
+                 ToolTip="{StaticResource AxLimXLogToolTip}">
           <TextBox.Text>
             <Binding Path="XLog"
                      Converter="{cyc:NumStrConverter}"
@@ -191,22 +191,22 @@
             </Binding>
           </TextBox.Text>
         </TextBox>
-        <TextBox Name="XMax"
-                 Grid.Column="2"
+        <TextBox Name="XMin"
+                 Grid.Column="0"
                  Validation.Error="TextBox_Error"
                  LostFocus="TextBox_LostFocus"
-                 md:HintAssist.Hint="X-Axis: Max"
+                 md:HintAssist.Hint="{StaticResource AxLimXMinHint}"
                  cyc:RangeValidator.IsEnabled="True"
-                 cyc:RangeValidator.Minimum="{Binding XMin}"
-                 cyc:RangeValidator.ExcludeMin="True"
-                 ToolTip="Please type in the Maximum value of X-axis.">
+                 cyc:RangeValidator.Maximum="{Binding XMax}"
+                 cyc:RangeValidator.ExcludeMax="True"
+                 ToolTip="{StaticResource AxLimXMinToolTip}">
           <TextBox.Text>
-            <Binding Path="XMax"
+            <Binding Path="XMin"
                      Converter="{cyc:NumStrConverter}"
                      NotifyOnValidationError="True">
               <Binding.ValidationRules>
-                <cyc:DoubleValidation />
-                <cyc:NotNullValidation />
+                <cyc:DoubleValidation  />
+                <cyc:NotNullValidation  />
               </Binding.ValidationRules>
             </Binding>
           </TextBox.Text>

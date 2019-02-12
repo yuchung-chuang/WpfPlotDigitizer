@@ -32,13 +32,13 @@
     <StackPanel Orientation="Horizontal"
                 Grid.Row="1"
                 Margin="5,20">
-      <Image Source="{Binding Source={StaticResource resources}, Path=MouseLeftButtonUri}"/>
+      <Image Source="{Binding Source={StaticResource resources}, Path=MouseLeftButtonUri}" />
       <Image Source="{Binding Source={StaticResource resources}, Path=MouseLeftButtonUri}" />
     </StackPanel>
     <TextBlock Grid.Column="1"
-                   Text="Manually adjust axis." />
-        <TextBlock Grid.Row="1"
-                   Grid.Column="1"
-                   Text="Let Plot Digitizer find the axis for you." />
+               Text="{StaticResource AxisAdjustTutorial}" />
+    <TextBlock Grid.Row="1"
+               Grid.Column="1"
+               Text="{StaticResource AxisAutoTutorial}" />
   </Grid>
 </cc:PopupWindow>

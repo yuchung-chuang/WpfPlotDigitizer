@@ -1,0 +1,255 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:WpfPlotDigitizer"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+  <sys:String x:Key="TutorialButtonToolTip">
+    Tutorial
+  </sys:String>
+  <sys:String x:Key="AboutButtonToolTip">
+    About
+  </sys:String>
+  <sys:String x:Key="AxisImageToolTip">
+    Please adjust the red frame to fit your axis.
+  </sys:String>
+  <sys:String x:Key="AxLimImageToolTip">
+    Please type in all axis limits according to your image.
+  </sys:String>
+  <sys:String x:Key="AxLimYMaxToolTip">
+    Please type in the Maximum value of Y-axis.
+  </sys:String>
+  <sys:String x:Key="AxLimYLogToolTip">
+    If Y-axis is logarithmic, please type in the base value of logarithm Y-axis, otherwise please leave it empty.
+  </sys:String>
+  <sys:String x:Key="AxLimYMinToolTip">
+    Please type in the Minimum value of Y-axis.
+  </sys:String>
+  <sys:String x:Key="AxLimXMaxToolTip">
+    Please type in the Maximum value of X-axis.
+  </sys:String>
+  <sys:String x:Key="AxLimXLogToolTip">
+    If X-axis is logarithmic, please type in the base value of logarithm Y-axis, otherwise please leave it empty.
+  </sys:String>
+  <sys:String x:Key="AxLimXMinToolTip">
+    Please type in the Minimum value of X-axis.
+  </sys:String>
+  <sys:String x:Key="BrowseButtonToolTip">
+    Browse an image to digitize it!
+  </sys:String>
+  <sys:String x:Key="DataImageToolTip">
+    Your captured data points are displayed here.
+  </sys:String>
+  <sys:String x:Key="DataSliderDataSizeToolTip">
+    Adjust the size of data points.
+  </sys:String>
+  <sys:String x:Key="DataSliderCoverRatioToolTip">
+    Adjust the cover ratio of data points.
+  </sys:String>
+  <sys:String x:Key="EraseImageToolTip">
+    Erase unwanted information in the image.
+  </sys:String>
+  <sys:String x:Key="EraseUndoButtonToolTip">
+    Undo
+  </sys:String>
+  <sys:String x:Key="EraseRedoButtonToolTip">
+    Redo
+  </sys:String>
+  <sys:String x:Key="FilterImageToolTip">
+    Please adjust the sliders to filter out unwanted colors.
+  </sys:String>
+  <sys:String x:Key="FilterRMaxTextToolTip">
+    Maximum value of red color.
+  </sys:String>
+  <sys:String x:Key="FilterRMinTextToolTip">
+    Minimum value of red color.
+  </sys:String>
+  <sys:String x:Key="FilterRSliderToolTip">
+    Filter out red colors beyond the range.
+  </sys:String>
+  <sys:String x:Key="FilterGMaxTextToolTip">
+    Maximum value of green color.
+  </sys:String>
+  <sys:String x:Key="FilterGMinTextToolTip">
+    Minimum value of green color.
+  </sys:String>
+  <sys:String x:Key="FilterGSliderToolTip">
+    Filter out green colors beyond the range.
+  </sys:String>
+  <sys:String x:Key="FilterBMaxTextToolTip">
+    Maximum value of blue color.
+  </sys:String>
+  <sys:String x:Key="FilterBMinTextToolTip">
+    Minimum value of blue color.
+  </sys:String>
+  <sys:String x:Key="FilterBSliderToolTip">
+    Filter out blue colors beyond the range.
+  </sys:String>
+  <sys:String x:Key="SavePlotToolTip">
+    Your captured data points are displayed here.
+  </sys:String>
+  <sys:String x:Key="SaveButtonToolTip">
+    Save your data to a file.
+  </sys:String>
+
+  <sys:String x:Key="SplashSkipText">
+    Press any key to skip...
+  </sys:String>
+
+  <sys:String x:Key="PanTutorial">
+    Pan Image
+  </sys:String>
+  <sys:String x:Key="ZoomTutorial">
+    Zoom Image
+  </sys:String>
+  <sys:String x:Key="EraseTutorial">
+    Erase Image
+  </sys:String>
+  <sys:String x:Key="TrackTutorial">
+    Track data point.
+  </sys:String>
+  <sys:String x:Key="ResetPlotTutorial">
+    Reset view port
+  </sys:String>
+  <sys:String x:Key="AxisAdjustTutorial">
+    Manually adjust axis.
+  </sys:String>
+  <sys:String x:Key="AxisAutoTutorial">
+    Let Plot Digitizer find the axis for you.
+  </sys:String>
+
+  <sys:String x:Key="BrowseIntroTutorial">
+    Welcome to use Plot Digitizer! This is an intelligent application that can help you to digitize data from images.
+  </sys:String>
+  <sys:String x:Key="BrowseButtonTutorial">
+    First, just click the button to browse your image!
+  </sys:String>
+  <sys:String x:Key="BrowseDropTutorial">
+    Or you can simply drag and drop your image onto this area!
+  </sys:String>
+  <sys:String x:Key="BrowseTurnTutorial">
+    In the entire application, you can click inside both sides of the screen to turn next/back to the other pages.
+  </sys:String>
+  <sys:String x:Key="AxLimIntroTutorial">
+    This is Axis Limit Page, where you should input the axis limits.
+  </sys:String>
+  <sys:String x:Key="AxLimImageTutorial1">
+    Here you can view your image.
+  </sys:String>
+  <sys:String x:Key="AxLimImageTutorial2">
+    You are allowed to manipulate all the image through the entire application by your mouse as follow.
+  </sys:String>
+  <sys:String x:Key="AxLimLimitsTutorial">
+    According to your image, please type in all axis limits into the text boxes.
+  </sys:String>
+  <sys:String x:Key="AxLimLogsTutorial">
+    If the axis in your image is in logarithm scale, you can specify its base through these text boxes.
+  </sys:String>
+  <sys:String x:Key="AxisIntroTutorial">
+    Here we are in the Axis Page, where you should input the axis position.
+  </sys:String>
+  <sys:String x:Key="AxisImageTutorial">
+    The application can automatically find the axis position for you, where you can also manually adjust the axis.
+  </sys:String>
+  <sys:String x:Key="FilterIntroTutorial">
+    Here is Filter Page, where you can filter out unwanted information of certain colors.
+  </sys:String>
+  <sys:String x:Key="FilterSliderTutorial">
+    You can either drag red, green, and blue range sliders to filter out colors outside the range,
+  </sys:String>
+  <sys:String x:Key="FilterTextBoxTutorial">
+    or you can type in color code directly to select colors within specific range.
+  </sys:String>
+  <sys:String x:Key="EraseIntroTutorial">
+    Here is Erase Page, where you can erase out unwanted information by an eraser tool.
+  </sys:String>
+  <sys:String x:Key="EraseImageTutorial">
+    You can erase the image by holding mouse right button. Besides, you can also pan and zoom image as usual!
+  </sys:String>
+  <sys:String x:Key="EraseButtonTutorial">
+    You can also use undo and redo buttons to edit the image at your convenience.
+  </sys:String>
+  <sys:String x:Key="DataIntroTutorial">
+    Here is Data Page, where you can adjust the data captured from the image.
+  </sys:String>
+  <sys:String x:Key="DataImageTutorial">
+    The captured data is displayed as red dots here.
+  </sys:String>
+  <sys:String x:Key="DataSliderDataSizeTutorial">
+    You can drag this slider to adjust the size of each data point.
+  </sys:String>
+  <sys:String x:Key="DataSliderCoverRatioTutorial">
+    Or you can adjust the cover ratio (how much covered area counts a data point) by dragging this slider.
+  </sys:String>
+  <sys:String x:Key="SaveIntroTutorial">
+    Here is Save Page, where you can check your captured data and save it into a file.
+  </sys:String>
+  <sys:String x:Key="SavePlotTutorial">
+    Take a look at your data points here, you can also track the data coordinate and reset the view port as follow.
+  </sys:String>
+  <sys:String x:Key="SaveButtonTutorial">
+    Finally, You can save your data into several formats by clicking it. Well done!
+  </sys:String>
+
+  <sys:String x:Key="BrowseButtonContent">
+    Browse
+  </sys:String>
+  <sys:String x:Key="SaveButtonContent">
+    Save
+  </sys:String>
+  <sys:String x:Key="DataSliderDataSizeContent1">
+    Data
+  </sys:String>
+  <sys:String x:Key="DataSliderDataSizeContent2">
+    Size
+  </sys:String>
+  <sys:String x:Key="DataSliderCoverRatioContent1">
+    Cover
+  </sys:String>
+  <sys:String x:Key="DataSliderCoverRatioContent2">
+    Ratio
+  </sys:String>
+  <sys:String x:Key="BrowseHeader">
+    Browse!
+  </sys:String>
+  <sys:String x:Key="BrowseDragText">
+    Drag your image here
+  </sys:String>
+  <sys:String x:Key="BrowseOrText">
+    Or
+  </sys:String>
+  <sys:String x:Key="AxLimHeader">
+    Axis Limits!
+  </sys:String>
+  <sys:String x:Key="AxLimYMaxHint">
+    Y-Axis: Max
+  </sys:String>
+  <sys:String x:Key="AxLimYLogHint">
+    Y-Axis: Log Base
+  </sys:String>
+  <sys:String x:Key="AxLimYMinHint">
+    Y-Axis: Min
+  </sys:String>
+  <sys:String x:Key="AxLimXMaxHint">
+    X-Axis: Max
+  </sys:String>
+  <sys:String x:Key="AxLimXLogHint">
+    X-Axis: Log Base
+  </sys:String>
+  <sys:String x:Key="AxLimXMinHint">
+    X-Axis: Min
+  </sys:String>
+  <sys:String x:Key="AxisHeader">
+    Get Axis!
+  </sys:String>
+  <sys:String x:Key="FilterHeader">
+    Filter!
+  </sys:String>
+  <sys:String x:Key="EraseHeader">
+    Erase!
+  </sys:String>
+  <sys:String x:Key="DataHeader">
+    Adjust Data!
+  </sys:String>
+  <sys:String x:Key="SaveHeader">
+    Well Done!
+  </sys:String>
+</ResourceDictionary>

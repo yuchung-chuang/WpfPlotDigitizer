@@ -19,7 +19,7 @@
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
     <TextBlock Name="headerText"
-               Text="Well Done!"
+               Text="{StaticResource SaveHeader}"
                Style="{StaticResource HeaderTextStyle}" />
     <oxy:Plot Name="dataPlot"
               Grid.Row="1"
@@ -28,16 +28,16 @@
               ZoomInput="mouse:middle"
               PanInput="mouse:left"
               TrackerInput="mouse:right"
-              ToolTip="Your captured data points are displayed here."/>
+              ToolTip="{StaticResource SavePlotToolTip}"/>
     <Button Name="saveButton"
             Grid.Row="2"
-            Content="Save"
+            Content="{StaticResource SaveButtonContent}"
             FontSize="30"
             FontWeight="Medium"
             Width="150"
             Height="50"
             Margin="20"
             Command="{Binding SaveCommand}"
-            ToolTip="Save your data to a file."/>
+            ToolTip="{StaticResource SaveButtonToolTip}"/>
   </Grid>
 </media:AnimatedPage>

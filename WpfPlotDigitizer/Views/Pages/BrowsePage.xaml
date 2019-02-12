@@ -20,7 +20,7 @@
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
     <TextBlock Name="headerText"
-               Text="Browse!"
+               Text="{StaticResource BrowseHeader}"
                Style="{StaticResource HeaderTextStyle}" />
     <custom:DropBorder Name="dropBorder"
                        Grid.Row="1"
@@ -28,24 +28,24 @@
       <StackPanel Visibility="Visible"
                   Orientation="Vertical"
                   VerticalAlignment="Center">
-        <TextBlock Text="Drag your image here"
+        <TextBlock Text="{StaticResource BrowseDragText}"
                    TextAlignment="Center"
                    IsHitTestVisible="False"
                    FontSize="40" />
-        <TextBlock Text="Or"
+        <TextBlock Text="{StaticResource BrowseOrText}"
                    Margin="10"
                    TextAlignment="Center"
                    IsHitTestVisible="False"
                    FontSize="30" />
         <Button Name="browseButton"
-                Content="Browse"
+                Content="{StaticResource BrowseButtonContent}"
                 FontSize="40"
                 FontWeight="Medium"
                 Width="200"
                 Height="70"
                 Command="{Binding OpenFileCommand}"
                 TabIndex="0"
-                ToolTip="Browse an image to digitize it!" />
+                ToolTip="{StaticResource BrowseButtonToolTip}" />
       </StackPanel>
     </custom:DropBorder>
   </Grid>

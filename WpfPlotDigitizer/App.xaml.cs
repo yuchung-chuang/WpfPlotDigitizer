@@ -1,13 +1,15 @@
 ﻿using CycWpfLibrary;
 using CycWpfLibrary.Media;
+using CycWpfLibrary.Resources;
 using Dna;
 using System;
+using System.Globalization;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using static WpfPlotDigitizer.DI;
-using CycWpfLibrary.Resources;
 
 namespace WpfPlotDigitizer
 {
@@ -22,6 +24,7 @@ namespace WpfPlotDigitizer
     protected override async void OnStartup(StartupEventArgs e)
     {
       base.OnStartup(e);
+      CycResources.LoadLanguage();
       QuickConverterHelpers.Setup();
       Framework.Construct<DefaultFrameworkConstruction>()
         .AddWpfPlotDigitizerServices()

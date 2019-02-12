@@ -38,12 +38,12 @@
            Grid.Row="2"
            Margin="5"/>
     <TextBlock Grid.Column="1"
-               Text="Erase Image" />
+               Text="{StaticResource EraseTutorial}" />
     <TextBlock Grid.Column="1"
                Grid.Row="1"
-               Text="Pan Image" />
+               Text="{StaticResource PanTutorial}" />
     <TextBlock Grid.Row="2"
                Grid.Column="1"
-               Text="Zoom Image" />
+               Text="{StaticResource ZoomTutorial}" />
   </Grid>
 </cc:PopupWindow>

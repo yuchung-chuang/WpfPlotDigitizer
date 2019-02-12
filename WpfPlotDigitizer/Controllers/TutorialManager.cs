@@ -51,6 +51,11 @@ namespace WpfPlotDigitizer
       }
     }
 
+    private string FindTutorialText(string key)
+    {
+      return mainWindow.FindResource(key) as string;
+    }
+
     public void Tutorial()
     {
       switch ((ApplicationPages)pageManager.Index)
@@ -58,17 +63,17 @@ namespace WpfPlotDigitizer
         case ApplicationPages.Browse:
           new PopupWindow
           {
-            Text = "Welcome to use Plot Digitizer! This is an intelligent application that can help you to digitize data from images."
+            Text = FindTutorialText("BrowseIntroTutorial"),
           }.ShowDialog();
           new PopupWindow
           {
             PlacementTarget = browsePage.browseButton,
-            Text = "First, just click the button to browse your image!",
+            Text = FindTutorialText("BrowseButtonTutorial"),
           }.ShowDialog();
           new PopupWindow
           {
             PlacementTarget = browsePage.dropBorder,
-            Text = "Or you can simply drag and drop your image onto this area!",
+            Text = FindTutorialText("BrowseDropTutorial"),
           }.ShowDialog();
           new PopupWindow
           {
@@ -77,22 +82,22 @@ namespace WpfPlotDigitizer
               mainWindow.pageControl.TurnNextButton,
               mainWindow.pageControl.TurnBackButton,
             },
-            Text = "In the entire application, you can click inside both sides of the screen to turn next/back to the other pages."
+            Text = FindTutorialText("BrowseTurnTutorial"),
           }.ShowDialog();
           break;
         case ApplicationPages.AxLim:
           new PopupWindow
           {
-            Text = "This is Axis Limit Page, where you should input the axis limits."
+            Text = FindTutorialText("AxLimIntroTutorial"),
           }.ShowDialog();
           new AxLimPopup
           {
             PlacementTarget = axLimPage.imageViewBox,
             Inlines = new List<Inline>
             {
-              new Run("Here you can view your image."),
+              new Run(FindTutorialText("AxLimImageTutorial1")),
               new LineBreak(),
-              new Run("You are allowed to manipulate all the image through the entire application by your mouse as follow."),
+              new Run(FindTutorialText("AxLimImageTutorial2")),
             },
           }.ShowDialog();
           new PopupWindow
@@ -104,7 +109,7 @@ namespace WpfPlotDigitizer
               axLimPage.XMax,
               axLimPage.XMin,
             },
-            Text = "According to your image, please type in all axis limits into the text boxes."
+            Text = FindTutorialText("AxLimLimitsTutorial"),
           }.ShowDialog();
           new PopupWindow
           {
@@ -113,26 +118,26 @@ namespace WpfPlotDigitizer
               axLimPage.YLog,
               axLimPage.XLog,
             },
-            Text = "If the axis in your image is in logarithm scale, you can specify its base through these text boxes."
+            Text = FindTutorialText("AxLimLogsTutorial"),
           }.ShowDialog();
 
           break;
         case ApplicationPages.Axis:
           new PopupWindow
           {
-            Text = "Here we are in the Axis Page, where you should input the axis position."
+            Text = FindTutorialText("AxisIntroTutorial"),
           }.ShowDialog();
           new AxisPopup
           {
             PlacementTarget = axisPage.imageViewBox,
-            Text = "The application can automatically find the axis position for you, where you can also manually adjust the axis.",
+            Text = FindTutorialText("AxisImageTutorial"),
           }.ShowDialog();
 
           break;
         case ApplicationPages.Filter:
           new PopupWindow
           {
-            Text = "Here is Filter Page, where you can filter out unwanted information of certain colors."
+            Text = FindTutorialText("FilterIntroTutorial"),
           }.ShowDialog();
           new PopupWindow
           {
@@ -142,7 +147,7 @@ namespace WpfPlotDigitizer
               filterPage.sliderGreen,
               filterPage.sliderBlue,
             },
-            Text = "You can either drag red, green, and blue range sliders to filter out colors outside the range,"
+            Text = FindTutorialText("FilterSliderTutorial"),
           }.ShowDialog();
           new PopupWindow
           {
@@ -155,19 +160,19 @@ namespace WpfPlotDigitizer
               filterPage.textBoxBMax,
               filterPage.textBoxBMin,
             },
-            Text = "or you can type in color code directly to select colors within specific range."
+            Text = FindTutorialText("FilterTextBoxTutorial"),
           }.ShowDialog();
 
           break;
         case ApplicationPages.Erase:
           new PopupWindow
           {
-            Text = "Here is Erase Page, where you can erase out unwanted information by an eraser tool."
+            Text = FindTutorialText("EraseIntroTutorial"),
           }.ShowDialog();
           new ErasePopup
           {
             PlacementTarget = erasePage.imageViewBox,
-            Text = "You can erase the image by holding mouse right button. Besides, you can also pan and zoom image as usual!",
+            Text = FindTutorialText("EraseImageTutorial"),
           }.ShowDialog();
           new PopupWindow
           {
@@ -176,46 +181,46 @@ namespace WpfPlotDigitizer
               erasePage.undoButton,
               erasePage.redoButton,
             },
-            Text = "You can also use undo and redo buttons to edit the image at your convenience.",
+            Text = FindTutorialText("EraseButtonTutorial"),
           }.ShowDialog();
 
           break;
         case ApplicationPages.Data:
           new PopupWindow
           {
-            Text = "Here is Data Page, where you can adjust the data captured from the image."
+            Text = FindTutorialText("DataIntroTutorial"),
           }.ShowDialog();
           new PopupWindow
           {
             PlacementTarget = dataPage.imageViewBox,
-            Text = "The captured data is displayed as red dots here."
+            Text = FindTutorialText("DataImageTutorial"),
           }.ShowDialog();
           new PopupWindow
           {
             PlacementTarget = dataPage.sliderDataSize,
-            Text = "You can drag this slider to adjust the size of each data point.",
+            Text = FindTutorialText("DataSliderDataSizeTutorial"),
           }.ShowDialog();
           new PopupWindow
           {
             PlacementTarget = dataPage.sliderCoverRatio,
-            Text = "Or you can adjust the cover ratio (how much covered area counts a data point) by dragging this slider.",
+            Text = FindTutorialText("DataSliderCoverRatioTutorial"),
           }.ShowDialog();
 
           break;
         case ApplicationPages.Save:
           new PopupWindow
           {
-            Text = "Here is Save Page, where you can check your captured data and save it into a file.",
+            Text = FindTutorialText("SaveIntroTutorial"),
           }.ShowDialog();
           new SavePopup
           {
             PlacementTarget = savePage.dataPlot,
-            Text = "Take a look at your data points here, you can also track the data coordinate and reset the view port.",
+            Text = FindTutorialText("SavePlotTutorial"),
           }.ShowDialog();
           new PopupWindow
           {
             PlacementTarget = savePage.saveButton,
-            Text = "Finally, You can save your data into several formats by clicking it. Well done!",
+            Text = FindTutorialText("SaveButtonTutorial"),
           }.ShowDialog();
           break;
         default:

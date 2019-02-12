@@ -223,6 +223,14 @@
     </Compile>
     <Compile Include="ViewModels\AxisPageVM.cs" />
     <Compile Include="ViewModels\FilterPageVM.cs" />
+    <Page Include="app\lang\default.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="app\lang\zh-TW.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Pages\DataPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

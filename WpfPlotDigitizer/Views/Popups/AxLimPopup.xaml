@@ -34,9 +34,9 @@
            Grid.Row="1"
            Margin="5"/>
     <TextBlock Grid.Column="1"
-               Text="Pan Image" />
+               Text="{StaticResource PanTutorial}" />
     <TextBlock Grid.Row="1"
                Grid.Column="1"
-               Text="Zoom Image" />
+               Text="{StaticResource ZoomTutorial}" />
   </Grid>
 </cc:PopupWindow>

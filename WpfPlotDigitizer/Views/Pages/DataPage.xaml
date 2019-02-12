@@ -20,11 +20,11 @@
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
     <TextBlock Name="headerText"
-               Text="Adjust Data!"
+               Text="{StaticResource DataHeader}"
                Style="{StaticResource HeaderTextStyle}" />
     <Viewbox Name="imageViewBox"
              Grid.Row="1"
-             ToolTip="Your captured data points are displayed here.">
+             ToolTip="{StaticResource DataImageToolTip}">
       <Grid>
         <Image Source="{Binding imageSource}"
                cyc:Zoom.IsEnabled="True"
@@ -63,27 +63,27 @@
         <RowDefinition Height="*" />
       </Grid.RowDefinitions>
       <Slider Name="sliderDataSize"
-              Value="{Binding DataSize }"
+              Value="{Binding DataSize}"
               Grid.Column="1"
               Minimum="1"
               Maximum="50"
-              ToolTip="Adjust the size of data points."/>
+              ToolTip="{StaticResource DataSliderDataSizeToolTip}" />
       <Slider Name="sliderCoverRatio"
               Value="{Binding RatioInt}"
               Grid.Row="1"
               Grid.Column="1"
               Minimum="0"
               Maximum="100"
-              ToolTip="Adjust the cover ratio of data points."/>
+              ToolTip="{StaticResource DataSliderCoverRatioToolTip}" />
       <TextBlock>
-          <Span>
-            Data <LineBreak />
-            Size
-          </Span>
+        <Run Text="{StaticResource DataSliderDataSizeContent1}" />
+        <LineBreak />
+        <Run Text="{StaticResource DataSliderDataSizeContent2}" />
       </TextBlock>
       <TextBlock Grid.Row="1">
-          Cover <LineBreak />
-          Ratio
+        <Run Text="{StaticResource DataSliderCoverRatioContent1}" />
+        <LineBreak />
+        <Run Text="{StaticResource DataSliderCoverRatioContent2}" />
       </TextBlock>
     </Grid>
 

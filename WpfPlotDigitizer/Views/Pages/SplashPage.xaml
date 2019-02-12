@@ -375,7 +375,7 @@
                HorizontalAlignment="Right"
                VerticalAlignment="Bottom"
                Visibility="{Binding NotFirstVisit, Converter={cyc:VisibilityConverter}}"
-               Text="Press any key to skip...">
+               Text="{StaticResource SplashSkipText}">
       <TextBlock.Triggers>
         <EventTrigger RoutedEvent="Loaded">
           <BeginStoryboard>

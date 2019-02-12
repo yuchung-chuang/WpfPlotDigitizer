@@ -45,15 +45,15 @@
       <Image Source="{Binding Source={StaticResource resources}, Path=MouseLeftButtonUri}" />
     </StackPanel>
     <TextBlock Grid.Column="1"
-               Text="Track data point." />
+               Text="{StaticResource TrackTutorial}" />
     <TextBlock Grid.Column="1"
                Grid.Row="1"
-               Text="Pan Image" />
+               Text="{StaticResource PanTutorial}" />
     <TextBlock Grid.Row="2"
                Grid.Column="1"
-               Text="Zoom Image" />
+               Text="{StaticResource ZoomTutorial}" />
     <TextBlock Grid.Row="3"
                Grid.Column="1"
-               Text="Reset view port" />
+               Text="{StaticResource ResetPlotTutorial}" />
   </Grid>
 </cc:PopupWindow>
