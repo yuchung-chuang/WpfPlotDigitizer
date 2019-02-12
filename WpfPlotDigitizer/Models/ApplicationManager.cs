@@ -43,11 +43,10 @@ namespace WpfPlotDigitizer
 
     public PageManagerBase PageManager { get; private set; } = pageManager;
 
-    private bool PageManager_TurnBackEvent(object sender, EventArgs e)
+    private void PageManager_TurnBackEvent(object sender, TurnEventArgs e)
     {
       var pageManager = sender as PageManager;
       SetAnimationProperty();
-      return true;
 
       void SetAnimationProperty()
       {
@@ -59,13 +58,13 @@ namespace WpfPlotDigitizer
         previousPage.TransitionType = PageTransitionType.In;
       }
     }
-    private bool PageManager_TurnNextEvent(object sender, EventArgs e)
+    private void PageManager_TurnNextEvent(object sender, TurnEventArgs e)
     {
       var pageManager = sender as PageManager;
-      var result = TurnNextFrom() && TurnNextTo();
-      if (result)
+      if (TurnNextFrom() && TurnNextTo())
         SetAnimationProperty();
-      return result;
+      else
+        e.IsCancel = true;
 
       void SetAnimationProperty()
       {
@@ -160,23 +159,28 @@ namespace WpfPlotDigitizer
       }
       bool PBInputCheck() => appData.PBInput != null;
     }
-    private bool PageManager_TurnToEvent(object sender, int index)
+    private void PageManager_TurnToEvent(object sender, TurnToEventArgs e)
     {
       var pageManager = sender as PageManager;
-      var turns = index - pageManager.Index;
+      var turns = e.Index - pageManager.Index;
       if (turns > 0)
       {
         for (int i = 0; i < turns; i++)
           if (!pageManager.TurnNext())
-            return false;
+          {
+            e.IsCancel = true;
+            return;
+          }
       }
       else if (turns < 0)
       {
         for (int i = 0; i > turns; i--)
           if (!pageManager.TurnBack())
-            return false;
+          {
+            e.IsCancel = true;
+            return;
+          }
       }
-      return true;
     }
   }
 }
