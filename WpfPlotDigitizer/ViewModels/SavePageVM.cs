@@ -61,9 +61,9 @@ namespace WpfPlotDigitizer
       }
 
       if (IsSucessfulSave)
-        MessageBoxManager.Information("Sucessfully saved!");
+        OnMessageRequest("Your data is sucessfully saved!", MessageTypes.Information);
       else
-        MessageBoxManager.Warning("Sorry... there's something wrong while saving...");
+        OnMessageRequest("Sorry... there's something wrong while saving...", MessageTypes.Warning);
 
       async Task<bool> SaveAsExcelAsync()
       {

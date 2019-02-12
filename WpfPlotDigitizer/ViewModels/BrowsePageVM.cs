@@ -35,7 +35,7 @@ namespace WpfPlotDigitizer
         }
         else
         {
-          MessageBoxManager.Warning("Input file should be an image.");
+          OnMessageRequest("Input file should be an image.", MessageTypes.Warning);
         }
       }
     }
@@ -57,10 +57,8 @@ namespace WpfPlotDigitizer
       var imageExtensions = ImageFileExtensions.String;
       dialog.Filter = "Images|" + imageExtensions + "|All|*.*";
       if (dialog.ShowDialog() == false)
-      {
         return;
-      }
-      PBInput = new BitmapImage(new Uri(dialog.FileName)).ToPixelBitmap();
+      FileName = dialog.FileName;
     }
   }
 }

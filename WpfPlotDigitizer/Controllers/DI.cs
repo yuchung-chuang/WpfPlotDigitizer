@@ -9,11 +9,10 @@ namespace WpfPlotDigitizer
   public static class DI
   {
     public static PageManager pageManager => Framework.Service<PageManager>();
+    public static MessageManager messageManager => Framework.Service<MessageManager>();
     public static TutorialManager tutorialManager => Framework.Service<TutorialManager>();
-    public static ApplicationManager appManager
-      => Framework.Service<ApplicationManager>();
-    public static ApplicationData appData
-      => Framework.Service<ApplicationData>();
+    public static ApplicationManager appManager => Framework.Service<ApplicationManager>();
+    public static ApplicationData appData => Framework.Service<ApplicationData>();
 
     public static MainWindowVM mainWindowVM => Framework.Service<MainWindowVM>();
     public static SplashPageVM splashPageVM => Framework.Service<SplashPageVM>();
@@ -40,6 +39,7 @@ namespace WpfPlotDigitizer
     {
       construction.Services.AddSingleton<PageManager>();
       construction.Services.AddSingleton<TutorialManager>();
+      construction.Services.AddSingleton<MessageManager>();
       construction.Services.AddSingleton<ApplicationManager>();
       construction.Services.AddSingleton<ApplicationData>();
 

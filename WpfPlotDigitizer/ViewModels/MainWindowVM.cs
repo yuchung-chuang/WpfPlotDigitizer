@@ -15,13 +15,16 @@ namespace WpfPlotDigitizer
 {
   public class MainWindowVM : ViewModelBase
   {
-    public MainWindowVM()
-    {
-
-    }
+    public PageManagerBase PageManager => pageManager;
+    
     /// <summary>
-    /// 必須透過<see cref="ApplicationManager"/>來取得<see cref="PageManager"/>，否則會無法實例化<see cref="ApplicationManager"/>!
+    /// For initializing
     /// </summary>
-    public PageManagerBase PageManager => appManager.PageManager; 
+    public ApplicationManager ApplicationManager = appManager;
+
+    /// <summary>
+    /// For initializing
+    /// </summary>
+    public MessageManager MessageManager = messageManager;
   }
 }

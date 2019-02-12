@@ -183,9 +183,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="IoC\MessageBoxManager.cs" />
+    <Compile Include="IoC\MessageManager.cs" />
+    <Compile Include="Models\MessageTypes.cs" />
     <Compile Include="Models\QuickConverterSetup.cs" />
     <Compile Include="IoC\TutorialManager.cs" />
+    <Compile Include="Models\ViewModelBase.cs" />
     <Compile Include="Views\Popups\AboutPopup.xaml.cs">
       <DependentUpon>AboutPopup.xaml</DependentUpon>
     </Compile>
