@@ -184,7 +184,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="IoC\MessageBoxManager.cs" />
-    <Compile Include="IoC\QuickConverterSetup.cs" />
+    <Compile Include="Models\QuickConverterSetup.cs" />
     <Compile Include="IoC\TutorialManager.cs" />
     <Compile Include="Views\Popups\AboutPopup.xaml.cs">
       <DependentUpon>AboutPopup.xaml</DependentUpon>

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using MahApps.Metro.Controls.Dialogs;
+using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer
 {
@@ -12,7 +13,7 @@ namespace WpfPlotDigitizer
   {
     public static void Warning(string message)
     {
-      DI.mainWindow.ShowMessageAsync("Plot Digitizer Warning", message, MessageDialogStyle.Affirmative, new MetroDialogSettings
+      mainWindow.ShowMessageAsync("Plot Digitizer Warning", message, MessageDialogStyle.Affirmative, new MetroDialogSettings
       {
         ColorScheme = MetroDialogColorScheme.Inverted,
       });
@@ -20,7 +21,7 @@ namespace WpfPlotDigitizer
 
     public static void Information(string message)
     {
-      DI.mainWindow.ShowMessageAsync("Plot Digitizer Message", message);
+      mainWindow.ShowMessageAsync("Plot Digitizer Message", message);
     }
   }
 }

@@ -20,7 +20,6 @@ namespace WpfPlotDigitizer
     {
       PageManager.TurnNextEvent += PageManager_TurnNextEvent;
       PageManager.TurnBackEvent += PageManager_TurnBackEvent;
-      PageManager.TurnToEvent += PageManager_TurnToEvent;
     }
 
     public bool IsBusy { get; set; } = false;
@@ -43,7 +42,7 @@ namespace WpfPlotDigitizer
 
     public PageManagerBase PageManager { get; private set; } = pageManager;
 
-    private void PageManager_TurnBackEvent(object sender, TurnEventArgs e)
+    private void PageManager_TurnBackEvent(object sender, EventArgs e)
     {
       var pageManager = sender as PageManager;
       SetAnimationProperty();
@@ -58,13 +57,12 @@ namespace WpfPlotDigitizer
         previousPage.TransitionType = PageTransitionType.In;
       }
     }
-    private void PageManager_TurnNextEvent(object sender, TurnEventArgs e)
+    private void PageManager_TurnNextEvent(object sender, EventArgs e)
     {
       var pageManager = sender as PageManager;
-      if (TurnNextFrom() && TurnNextTo())
-        SetAnimationProperty();
-      else
-        e.IsCancel = true;
+      TurnNextFrom();
+      TurnNextTo();
+      SetAnimationProperty();
 
       void SetAnimationProperty()
       {
@@ -75,36 +73,19 @@ namespace WpfPlotDigitizer
         nextPage.SlideType = PageSlideType.Right;
         nextPage.TransitionType = PageTransitionType.In;
       }
-      bool TurnNextFrom()
+      void TurnNextFrom()
       {
-        var turnResult = true;
         switch ((ApplicationPages)pageManager.Index)
         {
           case ApplicationPages.Browse:
-            if (PBInputCheck())
+            appData.PBFilterW = new PixelBitmap(appData.PBInput.Size)
             {
-              appData.PBFilterW = new PixelBitmap(appData.PBInput.Size)
-              {
-                Pixel = ImageProcessing.FilterW(appData.PBInput)
-              };
-            }
-            else
-            {
-              MessageBoxManager.Warning("Please select an image.");
-              turnResult = false;
-            }
+              Pixel = ImageProcessing.FilterW(appData.PBInput)
+            };
             break;
           case ApplicationPages.AxLim:
-            if (axLimPageVM.IsValid)
-            {
-              appData.AxLim = axLimPageVM.AxLim;
-              appData.AxLogBase = axLimPageVM.AxLogBase;
-            }
-            else
-            {
-              MessageBoxManager.Warning("Please type in all valid axis limits.");
-              turnResult = false;
-            }
+            appData.AxLim = axLimPageVM.AxLim;
+            appData.AxLogBase = axLimPageVM.AxLogBase;
             break;
           case ApplicationPages.Axis:
             appData.PBAxis = appData.PBInput.Bitmap
@@ -122,11 +103,9 @@ namespace WpfPlotDigitizer
           default:
             break;
         }
-        return turnResult;
       }
-      bool TurnNextTo()
+      void TurnNextTo()
       {
-        var turnResult = true;
         // call before actually turned next
         switch ((ApplicationPages)pageManager.Index + 1)
         {
@@ -155,31 +134,6 @@ namespace WpfPlotDigitizer
           default:
             break;
         }
-        return turnResult;
-      }
-      bool PBInputCheck() => appData.PBInput != null;
-    }
-    private void PageManager_TurnToEvent(object sender, TurnToEventArgs e)
-    {
-      var pageManager = sender as PageManager;
-      var turns = e.Index - pageManager.Index;
-      if (turns > 0)
-      {
-        for (int i = 0; i < turns; i++)
-          if (!pageManager.TurnNext())
-          {
-            e.IsCancel = true;
-            return;
-          }
-      }
-      else if (turns < 0)
-      {
-        for (int i = 0; i > turns; i--)
-          if (!pageManager.TurnBack())
-          {
-            e.IsCancel = true;
-            return;
-          }
       }
     }
   }
