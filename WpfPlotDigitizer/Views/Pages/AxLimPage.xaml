@@ -51,8 +51,8 @@
         <ColumnDefinition Width="*" />
       </Grid.ColumnDefinitions>
       <TextBlock Name="headerText"
-                 Text="{StaticResource AxLimHeader}" 
-                 Style="{StaticResource HeaderTextStyle}"/>
+                 Text="{StaticResource AxLimHeader}"
+                 Style="{StaticResource HeaderTextStyle}" />
       <Viewbox Name="imageViewBox"
                Grid.Column="1"
                Grid.Row="1"
@@ -64,6 +64,8 @@
                  cyc:Pan.Input="mouse:left"
                  cyc:Pan.ClipToParent="True"
                  cyc:Zoom.IsEnabled="True" />
+          <Border BorderBrush="Black"
+                  BorderThickness="1" />
         </Grid>
       </Viewbox>
       <Grid Grid.Column="0"
@@ -112,7 +114,7 @@
                      Converter="{cyc:NumStrConverter}"
                      NotifyOnValidationError="True">
               <Binding.ValidationRules>
-                <cyc:LogBaseValidation  />
+                <cyc:LogBaseValidation />
               </Binding.ValidationRules>
             </Binding>
           </TextBox.Text>
@@ -131,8 +133,8 @@
                      Converter="{cyc:NumStrConverter}"
                      NotifyOnValidationError="True">
               <Binding.ValidationRules>
-                <cyc:DoubleValidation  />
-                <cyc:NotNullValidation  />
+                <cyc:DoubleValidation />
+                <cyc:NotNullValidation />
               </Binding.ValidationRules>
             </Binding>
           </TextBox.Text>
@@ -155,17 +157,17 @@
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <TextBox Name="XMax"
-                 Grid.Column="2"
+        <TextBox Name="XMin"
+                 Grid.Column="0"
                  Validation.Error="TextBox_Error"
                  LostFocus="TextBox_LostFocus"
-                 md:HintAssist.Hint="{StaticResource AxLimXMaxHint}"
+                 md:HintAssist.Hint="{StaticResource AxLimXMinHint}"
                  cyc:RangeValidator.IsEnabled="True"
-                 cyc:RangeValidator.Minimum="{Binding XMin}"
-                 cyc:RangeValidator.ExcludeMin="True"
-                 ToolTip="{StaticResource AxLimXMaxToolTip}">
+                 cyc:RangeValidator.Maximum="{Binding XMax}"
+                 cyc:RangeValidator.ExcludeMax="True"
+                 ToolTip="{StaticResource AxLimXMinToolTip}">
           <TextBox.Text>
-            <Binding Path="XMax"
+            <Binding Path="XMin"
                      Converter="{cyc:NumStrConverter}"
                      NotifyOnValidationError="True">
               <Binding.ValidationRules>
@@ -186,27 +188,27 @@
                      Converter="{cyc:NumStrConverter}"
                      NotifyOnValidationError="True">
               <Binding.ValidationRules>
-                <cyc:LogBaseValidation  />
+                <cyc:LogBaseValidation />
               </Binding.ValidationRules>
             </Binding>
           </TextBox.Text>
         </TextBox>
-        <TextBox Name="XMin"
-                 Grid.Column="0"
+        <TextBox Name="XMax"
+                 Grid.Column="2"
                  Validation.Error="TextBox_Error"
                  LostFocus="TextBox_LostFocus"
-                 md:HintAssist.Hint="{StaticResource AxLimXMinHint}"
+                 md:HintAssist.Hint="{StaticResource AxLimXMaxHint}"
                  cyc:RangeValidator.IsEnabled="True"
-                 cyc:RangeValidator.Maximum="{Binding XMax}"
-                 cyc:RangeValidator.ExcludeMax="True"
-                 ToolTip="{StaticResource AxLimXMinToolTip}">
+                 cyc:RangeValidator.Minimum="{Binding XMin}"
+                 cyc:RangeValidator.ExcludeMin="True"
+                 ToolTip="{StaticResource AxLimXMaxToolTip}">
           <TextBox.Text>
-            <Binding Path="XMin"
+            <Binding Path="XMax"
                      Converter="{cyc:NumStrConverter}"
                      NotifyOnValidationError="True">
               <Binding.ValidationRules>
-                <cyc:DoubleValidation  />
-                <cyc:NotNullValidation  />
+                <cyc:DoubleValidation />
+                <cyc:NotNullValidation />
               </Binding.ValidationRules>
             </Binding>
           </TextBox.Text>

@@ -38,6 +38,8 @@
                         cyc:Pan.ClipToParent="True"
                         cyc:Zoom.IsEnabled="True"
                         cyc:Zoom.Maximum="20" />
+        <Border BorderBrush="Black"
+                BorderThickness="1" />
       </Grid>
     </Viewbox>
     <StackPanel Grid.Row="2"

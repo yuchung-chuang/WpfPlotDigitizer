@@ -33,6 +33,8 @@
                cyc:Pan.IsEnabled="True"
                cyc:Pan.Input="mouse:left"
                cyc:Pan.ClipToParent="True" />
+        <Border BorderBrush="Black"
+                BorderThickness="1" />
       </Grid>
     </Viewbox>
     <Grid Grid.Row="2"
