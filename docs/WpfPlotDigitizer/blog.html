@@ -1,81 +1,13 @@
-<!doctype html>
-<html>
-
-  <head>
-    <meta charset="utf-8">
-    <title>Blog</title>
-    <link rel="stylesheet"
-          href="/assets/css/styles.css">
-    <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" />
-    <!-- Begin Jekyll SEO tag v2.5.0 -->
-<title>Blog</title>
-<meta name="generator" content="Jekyll v3.8.5" />
-<meta property="og:title" content="Blog" />
-<meta property="og:locale" content="en_US" />
-<link rel="canonical" href="http://localhost:4000/WpfPlotDigitizer/blog.html" />
-<meta property="og:url" content="http://localhost:4000/WpfPlotDigitizer/blog.html" />
-<script type="application/ld+json">
-{"url":"http://localhost:4000/WpfPlotDigitizer/blog.html","headline":"Blog","@type":"WebPage","@context":"http://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-
-  </head>
-
-  <body>
-    <nav>
-  
-  <a href="/"
-     >
-    Home
-  </a>
-  
-  <a href="/WpfPlotDigitizer/about.html"
-     >
-    About
-  </a>
-  
-  <a href="/WpfPlotDigitizer/blog.html"
-     
-     class="current"
-     >
-    Blog
-  </a>
-  
-  <a href="/WpfPlotDigitizer/staff.html"
-     >
-    Staff
-  </a>
-  
-</nav>
-
-    <h1>Latest Posts</h1>
+---
+title: Blog
+---
+<h1>Latest Posts</h1>
 
 <ul>
-  
+  {% for post in site.posts %}
   <li>
-    <h2><a href="/2019/02/13/Post1.html">Post1</a></h2>
-    <p><p>A banana is an edible fruit – botanically a berry – produced by several kinds
-of large herbaceous flowering plants in the genus Musa.</p>
-
-</p>
+    <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
+    <p>{{ post.excerpt }}</p>
   </li>
-  
-  <li>
-    <h2><a href="/2019/02/12/Post2.html">Post2</a></h2>
-    <p><p>An apple is a sweet, edible fruit produced by an apple tree.</p>
-
-</p>
-  </li>
-  
-  <li>
-    <h2><a href="/2019/02/11/Post3.html">Post3</a></h2>
-    <p><p>Kiwifruit (often abbreviated as kiwi), or Chinese gooseberry is the edible
-berry of several species of woody vines in the genus Actinidia.</p>
-
-</p>
-  </li>
-  
+  {% endfor %}
 </ul>
-
-  </body>
-
-</html>
