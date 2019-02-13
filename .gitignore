@@ -261,3 +261,5 @@ __pycache__/
 *.pyc
 WpfTester/
 WebResources/
+OcrTester/
+BindingTester/
