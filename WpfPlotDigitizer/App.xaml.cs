@@ -1,6 +1,7 @@
 ﻿using CycWpfLibrary;
 using CycWpfLibrary.Media;
 using CycWpfLibrary.Resources;
+using CycWpfLibrary.UserControls;
 using Dna;
 using System;
 using System.Globalization;
@@ -40,6 +41,11 @@ namespace WpfPlotDigitizer
 
       await NativeMethod.WaitAsync(obj => (obj as SplashPageVM).IsComplete, splashPageVM);
       mainWindow.gridMain.Children.Remove(mainWindow.splashFrame);
+
+      var pageControl = mainWindow.Resources["pageControl"] as PageControl;
+      mainWindow.pageControl = pageControl;
+      pageControl.PageAnimated += mainWindow.PageControl_PageAnimated;
+      mainWindow.gridMain.Children.Add(pageControl);
 
 #if DEBUG
       browsePageVM.PBInput = new Uri(CycResources.PackUri + @"images/data.png").ToPixelBitmap();

@@ -2,6 +2,7 @@
 using CycWpfLibrary.CustomControls;
 using CycWpfLibrary.Media;
 using CycWpfLibrary.Resources;
+using CycWpfLibrary.UserControls;
 using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
@@ -25,10 +26,11 @@ namespace WpfPlotDigitizer
     {
       InitializeComponent();
       DataContext = mainWindowVM;
-      pageControl.PageAnimated += PageControl_PageAnimated;
     }
 
-    private void PageControl_PageAnimated(object sender, EventArgs e)
+    public PageControl pageControl;
+
+    public void PageControl_PageAnimated(object sender, EventArgs e)
     {
       tutorialManager.CheckFirstVisitPage();
     }
