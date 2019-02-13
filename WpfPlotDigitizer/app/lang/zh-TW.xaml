@@ -251,4 +251,17 @@
   <sys:String x:Key="SaveHeader">
     儲存檔案
   </sys:String>
+
+  <sys:String x:Key="AboutGithub">
+    Github 主頁
+  </sys:String>
+  <sys:String x:Key="AboutWeb">
+    個人網站
+  </sys:String>
+  <sys:String x:Key="AboutBlog">
+    技術部落格
+  </sys:String>
+  <sys:String x:Key="AboutContact">
+    聯絡作者
+  </sys:String>
 </ResourceDictionary>

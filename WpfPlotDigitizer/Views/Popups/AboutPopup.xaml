@@ -74,7 +74,7 @@
               Click="githubButton_Click">
         <StackPanel Orientation="Horizontal">
           <icon:PackIconMaterial Kind="GithubCircle" />
-          <TextBlock Text="Github Page" />
+          <TextBlock Text="{StaticResource AboutGithub}" />
         </StackPanel>
       </Button>
       <Button Name="websiteButton"
@@ -82,7 +82,7 @@
               Click="websiteButton_Click">
         <StackPanel Orientation="Horizontal">
           <icon:PackIconMaterial Kind="Web" />
-          <TextBlock Text="My Website" />
+          <TextBlock Text="{StaticResource AboutWeb}" />
         </StackPanel>
       </Button>
       <Button Name="blogButton"
@@ -90,7 +90,7 @@
               Click="blogButton_Click">
         <StackPanel Orientation="Horizontal">
           <icon:PackIconMaterial Kind="Wordpress" />
-          <TextBlock Text="My Blog" />
+          <TextBlock Text="{StaticResource AboutBlog}" />
         </StackPanel>
       </Button>
       <Button Name="emailButton"
@@ -99,7 +99,7 @@
               Click="emailButton_Click">
         <StackPanel Orientation="Horizontal">
           <icon:PackIconMaterial Kind="EmailOutline" />
-          <TextBlock Text="Contact Me" />
+          <TextBlock Text="{StaticResource AboutContact}" />
         </StackPanel>
       </Button>
     </Grid>

@@ -252,4 +252,17 @@
   <sys:String x:Key="SaveHeader">
     Well Done!
   </sys:String>
+
+  <sys:String x:Key="AboutGithub">
+    Github Page
+  </sys:String>
+  <sys:String x:Key="AboutWeb">
+    My Website
+  </sys:String>
+  <sys:String x:Key="AboutBlog">
+    My Blog
+  </sys:String>
+  <sys:String x:Key="AboutContact">
+    Contact Me
+  </sys:String>
 </ResourceDictionary>
