@@ -17,10 +17,10 @@ namespace WpfPlotDigitizer
       switch (appManager.Language)
       {
         default:
-        case "en-US":
+        case CycResources.en_US:
           enButton.IsChecked = true;
           break;
-        case "zh-TW":
+        case CycResources.zh_TW:
           zhButton.IsChecked = true;
           break;
       }
