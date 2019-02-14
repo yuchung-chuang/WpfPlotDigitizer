@@ -1,8 +1,8 @@
 - name: Home
   link: /
 - name: About
-  link: /WpfPlotDigitizer/about.html
+  link: /about/
 - name: Blog
-  link: /WpfPlotDigitizer/blog.html
+  link: /blog/
 - name: Staff
-  link: /WpfPlotDigitizer/staff.html
+  link: /staff/
