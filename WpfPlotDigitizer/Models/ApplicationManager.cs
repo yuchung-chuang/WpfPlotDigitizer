@@ -2,9 +2,12 @@
 using CycWpfLibrary.Emgu;
 using CycWpfLibrary.Media;
 using CycWpfLibrary.MVVM;
+using CycWpfLibrary.Resources;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using System;
+using System.Globalization;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -38,6 +41,56 @@ namespace WpfPlotDigitizer
       {
         IsBusy = false;
       }
+    }
+
+    public const string defaultLang = CycResources.en_US;
+    private string language = defaultLang;
+    public string Language
+    {
+      get => language;
+      set
+      {
+        language = value;
+
+        ResourceDictionary rd = new ResourceDictionary();
+        try
+        {
+          rd.Source = new Uri(@"app/lang/" + language + ".xaml", UriKind.Relative);
+        }
+        catch
+        {
+          return;
+        }
+
+        var md = Application.Current.Resources.MergedDictionaries;
+        foreach (var d in md)
+        {
+          if (d.Source.ToString().Contains(@"app/lang/"))
+          {
+            md.Remove(d);
+            break;
+          }
+        }
+        md.Add(rd);
+
+      }
+    }
+
+    /// <summary>
+    /// Usage: Prepare "app/lang/default.xaml" and "app/lang/YOURLANGUAGE.xaml" files, and call this method in <see cref="Application.OnStartup(StartupEventArgs)"/>
+    /// </summary>
+    public void LoadLanguage()
+    {
+      CultureInfo currentInfo = CultureInfo.CurrentCulture;
+      if (currentInfo.Name.Contains("zh"))
+        Language = CycResources.zh_TW;
+      else if (currentInfo.Name.Contains("en"))
+        Language = CycResources.en_US;
+      else
+        Language = defaultLang;
+#if DEBUG
+      Language = CycResources.zh_TW;
+#endif
     }
 
     public PageManagerBase PageManager { get; private set; } = pageManager;

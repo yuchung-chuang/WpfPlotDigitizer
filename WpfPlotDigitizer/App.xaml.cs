@@ -25,12 +25,12 @@ namespace WpfPlotDigitizer
     protected override async void OnStartup(StartupEventArgs e)
     {
       base.OnStartup(e);
-      CycResources.LoadLanguage();
       QuickConverterHelpers.Setup();
       Framework.Construct<DefaultFrameworkConstruction>()
         .AddWpfPlotDigitizerServices()
         .Build();
 
+      appManager.LoadLanguage();
       Current.MainWindow = mainWindow;
       mainWindow.splashFrame.Content = splashPage;
       Current.MainWindow.Show();

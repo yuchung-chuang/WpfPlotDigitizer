@@ -3,274 +3,275 @@
                     xmlns:local="clr-namespace:WpfPlotDigitizer"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
   <sys:String x:Key="LangHeader">
-    語言
+    Language
   </sys:String>
   <sys:String x:Key="PopupOkButton">
-    瞭解
+    Got it!
   </sys:String>
   <sys:String x:Key="TutorialButtonToolTip">
-    說明
+    Tutorial
   </sys:String>
   <sys:String x:Key="AboutButtonToolTip">
-    關於
+    About
   </sys:String>
   <sys:String x:Key="LangButtonToolTip">
-    語言
+    Languages
   </sys:String>
   <sys:String x:Key="AxisImageToolTip">
-    請調整紅色邊框以符合圖中的座標軸。
+    Please adjust the red frame to fit your axis.
   </sys:String>
   <sys:String x:Key="AxLimImageToolTip">
-    請根據圖片輸入全部的座標軸邊界。
+    Please type in all axis limits according to your image.
   </sys:String>
   <sys:String x:Key="AxLimYMaxToolTip">
-    請輸入Y座標的最大值。
+    Please type in the Maximum value of Y-axis.
   </sys:String>
   <sys:String x:Key="AxLimYLogToolTip">
-    若Y座標軸為對數尺度，請輸入該底數，否則請將此欄留白。
+    If Y-axis is logarithmic, please type in the base value of logarithm Y-axis, otherwise please leave it empty.
   </sys:String>
   <sys:String x:Key="AxLimYMinToolTip">
-    請輸入Y座標的最小值。
+    Please type in the Minimum value of Y-axis.
   </sys:String>
   <sys:String x:Key="AxLimXMaxToolTip">
-    請輸入X座標的最大值。
+    Please type in the Maximum value of X-axis.
   </sys:String>
   <sys:String x:Key="AxLimXLogToolTip">
-    若X座標軸為對數尺度，請輸入該底數，否則請將此欄留白。
+    If X-axis is logarithmic, please type in the base value of logarithm Y-axis, otherwise please leave it empty.
   </sys:String>
   <sys:String x:Key="AxLimXMinToolTip">
-    請輸入X座標的最小值。
+    Please type in the Minimum value of X-axis.
   </sys:String>
   <sys:String x:Key="BrowseButtonToolTip">
-    瀏覽影像以擷取數據。
+    Browse an image to digitize it!
   </sys:String>
   <sys:String x:Key="DataImageToolTip">
-    擷取之數據顯示於此。
+    Your captured data points are displayed here.
   </sys:String>
   <sys:String x:Key="DataSliderDataSizeToolTip">
-    調整數據點的大小。
+    Adjust the size of data points.
   </sys:String>
   <sys:String x:Key="DataSliderCoverRatioToolTip">
-    調整數據點的覆蓋率。
+    Adjust the cover ratio of data points.
   </sys:String>
   <sys:String x:Key="EraseImageToolTip">
-    擦去影像中的雜訊。
+    Erase unwanted information in the image.
   </sys:String>
   <sys:String x:Key="EraseUndoButtonToolTip">
-    復原
+    Undo
   </sys:String>
   <sys:String x:Key="EraseRedoButtonToolTip">
-    重做
+    Redo
   </sys:String>
   <sys:String x:Key="FilterImageToolTip">
-    調整滑桿以過濾影像的顏色。
+    Please adjust the sliders to filter out unwanted colors.
   </sys:String>
   <sys:String x:Key="FilterRMaxTextToolTip">
-    像素的紅色最大值。
+    Maximum value of red color.
   </sys:String>
   <sys:String x:Key="FilterRMinTextToolTip">
-    像素的紅色最小值。
+    Minimum value of red color.
   </sys:String>
   <sys:String x:Key="FilterRSliderToolTip">
-    過濾掉範圍外的紅色像素。
+    Filter out red colors beyond the range.
   </sys:String>
   <sys:String x:Key="FilterGMaxTextToolTip">
-    像素的綠色最大值。
+    Maximum value of green color.
   </sys:String>
   <sys:String x:Key="FilterGMinTextToolTip">
-    像素的綠色最小值。
+    Minimum value of green color.
   </sys:String>
   <sys:String x:Key="FilterGSliderToolTip">
-    過濾掉範圍外的綠色像素。
+    Filter out green colors beyond the range.
   </sys:String>
   <sys:String x:Key="FilterBMaxTextToolTip">
-    像素的藍色最大值。
+    Maximum value of blue color.
   </sys:String>
   <sys:String x:Key="FilterBMinTextToolTip">
-    像素的藍色最小值。
+    Minimum value of blue color.
   </sys:String>
   <sys:String x:Key="FilterBSliderToolTip">
-    過濾掉範圍外的藍色像素。
+    Filter out blue colors beyond the range.
   </sys:String>
   <sys:String x:Key="SavePlotToolTip">
-    擷取之數據顯示於此。
+    Your captured data points are displayed here.
   </sys:String>
   <sys:String x:Key="SaveButtonToolTip">
-    將數據儲存至檔案。
+    Save your data to a file.
   </sys:String>
+
   <sys:String x:Key="SplashSkipText">
-    按下任何鍵以跳過...
+    Press any key to skip...
   </sys:String>
 
   <sys:String x:Key="PanTutorial">
-    拖曳影像
+    Pan Image
   </sys:String>
   <sys:String x:Key="ZoomTutorial">
-    縮放影像
+    Zoom Image
   </sys:String>
   <sys:String x:Key="EraseTutorial">
-    橡皮擦工具
+    Erase Image
   </sys:String>
   <sys:String x:Key="TrackTutorial">
-    顯示數據點座標
+    Track data point.
   </sys:String>
   <sys:String x:Key="ResetPlotTutorial">
-    重設座標軸
+    Reset view port
   </sys:String>
   <sys:String x:Key="AxisAdjustTutorial">
-    手動調整座標軸
+    Manually adjust axis.
   </sys:String>
   <sys:String x:Key="AxisAutoTutorial">
-    自動抓取座標軸
+    Let Plot Digitizer find the axis for you.
   </sys:String>
 
   <sys:String x:Key="BrowseIntroTutorial">
-    歡迎使用 Plot Digitizer！此程式可以幫您擷取影像中的數據。
+    Welcome to use Plot Digitizer! This is an intelligent application that can help you to digitize data from images.
   </sys:String>
   <sys:String x:Key="BrowseButtonTutorial">
-    首先，請按下此按鈕瀏覽要擷取的影像。
+    First, just click the button to browse your image!
   </sys:String>
   <sys:String x:Key="BrowseDropTutorial">
-    或者您也可以將影像直接拖移至此區域。
+    Or you can simply drag and drop your image onto this area!
   </sys:String>
   <sys:String x:Key="BrowseTurnTutorial">
-    在程式中，您可以點擊畫面中的左右兩側以切換頁面。
+    In the entire application, you can click inside both sides of the screen to turn next/back to the other pages.
   </sys:String>
   <sys:String x:Key="AxLimIntroTutorial">
-    此在此頁面中輸入影像中的座標軸邊界。
+    This is Axis Limit Page, where you should input the axis limits.
   </sys:String>
   <sys:String x:Key="AxLimImageTutorial1">
-    您可以在此預覽您的影像。
+    Here you can view your image.
   </sys:String>
   <sys:String x:Key="AxLimImageTutorial2">
-    在本程式中，您可以依照以下方式拖移、縮放所有影像。
+    You are allowed to manipulate all the image through the entire application by your mouse as follow.
   </sys:String>
   <sys:String x:Key="AxLimLimitsTutorial">
-    請根據您的影像輸入座標軸邊界值至這些欄位中。
+    According to your image, please type in all axis limits into the text boxes.
   </sys:String>
   <sys:String x:Key="AxLimLogsTutorial">
-    若您影像中的座標軸為對數尺度，請將其底數輸入至這些欄位中。
+    If the axis in your image is in logarithm scale, you can specify its base through these text boxes.
   </sys:String>
   <sys:String x:Key="AxisIntroTutorial">
-    請在此頁面中輸入座標位置。
+    Here we are in the Axis Page, where you should input the axis position.
   </sys:String>
   <sys:String x:Key="AxisImageTutorial">
-    本程式可以自動幫您抓取影像中的座標，您也可以手動調整座標到適當的位置。
+    The application can automatically find the axis position for you, where you can also manually adjust the axis.
   </sys:String>
   <sys:String x:Key="FilterIntroTutorial">
-    若您的影像中包含多種不同顏色的數據，您可以在此頁面中過濾掉不想要的數據顏色。
+    Here is Filter Page, where you can filter out unwanted information of certain colors.
   </sys:String>
   <sys:String x:Key="FilterSliderTutorial">
-    您可以拖曳紅、綠、藍範圍滑桿來過濾範圍外的顏色，
+    You can either drag red, green, and blue range sliders to filter out colors outside the range,
   </sys:String>
   <sys:String x:Key="FilterTextBoxTutorial">
-    您也可以直接輸入顏色範圍的數值到這些欄位中。
+    or you can type in color code directly to select colors within specific range.
   </sys:String>
   <sys:String x:Key="EraseIntroTutorial">
-    若您的影像中仍有其他不想要的資訊，您可以在此頁面中擦除該雜訊。
+    Here is Erase Page, where you can erase out unwanted information by an eraser tool.
   </sys:String>
   <sys:String x:Key="EraseImageTutorial">
-    您可以按住滑鼠右鍵以使用橡皮擦工具。(您依舊可以拖移、縮放影像)
+    You can erase the image by holding mouse right button. Besides, you can also pan and zoom image as usual!
   </sys:String>
   <sys:String x:Key="EraseButtonTutorial">
-    您也可以使用復原/重做按鈕來編輯您的影像。
+    You can also use undo and redo buttons to edit the image at your convenience.
   </sys:String>
   <sys:String x:Key="DataIntroTutorial">
-    您可以在此頁面調整擷取的數據點。
+    Here is Data Page, where you can adjust the data captured from the image.
   </sys:String>
   <sys:String x:Key="DataImageTutorial">
-    擷取的數據點會顯示於此。
+    The captured data is displayed as red dots here.
   </sys:String>
   <sys:String x:Key="DataSliderDataSizeTutorial">
-    您可以拖移此滑桿以調整數據點的大小。
+    You can drag this slider to adjust the size of each data point.
   </sys:String>
   <sys:String x:Key="DataSliderCoverRatioTutorial">
-    您也可以調整數據點的覆蓋率 (數據點大小在影像中覆蓋的比率，要超過此值才會擷取)。
+    Or you can adjust the cover ratio (how much covered area counts a data point) by dragging this slider.
   </sys:String>
   <sys:String x:Key="SaveIntroTutorial">
-    您可以在此頁面檢查擷取的數據並將它們儲存至檔案中。
+    Here is Save Page, where you can check your captured data and save it into a file.
   </sys:String>
   <sys:String x:Key="SavePlotTutorial">
-    擷取的數據會顯示於此，您可以依照下列方式查看數據點座標與重設座標軸。
+    Take a look at your data points here, you can also track the data coordinate and reset the view port as follow.
   </sys:String>
   <sys:String x:Key="SaveButtonTutorial">
-    最後，請按下此按鈕儲存您的數據到多種檔案格式中。
+    Finally, You can save your data into several formats by clicking it. Well done!
   </sys:String>
 
   <sys:String x:Key="BrowseButtonContent">
-    瀏覽
+    Browse
   </sys:String>
   <sys:String x:Key="SaveButtonContent">
-    儲存
+    Save
   </sys:String>
   <sys:String x:Key="DataSliderDataSizeContent1">
-    數據點
+    Data
   </sys:String>
   <sys:String x:Key="DataSliderDataSizeContent2">
-    大小
+    Size
   </sys:String>
   <sys:String x:Key="DataSliderCoverRatioContent1">
-    數據點
+    Cover
   </sys:String>
   <sys:String x:Key="DataSliderCoverRatioContent2">
-    覆蓋率
+    Ratio
   </sys:String>
   <sys:String x:Key="BrowseHeader">
-    開啟檔案
+    Browse!
   </sys:String>
   <sys:String x:Key="BrowseDragText">
-    請將影像拖移至此
+    Drag your image here
   </sys:String>
   <sys:String x:Key="BrowseOrText">
-    或
+    Or
   </sys:String>
   <sys:String x:Key="AxLimHeader">
-    座標軸邊界
+    Axis Limits!
   </sys:String>
   <sys:String x:Key="AxLimYMaxHint">
-    Y座標最大值
+    Y-Axis: Max
   </sys:String>
   <sys:String x:Key="AxLimYLogHint">
-    Y座標Log底數
+    Y-Axis: Log Base
   </sys:String>
   <sys:String x:Key="AxLimYMinHint">
-    Y座標最小值
+    Y-Axis: Min
   </sys:String>
   <sys:String x:Key="AxLimXMaxHint">
-    X座標最大值
+    X-Axis: Max
   </sys:String>
   <sys:String x:Key="AxLimXLogHint">
-    X座標Log底數
+    X-Axis: Log Base
   </sys:String>
   <sys:String x:Key="AxLimXMinHint">
-    X座標最小值
+    X-Axis: Min
   </sys:String>
   <sys:String x:Key="AxisHeader">
-    座標軸位置
+    Get Axis!
   </sys:String>
   <sys:String x:Key="FilterHeader">
-    影像過濾器
+    Filter!
   </sys:String>
   <sys:String x:Key="EraseHeader">
-    橡皮擦工具
+    Erase!
   </sys:String>
   <sys:String x:Key="DataHeader">
-    數據調整
+    Adjust Data!
   </sys:String>
   <sys:String x:Key="SaveHeader">
-    儲存檔案
+    Well Done!
   </sys:String>
 
   <sys:String x:Key="AboutGithub">
-    Github 主頁
+    Github Page
   </sys:String>
   <sys:String x:Key="AboutWeb">
-    個人網站
+    My Website
   </sys:String>
   <sys:String x:Key="AboutBlog">
-    技術部落格
+    My Blog
   </sys:String>
   <sys:String x:Key="AboutContact">
-    聯絡作者
+    Contact Me
   </sys:String>
 </ResourceDictionary>

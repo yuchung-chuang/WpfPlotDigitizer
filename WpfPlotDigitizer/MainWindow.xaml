@@ -24,25 +24,43 @@
                      Width="900">
   <mahapps:MetroWindow.RightWindowCommands>
     <mahapps:WindowCommands>
+      <mahapps:WindowCommands.Resources>
+        <Style TargetType="icon:PackIconModern">
+          <Setter Property="VerticalAlignment"
+                  Value="Center" />
+          <Setter Property="HorizontalAlignment"
+                  Value="Center" />
+          <Setter Property="Width"
+                  Value="24" />
+          <Setter Property="Height"
+                  Value="20" />
+        </Style>
+        <Style TargetType="icon:PackIconMaterial">
+          <Setter Property="VerticalAlignment"
+                  Value="Center" />
+          <Setter Property="HorizontalAlignment"
+                  Value="Center" />
+          <Setter Property="Width"
+                  Value="24" />
+          <Setter Property="Height"
+                  Value="20" />
+        </Style>
+      </mahapps:WindowCommands.Resources>
       <Button Background="{StaticResource HighlightBrush}"
               Click="Tutorial_Click"
-              ToolTip="{StaticResource TutorialButtonToolTip}">
+              ToolTip="{DynamicResource TutorialButtonToolTip}">
         <Button.RenderTransform>
           <TranslateTransform Y="-2" />
         </Button.RenderTransform>
-        <icon:PackIconModern Kind="Question"
-                             VerticalAlignment="Center"
-                             HorizontalAlignment="Center"
-                             Width="24"
-                             Height="20" />
+        <icon:PackIconModern Kind="Question" />
       </Button>
       <Button Click="About_Click"
-              ToolTip="{StaticResource AboutButtonToolTip}">
-        <icon:PackIconModern Kind="Information"
-                             VerticalAlignment="Center"
-                             HorizontalAlignment="Center"
-                             Width="24"
-                             Height="20" />
+              ToolTip="{DynamicResource AboutButtonToolTip}">
+        <icon:PackIconModern Kind="Information" />
+      </Button>
+      <Button Click="Lang_Click"
+              ToolTip="{DynamicResource LangButtonToolTip}">
+        <icon:PackIconMaterial Kind="Translate" />
       </Button>
     </mahapps:WindowCommands>
   </mahapps:MetroWindow.RightWindowCommands>

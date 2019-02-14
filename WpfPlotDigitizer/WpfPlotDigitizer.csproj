@@ -188,6 +188,9 @@
     <Compile Include="Models\QuickConverterSetup.cs" />
     <Compile Include="Controllers\TutorialManager.cs" />
     <Compile Include="Models\ViewModelBase.cs" />
+    <Compile Include="Views\Popups\LangPopup.xaml.cs">
+      <DependentUpon>LangPopup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Popups\AboutPopup.xaml.cs">
       <DependentUpon>AboutPopup.xaml</DependentUpon>
     </Compile>
@@ -224,8 +227,12 @@
     <Compile Include="ViewModels\AxisPageVM.cs" />
     <Compile Include="ViewModels\FilterPageVM.cs" />
     <Page Include="app\lang\default.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="app\lang\en-US.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="app\lang\zh-TW.xaml">
       <SubType>Designer</SubType>
@@ -290,6 +297,10 @@
     <Page Include="Views\Pages\SplashPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Popups\LangPopup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Popups\AboutPopup.xaml">
       <Generator>MSBuild:Compile</Generator>

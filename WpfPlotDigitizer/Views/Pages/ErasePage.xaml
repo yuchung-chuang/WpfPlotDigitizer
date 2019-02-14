@@ -24,11 +24,11 @@
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
     <TextBlock Name="headerText"
-               Text="{StaticResource EraseHeader}"
+               Text="{DynamicResource EraseHeader}"
                Style="{StaticResource HeaderTextStyle}" />
     <Viewbox Name="imageViewBox"
              Grid.Row="1"
-             ToolTip="{StaticResource EraseImageToolTip}">
+             ToolTip="{DynamicResource EraseImageToolTip}">
       <Grid>
         <uc:ImageEraser x:Name="imageEraser"
                         Image="{Binding imageErase, Mode=TwoWay}"
@@ -66,12 +66,12 @@
       </StackPanel.Resources>
       <Button Name="undoButton"
               Command="{Binding UndoCommand}"
-              ToolTip="{StaticResource EraseUndoButtonToolTip}">
+              ToolTip="{DynamicResource EraseUndoButtonToolTip}">
         <icon:PackIconFontAwesome Kind="UndoAltSolid" />
       </Button>
       <Button Name="redoButton"
               Command="{Binding RedoCommand}"
-              ToolTip="{StaticResource EraseRedoButtonToolTip}">
+              ToolTip="{DynamicResource EraseRedoButtonToolTip}">
         <icon:PackIconFontAwesome Kind="RedoAltSolid" />
       </Button>
     </StackPanel>

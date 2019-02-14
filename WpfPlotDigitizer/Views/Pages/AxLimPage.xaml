@@ -51,13 +51,13 @@
         <ColumnDefinition Width="*" />
       </Grid.ColumnDefinitions>
       <TextBlock Name="headerText"
-                 Text="{StaticResource AxLimHeader}"
+                 Text="{DynamicResource AxLimHeader}"
                  Style="{StaticResource HeaderTextStyle}" />
       <Viewbox Name="imageViewBox"
                Grid.Column="1"
                Grid.Row="1"
                Margin="10"
-               ToolTip="{StaticResource AxLimImageToolTip}">
+               ToolTip="{DynamicResource AxLimImageToolTip}">
         <Grid>
           <Image Source="{Binding imageSource}"
                  cyc:Pan.IsEnabled="True"
@@ -84,13 +84,13 @@
         </Grid.RowDefinitions>
         <TextBox Name="YMax"
                  Grid.Row="0"
-                 md:HintAssist.Hint="{StaticResource AxLimYMaxHint}"
+                 md:HintAssist.Hint="{DynamicResource AxLimYMaxHint}"
                  Validation.Error="TextBox_Error"
                  LostFocus="TextBox_LostFocus"
                  cyc:RangeValidator.IsEnabled="True"
                  cyc:RangeValidator.Minimum="{Binding YMin}"
                  cyc:RangeValidator.ExcludeMin="True"
-                 ToolTip="{StaticResource AxLimYMaxToolTip}">
+                 ToolTip="{DynamicResource AxLimYMaxToolTip}">
           <TextBox.Text>
             <Binding Path="YMax"
                      Converter="{cyc:NumStrConverter}"
@@ -107,8 +107,8 @@
                  Grid.Row="1"
                  Validation.Error="TextBox_Error"
                  LostFocus="TextBox_LostFocus"
-                 md:HintAssist.Hint="{StaticResource AxLimYLogHint}"
-                 ToolTip="{StaticResource AxLimYLogToolTip}">
+                 md:HintAssist.Hint="{DynamicResource AxLimYLogHint}"
+                 ToolTip="{DynamicResource AxLimYLogToolTip}">
           <TextBox.Text>
             <Binding Path="YLog"
                      Converter="{cyc:NumStrConverter}"
@@ -123,11 +123,11 @@
                  Grid.Row="2"
                  Validation.Error="TextBox_Error"
                  LostFocus="TextBox_LostFocus"
-                 md:HintAssist.Hint="{StaticResource AxLimYMinHint}"
+                 md:HintAssist.Hint="{DynamicResource AxLimYMinHint}"
                  cyc:RangeValidator.IsEnabled="True"
                  cyc:RangeValidator.Maximum="{Binding YMax}"
                  cyc:RangeValidator.ExcludeMax="True"
-                 ToolTip="{StaticResource AxLimYMinToolTip}">
+                 ToolTip="{DynamicResource AxLimYMinToolTip}">
           <TextBox.Text>
             <Binding Path="YMin"
                      Converter="{cyc:NumStrConverter}"
@@ -161,11 +161,11 @@
                  Grid.Column="0"
                  Validation.Error="TextBox_Error"
                  LostFocus="TextBox_LostFocus"
-                 md:HintAssist.Hint="{StaticResource AxLimXMinHint}"
+                 md:HintAssist.Hint="{DynamicResource AxLimXMinHint}"
                  cyc:RangeValidator.IsEnabled="True"
                  cyc:RangeValidator.Maximum="{Binding XMax}"
                  cyc:RangeValidator.ExcludeMax="True"
-                 ToolTip="{StaticResource AxLimXMinToolTip}">
+                 ToolTip="{DynamicResource AxLimXMinToolTip}">
           <TextBox.Text>
             <Binding Path="XMin"
                      Converter="{cyc:NumStrConverter}"
@@ -181,8 +181,8 @@
                  Grid.Column="1"
                  Validation.Error="TextBox_Error"
                  LostFocus="TextBox_LostFocus"
-                 md:HintAssist.Hint="{StaticResource AxLimXLogHint}"
-                 ToolTip="{StaticResource AxLimXLogToolTip}">
+                 md:HintAssist.Hint="{DynamicResource AxLimXLogHint}"
+                 ToolTip="{DynamicResource AxLimXLogToolTip}">
           <TextBox.Text>
             <Binding Path="XLog"
                      Converter="{cyc:NumStrConverter}"
@@ -197,11 +197,11 @@
                  Grid.Column="2"
                  Validation.Error="TextBox_Error"
                  LostFocus="TextBox_LostFocus"
-                 md:HintAssist.Hint="{StaticResource AxLimXMaxHint}"
+                 md:HintAssist.Hint="{DynamicResource AxLimXMaxHint}"
                  cyc:RangeValidator.IsEnabled="True"
                  cyc:RangeValidator.Minimum="{Binding XMin}"
                  cyc:RangeValidator.ExcludeMin="True"
-                 ToolTip="{StaticResource AxLimXMaxToolTip}">
+                 ToolTip="{DynamicResource AxLimXMaxToolTip}">
           <TextBox.Text>
             <Binding Path="XMax"
                      Converter="{cyc:NumStrConverter}"

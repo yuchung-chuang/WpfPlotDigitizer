@@ -44,5 +44,10 @@ namespace WpfPlotDigitizer
     {
       new AboutPopup().ShowDialog();
     }
+
+    private void Lang_Click(object sender, RoutedEventArgs e)
+    {
+      new LangPopup().ShowDialog();
+    }
   }
 }

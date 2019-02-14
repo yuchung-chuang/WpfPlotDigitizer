@@ -20,11 +20,11 @@
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
     <TextBlock Name="headerText"
-               Text="{StaticResource DataHeader}"
+               Text="{DynamicResource DataHeader}"
                Style="{StaticResource HeaderTextStyle}" />
     <Viewbox Name="imageViewBox"
              Grid.Row="1"
-             ToolTip="{StaticResource DataImageToolTip}">
+             ToolTip="{DynamicResource DataImageToolTip}">
       <Grid>
         <Image Source="{Binding imageSource}"
                cyc:Zoom.IsEnabled="True"
@@ -69,23 +69,23 @@
               Grid.Column="1"
               Minimum="1"
               Maximum="50"
-              ToolTip="{StaticResource DataSliderDataSizeToolTip}" />
+              ToolTip="{DynamicResource DataSliderDataSizeToolTip}" />
       <Slider Name="sliderCoverRatio"
               Value="{Binding RatioInt}"
               Grid.Row="1"
               Grid.Column="1"
               Minimum="0"
               Maximum="100"
-              ToolTip="{StaticResource DataSliderCoverRatioToolTip}" />
+              ToolTip="{DynamicResource DataSliderCoverRatioToolTip}" />
       <TextBlock>
-        <Run Text="{StaticResource DataSliderDataSizeContent1}" />
+        <Run Text="{DynamicResource DataSliderDataSizeContent1}" />
         <LineBreak />
-        <Run Text="{StaticResource DataSliderDataSizeContent2}" />
+        <Run Text="{DynamicResource DataSliderDataSizeContent2}" />
       </TextBlock>
       <TextBlock Grid.Row="1">
-        <Run Text="{StaticResource DataSliderCoverRatioContent1}" />
+        <Run Text="{DynamicResource DataSliderCoverRatioContent1}" />
         <LineBreak />
-        <Run Text="{StaticResource DataSliderCoverRatioContent2}" />
+        <Run Text="{DynamicResource DataSliderCoverRatioContent2}" />
       </TextBlock>
     </Grid>
 

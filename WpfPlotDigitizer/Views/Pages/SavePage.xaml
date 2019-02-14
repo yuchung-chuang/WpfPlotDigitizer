@@ -19,8 +19,8 @@
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
     <TextBlock Name="headerText"
-               Text="{StaticResource SaveHeader}"
-               Style="{StaticResource HeaderTextStyle}" />
+               Text="{DynamicResource SaveHeader}"
+               Style="{DynamicResource HeaderTextStyle}" />
     <oxy:Plot Name="dataPlot"
               Grid.Row="1"
               Model="{Binding plotModel}"
@@ -28,16 +28,16 @@
               ZoomInput="mouse:middle"
               PanInput="mouse:left"
               TrackerInput="mouse:right"
-              ToolTip="{StaticResource SavePlotToolTip}"/>
+              ToolTip="{DynamicResource SavePlotToolTip}"/>
     <Button Name="saveButton"
             Grid.Row="2"
-            Content="{StaticResource SaveButtonContent}"
+            Content="{DynamicResource SaveButtonContent}"
             FontSize="30"
             FontWeight="Medium"
             Width="150"
             Height="50"
             Margin="20"
             Command="{Binding SaveCommand}"
-            ToolTip="{StaticResource SaveButtonToolTip}"/>
+            ToolTip="{DynamicResource SaveButtonToolTip}"/>
   </Grid>
 </media:AnimatedPage>
