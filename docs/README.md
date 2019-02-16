@@ -1,11 +1,6 @@
-
-# <img src="https://raw.githubusercontent.com/alex1392/WpfPlotDigitizer/master/WpfPlotDigitizer/app/resources/icon_digitizer.ico" alt="icon" width="50"/> Plot Digitizer 數據擷取器
-
-  
-
-一個能夠數位化影像資料的簡單小程式。
-
-  
+<p align="center"> 
+  <img src="https://raw.githubusercontent.com/alex1392/WpfPlotDigitizer/master/WpfPlotDigitizer/app/resources/icon_digitizer.ico" alt="icon" width="200"/> 
+</p>
 
 ### 使用情境
 
