@@ -23,7 +23,7 @@ namespace WpfPlotDigitizer
 
     private void TextBox_Error(object sender, ValidationErrorEventArgs e)
     {
-      TextBoxBehaviors.TextBox_Error(sender, e);
+      //TextBoxBehaviors.TextBox_Error(sender, e); //should not clear, since it will invoke another validation
     }
 
     private void TextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)

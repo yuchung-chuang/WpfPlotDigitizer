@@ -12,175 +12,177 @@
                     d:DesignHeight="600"
                     d:DesignWidth="900"
                     d:DataContext="{d:DesignInstance local:FilterPageVM, IsDesignTimeCreatable=True}">
-  <Grid>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="auto" />
-      <RowDefinition Height="*" />
-      <RowDefinition Height="auto" />
-    </Grid.RowDefinitions>
-    <TextBlock Name="headerText"
-               Text="{DynamicResource FilterHeader}"
-               Style="{StaticResource HeaderTextStyle}" />
-    <Viewbox Name="imageViewBox"
-             Grid.Row="1"
-             ToolTip="{DynamicResource FilterImageToolTip}">
-      <Grid>
-        <Image Source="{Binding ImageSource}"
-               cyc:Zoom.IsEnabled="True"
-               cyc:Pan.IsEnabled="True"
-               cyc:Pan.ClipToParent="True"
-               cyc:Pan.Input="mouse:left"/>
-        <Border BorderBrush="Black"
-                BorderThickness="1" />
-      </Grid>
-    </Viewbox>
-    <Grid Grid.Row="2"
-          Margin="40,0">
+  <AdornerDecorator>
+    <Grid>
       <Grid.RowDefinitions>
+        <RowDefinition Height="auto" />
         <RowDefinition Height="*" />
-        <RowDefinition Height="*" />
-        <RowDefinition Height="*" />
+        <RowDefinition Height="auto" />
       </Grid.RowDefinitions>
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="auto" />
-        <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="auto" />
-      </Grid.ColumnDefinitions>
-      <Grid.Resources>
-        <Style TargetType="mahapps:RangeSlider"
-               BasedOn="{StaticResource MaterialDesignRangeSlider}">
-          <Setter Property="Height"
-                  Value="20" />
-          <Setter Property="Maximum"
-                  Value="255" />
-          <Setter Property="Minimum"
-                  Value="0" />
-          <Setter Property="MinRange"
-                  Value="1" />
-          <Setter Property="MinRangeWidth"
-                  Value="5" />
-          <Setter Property="Orientation"
-                  Value="Horizontal" />
-        </Style>
-        <Style TargetType="TextBox"
-               BasedOn="{StaticResource MaterialDesignTextBox}">
-          <Setter Property="Margin"
-                  Value="10" />
-          <Setter Property="Width"
-                  Value="40" />
-          <Setter Property="Validation.ErrorTemplate"
-                  Value="{StaticResource ValidationErrorTemplate}" />
-          <Setter Property="TextAlignment"
-                  Value="Center" />
-          <EventSetter Event="GotKeyboardFocus"
-                       Handler="TextBox_GotKeyboardFocus" />
-          <EventSetter Event="GotMouseCapture"
-                       Handler="TextBox_GotMouseCapture" />
-          <EventSetter Event="KeyDown"
-                       Handler="TextBox_KeyDown" />
-        </Style>
-      </Grid.Resources>
-      <TextBox Name="textBoxRMax"
-               Grid.Column="2"
-               cyc:RangeValidator.IsEnabled="True"
-               cyc:RangeValidator.Maximum="255"
-               cyc:RangeValidator.Minimum="{Binding FilterRMin}"
-               cyc:RangeValidator.ExcludeMin="True"
-               Text="{Binding FilterRMax, Converter={cyc:NumStrConverter}}"
-               ToolTip="{DynamicResource FilterRMaxTextToolTip}" />
-      <TextBox Name="textBoxRMin"
-               Grid.Column="0"
-               cyc:RangeValidator.IsEnabled="True"
-               cyc:RangeValidator.Maximum="{Binding FilterRMax}"
-               cyc:RangeValidator.Minimum="0"
-               cyc:RangeValidator.ExcludeMax="True"
-               Text="{Binding FilterRMin, Converter={cyc:NumStrConverter}}"
-               ToolTip="{DynamicResource FilterRMinTextToolTip}"/>
-      <mahapps:RangeSlider Name="sliderRed"
-                           Grid.Column="1"
-                           Foreground="Red"
-                           LowerValue="{Binding FilterRMin}"
-                           UpperValue="{Binding FilterRMax}"
-                           ToolTip="{DynamicResource FilterRSliderToolTip}">
-        <i:Interaction.Triggers>
-          <i:EventTrigger EventName="UpperValueChanged">
-            <i:InvokeCommandAction Command="{Binding InRangeCommand}" />
-          </i:EventTrigger>
-          <i:EventTrigger EventName="LowerValueChanged">
-            <i:InvokeCommandAction Command="{Binding InRangeCommand}" />
-          </i:EventTrigger>
-        </i:Interaction.Triggers>
-      </mahapps:RangeSlider>
-
-      <TextBox Name="textBoxGMax"
+      <TextBlock Name="headerText"
+                 Text="{DynamicResource FilterHeader}"
+                 Style="{StaticResource HeaderTextStyle}" />
+      <Viewbox Name="imageViewBox"
                Grid.Row="1"
-               Grid.Column="2"
-               cyc:RangeValidator.IsEnabled="True"
-               cyc:RangeValidator.Maximum="255"
-               cyc:RangeValidator.Minimum="{Binding FilterGMin}"
-               cyc:RangeValidator.ExcludeMin="True"
-               Text="{Binding FilterGMax, Converter={cyc:NumStrConverter}}"
-               ToolTip="{DynamicResource FilterGMaxTextToolTip}" />
-      <TextBox Name="textBoxGMin" 
-               Grid.Row="1"
-               Grid.Column="0"
-               cyc:RangeValidator.IsEnabled="True"
-               cyc:RangeValidator.Maximum="{Binding FilterGMax}"
-               cyc:RangeValidator.Minimum="0"
-               cyc:RangeValidator.ExcludeMax="True"
-               Text="{Binding FilterGMin, Converter={cyc:NumStrConverter}}"
-               ToolTip="{DynamicResource FilterGMinTextToolTip}" />
-      <mahapps:RangeSlider Name="sliderGreen"
-                           Grid.Column="1"
-                           Grid.Row="1"
-                           Foreground="Green"
-                           LowerValue="{Binding FilterGMin}"
-                           UpperValue="{Binding FilterGMax}"
-                           ToolTip="{DynamicResource FilterGSliderToolTip}">
-        <i:Interaction.Triggers>
-          <i:EventTrigger EventName="UpperValueChanged">
-            <i:InvokeCommandAction Command="{Binding InRangeCommand}" />
-          </i:EventTrigger>
-          <i:EventTrigger EventName="LowerValueChanged">
-            <i:InvokeCommandAction Command="{Binding InRangeCommand}" />
-          </i:EventTrigger>
-        </i:Interaction.Triggers>
-      </mahapps:RangeSlider>
+               ToolTip="{DynamicResource FilterImageToolTip}">
+        <Grid>
+          <Image Source="{Binding ImageSource}"
+                 cyc:Zoom.IsEnabled="True"
+                 cyc:Pan.IsEnabled="True"
+                 cyc:Pan.ClipToParent="True"
+                 cyc:Pan.Input="mouse:left" />
+          <Border BorderBrush="Black"
+                  BorderThickness="1" />
+        </Grid>
+      </Viewbox>
+      <Grid Grid.Row="2"
+            Margin="40,0">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="*" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="auto" />
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.Resources>
+          <Style TargetType="mahapps:RangeSlider"
+                 BasedOn="{StaticResource MaterialDesignRangeSlider}">
+            <Setter Property="Height"
+                    Value="20" />
+            <Setter Property="Maximum"
+                    Value="255" />
+            <Setter Property="Minimum"
+                    Value="0" />
+            <Setter Property="MinRange"
+                    Value="1" />
+            <Setter Property="MinRangeWidth"
+                    Value="5" />
+            <Setter Property="Orientation"
+                    Value="Horizontal" />
+          </Style>
+          <Style TargetType="TextBox"
+                 BasedOn="{StaticResource MaterialDesignTextBox}">
+            <Setter Property="Margin"
+                    Value="10" />
+            <Setter Property="Width"
+                    Value="40" />
+            <Setter Property="Validation.ErrorTemplate"
+                    Value="{StaticResource ValidationErrorTemplate}" />
+            <Setter Property="TextAlignment"
+                    Value="Center" />
+            <EventSetter Event="GotKeyboardFocus"
+                         Handler="TextBox_GotKeyboardFocus" />
+            <EventSetter Event="GotMouseCapture"
+                         Handler="TextBox_GotMouseCapture" />
+            <EventSetter Event="KeyDown"
+                         Handler="TextBox_KeyDown" />
+          </Style>
+        </Grid.Resources>
+        <TextBox Name="textBoxRMax"
+                 Grid.Column="2"
+                 cyc:RangeValidator.IsEnabled="True"
+                 cyc:RangeValidator.Maximum="255"
+                 cyc:RangeValidator.Minimum="{Binding FilterRMin}"
+                 cyc:RangeValidator.ExcludeMin="True"
+                 Text="{Binding FilterRMax, Converter={cyc:NumStrConverter}}"
+                 ToolTip="{DynamicResource FilterRMaxTextToolTip}" />
+        <TextBox Name="textBoxRMin"
+                 Grid.Column="0"
+                 cyc:RangeValidator.IsEnabled="True"
+                 cyc:RangeValidator.Maximum="{Binding FilterRMax}"
+                 cyc:RangeValidator.Minimum="0"
+                 cyc:RangeValidator.ExcludeMax="True"
+                 Text="{Binding FilterRMin, Converter={cyc:NumStrConverter}}"
+                 ToolTip="{DynamicResource FilterRMinTextToolTip}" />
+        <mahapps:RangeSlider Name="sliderRed"
+                             Grid.Column="1"
+                             Foreground="Red"
+                             LowerValue="{Binding FilterRMin}"
+                             UpperValue="{Binding FilterRMax}"
+                             ToolTip="{DynamicResource FilterRSliderToolTip}">
+          <i:Interaction.Triggers>
+            <i:EventTrigger EventName="UpperValueChanged">
+              <i:InvokeCommandAction Command="{Binding InRangeCommand}" />
+            </i:EventTrigger>
+            <i:EventTrigger EventName="LowerValueChanged">
+              <i:InvokeCommandAction Command="{Binding InRangeCommand}" />
+            </i:EventTrigger>
+          </i:Interaction.Triggers>
+        </mahapps:RangeSlider>
 
-      <TextBox Name="textBoxBMax"
-               Grid.Row="2"
-               Grid.Column="2"
-               cyc:RangeValidator.IsEnabled="True"
-               cyc:RangeValidator.Maximum="255"
-               cyc:RangeValidator.Minimum="{Binding FilterBMin}"
-               cyc:RangeValidator.ExcludeMin="True"
-               Text="{Binding FilterBMax, Converter={cyc:NumStrConverter}}"
-               ToolTip="{DynamicResource FilterBMaxTextToolTip}"/>
-      <TextBox Name="textBoxBMin"
-               Grid.Row="2"
-               Grid.Column="0"
-               cyc:RangeValidator.IsEnabled="True"
-               cyc:RangeValidator.Maximum="{Binding FilterBMax}"
-               cyc:RangeValidator.Minimum="0"
-               cyc:RangeValidator.ExcludeMax="True"
-               Text="{Binding FilterBMin, Converter={cyc:NumStrConverter}}"
-               ToolTip="{DynamicResource FilterBMinTextToolTip}"/>
-      <mahapps:RangeSlider Name="sliderBlue"
-                           Grid.Row="2"
-                           Grid.Column="1"
-                           Foreground="Blue"
-                           LowerValue="{Binding FilterBMin}"
-                           UpperValue="{Binding FilterBMax}"
-                           ToolTip="{DynamicResource FilterBSliderToolTip}">
-        <i:Interaction.Triggers>
-          <i:EventTrigger EventName="UpperValueChanged">
-            <i:InvokeCommandAction Command="{Binding InRangeCommand}" />
-          </i:EventTrigger>
-          <i:EventTrigger EventName="LowerValueChanged">
-            <i:InvokeCommandAction Command="{Binding InRangeCommand}" />
-          </i:EventTrigger>
-        </i:Interaction.Triggers>
-      </mahapps:RangeSlider>
+        <TextBox Name="textBoxGMax"
+                 Grid.Row="1"
+                 Grid.Column="2"
+                 cyc:RangeValidator.IsEnabled="True"
+                 cyc:RangeValidator.Maximum="255"
+                 cyc:RangeValidator.Minimum="{Binding FilterGMin}"
+                 cyc:RangeValidator.ExcludeMin="True"
+                 Text="{Binding FilterGMax, Converter={cyc:NumStrConverter}}"
+                 ToolTip="{DynamicResource FilterGMaxTextToolTip}" />
+        <TextBox Name="textBoxGMin"
+                 Grid.Row="1"
+                 Grid.Column="0"
+                 cyc:RangeValidator.IsEnabled="True"
+                 cyc:RangeValidator.Maximum="{Binding FilterGMax}"
+                 cyc:RangeValidator.Minimum="0"
+                 cyc:RangeValidator.ExcludeMax="True"
+                 Text="{Binding FilterGMin, Converter={cyc:NumStrConverter}}"
+                 ToolTip="{DynamicResource FilterGMinTextToolTip}" />
+        <mahapps:RangeSlider Name="sliderGreen"
+                             Grid.Column="1"
+                             Grid.Row="1"
+                             Foreground="Green"
+                             LowerValue="{Binding FilterGMin}"
+                             UpperValue="{Binding FilterGMax}"
+                             ToolTip="{DynamicResource FilterGSliderToolTip}">
+          <i:Interaction.Triggers>
+            <i:EventTrigger EventName="UpperValueChanged">
+              <i:InvokeCommandAction Command="{Binding InRangeCommand}" />
+            </i:EventTrigger>
+            <i:EventTrigger EventName="LowerValueChanged">
+              <i:InvokeCommandAction Command="{Binding InRangeCommand}" />
+            </i:EventTrigger>
+          </i:Interaction.Triggers>
+        </mahapps:RangeSlider>
+
+        <TextBox Name="textBoxBMax"
+                 Grid.Row="2"
+                 Grid.Column="2"
+                 cyc:RangeValidator.IsEnabled="True"
+                 cyc:RangeValidator.Maximum="255"
+                 cyc:RangeValidator.Minimum="{Binding FilterBMin}"
+                 cyc:RangeValidator.ExcludeMin="True"
+                 Text="{Binding FilterBMax, Converter={cyc:NumStrConverter}}"
+                 ToolTip="{DynamicResource FilterBMaxTextToolTip}" />
+        <TextBox Name="textBoxBMin"
+                 Grid.Row="2"
+                 Grid.Column="0"
+                 cyc:RangeValidator.IsEnabled="True"
+                 cyc:RangeValidator.Maximum="{Binding FilterBMax}"
+                 cyc:RangeValidator.Minimum="0"
+                 cyc:RangeValidator.ExcludeMax="True"
+                 Text="{Binding FilterBMin, Converter={cyc:NumStrConverter}}"
+                 ToolTip="{DynamicResource FilterBMinTextToolTip}" />
+        <mahapps:RangeSlider Name="sliderBlue"
+                             Grid.Row="2"
+                             Grid.Column="1"
+                             Foreground="Blue"
+                             LowerValue="{Binding FilterBMin}"
+                             UpperValue="{Binding FilterBMax}"
+                             ToolTip="{DynamicResource FilterBSliderToolTip}">
+          <i:Interaction.Triggers>
+            <i:EventTrigger EventName="UpperValueChanged">
+              <i:InvokeCommandAction Command="{Binding InRangeCommand}" />
+            </i:EventTrigger>
+            <i:EventTrigger EventName="LowerValueChanged">
+              <i:InvokeCommandAction Command="{Binding InRangeCommand}" />
+            </i:EventTrigger>
+          </i:Interaction.Triggers>
+        </mahapps:RangeSlider>
+      </Grid>
     </Grid>
-  </Grid>
+  </AdornerDecorator>
 </media:AnimatedPage>
