@@ -2,7 +2,7 @@
   <img src="https://raw.githubusercontent.com/alex1392/WpfPlotDigitizer/master/WpfPlotDigitizer/app/resources/icon_digitizer.ico" alt="icon" width="200"/> 
 </p>
 
-### 使用情境
+## 使用情境
 
 當你在熬夜趕論文報告時，突然需要對某篇paper上的資料分析，偏偏paper只附了一張如下圖般的影像：
 
@@ -14,9 +14,19 @@
 
   
 
-這個時候就是使用Plot Digitizer的最佳時機，不到30秒就可以解決問題！
+這個時候就是使用Plot Digitizer的最佳時機，3分鐘之內就可以解決問題！
 
-  
+
+## 使用方式
+
+1. 到[releases](https://github.com/alex1392/WpfPlotDigitizer/releases)頁面下載最新版的WpfPlotDigitizer.rar
+
+2. 解壓縮
+
+3. 雙擊exe檔
+
+4. Wow!
+
 
 ## 程式特色
 
@@ -103,20 +113,6 @@
 <p align="center">
 <img src="https://raw.githubusercontent.com/alex1392/WpfPlotDigitizer/master/Images/DemoImages.png" alt="Pages" width="400"/>
 </p>
-
-  
-
-## 使用方式
-
-  
-
-1. 到[releases](https://github.com/alex1392/WpfPlotDigitizer/releases)頁面下載最新版的WpfPlotDigitizer.rar
-
-2. 解壓縮
-
-3. 雙擊exe檔
-
-4. Wow!
 
   
 
