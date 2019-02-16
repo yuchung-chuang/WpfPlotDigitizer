@@ -2,6 +2,25 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:WpfPlotDigitizer"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
+  <sys:String x:Key="WarningHeader">
+    Plot Digitizer 警告
+  </sys:String>
+  <sys:String x:Key="WarningInputMessage">
+    請選擇一張影像。
+  </sys:String>
+  <sys:String x:Key="WarningAxLimMessage">
+    請輸入所有座標軸邊界值。
+  </sys:String>
+  <sys:String x:Key="WarningSaveMessage">
+    很抱歉...儲存檔案時發生錯誤。
+  </sys:String>
+  <sys:String x:Key="InformationHeader">
+    Plot Digitizer 訊息
+  </sys:String>
+  <sys:String x:Key="InformationSaveMessage">
+    您的檔案已成功儲存！
+  </sys:String>
+  
   <sys:String x:Key="LangHeader">
     語言
   </sys:String>

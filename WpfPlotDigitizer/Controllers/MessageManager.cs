@@ -34,7 +34,7 @@ namespace WpfPlotDigitizer
 
     public static void Warning(string message)
     {
-      mainWindow.ShowMessageAsync("Plot Digitizer Warning", message, MessageDialogStyle.Affirmative, new MetroDialogSettings
+      mainWindow.ShowMessageAsync(mainWindow.FindResource("WarningHeader") as string, message, MessageDialogStyle.Affirmative, new MetroDialogSettings
       {
         ColorScheme = MetroDialogColorScheme.Inverted,
       });
@@ -42,7 +42,7 @@ namespace WpfPlotDigitizer
 
     public static void Information(string message)
     {
-      mainWindow.ShowMessageAsync("Plot Digitizer Message", message);
+      mainWindow.ShowMessageAsync(mainWindow.FindResource("InformationHeader") as string, message);
     }
   }
 }

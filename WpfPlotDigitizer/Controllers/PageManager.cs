@@ -69,7 +69,7 @@ namespace WpfPlotDigitizer
         case ApplicationPages.Browse:
           if (!PBInputCheck())
           {
-            MessageManager.Warning("Please select an image.");
+            MessageManager.Warning(mainWindow.FindResource("WarningInputMessage") as string);
             return false;
           }
           break;
@@ -78,7 +78,7 @@ namespace WpfPlotDigitizer
         case ApplicationPages.AxLim:
           if (!axLimPageVM.IsValid)
           {
-            MessageManager.Warning("Please type in all valid axis limits.");
+            MessageManager.Warning(mainWindow.FindResource("WarningAxLimMessage") as string);
             return false;
           }
           break;
