@@ -43,6 +43,8 @@ namespace WpfPlotDigitizer
 
     private void TextBox_LostFocus(object sender, RoutedEventArgs e)
     {
+      // we manually fire the bindings to invoke validation 
+      (sender as TextBox).GetBindingExpression(TextBox.TextProperty).UpdateSource();
       axLimPageVM.IsViewValid = ValidationHelpers.IsValid(this);
     }
   }
