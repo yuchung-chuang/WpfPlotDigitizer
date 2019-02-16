@@ -13,6 +13,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using SharedProject1;
 using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer
@@ -26,6 +27,7 @@ namespace WpfPlotDigitizer
     {
       InitializeComponent();
       DataContext = mainWindowVM;
+      var c = new Class1();
     }
 
     public PageControl pageControl;
