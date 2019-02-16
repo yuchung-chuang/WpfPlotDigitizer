@@ -1,6 +1,12 @@
-# WpfPlotDigitizer 
+# Plot Digitizer 數據擷取器
 
-A simple, powerful application that helps you digitize data from images.
+一個能夠數位化影像資料的簡單小程式。
+
+### 使用情境
+
+當你在熬夜趕論文報告時，突然需要對某篇paper上的資料分析，偏偏paper上只付了一張如下圖般的影像：
+
+
 
 ### Usage
 
