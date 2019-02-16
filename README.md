@@ -7,7 +7,7 @@ A simple, powerful application that helps you digitize data from images.
 No need to install, just download [WpfPlotDigitizer.rar](https://github.com/alex1392/WpfPlotDigitizer/releases) from release page, unzip the file, and hit WpfPlotDigitizer.exe :)
 
 ## Snapshots
-![Demo Image](https://raw.githubusercontent.com/alex1392/WpfPlotDigitizer/master/Images/DemoImage.png)
+![Demo Image](https://raw.githubusercontent.com/alex1392/WpfPlotDigitizer/master/Images/DemoImages.png)
 
 ### Tech
 
