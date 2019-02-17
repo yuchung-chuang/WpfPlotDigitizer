@@ -1,4 +1,4 @@
-﻿using CycWpfLibrary.MVVM;
+﻿using CycLibrary.MVVM;
 using System;
 using System.Collections.Generic;
 using System.Linq;

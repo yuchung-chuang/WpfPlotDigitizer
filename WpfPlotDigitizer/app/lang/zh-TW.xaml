@@ -3,7 +3,7 @@
                     xmlns:local="clr-namespace:WpfPlotDigitizer"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
   <ResourceDictionary.MergedDictionaries>
-    <ResourceDictionary Source="pack://application:,,,/CycWpfLibrary;component/CycWpfLibrary/WPF/Validations/resources/ValidationMessages_zh-TW.xaml" />
+    <ResourceDictionary Source="/WpfPlotDigitizer;component/CycLibrary/WPF/Validations/resources/ValidationMessages_zh-TW.xaml" />
   </ResourceDictionary.MergedDictionaries>
   <sys:String x:Key="WarningHeader">
     Plot Digitizer 警告

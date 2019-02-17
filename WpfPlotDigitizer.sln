@@ -33,6 +33,13 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		..\CycLibrary\CycLibrary\CycLibrary.projitems*{3b641a78-b0b5-4f96-aacf-72191e28a7dd}*SharedItemsImports = 13
 		..\CycLibrary\CycLibrary.CustomControls\CycLibrary.CustomControls.projitems*{55c360b3-59f3-49cf-8836-68d062521417}*SharedItemsImports = 13
+<<<<<<< HEAD
+=======
+		..\CycLibrary\CycLibrary.CustomControls\CycLibrary.CustomControls.projitems*{81747536-adc6-4893-a248-7039a67c52d9}*SharedItemsImports = 4
+		..\CycLibrary\CycLibrary.Resources\CycLibrary.Resources.projitems*{81747536-adc6-4893-a248-7039a67c52d9}*SharedItemsImports = 4
+		..\CycLibrary\CycLibrary.UserControls\CycLibrary.UserControls.projitems*{81747536-adc6-4893-a248-7039a67c52d9}*SharedItemsImports = 4
+		..\CycLibrary\CycLibrary\CycLibrary.projitems*{81747536-adc6-4893-a248-7039a67c52d9}*SharedItemsImports = 4
+>>>>>>> 84f2187284a2f51939161eae5363eeb98083419d
 		..\CycLibrary\CycLibrary.UserControls\CycLibrary.UserControls.projitems*{b283e030-2fc9-40de-9926-e97a52c56114}*SharedItemsImports = 13
 		..\CycLibrary\CycLibrary.Resources\CycLibrary.Resources.projitems*{f9ce892a-655d-4cde-a5ab-b48618114f1e}*SharedItemsImports = 13
 	EndGlobalSection

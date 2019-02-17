@@ -1,5 +1,5 @@
-﻿using CycWpfLibrary.Media;
-using CycWpfLibrary.MVVM;
+﻿using CycLibrary.Media;
+using CycLibrary.MVVM;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
