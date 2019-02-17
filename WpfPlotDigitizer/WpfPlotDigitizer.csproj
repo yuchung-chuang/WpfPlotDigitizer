@@ -422,9 +422,6 @@
     <Resource Include="images\ocr.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="app\resources\icon_cyc.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app\resources\robotVoice.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -468,6 +465,7 @@ rd sv\ /q /s
 rd tr\ /q /s
 rd zh-cn\ /q /s
 rd zh-tw\ /q /s
+
 ::移動檔案
 mkdir app\
 mkdir app\dll\
@@ -476,6 +474,7 @@ mkdir app\xml
 move *.xml app\xml\
 mkdir app\pdb
 move *.pdb app\pdb\
+
 ::避免robocopy回傳錯誤
 if errorlevel 4 goto BuildEventFailed
 if errorlevel 0 goto end

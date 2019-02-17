@@ -18,11 +18,15 @@
       <RowDefinition Height="*" />
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
+    <Grid.Resources>
+      <re:CycResources x:Key="resources" />
+    </Grid.Resources>
+    
     <Border Background="Transparent"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Grid.ColumnSpan="2">
-      <Image Source="/WpfPlotDigitizer;component/app/resources/icon_cyc.png"
+      <Image Source="{Binding Source={StaticResource resources}, Path=CycIconUri}"
              Width="150" />
     </Border>
     <TextBlock Text="C.Y.C Products"
