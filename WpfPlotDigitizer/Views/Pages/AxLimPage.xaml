@@ -24,7 +24,7 @@
                TargetType="TextBox"
                BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
           <Setter Property="Width"
-                  Value="100" />
+                  Value="120" />
           <Setter Property="Height"
                   Value="40" />
           <Setter Property="Validation.ErrorTemplate"
