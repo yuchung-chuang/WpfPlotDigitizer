@@ -7,7 +7,7 @@
 當你在熬夜趕論文報告時，突然需要對某篇paper上的資料分析，偏偏paper只附了一張如下圖般的影像：
 
 <p align="center"> 
-<img src="https://raw.githubusercontent.com/alex1392/WpfPlotDigitizer/master/Images/DemoData.png" alt="Demo Data" width="400" />
+<img src="https://raw.githubusercontent.com/alex1392/WpfPlotDigitizer/master/DemoResources/DemoData.png" alt="Demo Data" width="400" />
 </p>
 
 這下麻煩了，圖中數以千計的資料點，怎麼樣也沒辦法短時間內人工轉譯出座標來。更何況座標軸還是對數尺度......
@@ -35,7 +35,7 @@
 程式中點兩下左鍵即可抓取座標軸，也允許手動調整座標軸位置。
 
 <p align="center"> 
-<img src="https://raw.githubusercontent.com/alex1392/WpfPlotDigitizer/master/Images/AxisPageDemo.gif" alt="Auto Get Axis" width="400" />
+<img src="https://raw.githubusercontent.com/alex1392/WpfPlotDigitizer/master/DemoResources/AxisPageDemo.gif" alt="Auto Get Axis" width="400" />
 </p>
   
 
@@ -44,7 +44,7 @@
 考慮到影像中可能有多種顏色的資料，顏色過濾器可以很方便的過濾掉不要的資料。
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/alex1392/WpfPlotDigitizer/master/Images/FilterPageDemo.gif" alt="Filter Image" width="400">
+<img src="https://raw.githubusercontent.com/alex1392/WpfPlotDigitizer/master/DemoResources/FilterPageDemo.gif" alt="Filter Image" width="400">
 </p>
   
 
@@ -54,7 +54,7 @@
 
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/alex1392/WpfPlotDigitizer/master/Images/ErasePageDemo.gif" alt="Erase Image" width="400" />
+<img src="https://raw.githubusercontent.com/alex1392/WpfPlotDigitizer/master/DemoResources/ErasePageDemo.gif" alt="Erase Image" width="400" />
 </p>
 
   
@@ -64,7 +64,7 @@
 考慮到每張圖的資料點大小不同，程式中可以手動將資料點調整到最適合的大小，以保證取得的資料與原始資料完全相符。
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/alex1392/WpfPlotDigitizer/master/Images/DataPageDemo.gif" alt="Adjust Data" width="400"/>
+<img src="https://raw.githubusercontent.com/alex1392/WpfPlotDigitizer/master/DemoResources/DataPageDemo.gif" alt="Adjust Data" width="400"/>
 </p>
 
   
@@ -76,7 +76,7 @@
 初次開啟程式時會自動開啟教學模式，之後可以透過右上角的「?」按鈕再次開啟教學。
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/alex1392/WpfPlotDigitizer/master/Images/TutorialDemo.gif" alt="Tutorial" width="400"/>
+<img src="https://raw.githubusercontent.com/alex1392/WpfPlotDigitizer/master/DemoResources/TutorialDemo.gif" alt="Tutorial" width="400"/>
 </p>
 
   
@@ -86,7 +86,7 @@
 開啟程式時會自動根據系統語言決定語言，也可以透過右上角的「文A」按鈕在執行中切換語言。
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/alex1392/WpfPlotDigitizer/master/Images/LangDemo.gif" alt="Language" width="400"/>
+<img src="https://raw.githubusercontent.com/alex1392/WpfPlotDigitizer/master/DemoResources/LangDemo.gif" alt="Language" width="400"/>
 </p>
 
   
@@ -98,7 +98,7 @@
 目前可支援輸出Excel檔、.csv檔、.txt檔，並支援對數尺度的座標軸。
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/alex1392/WpfPlotDigitizer/master/Images/SavePageDemo.gif" alt="Output" width="400"/>
+<img src="https://raw.githubusercontent.com/alex1392/WpfPlotDigitizer/master/DemoResources/SavePageDemo.gif" alt="Output" width="400"/>
 </p>
 
   
@@ -111,7 +111,7 @@
 	* 簡單的工作流程
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/alex1392/WpfPlotDigitizer/master/Images/DemoImages.png" alt="Pages" width="400"/>
+<img src="https://raw.githubusercontent.com/alex1392/WpfPlotDigitizer/master/DemoResources/DemoImages.png" alt="Pages" width="400"/>
 </p>
 
   
