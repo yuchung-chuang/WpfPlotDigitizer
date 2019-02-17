@@ -6,7 +6,6 @@
       xmlns:local="clr-namespace:WpfPlotDigitizer"
       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
       xmlns:cyc="clr-namespace:CycWpfLibrary;assembly=CycWpfLibrary"
-      xmlns:re="clr-namespace:CycWpfLibrary.Resources;assembly=CycWpfLibrary.Resources"
       mc:Ignorable="d"
       d:DesignHeight="600"
       d:DesignWidth="900"
@@ -271,7 +270,6 @@
                      d:DesignTimeNaturalDuration="3.7616326"
                      BeginTime="0:0:3.2" />
     </Storyboard>
-    <re:CycResources x:Key="resources" />
   </Page.Resources>
   <Page.Triggers>
     <EventTrigger RoutedEvent="FrameworkElement.Loaded">
@@ -282,82 +280,17 @@
   </Page.Triggers>
   <!--Storyboard.Completed not firing with mediaTimeLine!?-->
   <Grid>
-    <StackPanel Orientation="Vertical"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Center">
-      <Image x:Name="digitizer"
-             Source="/app/resources/icon_digitizer.png"
-             Width="200"
-             Height="200"
-             Stretch="Uniform"
-             Visibility="Hidden" />
-      <TextBlock x:Name="text_digitizer"
-                 Text="Plot Digitizer"
-                 FontSize="48"
-                 FontFamily="Magneto">
-        <TextBlock.Foreground>
-          <LinearGradientBrush MappingMode="RelativeToBoundingBox"
-                               StartPoint="0,0.5"
-                               EndPoint="1,0.5">
-            <LinearGradientBrush.RelativeTransform>
-              <TransformGroup>
-                <ScaleTransform CenterY="0.5"
-                                CenterX="0.5" />
-                <SkewTransform CenterY="0.5"
-                               CenterX="0.5" />
-                <RotateTransform CenterY="0.5"
-                                 CenterX="0.5" />
-                <TranslateTransform />
-              </TransformGroup>
-            </LinearGradientBrush.RelativeTransform>
-            <GradientStop Color="Red"
-                          Offset="0" />
-            <GradientStop Color="Yellow"
-                          Offset="0.203" />
-            <GradientStop Color="Lime"
-                          Offset="0.398" />
-            <GradientStop Color="Cyan"
-                          Offset="0.599" />
-            <GradientStop Color="Blue"
-                          Offset="0.814" />
-            <GradientStop Color="Red"
-                          Offset="0.008" />
-            <GradientStop Color="Blue"
-                          Offset="0.979" />
-            <GradientStop Color="Magenta"
-                          Offset="0.06" />
-            <GradientStop Color="Blue"
-                          Offset="0.039" />
-          </LinearGradientBrush>
-        </TextBlock.Foreground>
-      </TextBlock>
-    </StackPanel>
+    <Image x:Name="digitizer"
+           Source="/app/resources/icon_digitizer.png"
+           Width="200"
+           Height="200"
+           Stretch="Uniform"
+           Visibility="Hidden" />
 
-    <StackPanel Orientation="Vertical"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center">
-      
-      <Image x:Name="cyc"
-             Source="{Binding Source={StaticResource resources}, Path=CycIconUri}"
-             Width="150"
-             Height="150" />
-      <TextBlock x:Name="text_cyc"
-                 Foreground="White"
-                 FontSize="30"
-                 FontFamily="OCR A Extended"
-                 RenderTransformOrigin="0.5,0.5">
-        <TextBlock.RenderTransform>
-          <TransformGroup>
-            <ScaleTransform />
-            <SkewTransform />
-            <RotateTransform />
-            <TranslateTransform />
-          </TransformGroup>
-        </TextBlock.RenderTransform>
-      <Run Text="C.Y.C Products" />
-      </TextBlock>
-    </StackPanel>
-
+    <Image x:Name="cyc"
+           Source="/app/resources/icon_cyc.png"
+           Width="150"
+           Height="150" />
     <MediaElement x:Name="robotVoice_wav"
                   Margin="0,0,800,450"
                   Stretch="Fill"
@@ -366,6 +299,73 @@
                   Margin="0,0,800,450"
                   Stretch="Fill"
                   d:IsLocked="True" />
+    <TextBlock x:Name="text_cyc"
+               Width="300"
+               Height="40"
+               Foreground="White"
+               FontSize="30"
+               FontFamily="OCR A Extended"
+               TextAlignment="Center"
+               Margin="300,0,300,178"
+               VerticalAlignment="Bottom"
+               RenderTransformOrigin="0.5,0.5">
+      <TextBlock.RenderTransform>
+        <TransformGroup>
+          <ScaleTransform />
+          <SkewTransform />
+          <RotateTransform />
+          <TranslateTransform />
+        </TransformGroup>
+      </TextBlock.RenderTransform>
+      <Run Text="C.Y.C Products" />
+    </TextBlock>
+    <TextBlock x:Name="text_digitizer"
+               HorizontalAlignment="Left"
+               Margin="224.334,405,0,0"
+               TextWrapping="Wrap"
+               Text="Plot Digitizer"
+               VerticalAlignment="Top"
+               Width="451.332"
+               Height="70.626"
+               FontSize="48"
+               TextAlignment="Center"
+               FontFamily="Magneto">
+      <TextBlock.Foreground>
+        <LinearGradientBrush MappingMode="RelativeToBoundingBox"
+                             StartPoint="0,0.5"
+                             EndPoint="1,0.5">
+          <LinearGradientBrush.RelativeTransform>
+            <TransformGroup>
+              <ScaleTransform CenterY="0.5"
+                              CenterX="0.5" />
+              <SkewTransform CenterY="0.5"
+                             CenterX="0.5" />
+              <RotateTransform CenterY="0.5"
+                               CenterX="0.5" />
+              <TranslateTransform />
+            </TransformGroup>
+          </LinearGradientBrush.RelativeTransform>
+          <GradientStop Color="Red"
+                        Offset="0" />
+          <GradientStop Color="Yellow"
+                        Offset="0.203" />
+          <GradientStop Color="Lime"
+                        Offset="0.398" />
+          <GradientStop Color="Cyan"
+                        Offset="0.599" />
+          <GradientStop Color="Blue"
+                        Offset="0.814" />
+          <GradientStop Color="Red"
+                        Offset="0.008" />
+          <GradientStop Color="Blue"
+                        Offset="0.979" />
+          <GradientStop Color="Magenta"
+                        Offset="0.06" />
+          <GradientStop Color="Blue"
+                        Offset="0.039" />
+        </LinearGradientBrush>
+      </TextBlock.Foreground>
+    </TextBlock>
     <TextBlock x:Name="text_skip"
                Margin="5"
                FontSize="15"
