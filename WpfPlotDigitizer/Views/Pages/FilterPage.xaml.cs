@@ -1,5 +1,5 @@
-﻿using CycWpfLibrary;
-using CycWpfLibrary.Media;
+﻿using CycLibrary;
+using CycLibrary.Media;
 using System.Windows.Controls;
 using System.Windows.Input;
 using static WpfPlotDigitizer.DI;

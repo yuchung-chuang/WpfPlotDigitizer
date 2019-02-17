@@ -1,4 +1,4 @@
-﻿using CycWpfLibrary.CustomControls;
+﻿using CycLibrary.CustomControls;
 using System;
 using System.Collections.Generic;
 using System.Linq;

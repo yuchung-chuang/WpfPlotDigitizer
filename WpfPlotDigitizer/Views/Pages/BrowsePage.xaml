@@ -5,11 +5,11 @@
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:local="clr-namespace:WpfPlotDigitizer"
                     xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
-                    xmlns:custom="clr-namespace:CycWpfLibrary.CustomControls;assembly=CycWpfLibrary.CustomControls"
+                    xmlns:custom="clr-namespace:CycLibrary.CustomControls"
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-                    xmlns:media="clr-namespace:CycWpfLibrary.Media;assembly=CycWpfLibrary"
+                    xmlns:media="clr-namespace:CycLibrary.Media"
                     xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-                    xmlns:mvvm="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
+                    xmlns:mvvm="clr-namespace:CycLibrary.MVVM"
                     mc:Ignorable="d"
                     d:DesignHeight="450"
                     d:DesignWidth="800"
@@ -22,7 +22,7 @@
     <TextBlock Name="headerText"
                Text="{DynamicResource BrowseHeader}"
                Style="{StaticResource HeaderTextStyle}" />
-    <custom:DropBorder Name="dropBorder"
+    <custom:DropBorder x:Name="dropBorder"
                        Grid.Row="1"
                        DropFileName="{Binding FileName, Mode=TwoWay}">
       <StackPanel Visibility="Visible"
