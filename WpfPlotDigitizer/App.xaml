@@ -1,8 +1,12 @@
 ﻿<Application x:Class="WpfPlotDigitizer.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:uc="clr-namespace:CycWpfLibrary.UserControls;assembly=CycWpfLibrary.UserControls"
              xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:cc="clr-namespace:CycLibrary.CustomControls">
+             xmlns:local="clr-namespace:WpfPlotDigitizer"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:cc="clr-namespace:CycWpfLibrary.CustomControls;assembly=CycWpfLibrary.CustomControls"
+             xmlns:cyc="clr-namespace:CycWpfLibrary;assembly=CycWpfLibrary">
   <Application.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
@@ -26,9 +30,7 @@
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Flyout.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Defaults.xaml" />
 
-        <!--CycLibrary.CustomControls-->
-        <ResourceDictionary Source="/Themes/Generic.xaml" />
-        
+        <ResourceDictionary Source="pack://application:,,,/CycWpfLibrary.CustomControls;component/Themes/PopupWindow.xaml" />
       </ResourceDictionary.MergedDictionaries>
 
       <ControlTemplate x:Key="ButtonTemplate"
@@ -806,8 +808,8 @@
              TargetType="Grid">
         <Setter Property="HorizontalAlignment"
                 Value="Center" />
-        <Setter Property="MaxWidth"
-                Value="{StaticResource PopupMaxWidth}" />
+        <!--<Setter Property="MaxWidth"
+                Value="{StaticResource PopupMaxWidth}" />-->
         <Setter Property="Margin"
                 Value="10" />
       </Style>

@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:WpfPlotDigitizer"
       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-      xmlns:cyc="clr-namespace:CycLibrary"
+      xmlns:cyc="clr-namespace:CycWpfLibrary;assembly=CycWpfLibrary"
       mc:Ignorable="d"
       d:DesignHeight="600"
       d:DesignWidth="900"

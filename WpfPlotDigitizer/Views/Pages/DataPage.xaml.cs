@@ -1,4 +1,4 @@
-﻿using CycLibrary.Media;
+﻿using CycWpfLibrary.Media;
 using System.Windows.Controls;
 
 namespace WpfPlotDigitizer

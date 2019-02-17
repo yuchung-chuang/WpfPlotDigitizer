@@ -21,28 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Wpf_NET40", "..\..\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot", "..\..\..\source\repos\oxyplot\Source\OxyPlot\OxyPlot.csproj", "{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CycLibrary.Resources", "..\CycLibrary\CycLibrary.Resources\CycLibrary.Resources.shproj", "{F9CE892A-655D-4CDE-A5AB-B48618114F1E}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CycLibrary", "..\CycLibrary\CycLibrary\CycLibrary.shproj", "{3B641A78-B0B5-4F96-AACF-72191E28A7DD}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CycLibrary.UserControls", "..\CycLibrary\CycLibrary.UserControls\CycLibrary.UserControls.shproj", "{B283E030-2FC9-40DE-9926-E97A52C56114}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CycLibrary.CustomControls", "..\CycLibrary\CycLibrary.CustomControls\CycLibrary.CustomControls.shproj", "{55C360B3-59F3-49CF-8836-68D062521417}"
-EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		..\CycLibrary\CycLibrary\CycLibrary.projitems*{3b641a78-b0b5-4f96-aacf-72191e28a7dd}*SharedItemsImports = 13
-		..\CycLibrary\CycLibrary.CustomControls\CycLibrary.CustomControls.projitems*{55c360b3-59f3-49cf-8836-68d062521417}*SharedItemsImports = 13
-<<<<<<< HEAD
-=======
-		..\CycLibrary\CycLibrary.CustomControls\CycLibrary.CustomControls.projitems*{81747536-adc6-4893-a248-7039a67c52d9}*SharedItemsImports = 4
-		..\CycLibrary\CycLibrary.Resources\CycLibrary.Resources.projitems*{81747536-adc6-4893-a248-7039a67c52d9}*SharedItemsImports = 4
-		..\CycLibrary\CycLibrary.UserControls\CycLibrary.UserControls.projitems*{81747536-adc6-4893-a248-7039a67c52d9}*SharedItemsImports = 4
-		..\CycLibrary\CycLibrary\CycLibrary.projitems*{81747536-adc6-4893-a248-7039a67c52d9}*SharedItemsImports = 4
->>>>>>> 84f2187284a2f51939161eae5363eeb98083419d
-		..\CycLibrary\CycLibrary.UserControls\CycLibrary.UserControls.projitems*{b283e030-2fc9-40de-9926-e97a52c56114}*SharedItemsImports = 13
-		..\CycLibrary\CycLibrary.Resources\CycLibrary.Resources.projitems*{f9ce892a-655d-4cde-a5ab-b48618114f1e}*SharedItemsImports = 13
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86

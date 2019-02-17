@@ -1,14 +1,18 @@
-﻿using CycLibrary;
-using CycLibrary.Emgu;
-using CycLibrary.Media;
-using CycLibrary.Resources;
+﻿using CycWpfLibrary;
+using CycWpfLibrary.Emgu;
+using CycWpfLibrary.Media;
+using CycWpfLibrary.MVVM;
+using CycWpfLibrary.Resources;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using System;
 using System.Globalization;
+using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using static CycLibrary.NativeMethod;
+using System.Windows.Media.Imaging;
+using static CycWpfLibrary.NativeMethod;
 using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer

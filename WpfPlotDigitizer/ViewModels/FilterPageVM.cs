@@ -1,5 +1,5 @@
-﻿using CycLibrary.Media;
-using CycLibrary.MVVM;
+﻿using CycWpfLibrary.Media;
+using CycWpfLibrary.MVVM;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using System.Threading.Tasks;
@@ -8,7 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using IP = WpfPlotDigitizer.ImageProcessing;
 using static WpfPlotDigitizer.DI;
-using CycLibrary.Emgu;
+using CycWpfLibrary.Emgu;
 
 namespace WpfPlotDigitizer
 {

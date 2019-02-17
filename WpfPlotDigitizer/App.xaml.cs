@@ -1,7 +1,7 @@
-﻿using CycLibrary;
-using CycLibrary.Media;
-using CycLibrary.Resources;
-using CycLibrary.UserControls;
+﻿using CycWpfLibrary;
+using CycWpfLibrary.Media;
+using CycWpfLibrary.Resources;
+using CycWpfLibrary.UserControls;
 using Dna;
 using System;
 using System.Globalization;
@@ -9,7 +9,6 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using static WpfPlotDigitizer.DI;
 
@@ -49,10 +48,10 @@ namespace WpfPlotDigitizer
       mainWindow.gridMain.Children.Add(pageControl);
 
 #if DEBUG
-      browsePageVM.PBInput = new Uri(CycResources.PackUri + @"images/data2.png").ToPixelBitmap();
+      browsePageVM.PBInput = new Uri(CycResources.PackUri + @"images/data.png").ToPixelBitmap();
       axLimPageVM.AxLim = new Rect(new Point(1e-4, 1e-4), new Point(1e6, 1e7));
       axLimPageVM.AxLogBase = new Point(10, 0);
-      appManager.PageManager.TurnTo((int)ApplicationPages.Axis);
+      appManager.PageManager.TurnTo((int)ApplicationPages.Filter);
 #endif
     }
   }

@@ -1,7 +1,7 @@
-﻿using CycLibrary;
-using CycLibrary.Emgu;
-using CycLibrary.Media;
-using CycLibrary.WinForm;
+﻿using CycWpfLibrary;
+using CycWpfLibrary.Emgu;
+using CycWpfLibrary.Media;
+using CycWpfLibrary.WinForm;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.OCR;
@@ -14,10 +14,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
-using static CycLibrary.Math;
+using static CycWpfLibrary.Math;
 using static System.Math;
 using ct = System.Threading.CancellationToken;
-using PB = CycLibrary.Media.PixelBitmap;
+using PB = CycWpfLibrary.Media.PixelBitmap;
 using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer

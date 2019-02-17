@@ -1,6 +1,6 @@
-﻿using CycLibrary;
-using CycLibrary.Media;
-using CycLibrary.MVVM;
+﻿using CycWpfLibrary;
+using CycWpfLibrary.Media;
+using CycWpfLibrary.MVVM;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;

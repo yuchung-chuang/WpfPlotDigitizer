@@ -3,8 +3,7 @@
                     xmlns:local="clr-namespace:WpfPlotDigitizer"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
   <ResourceDictionary.MergedDictionaries>
-    <!--Need to delete shared project folder to access resources correctly-->
-    <ResourceDictionary Source="/WpfPlotDigitizer;component/CycLibrary/WPF/Validations/resources/ValidationMessages_en-US.xaml" />
+    <ResourceDictionary Source="pack://application:,,,/CycWpfLibrary;component/CycWpfLibrary/WPF/Validations/resources/ValidationMessages_en-US.xaml" />
   </ResourceDictionary.MergedDictionaries>
   <sys:String x:Key="WarningHeader">
     Plot Digitizer Warning

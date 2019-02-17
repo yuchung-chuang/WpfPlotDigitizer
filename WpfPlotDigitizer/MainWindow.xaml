@@ -3,10 +3,15 @@
                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                      xmlns:local="clr-namespace:WpfPlotDigitizer"
+                     xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
                      xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
-                     xmlns:uc="clr-namespace:CycLibrary.UserControls"
+                     xmlns:mvvm="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
+                     xmlns:uc="clr-namespace:CycWpfLibrary.UserControls;assembly=CycWpfLibrary.UserControls"
                      xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
-                     xmlns:re="clr-namespace:CycLibrary.Resources"
+                     xmlns:cyc="clr-namespace:CycWpfLibrary;assembly=CycWpfLibrary"
+                     xmlns:Converters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
+                     xmlns:controlzEx="clr-namespace:ControlzEx;assembly=MaterialDesignThemes.Wpf"
+                     xmlns:re="clr-namespace:CycWpfLibrary.Resources;assembly=CycWpfLibrary.Resources"
                      x:Class="WpfPlotDigitizer.MainWindow"
                      mc:Ignorable="d"
                      WindowStartupLocation="CenterScreen"
@@ -69,6 +74,5 @@
   <Grid x:Name="gridMain">
     <Frame Name="splashFrame"
            Panel.ZIndex="1" />
-    
   </Grid>
 </mahapps:MetroWindow>

@@ -1,7 +1,7 @@
-﻿using CycLibrary.Emgu;
-using CycLibrary.Media;
-using CycLibrary.MVVM;
-using CycLibrary.WinForm;
+﻿using CycWpfLibrary.Emgu;
+using CycWpfLibrary.Media;
+using CycWpfLibrary.MVVM;
+using CycWpfLibrary.WinForm;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
