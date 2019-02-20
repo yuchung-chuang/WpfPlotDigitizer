@@ -18,7 +18,7 @@ namespace WpfPlotDigitizer
     public MessageTypes Type { get; set; }
   }
 
-  public class ViewModelBase : CycWpfLibrary.MVVM.ViewModelBase
+  public class ViewModelBase : CycWpfLibrary.ViewModelBase
   {
     public event EventHandler<MessageEventArgs> MessageRequest;
 

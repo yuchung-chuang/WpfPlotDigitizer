@@ -1,6 +1,5 @@
 ﻿using CycWpfLibrary;
 using CycWpfLibrary.CustomControls;
-using CycWpfLibrary.Media;
 using CycWpfLibrary.Resources;
 using CycWpfLibrary.UserControls;
 using MahApps.Metro.Controls;

@@ -1,6 +1,5 @@
 ﻿using CycWpfLibrary;
 using CycWpfLibrary.Emgu;
-using CycWpfLibrary.MVVM;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using Microsoft.Win32;

@@ -1,17 +1,9 @@
 ﻿using CycWpfLibrary.Emgu;
-using CycWpfLibrary.Media;
-using CycWpfLibrary.MVVM;
-using CycWpfLibrary.WinForm;
+using CycWpfLibrary;
 using Emgu.CV;
-using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using static WpfPlotDigitizer.DI;

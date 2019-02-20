@@ -5,7 +5,6 @@
                      xmlns:local="clr-namespace:WpfPlotDigitizer"
                      xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
                      xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
-                     xmlns:mvvm="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
                      xmlns:uc="clr-namespace:CycWpfLibrary.UserControls;assembly=CycWpfLibrary.UserControls"
                      xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
                      xmlns:cyc="clr-namespace:CycWpfLibrary;assembly=CycWpfLibrary"

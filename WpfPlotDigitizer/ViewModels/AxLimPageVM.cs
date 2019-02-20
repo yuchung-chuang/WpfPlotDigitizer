@@ -1,21 +1,8 @@
 ﻿using CycWpfLibrary.Emgu;
-using CycWpfLibrary.Media;
-using CycWpfLibrary.MVVM;
-using CycWpfLibrary.WinForm;
-using Emgu.CV;
-using Emgu.CV.CvEnum;
-using Emgu.CV.OCR;
-using Emgu.CV.Structure;
-using System;
-using System.ComponentModel;
-using System.Reflection;
+using CycWpfLibrary;
 using System.Windows;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using static WpfPlotDigitizer.DI;
-using IP = WpfPlotDigitizer.ImageProcessing;
-using Rectangle = System.Drawing.Rectangle;
 
 namespace WpfPlotDigitizer
 {

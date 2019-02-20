@@ -1,5 +1,4 @@
 ﻿using CycWpfLibrary;
-using CycWpfLibrary.MVVM;
 using System.Windows.Input;
 using Emgu.CV;
 using Emgu.CV.Structure;

@@ -1,11 +1,9 @@
-﻿<media:AnimatedPage x:Class="WpfPlotDigitizer.AxisPage"
+﻿<cyc:AnimatedPage x:Class="WpfPlotDigitizer.AxisPage"
                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:local="clr-namespace:WpfPlotDigitizer"
-                    xmlns:mvvm="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
-                    xmlns:media="clr-namespace:CycWpfLibrary.Media;assembly=CycWpfLibrary"
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                     xmlns:uc="clr-namespace:CycWpfLibrary.UserControls;assembly=CycWpfLibrary.UserControls"
                     xmlns:cyc="clr-namespace:CycWpfLibrary;assembly=CycWpfLibrary"
@@ -48,4 +46,4 @@
       </Grid>
     </Viewbox>
   </Grid>
-</media:AnimatedPage>
+</cyc:AnimatedPage>

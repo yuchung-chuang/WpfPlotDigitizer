@@ -1,5 +1,4 @@
 ﻿using CycWpfLibrary;
-using CycWpfLibrary.MVVM;
 using CycWpfLibrary.Resources;
 using System;
 using System.Windows;

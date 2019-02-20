@@ -1,5 +1,4 @@
-﻿using CycWpfLibrary.Media;
-using CycWpfLibrary.MVVM;
+﻿using CycWpfLibrary;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using System.Threading.Tasks;

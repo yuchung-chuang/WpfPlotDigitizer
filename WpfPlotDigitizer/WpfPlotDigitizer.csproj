@@ -367,6 +367,10 @@
       <Project>{1b0190c8-083c-4c23-9862-66c520641264}</Project>
       <Name>CycWpfLibrary.CustomControls</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\CycWpfLibrary\CycWpfLibrary.Emgu\CycWpfLibrary.Emgu.csproj">
+      <Project>{49844f32-a5c8-423f-bbdc-09bfad908915}</Project>
+      <Name>CycWpfLibrary.Emgu</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\CycWpfLibrary\CycWpfLibrary.Resources\CycWpfLibrary.Resources.csproj">
       <Project>{482D004F-7715-41E1-9D47-B00E8D7C9ACC}</Project>
       <Name>CycWpfLibrary.Resources</Name>

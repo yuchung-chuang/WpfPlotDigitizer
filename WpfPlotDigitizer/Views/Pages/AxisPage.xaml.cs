@@ -1,9 +1,8 @@
-﻿using CycWpfLibrary.Media;
+﻿using CycWpfLibrary;
 using System.Windows;
 using System.Windows.Controls;
 using static WpfPlotDigitizer.DI;
 using static CycWpfLibrary.Math;
-using CycWpfLibrary;
 using System.Windows.Input;
 using System.Diagnostics;
 

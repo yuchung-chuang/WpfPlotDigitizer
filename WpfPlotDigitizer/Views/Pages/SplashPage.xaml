@@ -261,7 +261,7 @@
                              Value="Cyan" />
       </ColorAnimationUsingKeyFrames>
     </Storyboard>
-    <Storyboard x:Key="MediaStoryboard">
+    <Storyboard x:Key="cycStoryboard">
       <MediaTimeline Source="pack://siteoforigin:,,,/app/resources/robotVoice.wav"
                      Storyboard.TargetName="robotVoice_wav"
                      d:DesignTimeNaturalDuration="3.1439999999999997" />
@@ -275,10 +275,10 @@
     <EventTrigger RoutedEvent="FrameworkElement.Loaded">
       <BeginStoryboard x:Name="Storyboard1_BeginStoryboard"
                        Storyboard="{StaticResource Storyboard}" />
-      <BeginStoryboard Storyboard="{StaticResource MediaStoryboard}" />
+      <BeginStoryboard Storyboard="{StaticResource cycStoryboard}" />
     </EventTrigger>
   </Page.Triggers>
-  <!--Storyboard.Completed not firing with mediaTimeLine!?-->
+  <!--Storyboard.Completed not firing with cycTimeLine!?-->
   <Grid>
     <Image x:Name="digitizer"
            Source="/app/resources/icon_digitizer.png"

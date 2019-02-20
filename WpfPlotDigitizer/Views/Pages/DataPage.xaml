@@ -1,4 +1,4 @@
-﻿<media:AnimatedPage x:Class="WpfPlotDigitizer.DataPage"
+﻿<cyc:AnimatedPage x:Class="WpfPlotDigitizer.DataPage"
                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -6,8 +6,6 @@
                     xmlns:local="clr-namespace:WpfPlotDigitizer"
                     xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-                    xmlns:mvvm="clr-namespace:CycWpfLibrary.MVVM;assembly=CycWpfLibrary"
-                    xmlns:media="clr-namespace:CycWpfLibrary.Media;assembly=CycWpfLibrary"
                     xmlns:cyc="clr-namespace:CycWpfLibrary;assembly=CycWpfLibrary"
                     mc:Ignorable="d"
                     d:DesignHeight="450"
@@ -90,4 +88,4 @@
     </Grid>
 
   </Grid>
-</media:AnimatedPage>
+</cyc:AnimatedPage>

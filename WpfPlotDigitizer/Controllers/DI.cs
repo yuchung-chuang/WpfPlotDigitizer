@@ -2,7 +2,7 @@
 using DIConstruct = Dna.FrameworkConstruction;
 using System.Windows.Controls;
 using Microsoft.Extensions.DependencyInjection;
-using CycWpfLibrary.Media;
+using CycWpfLibrary;
 
 namespace WpfPlotDigitizer
 {
