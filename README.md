@@ -7,7 +7,12 @@ A simple, powerful application that helps you digitize data from images.
 ![.net](https://img.shields.io/badge/.net->=4.6.1-informational.svg) 
 ![lanugage](https://img.shields.io/badge/C%23-7.0-informational.svg)
 ![IDE](https://img.shields.io/badge/IDE-vs2017-informational.svg)
+
 [![Build status](https://ci.appveyor.com/api/projects/status/sl70p85psk1vpf56?svg=true)](https://ci.appveyor.com/project/alex1392/wpfplotdigitizer)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=alex1392_WpfPlotDigitizer&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=alex1392_WpfPlotDigitizer)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=alex1392_WpfPlotDigitizer&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=alex1392_WpfPlotDigitizer)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=alex1392_WpfPlotDigitizer&metric=security_rating)](https://sonarcloud.io/dashboard?id=alex1392_WpfPlotDigitizer)
+
 ![license](https://img.shields.io/github/license/alex1392/WpfPlotDigitizer.svg?style=flat)
 
 ## Usage
