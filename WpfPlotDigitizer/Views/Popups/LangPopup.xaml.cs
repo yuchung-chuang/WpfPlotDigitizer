@@ -1,5 +1,5 @@
 ﻿using CycWpfLibrary.CustomControls;
-using CycWpfLibrary.Resources;
+using CycWpfLibrary.Resource;
 using static WpfPlotDigitizer.DI;
 
 namespace WpfPlotDigitizer

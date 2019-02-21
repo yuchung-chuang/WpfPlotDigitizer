@@ -1,6 +1,6 @@
 ﻿using CycWpfLibrary;
 using CycWpfLibrary.Emgu;
-using CycWpfLibrary.Resources;
+using CycWpfLibrary.Resource;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using System;

@@ -1,5 +1,5 @@
 ﻿using CycWpfLibrary;
-using CycWpfLibrary.Resources;
+using CycWpfLibrary.Resource;
 using System;
 using System.Windows;
 using System.Windows.Controls;

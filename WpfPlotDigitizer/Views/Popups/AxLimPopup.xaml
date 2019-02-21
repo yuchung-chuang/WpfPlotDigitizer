@@ -5,7 +5,7 @@
                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                 xmlns:local="clr-namespace:WpfPlotDigitizer"
                 xmlns:cc="clr-namespace:CycWpfLibrary.CustomControls;assembly=CycWpfLibrary.CustomControls"
-                xmlns:re="clr-namespace:CycWpfLibrary.Resources;assembly=CycWpfLibrary.Resources"
+                xmlns:re="clr-namespace:CycWpfLibrary.Resource;assembly=CycWpfLibrary.Resource"
                 xmlns:sys="clr-namespace:System;assembly=mscorlib"
                 mc:Ignorable="d"
                 Title="AxLimPopup"
