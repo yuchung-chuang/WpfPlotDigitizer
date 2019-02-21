@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfPlotDigitizer", "WpfPlot
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfPlotDigitizerTests", "WpfPlotDigitizerTests\WpfPlotDigitizerTests.csproj", "{F1C95353-AD74-4AA1-B0A1-0563D90392E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CycWpfLibraryTests", "..\CycWpfLibrary\CycWpfLibraryTests\CycWpfLibraryTests.csproj", "{E14630FC-5D4F-404D-98AE-4A7FD8D579A7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot", "OxyPlot\OxyPlot.csproj", "{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Wpf_NET40", "OxyPlot.Wpf\OxyPlot.Wpf_NET40.csproj", "{0D7C7710-C58B-4713-BA18-8231A2F35A12}"
@@ -37,14 +35,6 @@ Global
 		{F1C95353-AD74-4AA1-B0A1-0563D90392E8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F1C95353-AD74-4AA1-B0A1-0563D90392E8}.Release|x86.ActiveCfg = Release|Any CPU
 		{F1C95353-AD74-4AA1-B0A1-0563D90392E8}.Release|x86.Build.0 = Release|Any CPU
-		{E14630FC-5D4F-404D-98AE-4A7FD8D579A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E14630FC-5D4F-404D-98AE-4A7FD8D579A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E14630FC-5D4F-404D-98AE-4A7FD8D579A7}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{E14630FC-5D4F-404D-98AE-4A7FD8D579A7}.Debug|x86.Build.0 = Debug|Any CPU
-		{E14630FC-5D4F-404D-98AE-4A7FD8D579A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E14630FC-5D4F-404D-98AE-4A7FD8D579A7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E14630FC-5D4F-404D-98AE-4A7FD8D579A7}.Release|x86.ActiveCfg = Release|Any CPU
-		{E14630FC-5D4F-404D-98AE-4A7FD8D579A7}.Release|x86.Build.0 = Release|Any CPU
 		{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}.Debug|x86.ActiveCfg = Debug|Any CPU
