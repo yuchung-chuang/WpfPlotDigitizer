@@ -20,16 +20,6 @@ namespace WpfPlotDigitizer
 
     private static readonly Settings settings = Settings.Default;
     public bool IsFirstVisitApp { set; get; } = settings.FirstApp;
-    private bool[] isFirstVisitPage = new bool[]
-    {
-      settings.FirstBrowse,
-      settings.FirstAxLim,
-      settings.FirstAxis,
-      settings.FirstFilter,
-      settings.FirstErase,
-      settings.FirstData,
-      settings.FirstSave,
-    };
 
     public void CheckFirstVisitApp()
     {
