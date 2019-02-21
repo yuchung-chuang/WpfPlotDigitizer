@@ -7,12 +7,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfPlotDigitizer", "WpfPlot
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		AppVeyor|Any CPU = AppVeyor|Any CPU
+		AppVeyor|x86 = AppVeyor|x86
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{81747536-ADC6-4893-A248-7039A67C52D9}.AppVeyor|Any CPU.ActiveCfg = AppVeyor|Any CPU
+		{81747536-ADC6-4893-A248-7039A67C52D9}.AppVeyor|Any CPU.Build.0 = AppVeyor|Any CPU
+		{81747536-ADC6-4893-A248-7039A67C52D9}.AppVeyor|x86.ActiveCfg = AppVeyor|Any CPU
+		{81747536-ADC6-4893-A248-7039A67C52D9}.AppVeyor|x86.Build.0 = AppVeyor|Any CPU
 		{81747536-ADC6-4893-A248-7039A67C52D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{81747536-ADC6-4893-A248-7039A67C52D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81747536-ADC6-4893-A248-7039A67C52D9}.Debug|x86.ActiveCfg = Debug|Any CPU

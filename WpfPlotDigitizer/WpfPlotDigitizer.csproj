@@ -41,6 +41,9 @@
   <PropertyGroup>
     <ApplicationIcon>app\resources\icon_digitizer.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AppVeyor|AnyCPU'">
+    <OutputPath>bin\AppVeyor\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\ControlzEx.dll</HintPath>
@@ -213,8 +216,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Class1.cs" />
-    <Compile Include="Class2.cs" />
     <Compile Include="Controllers\MessageManager.cs" />
     <Compile Include="Models\MessageTypes.cs" />
     <Compile Include="Models\QuickConverterSetup.cs" />
