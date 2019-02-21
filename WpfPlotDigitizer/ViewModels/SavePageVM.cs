@@ -47,8 +47,8 @@ namespace WpfPlotDigitizer
       var IsSucessfulSave = false;
       switch (saveFileDialog.FilterIndex)
       {
+        //case 1:
         default:
-        case 1:
           IsSucessfulSave = await SaveAsExcelAsync();
           break;
         case 2:
@@ -115,7 +115,7 @@ namespace WpfPlotDigitizer
           GC.WaitForPendingFinalizers();
         }
       }
-      async Task<bool> SaveAsCSVAsync()
+      async Task<bool> SaveTextAsync(string seperator)
       {
         try
         {
@@ -124,11 +124,11 @@ namespace WpfPlotDigitizer
             string strPath = saveFileDialog.FileName;
 
             StringBuilder content = new StringBuilder();
-            content.AppendLine("X,Y");
+            content.AppendLine("X" + seperator + "Y");
             int dataCount = data.Count;
             for (int i = 0; i < dataCount; i++)
             {
-              content.AppendLine(data[i].X.ToString() + "," + data[i].Y.ToString());
+              content.AppendLine(data[i].X.ToString() + seperator + data[i].Y.ToString());
             }
 
             using (var fs = File.OpenWrite(strPath))
@@ -145,35 +145,13 @@ namespace WpfPlotDigitizer
           return false;
         }
       }
+      async Task<bool> SaveAsCSVAsync()
+      {
+        return await SaveTextAsync(",");
+      }
       async Task<bool> SaveAsTXTAsync()
       {
-        try
-        {
-          await Task.Run(() =>
-          {
-            string strPath = saveFileDialog.FileName;
-
-            StringBuilder content = new StringBuilder();
-            content.AppendLine("X\tY");
-            int dataCount = data.Count;
-            for (int i = 0; i < dataCount; i++)
-            {
-              content.AppendLine(data[i].X.ToString() + "\t" + data[i].Y.ToString());
-            }
-
-            using (var fs = File.OpenWrite(strPath))
-            using (var sw = new StreamWriter(fs))
-            {
-              sw.Write(content.ToString());
-            }
-
-          });
-          return true;
-        }
-        catch (Exception)
-        {
-          return false;
-        }
+        return await SaveTextAsync("\t");
       }
     }
 

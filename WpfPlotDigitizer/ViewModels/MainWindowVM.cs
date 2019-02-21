@@ -19,11 +19,11 @@ namespace WpfPlotDigitizer
     /// <summary>
     /// For initializing
     /// </summary>
-    public ApplicationManager ApplicationManager = appManager;
+    public ApplicationManager ApplicationManager { get; set; } = appManager;
 
     /// <summary>
     /// For initializing
     /// </summary>
-    public MessageManager MessageManager = messageManager;
+    public MessageManager MessageManager { get; set; } = messageManager;
   }
 }

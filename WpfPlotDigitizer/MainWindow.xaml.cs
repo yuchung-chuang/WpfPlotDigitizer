@@ -26,8 +26,7 @@ namespace WpfPlotDigitizer
       InitializeComponent();
       DataContext = mainWindowVM;
     }
-
-    public PageControl pageControl;
+    public PageControl PageControl { get; set; }
 
     public void PageControl_PageAnimated(object sender, EventArgs e)
     {

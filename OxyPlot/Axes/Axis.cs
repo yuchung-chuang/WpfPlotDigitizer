@@ -1402,7 +1402,7 @@ namespace OxyPlot.Axes
           this.ActualMinimum -= zeroRange * 0.5;
         }
 
-        if (!double.IsNaN(this.ActualMaximum) && !double.IsNaN(this.ActualMaximum))
+        if (!double.IsNaN(this.ActualMaximum) /*&& !double.IsNaN(this.ActualMaximum)*/)
         {
           double x1 = this.PreTransform(this.ActualMaximum);
           double x0 = this.PreTransform(this.ActualMinimum);

@@ -42,7 +42,7 @@ namespace WpfPlotDigitizer
       mainWindow.gridMain.Children.Remove(mainWindow.splashFrame);
 
       var pageControl = mainWindow.Resources["pageControl"] as PageControl;
-      mainWindow.pageControl = pageControl;
+      mainWindow.PageControl = pageControl;
       pageControl.PageAnimated += mainWindow.PageControl_PageAnimated;
       mainWindow.gridMain.Children.Add(pageControl);
 

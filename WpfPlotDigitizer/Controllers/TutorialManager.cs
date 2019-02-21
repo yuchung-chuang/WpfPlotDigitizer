@@ -19,7 +19,7 @@ namespace WpfPlotDigitizer
     }
 
     private static readonly Settings settings = Settings.Default;
-    public bool IsFirstVisitApp = settings.FirstApp;
+    public bool IsFirstVisitApp { set; get; } = settings.FirstApp;
     private bool[] isFirstVisitPage = new bool[]
     {
       settings.FirstBrowse,
@@ -79,8 +79,8 @@ namespace WpfPlotDigitizer
           {
             PlacementTargets = new FrameworkElement[]
             {
-              mainWindow.pageControl.TurnNextButton,
-              mainWindow.pageControl.TurnBackButton,
+              mainWindow.PageControl.TurnNextButton,
+              mainWindow.PageControl.TurnBackButton,
             },
             Text = FindTutorialText("BrowseTurnTutorial"),
           }.ShowDialog();

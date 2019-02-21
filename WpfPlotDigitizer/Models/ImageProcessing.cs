@@ -23,10 +23,10 @@ namespace WpfPlotDigitizer
   #region Helper classes
   public struct AxisType
   {
-    public bool Left;
-    public bool Top;
-    public bool Right;
-    public bool Bottom;
+    public bool Left { get; set; }
+    public bool Top { get; set; }
+    public bool Right { get; set; }
+    public bool Bottom { get; set; }
 
     public AxisType(bool left, bool top, bool right, bool bottom)
     {
@@ -65,7 +65,7 @@ namespace WpfPlotDigitizer
     public TracerState state = TracerState.Normal;
     public (double XMax, double XMin, double YMax, double YMin) boundary;
     public int steps = 0;
-    private int stepTotal;
+    private readonly int stepTotal;
 
     public PixelTracer(double XMax, double YMax, double XMin, double YMin)
     {
@@ -251,7 +251,6 @@ namespace WpfPlotDigitizer
         var width = pixel3.GetLength(0);
         var height = pixel3.GetLength(1);
         Vector[] dirs = { new Vector(1, 0), new Vector(-1, 1), new Vector(0, 1), new Vector(1, -1) };
-        Point output = new Point(-1, -1);
         var pos = iniPos;
         var dirID = 0;
         var failCount = 0;
@@ -268,8 +267,8 @@ namespace WpfPlotDigitizer
           }
 
           pos += dirs[dirID];
-          if (!IsIn(pos.X, width / 2, iniPos.X, true) ||
-            !IsIn(pos.Y, height / 2, iniPos.Y, true))
+          if (!IsIn(pos.X, width / 2d, iniPos.X, true) ||
+            !IsIn(pos.Y, height / 2d, iniPos.Y, true))
           {
             dirID++;
             if (dirID > 3)
@@ -282,7 +281,7 @@ namespace WpfPlotDigitizer
         return iniPos;
       }
 
-      bool IsGetAxis(Rect AxRect) => (AxRect.Width > 0 && AxRect.Height > 0) ? true : false;
+      bool IsGetAxis(Rect AxRect) => AxRect.Width > 0 && AxRect.Height > 0;
       bool IsTransparent(byte[] pixel, int i) => pixel[i + 3] == 0;
       /// <summary>
       /// 取得影像中最長的縱軸與橫軸。
@@ -365,7 +364,7 @@ namespace WpfPlotDigitizer
       ocr.SetImage(image);
 
       if (ocr.Recognize() != 0)
-        throw new Exception("Failed to recognizer image");
+        throw new InvalidOperationException("Failed to recognize image");
 
       var characters = ocr.GetCharacters();
 
@@ -419,7 +418,7 @@ namespace WpfPlotDigitizer
 
           if (posList.Count > Pow(size, 2))
           {
-            posList.OrderBy(p => p.Y).ThenBy(p => p.X);
+            posList = posList.OrderBy(p => p.Y).ThenBy(p => p.X).ToList();
             posLists.Add(posList);
           }
         }

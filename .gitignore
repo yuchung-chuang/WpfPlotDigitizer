@@ -266,3 +266,4 @@ OcrTester/
 BindingTester/
 docs/_site/
 _DemoResources/
+.sonarqube/

@@ -148,6 +148,12 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="OxyPlot, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CycWpfLibrary.OxyPlot.1.0.0\lib\net461\OxyPlot.dll</HintPath>
+    </Reference>
+    <Reference Include="OxyPlot.Wpf, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CycWpfLibrary.OxyPlot.1.0.0\lib\net461\OxyPlot.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="PropertyChanged, Version=2.5.14.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
       <HintPath>..\packages\PropertyChanged.Fody.2.5.14\lib\net452\PropertyChanged.dll</HintPath>
     </Reference>
@@ -207,6 +213,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Class1.cs" />
+    <Compile Include="Class2.cs" />
     <Compile Include="Controllers\MessageManager.cs" />
     <Compile Include="Models\MessageTypes.cs" />
     <Compile Include="Models\QuickConverterSetup.cs" />
@@ -431,16 +439,6 @@
   <ItemGroup>
     <Resource Include="images\data2.png" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\OxyPlot.Wpf\OxyPlot.Wpf_NET40.csproj">
-      <Project>{0d7c7710-c58b-4713-ba18-8231a2f35a12}</Project>
-      <Name>OxyPlot.Wpf_NET40</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
-      <Project>{7a0b35c0-dd17-4964-8e9a-44d6cecdc692}</Project>
-      <Name>OxyPlot</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -453,7 +451,7 @@
   <Import Project="..\packages\EMGU.CV.3.4.3.3016\build\EMGU.CV.targets" Condition="Exists('..\packages\EMGU.CV.3.4.3.3016\build\EMGU.CV.targets')" />
   <Import Project="..\packages\Fody.3.3.1\build\Fody.targets" Condition="Exists('..\packages\Fody.3.3.1\build\Fody.targets')" />
   <PropertyGroup>
-    <PostBuildEvent>if $(ConfigurationName) == Release (
+    <PostBuildEvent>if not $(ConfigurationName) == AppVeyor (
 ::移除ZedGraph累贅
 rd de\ /q /s
 rd es\ /q /s
