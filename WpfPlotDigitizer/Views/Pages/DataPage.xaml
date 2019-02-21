@@ -67,6 +67,7 @@
               Grid.Column="1"
               Minimum="1"
               Maximum="50"
+              Style="{StaticResource MaterialDesignDiscreteSlider}"
               ToolTip="{DynamicResource DataSliderDataSizeToolTip}" />
       <Slider Name="sliderCoverRatio"
               Value="{Binding RatioInt}"
@@ -74,6 +75,7 @@
               Grid.Column="1"
               Minimum="0"
               Maximum="100"
+              Style="{StaticResource MaterialDesignDiscreteSlider}"
               ToolTip="{DynamicResource DataSliderCoverRatioToolTip}" />
       <TextBlock>
         <Run Text="{DynamicResource DataSliderDataSizeContent1}" />
