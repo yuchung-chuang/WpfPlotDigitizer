@@ -453,7 +453,34 @@
   <Import Project="..\packages\EMGU.CV.3.4.3.3016\build\EMGU.CV.targets" Condition="Exists('..\packages\EMGU.CV.3.4.3.3016\build\EMGU.CV.targets')" />
   <Import Project="..\packages\Fody.3.3.1\build\Fody.targets" Condition="Exists('..\packages\Fody.3.3.1\build\Fody.targets')" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>::移除ZedGraph累贅
+rd de\ /q /s
+rd es\ /q /s
+rd fr\ /q /s
+rd hu\ /q /s
+rd it\ /q /s
+rd ja\ /q /s
+rd pt\ /q /s
+rd ru\ /q /s
+rd sk\ /q /s
+rd sv\ /q /s
+rd tr\ /q /s
+rd zh-cn\ /q /s
+rd zh-tw\ /q /s
+::移動檔案
+mkdir app\
+mkdir app\dll\
+move *.dll app\dll\
+mkdir app\xml
+move *.xml app\xml\
+mkdir app\pdb
+move *.pdb app\pdb\
+::避免robocopy回傳錯誤
+if errorlevel 4 goto BuildEventFailed
+if errorlevel 0 goto end
+:BuildEventFailed echo FILECOPY for $(ProjectName) FAILED
+exit 1
+:end echo FILECOPY for $(ProjectName) COMPLETED OK
+exit 0</PostBuildEvent>
   </PropertyGroup>
 </Project>
