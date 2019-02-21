@@ -1,4 +1,5 @@
 theme: jekyll-theme-slate
 
 title: ["Plot Digitizer 數據擷取器"]
+show_downloads: ["true"]
 description: ["一個能夠數位化影像資料的簡單小程式。"]
