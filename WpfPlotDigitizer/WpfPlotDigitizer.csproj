@@ -453,7 +453,8 @@
   <Import Project="..\packages\EMGU.CV.3.4.3.3016\build\EMGU.CV.targets" Condition="Exists('..\packages\EMGU.CV.3.4.3.3016\build\EMGU.CV.targets')" />
   <Import Project="..\packages\Fody.3.3.1\build\Fody.targets" Condition="Exists('..\packages\Fody.3.3.1\build\Fody.targets')" />
   <PropertyGroup>
-    <PostBuildEvent>::移除ZedGraph累贅
+    <PostBuildEvent>if $(ConfigurationName) == Debug (
+::移除ZedGraph累贅
 rd de\ /q /s
 rd es\ /q /s
 rd fr\ /q /s
@@ -481,6 +482,7 @@ if errorlevel 0 goto end
 :BuildEventFailed echo FILECOPY for $(ProjectName) FAILED
 exit 1
 :end echo FILECOPY for $(ProjectName) COMPLETED OK
-exit 0</PostBuildEvent>
+exit 0
+)</PostBuildEvent>
   </PropertyGroup>
 </Project>
