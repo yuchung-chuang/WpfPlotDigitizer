@@ -46,19 +46,19 @@
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\ControlzEx.dll</HintPath>
     </Reference>
     <Reference Include="CycWpfLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CycWpfLibrary.1.0.2\lib\net461\CycWpfLibrary.dll</HintPath>
+      <HintPath>..\packages\CycWpfLibrary.Full.1.0.1\lib\net461\CycWpfLibrary.dll</HintPath>
     </Reference>
     <Reference Include="CycWpfLibrary.CustomControls, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CycWpfLibrary.CustomControls.1.0.1\lib\net461\CycWpfLibrary.CustomControls.dll</HintPath>
+      <HintPath>..\packages\CycWpfLibrary.Full.1.0.1\lib\net461\CycWpfLibrary.CustomControls.dll</HintPath>
     </Reference>
     <Reference Include="CycWpfLibrary.Emgu, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CycWpfLibrary.Emgu.1.0.1\lib\net461\CycWpfLibrary.Emgu.dll</HintPath>
+      <HintPath>..\packages\CycWpfLibrary.Full.1.0.1\lib\net461\CycWpfLibrary.Emgu.dll</HintPath>
     </Reference>
     <Reference Include="CycWpfLibrary.Resource, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CycWpfLibrary.Resource.1.0.2\lib\net461\CycWpfLibrary.Resource.dll</HintPath>
+      <HintPath>..\packages\CycWpfLibrary.Full.1.0.1\lib\net461\CycWpfLibrary.Resource.dll</HintPath>
     </Reference>
     <Reference Include="CycWpfLibrary.UserControls, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CycWpfLibrary.UserControls.1.0.1\lib\net461\CycWpfLibrary.UserControls.dll</HintPath>
+      <HintPath>..\packages\CycWpfLibrary.Full.1.0.1\lib\net461\CycWpfLibrary.UserControls.dll</HintPath>
     </Reference>
     <Reference Include="Dna.Framework, Version=1.0.7.10, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dna.Framework.1.0.7.10\lib\netstandard2.0\Dna.Framework.dll</HintPath>
