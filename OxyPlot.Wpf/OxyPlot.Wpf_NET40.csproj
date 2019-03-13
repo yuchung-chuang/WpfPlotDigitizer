@@ -48,12 +48,6 @@
     <AssemblyOriginatorKeyFile>OxyPlot.Wpf.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CycWpfLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CycWpfLibrary.1.0.2\lib\net461\CycWpfLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="CycWpfLibrary.Resource, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CycWpfLibrary.Resource.1.0.2\lib\net461\CycWpfLibrary.Resource.dll</HintPath>
-    </Reference>
     <Reference Include="PropertyChanged, Version=2.6.0.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
       <HintPath>..\packages\PropertyChanged.Fody.2.6.0\lib\net452\PropertyChanged.dll</HintPath>
     </Reference>
@@ -159,6 +153,14 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CycWpfLibrary\CycWpfLibrary.Resource\CycWpfLibrary.Resource.csproj">
+      <Project>{be626a2b-f351-4768-a246-4cab2a7f6a56}</Project>
+      <Name>CycWpfLibrary.Resource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CycWpfLibrary\CycWpfLibrary\CycWpfLibrary.csproj">
+      <Project>{dc9b1571-60b9-48d4-a147-24820d8e895b}</Project>
+      <Name>CycWpfLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
       <Project>{7a0b35c0-dd17-4964-8e9a-44d6cecdc692}</Project>
       <Name>OxyPlot</Name>

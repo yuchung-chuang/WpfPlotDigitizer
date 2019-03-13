@@ -48,21 +48,6 @@
     <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\ControlzEx.dll</HintPath>
     </Reference>
-    <Reference Include="CycWpfLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CycWpfLibrary.Full.1.0.1\lib\net461\CycWpfLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="CycWpfLibrary.CustomControls, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CycWpfLibrary.Full.1.0.1\lib\net461\CycWpfLibrary.CustomControls.dll</HintPath>
-    </Reference>
-    <Reference Include="CycWpfLibrary.Emgu, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CycWpfLibrary.Full.1.0.1\lib\net461\CycWpfLibrary.Emgu.dll</HintPath>
-    </Reference>
-    <Reference Include="CycWpfLibrary.Resource, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CycWpfLibrary.Full.1.0.1\lib\net461\CycWpfLibrary.Resource.dll</HintPath>
-    </Reference>
-    <Reference Include="CycWpfLibrary.UserControls, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CycWpfLibrary.Full.1.0.1\lib\net461\CycWpfLibrary.UserControls.dll</HintPath>
-    </Reference>
     <Reference Include="Dna.Framework, Version=1.0.7.10, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dna.Framework.1.0.7.10\lib\netstandard2.0\Dna.Framework.dll</HintPath>
     </Reference>
@@ -150,12 +135,6 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="OxyPlot, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CycWpfLibrary.OxyPlot.1.0.0\lib\net461\OxyPlot.dll</HintPath>
-    </Reference>
-    <Reference Include="OxyPlot.Wpf, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CycWpfLibrary.OxyPlot.1.0.0\lib\net461\OxyPlot.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="PropertyChanged, Version=2.5.14.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
       <HintPath>..\packages\PropertyChanged.Fody.2.5.14\lib\net452\PropertyChanged.dll</HintPath>
@@ -439,6 +418,36 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\data2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\CycWpfLibrary\CycWpfLibrary.CustomControls\CycWpfLibrary.CustomControls.csproj">
+      <Project>{1b0190c8-083c-4c23-9862-66c520641264}</Project>
+      <Name>CycWpfLibrary.CustomControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CycWpfLibrary\CycWpfLibrary.Emgu\CycWpfLibrary.Emgu.csproj">
+      <Project>{49844f32-a5c8-423f-bbdc-09bfad908915}</Project>
+      <Name>CycWpfLibrary.Emgu</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CycWpfLibrary\CycWpfLibrary.Resource\CycWpfLibrary.Resource.csproj">
+      <Project>{be626a2b-f351-4768-a246-4cab2a7f6a56}</Project>
+      <Name>CycWpfLibrary.Resource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CycWpfLibrary\CycWpfLibrary.UserControls\CycWpfLibrary.UserControls.csproj">
+      <Project>{7aa8fe4a-4554-4b43-b9b5-38edc992db09}</Project>
+      <Name>CycWpfLibrary.UserControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CycWpfLibrary\CycWpfLibrary\CycWpfLibrary.csproj">
+      <Project>{dc9b1571-60b9-48d4-a147-24820d8e895b}</Project>
+      <Name>CycWpfLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OxyPlot.Wpf\OxyPlot.Wpf_NET40.csproj">
+      <Project>{0d7c7710-c58b-4713-ba18-8231a2f35a12}</Project>
+      <Name>OxyPlot.Wpf_NET40</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
+      <Project>{7a0b35c0-dd17-4964-8e9a-44d6cecdc692}</Project>
+      <Name>OxyPlot</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

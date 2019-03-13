@@ -204,7 +204,7 @@ namespace WpfPlotDigitizer
           }.ShowDialog();
           new SavePopup
           {
-            PlacementTarget = savePage.dataPlot,
+            //PlacementTarget = savePage.dataPlot,
             Text = FindTutorialText("SavePlotTutorial"),
           }.ShowDialog();
           new PopupWindow
