@@ -1,0 +1,3 @@
+[submodule "CycWpfLibrary"]
+	path = CycWpfLibrary
+	url = https://github.com/alex1392/CycWpfLibrary
