@@ -153,14 +153,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CycWpfLibrary\CycWpfLibrary.Resource\CycWpfLibrary.Resource.csproj">
-      <Project>{be626a2b-f351-4768-a246-4cab2a7f6a56}</Project>
-      <Name>CycWpfLibrary.Resource</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\CycWpfLibrary\CycWpfLibrary\CycWpfLibrary.csproj">
-      <Project>{dc9b1571-60b9-48d4-a147-24820d8e895b}</Project>
-      <Name>CycWpfLibrary</Name>
-    </ProjectReference>
     <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
       <Project>{7a0b35c0-dd17-4964-8e9a-44d6cecdc692}</Project>
       <Name>OxyPlot</Name>

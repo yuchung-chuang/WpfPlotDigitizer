@@ -420,26 +420,6 @@
     <Resource Include="images\data2.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CycWpfLibrary\CycWpfLibrary.CustomControls\CycWpfLibrary.CustomControls.csproj">
-      <Project>{1b0190c8-083c-4c23-9862-66c520641264}</Project>
-      <Name>CycWpfLibrary.CustomControls</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\CycWpfLibrary\CycWpfLibrary.Emgu\CycWpfLibrary.Emgu.csproj">
-      <Project>{49844f32-a5c8-423f-bbdc-09bfad908915}</Project>
-      <Name>CycWpfLibrary.Emgu</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\CycWpfLibrary\CycWpfLibrary.Resource\CycWpfLibrary.Resource.csproj">
-      <Project>{be626a2b-f351-4768-a246-4cab2a7f6a56}</Project>
-      <Name>CycWpfLibrary.Resource</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\CycWpfLibrary\CycWpfLibrary.UserControls\CycWpfLibrary.UserControls.csproj">
-      <Project>{7aa8fe4a-4554-4b43-b9b5-38edc992db09}</Project>
-      <Name>CycWpfLibrary.UserControls</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\CycWpfLibrary\CycWpfLibrary\CycWpfLibrary.csproj">
-      <Project>{dc9b1571-60b9-48d4-a147-24820d8e895b}</Project>
-      <Name>CycWpfLibrary</Name>
-    </ProjectReference>
     <ProjectReference Include="..\OxyPlot.Wpf\OxyPlot.Wpf_NET40.csproj">
       <Project>{0d7c7710-c58b-4713-ba18-8231a2f35a12}</Project>
       <Name>OxyPlot.Wpf_NET40</Name>
