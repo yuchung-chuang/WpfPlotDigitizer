@@ -1,0 +1,77 @@
+﻿<Page x:Class="PlotDigitizer.App.LoadPage"
+			xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			xmlns:local="clr-namespace:PlotDigitizer.App"
+			mc:Ignorable="d"
+			d:DesignHeight="450"
+			d:DesignWidth="800"
+			Title="LoadPage"
+			Drop="Page_Drop"
+			DragOver="Page_DragOver"
+			AllowDrop="True"
+			Background="Transparent"
+			x:Name="root">
+	<Page.CommandBindings>
+		<CommandBinding Command="ApplicationCommands.Paste"
+										Executed="Paste_Executed" />
+	</Page.CommandBindings>
+	<Grid DataContext="{Binding ElementName=root}">
+		<Grid Name="objectGroup"
+					HorizontalAlignment="Center"
+					VerticalAlignment="Center">
+			<TextBlock HorizontalAlignment="Center"
+								 TextWrapping="Wrap"
+								 TextAlignment="Center"
+								 FontSize="22"
+								 Width="312"
+								 VerticalAlignment="Top">
+				<Run Text="Drag" />
+				<Run Text=" &amp; drop" />
+				<Run Text=" your image here" />
+			</TextBlock>
+			<TextBlock HorizontalAlignment="Center"
+								 Margin="0,29,0,0"
+								 TextWrapping="Wrap"
+								 TextAlignment="Center"
+								 FontSize="22"
+								 Width="312"
+								 VerticalAlignment="Top"
+								 Text="or" />
+			<Button x:Name="pasteButton"
+							Margin="0,58,0,71"
+							Padding="5"
+							FontSize="22"
+							Content="Paste from clipboard"
+							HorizontalAlignment="Center"
+							ToolTip="Shortcut: Ctrl + V"
+							d:LayoutOverrides="Height"
+							Click="pasteButton_Click" />
+			<TextBlock HorizontalAlignment="Center"
+								 Margin="0,0,0,41"
+								 TextWrapping="Wrap"
+								 TextAlignment="Center"
+								 FontSize="22"
+								 Width="312"
+								 VerticalAlignment="Bottom"
+								 Text="or" />
+			<Button x:Name="browseButton"
+							Padding="5"
+							FontSize="22"
+							Content="Browse"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Bottom"
+							Click="browseButton_Click"
+							Loaded="browseButton_Loaded"/>
+
+		</Grid>
+		<Image x:Name="imageControl"
+					 HorizontalAlignment="Left"
+					 Margin="55,66,0,222"
+					 Width="184"
+					 Visibility="Hidden" 
+					 Source="{Binding ImageSource}"/>
+
+	</Grid>
+</Page>
