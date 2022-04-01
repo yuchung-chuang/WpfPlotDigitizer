@@ -1,11 +1,12 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
 using System;
+using System.ComponentModel;
 using System.Drawing;
 
 namespace PlotDigitizer.Core
 {
-	public class Model
+	public class Model : INotifyPropertyChanged
 	{
 		public Image<Rgba, byte> InputImage { get; set; }
 		public Image<Rgba, byte> CroppedImage { get; set; }
@@ -19,6 +20,8 @@ namespace PlotDigitizer.Core
 
 		public Rgba FilterMin { get; set; } = new Rgba(0, 0, 0, byte.MaxValue);
 		public Rgba FilterMax { get; set; } = new Rgba(byte.MaxValue - 1, byte.MaxValue - 1, byte.MaxValue - 1, byte.MaxValue);
+
+		public event PropertyChangedEventHandler PropertyChanged;
 
 		public void CropImage()
 		{
