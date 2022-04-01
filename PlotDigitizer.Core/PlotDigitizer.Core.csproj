@@ -7,6 +7,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Emgu.CV" Version="4.5.5.4823" />
+		<PackageReference Include="PropertyChanged.Fody" Version="3.4.0" />
 	</ItemGroup>
 
 </Project>
