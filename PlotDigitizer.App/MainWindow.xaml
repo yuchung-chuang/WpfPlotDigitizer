@@ -9,45 +9,45 @@
 				Title="MainWindow"
 				Height="450"
 				Width="800">
-	<DockPanel DataContext="{Binding ElementName=root}">
-		<StackPanel DockPanel.Dock="Top"
+    <DockPanel DataContext="{Binding ElementName=root}">
+        <StackPanel DockPanel.Dock="Top"
 								Orientation="Horizontal"
 								Height="30"
 								Background="LightGray">
-			<StackPanel.Resources>
-				<Style TargetType="Button">
-					<Setter Property="Width"
+            <StackPanel.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Width"
 									Value="{Binding RelativeSource={RelativeSource self}, Path=ActualHeight}" />
-					<Setter Property="Margin"
+                    <Setter Property="Margin"
 									Value="1" />
-				</Style>
-				<Style TargetType="Path">
-					<Setter Property="Fill"
+                </Style>
+                <Style TargetType="Path">
+                    <Setter Property="Fill"
 									Value="Black" />
-					<Setter Property="Stretch"
+                    <Setter Property="Stretch"
 									Value="Uniform" />
-				</Style>
-			</StackPanel.Resources>
-			<Button x:Name="backButton"
+                </Style>
+            </StackPanel.Resources>
+            <Button x:Name="backButton"
 							Command="{Binding PageManager.BackCommand}">
-				<Path Data="M427 277v-42h-260l119 -120l-30 -30l-171 171l171 171l30 -30l-119 -120h260z" />
-			</Button>
-			<Button Name="nextButton"
+                <Path Data="M427 277v-42h-260l119 -120l-30 -30l-171 171l171 171l30 -30l-119 -120h260z" />
+            </Button>
+            <Button Name="nextButton"
 							Command="{Binding PageManager.NextCommand}">
-				<Path Data="M256 427l171 -171l-171 -171l-30 30l119 120h-260v42h260l-119 120z" />
-			</Button>
-			<ComboBox Name="NaviComboBox"
+                <Path Data="M256 427l171 -171l-171 -171l-30 30l119 120h-260v42h260l-119 120z" />
+            </Button>
+            <ComboBox Name="NaviComboBox"
 								ItemsSource="{Binding PageNameList}"
 								SelectedIndex="{Binding PageManager.PageIndex, Mode=TwoWay}"
 								Width="20" />
-		</StackPanel>
-		<Grid>
+        </StackPanel>
+        <Grid>
 
-			<Frame x:Name="mainFrame"
+            <Frame x:Name="mainFrame"
 						 NavigationUIVisibility="Hidden"
 						 Navigating="mainFrame_Navigating"
 						 Content="{Binding PageManager.CurrentPage}" />
 
-		</Grid>
-	</DockPanel>
+        </Grid>
+    </DockPanel>
 </Window>

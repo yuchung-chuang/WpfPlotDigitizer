@@ -39,13 +39,17 @@ namespace PlotDigitizer.App
 			services.AddSingleton<LoadPage>();
 			services.AddSingleton<AxisLimitPage>();
 			services.AddSingleton<AxisPage>();
-			services.AddSingleton<List<Page>>(provider =>
+			services.AddSingleton<FilterPage>();
+			services.AddSingleton<EditPage>();
+			services.AddSingleton(provider =>
 			{
 				return new List<Page>
 				{
 					provider.GetService<LoadPage>(),
 					provider.GetService<AxisLimitPage>(),
 					provider.GetService<AxisPage>(),
+					provider.GetService<FilterPage>(),
+					provider.GetService<EditPage>(),
 				};
 			});
 		}
