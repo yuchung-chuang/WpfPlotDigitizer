@@ -1,9 +1,7 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
 using PlotDigitizer.Core;
-using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;

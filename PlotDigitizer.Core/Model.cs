@@ -1,6 +1,5 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
-using System;
 using System.ComponentModel;
 using System.Drawing;
 

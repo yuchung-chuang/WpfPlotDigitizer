@@ -1,14 +1,10 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
-using PropertyChanged;
-using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace PlotDigitizer.App
 {

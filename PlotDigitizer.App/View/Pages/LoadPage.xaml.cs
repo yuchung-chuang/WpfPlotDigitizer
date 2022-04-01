@@ -4,15 +4,10 @@ using Microsoft.Win32;
 using PlotDigitizer.Core;
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Drawing;
-using System.Globalization;
 using System.IO;
-using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace PlotDigitizer.App
@@ -45,6 +40,7 @@ namespace PlotDigitizer.App
 
 		private void LoadPage_Loaded(object sender, RoutedEventArgs e)
 		{
+			ImageSource = model.InputImage?.ToBitmapSource();
 #if DEBUG
 			imageControl.Visibility = Visibility.Visible;
 #endif
@@ -89,9 +85,9 @@ namespace PlotDigitizer.App
 
 		private void Page_DragOver(object sender, DragEventArgs e)
 		{
-			isDropFile = e.Data.GetDataPresent(DataFormats.FileDrop) 
+			isDropFile = e.Data.GetDataPresent(DataFormats.FileDrop)
 				&& File.Exists((e.Data.GetData(DataFormats.FileDrop) as string[])[0]);
-			isDropUrl = e.Data.GetDataPresent(DataFormats.Text) 
+			isDropUrl = e.Data.GetDataPresent(DataFormats.Text)
 				// check if it's valid Uri
 				&& Uri.TryCreate(e.Data.GetData(DataFormats.Text).ToString(), UriKind.Absolute, out var uri)
 				// check if it's a web uri

@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace PlotDigitizer.Core
+﻿namespace PlotDigitizer.Core
 {
-    public struct PointD
+	public struct PointD
     {
         public double X { get; set; }
         public double Y { get; set; }
