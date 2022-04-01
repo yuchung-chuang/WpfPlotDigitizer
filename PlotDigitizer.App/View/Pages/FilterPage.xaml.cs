@@ -25,7 +25,7 @@ namespace PlotDigitizer.App
 		public double MaxB { get; set; } 
 		public ImageSource ImageSource => Image?.ToBitmapSource();
 
-		public Image<Rgba, byte> Image { get; set; }
+		public Image<Rgba, byte> Image { get; private set; }
 		public Image<Rgba, byte> CroppedImage { get; private set; }
 
 		public event PropertyChangedEventHandler PropertyChanged;
