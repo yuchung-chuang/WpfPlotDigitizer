@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Markup;
 
-namespace PlotDigitizer.Core
+namespace PlotDigitizer.App
 {
 	public class DebugConverter : MarkupExtension, IValueConverter
 	{

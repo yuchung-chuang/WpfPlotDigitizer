@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
 
-namespace PlotDigitizer.Core
+namespace PlotDigitizer.App
 {
 	public class VisibilityConverter : MarkupExtension, IValueConverter
 	{

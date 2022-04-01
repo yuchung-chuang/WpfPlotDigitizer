@@ -7,7 +7,7 @@ namespace PlotDigitizer.App
 {
 	public class EditManager<TObject> : INotifyPropertyChanged
 	{
-		private int index = 0;
+		private int index;
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
@@ -42,6 +42,19 @@ namespace PlotDigitizer.App
 
 		public EditManager(TObject _object) : this()
 		{
+			Initialise(_object);
+		}
+
+		public EditManager()
+		{
+			UndoCommand = new RelayCommand(Undo, CanUndo);
+			RedoCommand = new RelayCommand(Redo, CanRedo);
+			GoToCommand = new RelayCommand<int>(GoTo, CanGoTo);
+			EditCommand = new RelayCommand<(TObject, string)>(Edit, CanEdit);
+		}
+
+		public void Initialise(TObject _object)
+		{
 			ObjectList = new List<TObject>
 			{
 				_object,
@@ -50,14 +63,7 @@ namespace PlotDigitizer.App
 			{
 				"initialise",
 			};
-		}
-
-		private EditManager()
-		{
-			UndoCommand = new RelayCommand(Undo, CanUndo);
-			RedoCommand = new RelayCommand(Redo, CanRedo);
-			GoToCommand = new RelayCommand<int>(GoTo, CanGoTo);
-			EditCommand = new RelayCommand<(TObject, string)>(Edit, CanEdit);
+			index = 0;
 		}
 
 		protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

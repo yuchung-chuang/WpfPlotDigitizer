@@ -70,6 +70,10 @@ namespace PlotDigitizer.App
 		private void GetAxis()
 		{
 			var image = model.InputImage;
+			if (image is null)
+			{
+				return;
+			}
 			var axis = Methods.GetAxisLocation(image) ?? new Rectangle(image.Width / 4, image.Height / 4, image.Width / 2, image.Height / 2);
 			AxisLeft = axis.Left;
 			AxisTop = axis.Top;

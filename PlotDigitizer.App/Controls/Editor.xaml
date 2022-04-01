@@ -5,61 +5,63 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PlotDigitizer.App"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-	<Grid x:Name="mainGrid"
+             d:DesignHeight="450" d:DesignWidth="800"
+             x:Name="root">
+    <Grid x:Name="mainGrid"
+          DataContext="{Binding ElementName=root}"
 				Background="Transparent"
 				PreviewMouseDown="mainGrid_MouseDown"
 				PreviewMouseMove="mainGrid_MouseMove"
 				PreviewMouseUp="mainGrid_MouseUp">
-		<Viewbox>
-			<Grid>
-				<Grid.Background>
-					<DrawingBrush TileMode="Tile"
+        <Viewbox>
+            <Grid>
+                <Grid.Background>
+                    <DrawingBrush TileMode="Tile"
 												Viewport="0, 0, 32, 32"
 												ViewportUnits="Absolute">
-						<DrawingBrush.Drawing>
-							<GeometryDrawing Brush="LightGray"
+                        <DrawingBrush.Drawing>
+                            <GeometryDrawing Brush="LightGray"
 															 Geometry="M0,0 H16 V16 H32 V32 H16 V16 H0Z" />
-						</DrawingBrush.Drawing>
-					</DrawingBrush>
-				</Grid.Background>
-				<Grid x:Name="PanZoomGrid"
+                        </DrawingBrush.Drawing>
+                    </DrawingBrush>
+                </Grid.Background>
+                <Grid x:Name="PanZoomGrid"
 							local:Pan.IsEnabled="True"
 							local:Zoom.IsEnabled="True"
 							local:Zoom.MouseWheel="PanZoomGrid_MouseWheel">
-					<Image Name="ImageControl"
+                    <Image Name="ImageControl"
 								 Source="{Binding ImageSource}" />
-					<Canvas Name="editCanvas"
+                    <Canvas Name="editCanvas"
 									Background="Transparent">
-						<Ellipse x:Name="pencilPointer"
+                        <Ellipse x:Name="pencilPointer"
 										 Width="5"
 										 Height="{Binding Width, RelativeSource={RelativeSource self}}"
 										 Stroke="Black"
 										 StrokeThickness="1"
 										 Fill="#7F00EFFF"
 										 Visibility="Hidden" />
-						<Rectangle x:Name="eraserRect"
+                        <Rectangle x:Name="eraserRect"
 											 Width="10"
 											 Height="{Binding Width, RelativeSource={RelativeSource self}}"
 											 Stroke="Black"
 											 StrokeThickness="1"
 											 Visibility="Hidden"
 											 Fill="#7F00EFFF" />
-						<Rectangle Name="selectRect"
+                        <Rectangle Name="selectRect"
 											 Stroke="Red"
 											 StrokeThickness="1"
 											 StrokeDashArray="2 2"
 											 Visibility="Hidden" />
-						<Polyline x:Name="selectPoly"
+                        <Polyline x:Name="selectPoly"
 											StrokeThickness="1"
 											Stroke="Red"
 											StrokeDashArray="2 2"
 											Visibility="Hidden" />
-					</Canvas>
-				</Grid>
-				<Border BorderBrush="Black"
+                    </Canvas>
+                </Grid>
+                <Border BorderBrush="Black"
 								BorderThickness="1" />
-			</Grid>
-		</Viewbox>
-	</Grid>
+            </Grid>
+        </Viewbox>
+    </Grid>
 </UserControl>
