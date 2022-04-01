@@ -70,7 +70,7 @@ namespace PlotDigitizer.App
 
 		public ImageSource ImageSource => Image?.ToBitmapSource();
 
-		public Image<Rgba, byte> Image { get; set; }
+		public Image<Rgba, byte> Image { get; private set; }
 
 
 		public EditManager<Image<Rgba, byte>> EditManager { get; } = new EditManager<Image<Rgba, byte>>();
