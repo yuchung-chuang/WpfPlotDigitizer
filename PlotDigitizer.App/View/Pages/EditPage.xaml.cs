@@ -17,9 +17,6 @@ namespace PlotDigitizer.App
     /// <summary>
     /// Interaction logic for EditPage.xaml
     /// </summary>
-    /// <summary>
-    /// Interaction logic for EditPage.xaml
-    /// </summary>
     public partial class EditPage : Page, INotifyPropertyChanged
     {
         private readonly Model model;
