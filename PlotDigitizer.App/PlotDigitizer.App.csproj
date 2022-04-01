@@ -27,4 +27,10 @@
     <Resource Include="Assets\pan.cur" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Assets\test_image.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
