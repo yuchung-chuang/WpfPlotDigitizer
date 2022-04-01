@@ -16,8 +16,6 @@ namespace PlotDigitizer.App
 	/// </summary>
 	public partial class App : Application
 	{
-		private AutoPageTurner pageTurner;
-
 		protected override void OnStartup(StartupEventArgs e)
 		{
 			base.OnStartup(e);
@@ -27,7 +25,7 @@ namespace PlotDigitizer.App
 			ConfigureServices(services);
 			var provider = services.BuildServiceProvider();
 
-			pageTurner = provider.GetService<AutoPageTurner>();
+			provider.GetService<AutoPageTurner>(); // simply trigger the creation of auto-page turner, it will do it's job
 			var window = provider.GetService<Window>();
 			window.Show();
 		}
@@ -40,12 +38,14 @@ namespace PlotDigitizer.App
 			services.AddSingleton<PageManager>();
 			services.AddSingleton<LoadPage>();
 			services.AddSingleton<AxisLimitPage>();
+			services.AddSingleton<AxisPage>();
 			services.AddSingleton<List<Page>>(provider =>
 			{
 				return new List<Page>
 				{
 					provider.GetService<LoadPage>(),
 					provider.GetService<AxisLimitPage>(),
+					provider.GetService<AxisPage>(),
 				};
 			});
 		}

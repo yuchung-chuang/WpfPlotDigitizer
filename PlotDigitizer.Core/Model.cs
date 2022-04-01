@@ -1,5 +1,7 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
+using System;
+using System.Drawing;
 
 namespace PlotDigitizer.Core
 {
@@ -12,6 +14,21 @@ namespace PlotDigitizer.Core
 		public DataType DataType { get; set; }
 		public RectangleD AxisLimit { get; set; }
 		public PointD AxisLogBase { get; set; }
+
+		public Rectangle AxisLocation { get; set; }
+
+		public Rgba FilterMin { get; set; } = new Rgba(0, 0, 0, byte.MaxValue);
+		public Rgba FilterMax { get; set; } = new Rgba(byte.MaxValue - 1, byte.MaxValue - 1, byte.MaxValue - 1, byte.MaxValue);
+
+		public void CropImage()
+		{
+			CroppedImage = Methods.CropImage(InputImage, AxisLocation);
+		}
+
+		public void FilterImage()
+		{
+			FilteredImage = Methods.FilterRGB(CroppedImage, FilterMin, FilterMax);
+		}
 	}
 
 	public enum DataType

@@ -49,9 +49,9 @@ namespace PlotDigitizer.Core
 			return image.Copy(roi);
 		}
 
-		public static Image<Rgba, byte> FilterRGB(Image<Rgba, byte> image, Color min, Color max)
+		public static Image<Rgba, byte> FilterRGB(Image<Rgba, byte> image, Rgba min, Rgba max)
 		{
-			var mask = image.InRange(new Rgba(min.R, min.G, min.B, min.A), new Rgba(max.R, max.G, max.B, max.A));
+			var mask = image.InRange(min, max);
 			image = image.Copy();
 			image.SetValue(new Rgba(0, 0, 0, 0), mask.Not());
 			return image;

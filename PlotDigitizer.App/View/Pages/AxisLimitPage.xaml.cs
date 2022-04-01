@@ -29,6 +29,16 @@ namespace PlotDigitizer.App
 		private void AxisLimitPage_Loaded(object sender, RoutedEventArgs e)
 		{
 			ImageSource = model.InputImage?.ToBitmapSource();
+			if (model.AxisLimit != default) {
+				xMin = model.AxisLimit.Left;
+				yMin = model.AxisLimit.Top;
+				xMax = model.AxisLimit.Right;
+				yMax = model.AxisLimit.Bottom;
+			}
+			if (model.AxisLogBase != default) {
+				xLog = model.AxisLogBase.X;
+				yLog = model.AxisLogBase.Y;
+			}
 		}
 
 		private void AxisLimitPage_Unloaded(object sender, RoutedEventArgs e)
