@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace PlotDigitizer.App
 {
@@ -43,6 +44,7 @@ namespace PlotDigitizer.App
         public EditPage()
         {
             InitializeComponent();
+            Loaded += EditPage_Loaded;
             Unloaded += EditPage_Unloaded;
 
             stateButtons = new List<ToggleButton>
@@ -57,6 +59,12 @@ namespace PlotDigitizer.App
             this.model = model;
             model.PropertyChanged += Model_PropertyChanged;
             EditManager.PropertyChanged += EditManager_PropertyChanged;
+        }
+
+        private void EditPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            UndoButton.GetBindingExpression(ButtonBase.CommandProperty).UpdateTarget();
+            RedoButton.GetBindingExpression(ButtonBase.CommandProperty).UpdateTarget();
         }
         
         private void EditPage_Unloaded(object sender, RoutedEventArgs e)
