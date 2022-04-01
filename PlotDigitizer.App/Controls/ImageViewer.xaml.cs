@@ -11,7 +11,7 @@ namespace PlotDigitizer.App
 	public partial class ImageViewer : UserControl, INotifyPropertyChanged
 	{
 		public static readonly DependencyProperty ImageSourceProperty =
-			DependencyProperty.Register("ImageSource", typeof(ImageSource), typeof(UserControl), new PropertyMetadata());
+			DependencyProperty.Register(nameof(ImageSource), typeof(ImageSource), typeof(ImageViewer), new PropertyMetadata());
 
 		public event PropertyChangedEventHandler PropertyChanged;
 

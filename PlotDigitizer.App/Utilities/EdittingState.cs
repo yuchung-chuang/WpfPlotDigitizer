@@ -193,7 +193,7 @@ namespace PlotDigitizer.App
 			Methods.EraseImage(editor.Image, rect);
 			// update the image by "N" frames per second
 			if (stopwatch.ElapsedMilliseconds > 1000 / fps) {
-				editor.UpdateImageSource();
+				editor.OnPropertyChanged(nameof(editor.ImageSource));
 				stopwatch.Restart();
 			}
 
@@ -235,7 +235,7 @@ namespace PlotDigitizer.App
 
 			// update the image by "N" frames per second
 			if (stopwatch.ElapsedMilliseconds > 1000 / fps) {
-				editor.UpdateImageSource();
+				editor.OnPropertyChanged(nameof(editor.ImageSource));
 				stopwatch.Restart();
 			}
 		}
