@@ -54,55 +54,24 @@ namespace PlotDigitizer.App
             PageList = pageList;
         }
 
-        public Page GetPage(Type TPage)
-        {
-            return PageList.FirstOrDefault(p => p.GetType() == TPage);
-        }
+        public Page GetPage(Type TPage) => PageList.FirstOrDefault(p => p.GetType() == TPage);
 
-        public TPage GetPage<TPage>() where TPage : class
-        {
-            return PageList.FirstOrDefault(p => p is TPage) as TPage;
-        }
+        public TPage GetPage<TPage>() where TPage : class => PageList.FirstOrDefault(p => p is TPage) as TPage;
 
-        private void GoBack()
-        {
-            PageIndex--;
-        }
+        private void GoBack() => PageIndex--;
 
-        private bool CanGoBack()
-        {
-            return PageIndex > 0;
-        }
+        private bool CanGoBack() => PageIndex > 0;
 
-        private void GoNext()
-        {
-            PageIndex++;
-        }
+        private void GoNext() => PageIndex++;
 
-        private bool CanGoNext()
-        {
-            return PageIndex < PageList.Count - 1;
-        }
+        private bool CanGoNext() => PageIndex < PageList.Count - 1;
 
-        private void GoTo(int targetIndex)
-        {
-            PageIndex = targetIndex;
-        }
+        private void GoTo(int targetIndex) => PageIndex = targetIndex;
 
-        private bool CanGoTo(int targetIndex)
-        {
-            return targetIndex >= 0 && targetIndex < PageList.Count;
-        }
+        private bool CanGoTo(int targetIndex) => targetIndex >= 0 && targetIndex < PageList.Count;
 
-        private void GoTo(Type TPage)
-        {
-            var index = PageList.FindIndex(p => p.GetType() == TPage);
-            PageIndex = index;
-        }
+        private void GoTo(Type TPage) => PageIndex = PageList.FindIndex(p => p.GetType() == TPage);
 
-        private bool CanGoTo(Type TPage)
-        {
-            return PageList.Any(p => p.GetType() == TPage);
-        }
+        private bool CanGoTo(Type TPage) => PageList.Any(p => p.GetType() == TPage);
     }
 }
