@@ -1,6 +1,7 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
 using PlotDigitizer.Core;
+using PropertyChanged;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,10 +12,10 @@ using System.Windows.Controls.Primitives;
 
 namespace PlotDigitizer.App
 {
-	/// <summary>
-	/// Interaction logic for EditPage.xaml
-	/// </summary>
-	public partial class EditPage : Page, INotifyPropertyChanged
+    /// <summary>
+    /// Interaction logic for EditPage.xaml
+    /// </summary>
+    public partial class EditPage : Page, INotifyPropertyChanged
     {
         private readonly Model model;
         private readonly List<ToggleButton> stateButtons;
@@ -30,6 +31,33 @@ namespace PlotDigitizer.App
         public Image<Rgba, byte> Image => editor?.Image;
 
         public bool IsDisabled => model.FilteredImage is null;
+
+        [DependsOn(null, new[] {nameof(IsPencil), nameof(IsEraser), nameof(IsRect), nameof(IsPoly)})]
+        public bool IsPencil 
+        { 
+            get => editor?.EditorState is PencilMode; 
+            set => editor.EditorState = PencilMode.Instance; 
+        }
+
+        [DependsOn(null, new[] {nameof(IsPencil), nameof(IsEraser), nameof(IsRect), nameof(IsPoly)})]
+        public bool IsEraser {
+            get => editor?.EditorState is EraserMode;
+            set => editor.EditorState = EraserMode.Instance;
+        }
+
+        [DependsOn(null, new[] {nameof(IsPencil), nameof(IsEraser), nameof(IsRect), nameof(IsPoly)})]
+        public bool IsRect
+        {
+            get => editor?.EditorState is RectMode;
+            set => editor.EditorState = RectMode.Instance;
+        }
+
+        [DependsOn(null, new[] {nameof(IsPencil), nameof(IsEraser), nameof(IsRect), nameof(IsPoly)})]
+        public bool IsPoly
+        {
+            get => editor?.EditorState is PolyMode;
+            set => editor.EditorState = PolyMode.Instance;
+        }
 
         public EditPage()
         {
@@ -63,15 +91,14 @@ namespace PlotDigitizer.App
             UndoButton.GetBindingExpression(ButtonBase.CommandProperty).UpdateTarget();
             RedoButton.GetBindingExpression(ButtonBase.CommandProperty).UpdateTarget();
         }
-        
+
         /// <summary>
         /// Do NOT initialise it when loading, so long as the <see cref="Model.FilteredImage"/> is un changed, the previous editting is retained. 
         /// </summary>
         private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(model.FilteredImage))
-            {
-                editor.Initialise(model.FilteredImage);                
+            if (e.PropertyName == nameof(model.FilteredImage)) {
+                editor.Initialise(model.FilteredImage);
             }
         }
 
@@ -85,45 +112,17 @@ namespace PlotDigitizer.App
 
         private void EditManager_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(EditManager.Index))
-            {
+            if (e.PropertyName == nameof(EditManager.Index)) {
                 OnPropertyChanged(nameof(UndoList));
                 OnPropertyChanged(nameof(RedoList));
                 UndoComboBox.SelectedIndex = 0;
                 RedoComboBox.SelectedIndex = 0;
             }
         }
+
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private void EraserButton_Checked(object sender, RoutedEventArgs e)
-        {
-            ResetStateButtons(sender);
-            editor.EditorState = ErasorMode.Instance;
-        }
-
-        private void RectButton_Checked(object sender, RoutedEventArgs e)
-        {
-            ResetStateButtons(sender);
-            editor.EditorState = RectMode.Instance;
-        }
-
-        private void PolyButton_Checked(object sender, RoutedEventArgs e)
-        {
-            ResetStateButtons(sender);
-            editor.EditorState = PolyMode.Instance;
-        }
-        private void PencilButton_Checked(object sender, RoutedEventArgs e)
-        {
-            ResetStateButtons(sender);
-            editor.EditorState = PencilMode.Instance;
-        }
-
-        private void StateButton_Unchecked(object sender, RoutedEventArgs e)
-        {
-            editor.EditorState = NoMode.Instance;
         }
 
         private void UndoComboBox_DropDownClosed(object sender, EventArgs e)
@@ -144,14 +143,6 @@ namespace PlotDigitizer.App
             var targetIndex = EditManager.Index + comboBox.SelectedIndex;
             if (EditManager.GoToCommand.CanExecute(targetIndex))
                 EditManager.GoToCommand.Execute(targetIndex);
-        }
-
-        private void ResetStateButtons(object sender)
-        {
-            foreach (var button in stateButtons.Where(b => b != sender))
-            {
-                button.IsChecked = false;
-            }
         }
 
     }
