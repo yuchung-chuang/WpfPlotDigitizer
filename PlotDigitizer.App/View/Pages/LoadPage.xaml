@@ -39,7 +39,7 @@
 								 Width="312"
 								 VerticalAlignment="Top"
 								 Text="or" />
-			<Button x:Name="pasteButton"
+			<Button x:Name="PasteButton"
 							Margin="0,58,0,71"
 							Padding="5"
 							FontSize="22"
@@ -47,7 +47,7 @@
 							HorizontalAlignment="Center"
 							ToolTip="Shortcut: Ctrl + V"
 							d:LayoutOverrides="Height"
-							Click="pasteButton_Click" />
+							Click="PasteButton_Click" />
 			<TextBlock HorizontalAlignment="Center"
 								 Margin="0,0,0,41"
 								 TextWrapping="Wrap"
@@ -56,14 +56,14 @@
 								 Width="312"
 								 VerticalAlignment="Bottom"
 								 Text="or" />
-			<Button x:Name="browseButton"
+			<Button x:Name="BrowseButton"
 							Padding="5"
 							FontSize="22"
 							Content="Browse"
 							HorizontalAlignment="Center"
 							VerticalAlignment="Bottom"
-							Click="browseButton_Click"
-							Loaded="browseButton_Loaded"/>
+							Click="BrowseButton_Click"
+							Loaded="BrowseButton_Loaded"/>
 
 		</Grid>
 		<Image x:Name="imageControl"

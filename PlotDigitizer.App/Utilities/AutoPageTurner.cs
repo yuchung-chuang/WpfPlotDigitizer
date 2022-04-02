@@ -16,7 +16,7 @@ namespace PlotDigitizer.App
 
 		private void LoadPage_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName == nameof(LoadPage.ImageSource)) {
+			if (e.PropertyName == nameof(loadPage.ImageSource)) {
 				if (pageManager.NextCommand.CanExecute(null)) {
 					pageManager.NextCommand.Execute(null);
 				}

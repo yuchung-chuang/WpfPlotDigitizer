@@ -22,41 +22,40 @@ namespace PlotDigitizer.App
 		private bool isDropUrl;
 		private bool isDropEnabled;
 
-		public event PropertyChangedEventHandler PropertyChanged;
-
-		public BitmapSource ImageSource { get; private set; }
+		public BitmapSource ImageSource => model?.InputImage?.ToBitmapSource();
 
 		public LoadPage()
 		{
 			InitializeComponent();
-			Loaded += LoadPage_Loaded;
-			Unloaded += LoadPage_Unloaded;
+#if DEBUG
+			Loaded += (s, e) => imageControl.Visibility = Visibility.Visible;
+#endif
 		}
 
 		public LoadPage(Model model) : this()
 		{
 			this.model = model;
+			model.PropertyChanged += Model_PropertyChanged;
 		}
 
-		private void LoadPage_Loaded(object sender, RoutedEventArgs e)
+		private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			ImageSource = model.InputImage?.ToBitmapSource();
-#if DEBUG
-			imageControl.Visibility = Visibility.Visible;
-#endif
+			if (e.PropertyName == nameof(model.InputImage)) {
+				OnPropertyChanged(nameof(ImageSource));
+			}
 		}
 
-		private void LoadPage_Unloaded(object sender, RoutedEventArgs e)
+		private void SetModelImage(BitmapSource source)
 		{
-			model.InputImage = ImageSource?.ToBitmap().ToImage<Rgba, byte>();
+			model.InputImage = source?.ToBitmap().ToImage<Rgba, byte>();
 		}
 
-		private void browseButton_Loaded(object sender, RoutedEventArgs e)
+		private void BrowseButton_Loaded(object sender, RoutedEventArgs e)
 		{
 			(sender as UIElement).Focus();
 		}
 
-		private void browseButton_Click(object sender, RoutedEventArgs e)
+		private void BrowseButton_Click(object sender, RoutedEventArgs e)
 		{
 			var dialog = new OpenFileDialog
 			{
@@ -70,17 +69,17 @@ namespace PlotDigitizer.App
 			if (dialog.ShowDialog() != true) {
 				return;
 			}
-			ImageSource = loadImage(dialog.FileName);
+			SetModelImage(LoadImage(dialog.FileName));
 		}
 
-		private void pasteButton_Click(object sender, RoutedEventArgs e)
+		private void PasteButton_Click(object sender, RoutedEventArgs e)
 		{
-			pasteImage();
+			PasteImage();
 		}
 
 		private void Paste_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			pasteImage();
+			PasteImage();
 		}
 
 		private void Page_DragOver(object sender, DragEventArgs e)
@@ -94,10 +93,8 @@ namespace PlotDigitizer.App
 				&& (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
 			isDropEnabled = isDropFile || isDropUrl;
 
-			if (isDropEnabled) {
-				e.Effects = DragDropEffects.Copy;
-			} else {
-				e.Effects = DragDropEffects.None;
+			e.Effects = isDropEnabled ? DragDropEffects.Copy : DragDropEffects.None;
+			if (!isDropEnabled) {
 				e.Handled = true;
 			}
 		}
@@ -106,26 +103,26 @@ namespace PlotDigitizer.App
 		{
 			if (isDropFile) {
 				var filename = (e.Data.GetData(DataFormats.FileDrop) as string[])[0];
-				ImageSource = loadImage(filename);
+				SetModelImage(LoadImage(filename));
 			} else if (isDropUrl) {
 				var uri = new Uri(e.Data.GetData(DataFormats.Text).ToString(), UriKind.Absolute);
-				ImageSource = new BitmapImage(uri);
+				SetModelImage(new BitmapImage(uri));
 			}
 		}
 
-		private void pasteImage()
+		private void PasteImage()
 		{
 			if (Clipboard.ContainsImage()) {
-				ImageSource = Clipboard.GetImage();
+				SetModelImage(Clipboard.GetImage());
 			} else if (Clipboard.ContainsFileDropList()) {
-				ImageSource = loadImage(Clipboard.GetFileDropList()[0]);
+				SetModelImage(LoadImage(Clipboard.GetFileDropList()[0]));
 			} else {
 				MessageBox.Show("Clipboard does not contain image.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
 				return;
 			}
 		}
 
-		private BitmapSource loadImage(string filename)
+		private BitmapSource LoadImage(string filename)
 		{
 			if (!File.Exists(filename)) {
 				MessageBox.Show("Input file is not valid.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -138,6 +135,13 @@ namespace PlotDigitizer.App
 				MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
 				return null;
 			}
+		}
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		private void OnPropertyChanged(string propertyName)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 	}
 }
