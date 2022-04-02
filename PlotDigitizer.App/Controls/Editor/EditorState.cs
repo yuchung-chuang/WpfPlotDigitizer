@@ -57,9 +57,9 @@ namespace PlotDigitizer.App
 		}
 	}
 
-	public class ErasorMode : EditorState
+	public class EraserMode : EditorState
 	{
-		public static ErasorMode Instance { get; } = new ErasorMode();
+		public static EraserMode Instance { get; } = new EraserMode();
 		public Stopwatch Stopwatch { get; } = new Stopwatch();
 
 		public override void MouseDown(Editor editor, MouseButtonEventArgs e)
