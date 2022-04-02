@@ -68,7 +68,6 @@ namespace PlotDigitizer.App
 				(int)Math.Round(AxisTop),
 				(int)Math.Round(AxisWidth),
 				(int)Math.Round(AxisHeight));
-			model.CropImage();
 		}
 
 		private void GetAxis()

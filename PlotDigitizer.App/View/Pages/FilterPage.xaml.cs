@@ -67,7 +67,6 @@ namespace PlotDigitizer.App
 			}
 			model.FilterMin = new Rgba(MinR, MinG, MinB, byte.MaxValue);
 			model.FilterMax = new Rgba(MaxR, MaxG, MaxB, byte.MaxValue);
-			model.FilterImage();
 		}
 		private void FilterImage()
 		{
