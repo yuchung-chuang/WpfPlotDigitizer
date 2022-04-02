@@ -1,4 +1,5 @@
 ﻿using PlotDigitizer.Core;
+using PropertyChanged;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -6,10 +7,8 @@ using System.Windows.Media;
 
 namespace PlotDigitizer.App
 {
-	/// <summary>
-	/// Interaction logic for AxisLimitPage.xaml
-	/// </summary>
-	public partial class AxisLimitPage : Page, INotifyPropertyChanged
+	[AddINotifyPropertyChangedInterface]
+	public partial class AxisLimitPage : Page
 	{
 		private readonly Model model;
 
@@ -20,7 +19,6 @@ namespace PlotDigitizer.App
 			Unloaded += AxisLimitPage_Unloaded;
 		}
 
-
 		public AxisLimitPage(Model model) : this()
 		{
 			this.model = model;
@@ -29,14 +27,14 @@ namespace PlotDigitizer.App
 		{
 			ImageSource = model.InputImage?.ToBitmapSource();
 			if (model.AxisLimit != default) {
-				xMin = model.AxisLimit.Left;
-				yMin = model.AxisLimit.Top;
-				xMax = model.AxisLimit.Right;
-				yMax = model.AxisLimit.Bottom;
+				AxisXMin = model.AxisLimit.Left.ToString();
+				AxisYMin = model.AxisLimit.Top.ToString();
+				AxisXMax = model.AxisLimit.Right.ToString();
+				AxisYMax = model.AxisLimit.Bottom.ToString();
 			}
 			if (model.AxisLogBase != default) {
-				xLog = model.AxisLogBase.X;
-				yLog = model.AxisLogBase.Y;
+				AxisXLog = model.AxisLogBase.X.ToString();
+				AxisYLog = model.AxisLogBase.Y.ToString();
 			}
 		}
 
@@ -157,7 +155,6 @@ namespace PlotDigitizer.App
 			}
 		}
 
-		public event PropertyChangedEventHandler PropertyChanged;
 
 	}
 }
