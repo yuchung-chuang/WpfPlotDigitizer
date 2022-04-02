@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using PlotDigitizer.Core;
+using PropertyChanged;
 using System;
 using System.ComponentModel;
 using System.Windows;
@@ -11,15 +12,12 @@ using Rectangle = System.Drawing.Rectangle;
 
 namespace PlotDigitizer.App
 {
-	/// <summary>
-	/// Interaction logic for AxisPage.xaml
-	/// </summary>
-	public partial class AxisPage : Page, INotifyPropertyChanged
+	[AddINotifyPropertyChangedInterface]
+	public partial class AxisPage : Page
 	{
 		private readonly Model model;
 
-		public event PropertyChangedEventHandler PropertyChanged;
-
+		public bool IsDisabled => model.InputImage is null;
 		public ImageSource ImageSource { get; private set; }
 
 		public double AxisLeft { get; set; }
@@ -45,7 +43,11 @@ namespace PlotDigitizer.App
 
 		private void AxisPage_Loaded(object sender, RoutedEventArgs e)
 		{
-			ImageSource = model.InputImage?.ToBitmapSource();
+			IsEnabled = !IsDisabled;
+			if (IsDisabled) {
+				return;
+			}
+			ImageSource = model.InputImage.ToBitmapSource();
 			if (model.AxisLocation == default) {
 				GetAxis();
 			} else {
@@ -58,9 +60,12 @@ namespace PlotDigitizer.App
 
 		private void AxisPage_Unloaded(object sender, RoutedEventArgs e)
 		{
+			if (IsDisabled) {
+				return;
+			}
 			model.AxisLocation = new Rectangle(
-				(int)Math.Round(AxisLeft), 
-				(int)Math.Round(AxisTop), 
+				(int)Math.Round(AxisLeft),
+				(int)Math.Round(AxisTop),
 				(int)Math.Round(AxisWidth),
 				(int)Math.Round(AxisHeight));
 			model.CropImage();
@@ -68,11 +73,10 @@ namespace PlotDigitizer.App
 
 		private void GetAxis()
 		{
-			var image = model.InputImage;
-			if (image is null)
-			{
+			if (IsDisabled) {
 				return;
 			}
+			var image = model.InputImage;
 			var axis = Methods.GetAxisLocation(image) ?? new Rectangle(image.Width / 4, image.Height / 4, image.Width / 2, image.Height / 2);
 			AxisLeft = axis.Left;
 			AxisTop = axis.Top;

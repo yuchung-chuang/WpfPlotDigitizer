@@ -11,7 +11,7 @@ namespace PlotDigitizer.App
 	public partial class AxisLimitPage : Page
 	{
 		private readonly Model model;
-
+		public bool IsDisabled => model.InputImage is null;
 		public AxisLimitPage()
 		{
 			InitializeComponent();
@@ -25,6 +25,10 @@ namespace PlotDigitizer.App
 		}
 		private void AxisLimitPage_Loaded(object sender, RoutedEventArgs e)
 		{
+			IsEnabled = !IsDisabled;
+			if (IsDisabled) {
+				return;
+			}
 			ImageSource = model.InputImage?.ToBitmapSource();
 			if (model.AxisLimit != default) {
 				AxisXMin = model.AxisLimit.Left.ToString();
@@ -40,6 +44,9 @@ namespace PlotDigitizer.App
 
 		private void AxisLimitPage_Unloaded(object sender, RoutedEventArgs e)
 		{
+			if (IsDisabled) {
+				return;
+			}
 			model.AxisLimit = new RectangleD(xMin ?? 0, yMin ?? 0, xMax - xMin ?? 0, yMax - yMin?? 0);
 			model.AxisLogBase = new PointD(xLog ?? 0, yLog ?? 0);
 		}

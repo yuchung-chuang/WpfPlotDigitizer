@@ -29,11 +29,7 @@ namespace PlotDigitizer.App
 
         public Image<Rgba, byte> Image => editor?.Image;
 
-        public EditorState EditorState
-        {
-            get => editor.EditorState;
-            set => editor.EditorState = value;
-        }
+        public bool IsDisabled => model.FilteredImage is null;
 
         public EditPage()
         {
@@ -55,23 +51,36 @@ namespace PlotDigitizer.App
             EditManager.PropertyChanged += EditManager_PropertyChanged;
         }
 
+        /// <summary>
+        /// Need to update the binding expression, otherwise the binding may happens when the <see cref="EditManager"/> has not been really yet
+        /// </summary>
         private void EditPage_Loaded(object sender, RoutedEventArgs e)
         {
+            IsEnabled = !IsDisabled;
+            if (IsDisabled) {
+                return;
+            }
             UndoButton.GetBindingExpression(ButtonBase.CommandProperty).UpdateTarget();
             RedoButton.GetBindingExpression(ButtonBase.CommandProperty).UpdateTarget();
         }
         
-        private void EditPage_Unloaded(object sender, RoutedEventArgs e)
-        {
-            model.EdittedImage = Image;
-        }
-
+        /// <summary>
+        /// Do NOT initialise it when loading, so long as the <see cref="Model.FilteredImage"/> is un changed, the previous editting is retained. 
+        /// </summary>
         private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(model.FilteredImage))
             {
                 editor.Initialise(model.FilteredImage);                
             }
+        }
+
+        private void EditPage_Unloaded(object sender, RoutedEventArgs e)
+        {
+            if (IsDisabled) {
+                return;
+            }
+            model.EdittedImage = Image;
         }
 
         private void EditManager_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -92,29 +101,29 @@ namespace PlotDigitizer.App
         private void EraserButton_Checked(object sender, RoutedEventArgs e)
         {
             ResetStateButtons(sender);
-            EditorState = ErasorMode.Instance;
+            editor.EditorState = ErasorMode.Instance;
         }
 
         private void RectButton_Checked(object sender, RoutedEventArgs e)
         {
             ResetStateButtons(sender);
-            EditorState = RectMode.Instance;
+            editor.EditorState = RectMode.Instance;
         }
 
         private void PolyButton_Checked(object sender, RoutedEventArgs e)
         {
             ResetStateButtons(sender);
-            EditorState = PolyMode.Instance;
+            editor.EditorState = PolyMode.Instance;
         }
         private void PencilButton_Checked(object sender, RoutedEventArgs e)
         {
             ResetStateButtons(sender);
-            EditorState = PencilMode.Instance;
+            editor.EditorState = PencilMode.Instance;
         }
 
         private void StateButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            EditorState = NoMode.Instance;
+            editor.EditorState = NoMode.Instance;
         }
 
         private void UndoComboBox_DropDownClosed(object sender, EventArgs e)

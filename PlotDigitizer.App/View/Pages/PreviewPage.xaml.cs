@@ -65,6 +65,7 @@ namespace PlotDigitizer.App
 			get => DataType == DataType.Continuous;
 			set => DataType = value ? DataType.Continuous : DataType.Discrete;
 		}
+		public bool IsDisabled => model.EdittedImage is null;
 
 		public PreviewPage(Model model, IServiceProvider provider) : this()
 		{
@@ -79,6 +80,25 @@ namespace PlotDigitizer.App
 			Loaded += PreviewPage_Loaded;
 			Unloaded += PreviewPage_Unloaded;
 		}
+
+		private void PreviewPage_Loaded(object sender, RoutedEventArgs e)
+		{
+			IsEnabled = !IsDisabled;
+			if (IsDisabled) {
+				return;
+			}
+			EdittedImage = model.EdittedImage.Copy();
+			DataType = model.DataType;
+			ExtractPoints();
+		}
+
+		private void PreviewPage_Unloaded(object sender, RoutedEventArgs e)
+		{
+			if (IsDisabled) {
+				return;
+			}
+			model.DataType = DataType;
+		}
 		private void ExtractPoints()
 		{
 			Image = EdittedImage.Copy();
@@ -90,18 +110,6 @@ namespace PlotDigitizer.App
 			};
 			OnPropertyChanged(nameof(ImageSource));
 			ExportCommand.RaiseCanExecuteChanged();
-		}
-
-		private void PreviewPage_Loaded(object sender, RoutedEventArgs e)
-		{
-			EdittedImage = model.EdittedImage.Copy();
-			DataType = model.DataType;
-			ExtractPoints();
-		}
-
-		private void PreviewPage_Unloaded(object sender, RoutedEventArgs e)
-		{
-			model.DataType = DataType;
 		}
 
 		private void OnPropertyChanged(string propertyName)
