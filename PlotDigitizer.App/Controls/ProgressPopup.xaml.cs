@@ -18,7 +18,7 @@ namespace PlotDigitizer.App
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
 			Canceled?.Invoke(this, new EventArgs());
-			this.Close();
+			Close();
 		}
 	}
 }

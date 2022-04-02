@@ -17,6 +17,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics;
 
 namespace PlotDigitizer.App
 {
@@ -39,7 +40,7 @@ namespace PlotDigitizer.App
 		public Image<Rgba, byte> EdittedImage { get; private set; }
 		public DataType DataType
 		{
-			get => dataType; 
+			get => dataType;
 			private set
 			{
 				if (value != dataType) {
@@ -115,7 +116,8 @@ namespace PlotDigitizer.App
 			{
 				Filter =
 				"CSV |*.csv|" +
-				"TXT |*.txt"
+				"TXT |*.txt",
+				FileName = "output",
 			};
 			if (saveFileDialog.ShowDialog() == false)
 				return;
@@ -126,28 +128,27 @@ namespace PlotDigitizer.App
 			ExportResults SaveAsTXT(CancellationToken token) => SaveText("\t", token);
 			ExportResults SaveText(string seperator, CancellationToken token)
 			{
-				try {
-					var strPath = saveFileDialog.FileName;
+				var strPath = saveFileDialog.FileName;
 
-					var content = new StringBuilder();
-					content.AppendLine("X" + seperator + "Y");
-					foreach (var point in data) {
-						content.AppendLine(point.X.ToString() + seperator + point.Y.ToString());
-						if (token.IsCancellationRequested) {
-							return ExportResults.Canceled;
-						}
+				var content = new StringBuilder();
+				content.AppendLine("X" + seperator + "Y");
+				foreach (var point in data) {
+					content.AppendLine(point.X.ToString() + seperator + point.Y.ToString());
+#if DEBUG
+					Thread.Sleep(250);
+					//throw new Exception("Test error");
+#endif
+					if (token.IsCancellationRequested) {
+						return ExportResults.Canceled;
 					}
-
-					using (var fs = File.OpenWrite(strPath))
-					using (var sw = new StreamWriter(fs)) {
-						sw.Write(content.ToString());
-					}
-
-					return ExportResults.Sucessful;
 				}
-				catch (Exception) {
-					return ExportResults.Failed;
+
+				using (var fs = File.OpenWrite(strPath))
+				using (var sw = new StreamWriter(fs)) {
+					sw.Write(content.ToString());
 				}
+
+				return ExportResults.Sucessful;
 			}
 
 			async void TrySave(int index)
@@ -156,13 +157,19 @@ namespace PlotDigitizer.App
 
 				var cts = new CancellationTokenSource();
 				var token = cts.Token;
-				var saveTask = Task.Run(() =>
+
+				var saveTask = new Task<ExportResults>(() =>
 				{
-					return index switch
-					{
-						2 => SaveAsTXT(token),
-						_ => SaveAsCSV(token),
-					};
+					try {
+						return index switch
+						{
+							2 => SaveAsTXT(token),
+							_ => SaveAsCSV(token),
+						};
+					}
+					catch (Exception) {
+						return ExportResults.Failed;
+					}
 				}, token);
 				var popup = provider.GetService<ProgressPopup>();
 				popup.Canceled += (sender, e) =>
@@ -170,10 +177,9 @@ namespace PlotDigitizer.App
 					cts.Cancel();
 				};
 				popup.Show();
+
+				saveTask.Start();
 				var result = await saveTask;
-#if DEBUG
-				await Task.Delay(1000); 
-#endif
 				popup.Close();
 				Mouse.OverrideCursor = null;
 
@@ -190,6 +196,8 @@ namespace PlotDigitizer.App
 							break;
 						}
 					case ExportResults.Canceled:
+						MessageBox.Show("Export operation has been cancelled.", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
+						break;
 					case ExportResults.None:
 					default:
 						break;
@@ -197,7 +205,7 @@ namespace PlotDigitizer.App
 			}
 		}
 
-		private bool CanExport() => data != null;
+		private bool CanExport() => points != null;
 	}
 
 	public enum ExportResults
