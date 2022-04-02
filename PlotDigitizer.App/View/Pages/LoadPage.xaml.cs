@@ -2,6 +2,7 @@
 using Emgu.CV.Structure;
 using Microsoft.Win32;
 using PlotDigitizer.Core;
+using PropertyChanged;
 using System;
 using System.ComponentModel;
 using System.IO;
@@ -12,17 +13,15 @@ using System.Windows.Media.Imaging;
 
 namespace PlotDigitizer.App
 {
-	/// <summary>
-	/// Interaction logic for LoadPage.xaml
-	/// </summary>
-	public partial class LoadPage : Page, INotifyPropertyChanged
+	[AddINotifyPropertyChangedInterface]
+	public partial class LoadPage : Page
 	{
 		private readonly Model model;
 		private bool isDropFile;
 		private bool isDropUrl;
 		private bool isDropEnabled;
 
-		public BitmapSource ImageSource => model?.InputImage?.ToBitmapSource();
+		public BitmapSource ImageSource { get; private set; }
 
 		public LoadPage()
 		{
@@ -30,24 +29,34 @@ namespace PlotDigitizer.App
 #if DEBUG
 			Loaded += (s, e) => imageControl.Visibility = Visibility.Visible;
 #endif
+			Loaded += LoadPage_Loaded;
+			Unloaded += LoadPage_Unloaded;
+		}
+
+
+		private void LoadPage_Loaded(object sender, RoutedEventArgs e)
+		{
+			ImageSource = model?.InputImage?.ToBitmapSource();
+		}
+		private void LoadPage_Unloaded(object sender, RoutedEventArgs e)
+		{
+			model.InputImage = ImageSource?.ToBitmap().ToImage<Rgba, byte>();
 		}
 
 		public LoadPage(Model model) : this()
 		{
 			this.model = model;
-			model.PropertyChanged += Model_PropertyChanged;
 		}
 
-		private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
+		public event EventHandler NextPage;
+		private void OnNextPage()
 		{
-			if (e.PropertyName == nameof(model.InputImage)) {
-				OnPropertyChanged(nameof(ImageSource));
-			}
+			NextPage?.Invoke(this, null);
 		}
-
 		private void SetModelImage(BitmapSource source)
 		{
-			model.InputImage = source?.ToBitmap().ToImage<Rgba, byte>();
+			ImageSource = source;
+			OnNextPage();
 		}
 
 		private void BrowseButton_Loaded(object sender, RoutedEventArgs e)
@@ -137,11 +146,6 @@ namespace PlotDigitizer.App
 			}
 		}
 
-		public event PropertyChangedEventHandler PropertyChanged;
-
-		private void OnPropertyChanged(string propertyName)
-		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
+		
 	}
 }
