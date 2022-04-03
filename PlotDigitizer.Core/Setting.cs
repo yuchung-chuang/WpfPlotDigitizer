@@ -20,5 +20,10 @@ namespace PlotDigitizer.Core
 		public DataType DataType { get; set; }
 
 		public event PropertyChangedEventHandler PropertyChanged;
+
+		public void RaisePropertyChanged(string propertyName)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
 	}
 }

@@ -69,6 +69,7 @@ namespace PlotDigitizer.App
 		{
 			if (e.PropertyName == nameof(model.EdittedImage)) {
 				OnPropertyChanged(nameof(Enabled));
+				ExtractPoints();
 			}
 		}
 
@@ -99,6 +100,9 @@ namespace PlotDigitizer.App
 		}
 		private void ExtractPoints()
 		{
+			if (!Enabled) {
+				return;
+			}
 			Image = model.EdittedImage.Copy();
 			points = DataType switch
 			{

@@ -70,7 +70,7 @@ namespace PlotDigitizer.App
 				return;
 			}
 			if (model.Setting.AxisLocation == default) {
-				GetAxis();				
+				GetAxis();
 			}
 		}
 
@@ -93,9 +93,9 @@ namespace PlotDigitizer.App
 
 		private void GetAxis()
 		{
-			//if (!Enabled) {
-			//	return;
-			//}
+			if (!Enabled) {
+				return;
+			}
 			var image = model.InputImage;
 			var axis = Methods.GetAxisLocation(image) ?? new Rectangle(image.Width / 4, image.Height / 4, image.Width / 2, image.Height / 2);
 			AxisLeft = axis.Left;

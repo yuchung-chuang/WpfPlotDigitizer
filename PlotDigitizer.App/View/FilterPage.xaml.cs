@@ -94,6 +94,9 @@ namespace PlotDigitizer.App
 		}
 		private void FilterImage()
 		{
+			if (!Enabled) {
+				return;
+			}
 			var min = new Rgba(MinR, MinG, MinB, byte.MaxValue);
 			var max = new Rgba(MaxR, MaxG, MaxB, byte.MaxValue);
 			Image = Methods.FilterRGB(CroppedImage, min, max);

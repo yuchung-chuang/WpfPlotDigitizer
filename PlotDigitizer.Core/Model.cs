@@ -2,14 +2,16 @@
 using Emgu.CV.Structure;
 using PropertyChanged;
 using System.ComponentModel;
-using System.Text.Json.Serialization;
+using System.Drawing;
 
 namespace PlotDigitizer.Core
 {
 	public class Model : INotifyPropertyChanged
 	{
+		[OnChangedMethod(nameof(OnInputImageChanged))]
 		public Image<Rgba, byte> InputImage { get; set; }
 
+		[OnChangedMethod(nameof(OnCroppedImageChanged))]
 		public Image<Rgba, byte> CroppedImage { get; set; }
 		
 		[OnChangedMethod(nameof(OnFilteredImageChanged))]
@@ -36,8 +38,24 @@ namespace PlotDigitizer.Core
 			}
 		}
 
+		private void OnInputImageChanged()
+		{
+			if (Setting.AxisLocation == default) {
+				Setting.AxisLocation = Methods.GetAxisLocation(InputImage) ?? new Rectangle(InputImage.Width / 4, InputImage.Height / 4, InputImage.Width / 2, InputImage.Height / 2); 
+			}
+			CropImage();
+		}
+		private void OnCroppedImageChanged()
+		{
+			FilterImage();
+		}
+		private void OnFilteredImageChanged() => EdittedImage = FilteredImage;
+
 		private void Setting_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
+			if (InputImage is null) {
+				return;
+			}
 			switch (e.PropertyName) {
 				case nameof(Setting.AxisLocation):
 					CropImage();
@@ -53,7 +71,6 @@ namespace PlotDigitizer.Core
 			}
 		}
 
-		private void OnFilteredImageChanged() => EdittedImage = FilteredImage;
 
 		private void CropImage()
 		{

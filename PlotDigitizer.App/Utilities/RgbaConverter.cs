@@ -13,15 +13,40 @@ namespace PlotDigitizer.App
 	{
 		public override Rgba Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
 		{
-			var s = reader.GetString();
-			var s2 = s.Substring(s.IndexOf('(') + 1, s.IndexOf(')') - s.IndexOf('(') - 1);
-			var values = s2.Split(',').Select(s => double.Parse(s)).ToArray();
-			return new Rgba(values[0], values[1], values[2], values[3]);
+
+			var color = new Rgba();
+			object obj = color; // since rgba is a struct, it's necessary to box/unbox it to a class in order to take advantage of GetProperty().SetValue()
+			string property = null;
+			var isDone = false;
+			while (!isDone) {
+				reader.Read();
+				switch (reader.TokenType) {
+					case JsonTokenType.PropertyName:
+						property = reader.GetString();
+						break;
+					case JsonTokenType.Number:
+						var value = reader.GetDouble();
+						typeof(Rgba).GetProperty(property).SetValue(obj, value);
+						break;
+					case JsonTokenType.EndObject:
+						isDone = true;
+						break;
+					default:
+						break;
+				}
+			}
+			color = (Rgba)obj;
+			return color;
 		}
 
 		public override void Write(Utf8JsonWriter writer, Rgba value, JsonSerializerOptions options)
 		{
-			writer.WriteStringValue($"{nameof(Rgba)}:({value.Red},{value.Green},{value.Blue},{value.Alpha})");
+			writer.WriteStartObject();
+			writer.WriteNumber(nameof(value.Red), value.Red);
+			writer.WriteNumber(nameof(value.Green), value.Green);
+			writer.WriteNumber(nameof(value.Blue), value.Blue);
+			writer.WriteNumber(nameof(value.Alpha), value.Alpha);
+			writer.WriteEndObject();
 		}
 	}
 }
