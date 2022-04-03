@@ -30,7 +30,8 @@
 							Value="Center" />
 		</Style>
 	</Page.Resources>
-	<Grid DataContext="{Binding ElementName=root}">
+	<Grid DataContext="{Binding ElementName=root}"
+				IsEnabled="{Binding Enabled}">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*" />
 			<ColumnDefinition Width="4*" />

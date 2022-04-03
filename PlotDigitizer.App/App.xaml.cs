@@ -27,9 +27,10 @@ namespace PlotDigitizer.App
 			ConfigureServices(services);
 			provider = services.BuildServiceProvider();
 
-			provider.GetService<AutoPageTurner>(); // simply trigger the creation of auto-page turner, it will do it's job
+			// simply trigger the creation of auto-page turner, it will do it's job
+			provider.GetService<AutoPageTurner>();
 #if DEBUG
-			test(); 
+			//Test();
 #endif
 			var window = provider.GetService<Window>();
 			window.Show();
@@ -66,18 +67,18 @@ namespace PlotDigitizer.App
 			});
 		}
 
-		private void test()
+		private void Test()
 		{
 			var model = provider.GetService<Model>();
 			model.InputImage = new BitmapImage(new Uri(@"pack://siteoforigin:,,,/Assets/test_image.png")).ToBitmap().ToImage<Rgba, byte>();
-			//model.AxisLimit = new RectangleD(900, 0, 70, 20);
-			//model.AxisLogBase = new PointD(0, 0);
-			//model.AxisLocation = new Rectangle(138, 100, 632, 399);
-			//model.FilterMin = new Rgba(0, 0, 0, byte.MaxValue);
-			//model.FilterMax = new Rgba(126, 254, 254, byte.MaxValue);
-			//model.DataType = DataType.Discrete;
+			model.Setting.AxisLimit = new RectangleD(900, 0, 70, 20);
+			model.Setting.AxisLogBase = new PointD(0, 0);
+			model.Setting.AxisLocation = new Rectangle(138, 100, 632, 399);
+			model.Setting.FilterMin = new Rgba(0, 0, 0, byte.MaxValue);
+			model.Setting.FilterMax = new Rgba(126, 254, 254, byte.MaxValue);
+			model.Setting.DataType = DataType.Discrete;
 
-			provider.GetService<PageManager>().GoToByTypeCommand.Execute(typeof(AxisLimitPage));
+			provider.GetService<PageManager>().GoToByTypeCommand.Execute(typeof(PreviewPage));
 		}
 	}
 }

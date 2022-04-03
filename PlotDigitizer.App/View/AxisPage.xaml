@@ -11,7 +11,8 @@
 			x:Name="root">
 
 	<Grid Margin="5"
-				DataContext="{Binding ElementName=root}">
+				DataContext="{Binding ElementName=root}"
+				IsEnabled="{Binding Enabled}">
 		<Viewbox Name="imageViewBox">
 			<Grid>
 				<Grid local:Pan.IsEnabled="True"

@@ -1,5 +1,8 @@
-﻿namespace PlotDigitizer.Core
+﻿using System;
+
+namespace PlotDigitizer.Core
 {
+    [Serializable]
 	public struct PointD
     {
         public double X { get; set; }

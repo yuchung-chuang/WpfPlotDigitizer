@@ -16,38 +16,23 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
+using PropertyChanged;
 
 namespace PlotDigitizer.App
 {
-	/// <summary>
-	/// Interaction logic for PreviewPage.xaml
-	/// </summary>
 	public partial class PreviewPage : Page, INotifyPropertyChanged
 	{
 		private readonly Model model;
 		private readonly IServiceProvider provider;
 		private IEnumerable<PointD> data;
-		private DataType dataType;
+		private IEnumerable<PointD> points;
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
+		[OnChangedMethod(nameof(OnDataTypeChanged))]
+		public DataType DataType { get; private set; }
+
 		public Image<Rgba, byte> Image { get; private set; }
-
-		private IEnumerable<PointD> points;
-
-		public Image<Rgba, byte> EdittedImage { get; private set; }
-		public DataType DataType
-		{
-			get => dataType;
-			private set
-			{
-				if (value != dataType) {
-					dataType = value;
-					ExtractPoints();
-				}
-			}
-		}
-
 		public ImageSource ImageSource => Image?.ToBitmapSource();
 
 		public RelayCommand ExportCommand { get; private set; }
@@ -63,13 +48,7 @@ namespace PlotDigitizer.App
 			get => DataType == DataType.Continuous;
 			set => DataType = value ? DataType.Continuous : DataType.Discrete;
 		}
-		public bool IsDisabled => model.EdittedImage is null;
-
-		public PreviewPage(Model model, IServiceProvider provider) : this()
-		{
-			this.model = model;
-			this.provider = provider;
-		}
+		public bool Enabled => model != null && model.EdittedImage != null;
 
 		private PreviewPage()
 		{
@@ -78,28 +57,49 @@ namespace PlotDigitizer.App
 			Loaded += PreviewPage_Loaded;
 			Unloaded += PreviewPage_Unloaded;
 		}
+		public PreviewPage(Model model, IServiceProvider provider) : this()
+		{
+			this.model = model;
+			this.provider = provider;
+			model.PropertyChanged += Model_PropertyChanged;
+			model.Setting.PropertyChanged += Setting_PropertyChanged;
+		}
+
+		private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName == nameof(model.EdittedImage)) {
+				OnPropertyChanged(nameof(Enabled));
+			}
+		}
+
+		private void Setting_PropertyChanged(object sender, PropertyChangedEventArgs e)
+		{
+			if (!(sender is Setting setting)) {
+				return;
+			}
+			if (e.PropertyName == nameof(setting.DataType)) {
+				DataType = setting.DataType;
+			}
+		}
 
 		private void PreviewPage_Loaded(object sender, RoutedEventArgs e)
 		{
-			IsEnabled = !IsDisabled;
-			if (IsDisabled) {
+			if (!Enabled) {
 				return;
 			}
-			EdittedImage = model.EdittedImage.Copy();
-			DataType = model.DataType;
 			ExtractPoints();
 		}
 
 		private void PreviewPage_Unloaded(object sender, RoutedEventArgs e)
 		{
-			if (IsDisabled) {
+			if (!Enabled) {
 				return;
 			}
-			model.DataType = DataType;
+			model.Setting.DataType = DataType;
 		}
 		private void ExtractPoints()
 		{
-			Image = EdittedImage.Copy();
+			Image = model.EdittedImage.Copy();
 			points = DataType switch
 			{
 				DataType.Discrete => Methods.GetDiscretePoints(Image),
@@ -109,6 +109,8 @@ namespace PlotDigitizer.App
 			OnPropertyChanged(nameof(ImageSource));
 		}
 
+		private void OnDataTypeChanged() => ExtractPoints();
+
 		private void OnPropertyChanged(string propertyName)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -116,15 +118,16 @@ namespace PlotDigitizer.App
 
 		private void Export()
 		{
-			data = Methods.TransformData(points, new System.Drawing.Size(Image.Width, Image.Height), model.AxisLimit, model.AxisLogBase);
+			data = Methods.TransformData(points, new System.Drawing.Size(Image.Width, Image.Height), model.Setting.AxisLimit, model.Setting.AxisLogBase);
 			var saveFileDialog = new SaveFileDialog
 			{
 				Filter =
-				"CSV |*.csv|" +
-				"TXT |*.txt",
+				"Comma-separated values file (*.csv) |*.csv|" +
+				"Text file (*.txt) |*.txt|" +
+				"Any (*.*) |*.*",
 				FileName = "output",
 			};
-			if (saveFileDialog.ShowDialog() == false)
+			if (saveFileDialog.ShowDialog() != true)
 				return;
 
 			TrySave(saveFileDialog.FilterIndex);

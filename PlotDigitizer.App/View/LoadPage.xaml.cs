@@ -4,6 +4,7 @@ using Microsoft.Win32;
 using PlotDigitizer.Core;
 using PropertyChanged;
 using System;
+using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,15 +13,14 @@ using System.Windows.Media.Imaging;
 
 namespace PlotDigitizer.App
 {
-	[AddINotifyPropertyChangedInterface]
-	public partial class LoadPage : Page
+	public partial class LoadPage : Page, INotifyPropertyChanged
 	{
 		private readonly Model model;
 		private bool isDropFile;
 		private bool isDropUrl;
 		private bool isDropEnabled;
 
-		public BitmapSource ImageSource { get; private set; }
+		public BitmapSource ImageSource => model?.InputImage?.ToBitmapSource();
 
 		public LoadPage()
 		{
@@ -28,33 +28,36 @@ namespace PlotDigitizer.App
 #if DEBUG
 			Loaded += (s, e) => imageControl.Visibility = Visibility.Visible;
 #endif
-			Loaded += LoadPage_Loaded;
-			Unloaded += LoadPage_Unloaded;
-		}
-
-
-		private void LoadPage_Loaded(object sender, RoutedEventArgs e)
-		{
-			ImageSource = model?.InputImage?.ToBitmapSource();
-		}
-		private void LoadPage_Unloaded(object sender, RoutedEventArgs e)
-		{
-			model.InputImage = ImageSource?.ToBitmap().ToImage<Rgba, byte>();
 		}
 
 		public LoadPage(Model model) : this()
 		{
 			this.model = model;
+			model.PropertyChanged += Model_PropertyChanged;
+		}
+
+		private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName == nameof(model.InputImage)) {
+				OnPropertyChanged(nameof(ImageSource));
+			}
 		}
 
 		public event EventHandler NextPage;
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		private void OnPropertyChanged(string propertyName)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
+
 		private void OnNextPage()
 		{
 			NextPage?.Invoke(this, null);
 		}
 		private void SetModelImage(BitmapSource source)
 		{
-			ImageSource = source;
+			model.InputImage = source.ToBitmap().ToImage<Rgba, byte>();
 			OnNextPage();
 		}
 
@@ -67,11 +70,11 @@ namespace PlotDigitizer.App
 		{
 			var dialog = new OpenFileDialog
 			{
-				Filter = "All |*.jpg;*.jpeg;*.png;*.bmp;*.tif|" +
-				"(*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
-				"(*.png)|*.png|" +
-				"(*.bmp)|*.bmp|" +
-				"(*.tif)|*.tif|" +
+				Filter = "Images (*.jpg;*.jpeg;*.png;*.bmp;*.tif) |*.jpg;*.jpeg;*.png;*.bmp;*.tif|" +
+				"(*.jpg;*.jpeg) |*.jpg;*.jpeg|" +
+				"(*.png) |*.png|" +
+				"(*.bmp) |*.bmp|" +
+				"(*.tif) |*.tif|" +
 				"Any |*.*"
 			};
 			if (dialog.ShowDialog() != true) {

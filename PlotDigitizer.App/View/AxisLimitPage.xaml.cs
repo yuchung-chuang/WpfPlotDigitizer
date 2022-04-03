@@ -1,56 +1,64 @@
 ﻿using PlotDigitizer.Core;
 using PropertyChanged;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace PlotDigitizer.App
 {
-	[AddINotifyPropertyChangedInterface]
-	public partial class AxisLimitPage : Page
+	public partial class AxisLimitPage : Page, INotifyPropertyChanged
 	{
 		private readonly Model model;
-		public bool IsDisabled => model.InputImage is null;
+		public bool Enabled => model != null && model.InputImage != null;
+		public ImageSource ImageSource => model?.InputImage?.ToBitmapSource();
 		public AxisLimitPage()
 		{
 			InitializeComponent();
-			Loaded += AxisLimitPage_Loaded;
 			Unloaded += AxisLimitPage_Unloaded;
 		}
 
 		public AxisLimitPage(Model model) : this()
 		{
 			this.model = model;
+			model.PropertyChanged += Model_PropertyChanged;
+			model.Setting.PropertyChanged += Setting_PropertyChanged;
 		}
-		private void AxisLimitPage_Loaded(object sender, RoutedEventArgs e)
+
+		private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			IsEnabled = !IsDisabled;
-			if (IsDisabled) {
+			if (e.PropertyName == nameof(model.InputImage)) {
+				OnPropertyChanged(nameof(Enabled));
+				OnPropertyChanged(nameof(ImageSource));
+			}
+		}
+
+		private void Setting_PropertyChanged(object sender, PropertyChangedEventArgs e)
+		{
+			if (!(sender is Setting setting)) {
 				return;
 			}
-			ImageSource = model.InputImage?.ToBitmapSource();
-			if (model.AxisLimit != default) {
-				AxisXMin = model.AxisLimit.Left.ToString();
-				AxisYMin = model.AxisLimit.Top.ToString();
-				AxisXMax = model.AxisLimit.Right.ToString();
-				AxisYMax = model.AxisLimit.Bottom.ToString();
-			}
-			if (model.AxisLogBase != default) {
-				AxisXLog = model.AxisLogBase.X.ToString();
-				AxisYLog = model.AxisLogBase.Y.ToString();
+			if (e.PropertyName == nameof(setting.AxisLimit)) {
+				AxisXMin = setting.AxisLimit.Left.ToString();
+				AxisYMin = setting.AxisLimit.Top.ToString();
+				AxisXMax = setting.AxisLimit.Right.ToString();
+				AxisYMax = setting.AxisLimit.Bottom.ToString();
+			} else if (e.PropertyName == nameof(setting.AxisLogBase)) {
+				AxisXLog = setting.AxisLogBase.X.ToString();
+				AxisYLog = setting.AxisLogBase.Y.ToString();
 			}
 		}
 
 		private void AxisLimitPage_Unloaded(object sender, RoutedEventArgs e)
 		{
-			if (IsDisabled) {
+			if (!Enabled) {
 				return;
 			}
-			model.AxisLimit = new RectangleD(xMin ?? 0, yMin ?? 0, xMax - xMin ?? 0, yMax - yMin?? 0);
-			model.AxisLogBase = new PointD(xLog ?? 0, yLog ?? 0);
+			model.Setting.AxisLimit = new RectangleD(xMin ?? 0, yMin ?? 0, xMax - xMin ?? 0, yMax - yMin?? 0);
+			model.Setting.AxisLogBase = new PointD(xLog ?? 0, yLog ?? 0);
 		}
 
-		public ImageSource ImageSource { get; private set; }
+		
 
 		private double? yMax = null;
 		private double? yLog = null;
@@ -58,6 +66,12 @@ namespace PlotDigitizer.App
 		private double? xMax = null;
 		private double? xLog = null;
 		private double? xMin = null;
+
+		public event PropertyChangedEventHandler PropertyChanged;
+		private void OnPropertyChanged(string propertyName)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
 
 		public string AxisYMax
 		{

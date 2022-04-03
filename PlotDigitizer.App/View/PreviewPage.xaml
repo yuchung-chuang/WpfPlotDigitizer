@@ -10,7 +10,8 @@
 			Title="PreviewPage"
 			Name="root">
 
-	<DockPanel DataContext="{Binding ElementName=root}">
+	<DockPanel DataContext="{Binding ElementName=root}"
+						 IsEnabled="{Binding Enabled}">
 		<DockPanel DockPanel.Dock="Top"
 							 Background="LightGray"
 							 Height="30">

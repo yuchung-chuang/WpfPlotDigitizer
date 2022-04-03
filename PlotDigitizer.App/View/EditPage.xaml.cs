@@ -12,9 +12,6 @@ using System.Windows.Controls.Primitives;
 
 namespace PlotDigitizer.App
 {
-    /// <summary>
-    /// Interaction logic for EditPage.xaml
-    /// </summary>
     public partial class EditPage : Page, INotifyPropertyChanged
     {
         private readonly Model model;
@@ -29,7 +26,7 @@ namespace PlotDigitizer.App
 
         public Image<Rgba, byte> Image => editor?.Image;
 
-        public bool IsDisabled => model.FilteredImage is null;
+        public bool Enabled => model != null && model.FilteredImage != null;
 
         [DependsOn(null, new[] {nameof(IsPencil), nameof(IsEraser), nameof(IsRect), nameof(IsPoly)})]
         public bool IsPencil 
@@ -78,8 +75,7 @@ namespace PlotDigitizer.App
         /// </summary>
         private void EditPage_Loaded(object sender, RoutedEventArgs e)
         {
-            IsEnabled = !IsDisabled;
-            if (IsDisabled) {
+            if (!Enabled) {
                 return;
             }
             UndoButton.GetBindingExpression(ButtonBase.CommandProperty).UpdateTarget();
@@ -93,12 +89,13 @@ namespace PlotDigitizer.App
         {
             if (e.PropertyName == nameof(model.FilteredImage)) {
                 editor.Initialise(model.FilteredImage);
+                OnPropertyChanged(nameof(Enabled));
             }
         }
 
         private void EditPage_Unloaded(object sender, RoutedEventArgs e)
         {
-            if (IsDisabled) {
+            if (!Enabled) {
                 return;
             }
             model.EdittedImage = Image;

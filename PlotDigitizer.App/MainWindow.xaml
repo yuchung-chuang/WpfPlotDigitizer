@@ -10,45 +10,65 @@
 				Height="450"
 				Width="800"
 				WindowStartupLocation="CenterScreen">
-    <DockPanel DataContext="{Binding ElementName=root}">
-        <StackPanel DockPanel.Dock="Top"
-								Orientation="Horizontal"
-								Height="30"
-								Background="LightGray">
-            <StackPanel.Resources>
-                <Style TargetType="Button">
-                    <Setter Property="Width"
+	<DockPanel DataContext="{Binding ElementName=root}">
+		<DockPanel DockPanel.Dock="Top">
+			<DockPanel.Resources>
+				<Style TargetType="Button">
+					<Setter Property="Width"
 									Value="{Binding RelativeSource={RelativeSource self}, Path=ActualHeight}" />
-                    <Setter Property="Margin"
+					<Setter Property="Margin"
 									Value="1" />
-                </Style>
-                <Style TargetType="Path">
-                    <Setter Property="Fill"
+				</Style>
+				<Style TargetType="Path">
+					<Setter Property="Fill"
 									Value="Black" />
-                    <Setter Property="Stretch"
+					<Setter Property="Stretch"
 									Value="Uniform" />
-                </Style>
-            </StackPanel.Resources>
-            <Button x:Name="backButton"
-							Command="{Binding PageManager.BackCommand}">
-                <Path Data="M427 277v-42h-260l119 -120l-30 -30l-171 171l171 171l30 -30l-119 -120h260z" />
-            </Button>
-            <Button Name="nextButton"
-							Command="{Binding PageManager.NextCommand}">
-                <Path Data="M256 427l171 -171l-171 -171l-30 30l119 120h-260v42h260l-119 120z" />
-            </Button>
-            <ComboBox Name="NaviComboBox"
-								ItemsSource="{Binding PageNameList}"
-								SelectedIndex="{Binding PageManager.PageIndex, Mode=TwoWay}"
-								Width="20" />
-        </StackPanel>
-        <Grid>
+				</Style>
+			</DockPanel.Resources>
+			<StackPanel DockPanel.Dock="Left"
+									Orientation="Horizontal"
+									Height="30"
+									Background="LightGray">
+				<Button x:Name="PrevPageButton"
+								Command="{Binding PageManager.BackCommand}">
+					<Path Data="M427 277v-42h-260l119 -120l-30 -30l-171 171l171 171l30 -30l-119 -120h260z" />
+				</Button>
+				<Button x:Name="NextPageButton"
+								Command="{Binding PageManager.NextCommand}">
+					<Path Data="M256 427l171 -171l-171 -171l-30 30l119 120h-260v42h260l-119 120z" />
+				</Button>
+				<ComboBox Name="NaviComboBox"
+									ItemsSource="{Binding PageNameList}"
+									SelectedIndex="{Binding PageManager.PageIndex, Mode=TwoWay}"
+									Width="20" />
+			</StackPanel>
+			<StackPanel DockPanel.Dock="Right"
+									Orientation="Horizontal"
+									FlowDirection="RightToLeft"
+									Height="30"
+									Background="LightGray">
 
-            <Frame x:Name="mainFrame"
+				<Button x:Name="LoadModelButton"
+								ToolTip="Load setting"
+								Command="{Binding LoadSettingCommand}">
+					<Path Data="M 48,39L 56,39L 56,49L 63.25,49L 52,60.25L 40.75,49L 48,49L 48,39 Z M 20,20L 50.25,20L 56,25.75L 56,38L 52,38L 52,27.25L 48.75,24L 48,24L 48,37L 28,37L 28,24L 24,24L 24,52L 42.25,52L 46.25,56L 20,56L 20,20 Z M 39,24L 39,34L 44,34L 44,24L 39,24 Z " />
+				</Button>
+				<Button x:Name="SaveModelButton"
+								ToolTip="Save current setting for later use"
+								Command="{Binding SaveSettingCommand}">
+					<Path Data="M 20,20L 50.25,20L 56,25.75L 56,56L 20,56L 20,20 Z M 52,27.25L 48.75,24L 48,24L 48,37L 28,37L 28,24L 24,24L 24,52L 52,52L 52,27.25 Z M 39,24L 39,34L 44,34L 44,24L 39,24 Z " 
+								Margin="1"/>
+				</Button>
+			</StackPanel>
+		</DockPanel>
+		<Grid>
+
+			<Frame x:Name="mainFrame"
 						 NavigationUIVisibility="Hidden"
 						 Navigating="mainFrame_Navigating"
 						 Content="{Binding PageManager.CurrentPage}" />
 
-        </Grid>
-    </DockPanel>
+		</Grid>
+	</DockPanel>
 </Window>

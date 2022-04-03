@@ -2,51 +2,67 @@
 using Emgu.CV.Structure;
 using PropertyChanged;
 using System.ComponentModel;
-using System.Drawing;
+using System.Text.Json.Serialization;
 
 namespace PlotDigitizer.Core
 {
 	public class Model : INotifyPropertyChanged
 	{
 		public Image<Rgba, byte> InputImage { get; set; }
-		public RectangleD AxisLimit { get; set; }
-		public PointD AxisLogBase { get; set; }
-		[OnChangedMethod(nameof(OnAxisLocationChanged))]
-		public Rectangle AxisLocation { get; set; }
+
 		public Image<Rgba, byte> CroppedImage { get; set; }
-		[OnChangedMethod(nameof(OnFilterMinChanged))]
-		public Rgba FilterMin { get; set; } = new Rgba(0, 0, 0, byte.MaxValue);
-		[OnChangedMethod(nameof(OnFilterMaxChanged))]
-		public Rgba FilterMax { get; set; } = new Rgba(byte.MaxValue - 1, byte.MaxValue - 1, byte.MaxValue - 1, byte.MaxValue);
+		
 		[OnChangedMethod(nameof(OnFilteredImageChanged))]
 		public Image<Rgba, byte> FilteredImage { get; set; }
+		
 		public Image<Rgba, byte> EdittedImage { get; set; }
-		public DataType DataType { get; set; }
+
+		public Setting Setting { get; private set; } = new Setting();
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		private void OnAxisLocationChanged() => CropImage();
+		public Model()
+		{
+			Setting.PropertyChanged += Setting_PropertyChanged;	
+		}
 
-		private void OnFilterMinChanged() => FilterImage();
+		public void Load(Setting setting)
+		{
+			foreach (var property in typeof(Setting).GetProperties()) {
+				var value = property.GetValue(setting);
+				if (value != default) {
+					property.SetValue(Setting, value);
+				}
+			}
+		}
 
-		private void OnFilterMaxChanged() => FilterImage();
+		private void Setting_PropertyChanged(object sender, PropertyChangedEventArgs e)
+		{
+			switch (e.PropertyName) {
+				case nameof(Setting.AxisLocation):
+					CropImage();
+					break;
+				case nameof(Setting.FilterMin):
+					FilterImage();
+					break;
+				case nameof(Setting.FilterMax):
+					FilterImage();
+					break;
+				default:
+					break;
+			}
+		}
 
 		private void OnFilteredImageChanged() => EdittedImage = FilteredImage;
 
 		private void CropImage()
 		{
-			CroppedImage = Methods.CropImage(InputImage, AxisLocation);
+			CroppedImage = Methods.CropImage(InputImage, Setting.AxisLocation);
 		}
 
 		private void FilterImage()
 		{
-			FilteredImage = Methods.FilterRGB(CroppedImage, FilterMin, FilterMax);
+			FilteredImage = Methods.FilterRGB(CroppedImage, Setting.FilterMin, Setting.FilterMax);
 		}
-	}
-
-	public enum DataType
-	{
-		Continuous,
-		Discrete,
 	}
 }

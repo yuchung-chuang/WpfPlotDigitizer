@@ -1,5 +1,9 @@
-﻿namespace PlotDigitizer.Core
+﻿using System;
+using System.Text.Json.Serialization;
+
+namespace PlotDigitizer.Core
 {
+    [Serializable]
 	public struct RectangleD
     {
         public RectangleD(double left, double top, double width, double height)
@@ -14,9 +18,13 @@
         public double Top { get; set; }
         public double Width { get; set; }
         public double Height { get; set; }
+        [JsonIgnore]
         public double X => Left;
+        [JsonIgnore]
         public double Y => Top;
+        [JsonIgnore]
         public double Right => Left + Width;
+        [JsonIgnore]
         public double Bottom => Top + Height;
 
         public override bool Equals(object obj)

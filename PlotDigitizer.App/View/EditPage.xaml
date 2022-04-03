@@ -10,7 +10,8 @@
 			Title="EditPage"
 			x:Name="root">
 
-	<DockPanel DataContext="{Binding ElementName=root}">
+	<DockPanel DataContext="{Binding ElementName=root}"
+						 IsEnabled="{Binding Enabled}">
 		<DockPanel DockPanel.Dock="Top"
 							 Height="30"
 							 Background="LightGray">
