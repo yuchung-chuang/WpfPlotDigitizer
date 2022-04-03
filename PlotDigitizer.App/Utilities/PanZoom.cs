@@ -182,14 +182,21 @@ namespace PlotDigitizer.App
 		public static readonly DependencyProperty MouseWheelProperty =
 			DependencyProperty.RegisterAttached("MouseWheel", typeof(EventHandler<double>), typeof(Zoom), new PropertyMetadata(null));
 
-		private static readonly double WheelTime = 0.1;
+		public static readonly DependencyProperty ScaleProperty = DependencyProperty.RegisterAttached("Scale", typeof(double), typeof(Zoom), new PropertyMetadata(1d));
 
 		[AttachedPropertyBrowsableForType(typeof(UIElement))]
-		public static bool GetIsEnabled(UIElement element)
-		  => (bool)element.GetValue(IsEnabledProperty);
+		public static double GetScale(DependencyObject obj) 
+			=> (double)obj.GetValue(ScaleProperty);
 
-		public static void SetIsEnabled(UIElement element, bool value)
-		  => element.SetValue(IsEnabledProperty, value);
+		public static void SetScale(DependencyObject obj, double value) 
+			=> obj.SetValue(ScaleProperty, value);
+
+		[AttachedPropertyBrowsableForType(typeof(UIElement))]
+		public static bool GetIsEnabled(DependencyObject obj)
+		  => (bool)obj.GetValue(IsEnabledProperty);
+
+		public static void SetIsEnabled(DependencyObject obj, bool value)
+		  => obj.SetValue(IsEnabledProperty, value);
 
 		[AttachedPropertyBrowsableForType(typeof(UIElement))]
 		public static ModifierKeys GetModifierKeys(DependencyObject obj)
@@ -202,9 +209,12 @@ namespace PlotDigitizer.App
 			obj.SetValue(ModifierKeysProperty, value);
 		}
 
-		public static EventHandler<double> GetMouseWheel(DependencyObject obj) => (EventHandler<double>)obj.GetValue(MouseWheelProperty);
+		[AttachedPropertyBrowsableForType(typeof(UIElement))]
+		public static EventHandler<double> GetMouseWheel(DependencyObject obj) 
+			=> (EventHandler<double>)obj.GetValue(MouseWheelProperty);
 
-		public static void SetMouseWheel(DependencyObject obj, EventHandler<double> value) => obj.SetValue(MouseWheelProperty, value);
+		public static void SetMouseWheel(DependencyObject obj, EventHandler<double> value) 
+			=> obj.SetValue(MouseWheelProperty, value);
 
 		private static void OnIsEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
@@ -221,6 +231,7 @@ namespace PlotDigitizer.App
 			}
 		}
 
+		private static readonly double WheelTime = 0.1;
 		private static void Element_MouseWheel(object sender, MouseWheelEventArgs e)
 		{
 			if (!(sender is FrameworkElement element)) {
@@ -245,6 +256,7 @@ namespace PlotDigitizer.App
 			translate.BeginAnimation(TranslateTransform.XProperty, ToX, WheelTime);
 			translate.BeginAnimation(TranslateTransform.YProperty, ToY, WheelTime);
 
+			SetScale(element, ToScale);
 			GetMouseWheel(element)?.Invoke(element, ToScale);
 		}
 	}

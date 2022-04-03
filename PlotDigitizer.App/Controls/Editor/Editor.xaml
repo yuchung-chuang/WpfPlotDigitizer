@@ -29,32 +29,32 @@
 				<Grid x:Name="PanZoomGrid"
 							local:Pan.IsEnabled="True"
 							local:Zoom.IsEnabled="True"
-							local:Zoom.MouseWheel="PanZoomGrid_MouseWheel">
+							local:Zoom.Scale="{Binding ZoomScale, Mode=OneWayToSource}">
 					<Image Name="ImageControl"
 								 Source="{Binding ImageSource}" />
 					<Canvas Name="editCanvas"
 									Background="Transparent">
 						<Ellipse x:Name="pencilPointer"
-										 Width="5"
+										 Width="{Binding PencilSize}"
 										 Height="{Binding Width, RelativeSource={RelativeSource self}}"
 										 Stroke="Black"
-										 StrokeThickness="1"
+										 StrokeThickness="{Binding PencilStrokeSize}"
 										 Fill="#7F00EFFF"
 										 Visibility="Hidden" />
 						<Rectangle x:Name="eraserRect"
-											 Width="10"
+											 Width="{Binding EraserSize}"
 											 Height="{Binding Width, RelativeSource={RelativeSource self}}"
 											 Stroke="Black"
-											 StrokeThickness="1"
+											 StrokeThickness="{Binding EraserStrokeSize}"
 											 Visibility="Hidden"
 											 Fill="#7F00EFFF" />
 						<Rectangle Name="selectRect"
 											 Stroke="Red"
-											 StrokeThickness="1"
+											 StrokeThickness="{Binding SelectRectStrokeSize}"
 											 StrokeDashArray="2 2"
 											 Visibility="Hidden" />
 						<Polyline x:Name="selectPoly"
-											StrokeThickness="1"
+											StrokeThickness="{Binding SelectPolyStrokeSize}"
 											Stroke="Red"
 											StrokeDashArray="2 2"
 											Visibility="Hidden" />

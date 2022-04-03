@@ -180,7 +180,7 @@ namespace PlotDigitizer.App
 			var stopwatch = EraserMode.Instance.Stopwatch;
 
 			var centre = e.GetPosition(editor.editCanvas);
-			var size = new Vector(editor.eraserRect.Width, editor.eraserRect.Height);
+			var size = new Vector(editor.eraserRect.ActualWidth, editor.eraserRect.ActualHeight);
 			var position = centre - size / 2;
 			Canvas.SetLeft(editor.eraserRect, position.X);
 			Canvas.SetTop(editor.eraserRect, position.Y);
@@ -221,7 +221,7 @@ namespace PlotDigitizer.App
 			var stopwatch = PencilMode.Instance.Stopwatch;
 
 			var centre = e.GetPosition(editor.editCanvas);
-			var size = new Vector(editor.pencilPointer.Width, editor.pencilPointer.Height);
+			var size = new Vector(editor.pencilPointer.ActualWidth, editor.pencilPointer.ActualHeight);
 			var position = centre - size / 2;
 			Canvas.SetLeft(editor.pencilPointer, position.X);
 			Canvas.SetTop(editor.pencilPointer, position.Y);

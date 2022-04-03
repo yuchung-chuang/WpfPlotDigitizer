@@ -25,10 +25,13 @@ namespace PlotDigitizer.App
 		public static readonly DependencyProperty BlockInteractionProperty =
 			DependencyProperty.Register("BlockInteraction", typeof(bool), typeof(Editor), new PropertyMetadata(false));
 
-		private readonly double eraserOriginalSize;
-		private readonly double eraserOriginalStrokeThickness;
-		private readonly double pencilOriginalSize;
-		private readonly double pencilOriginalStrokeThickness;
+		public double ZoomScale { get; set; }
+		public double EraserSize => ImageControl.ActualWidth * 0.05 / ZoomScale;
+		public double PencilSize => ImageControl.ActualWidth * 0.01 / ZoomScale;
+		public double EraserStrokeSize => 1.5 / ZoomScale;
+		public double PencilStrokeSize => 1.5 / ZoomScale;
+		public double SelectRectStrokeSize => 1.5 / ZoomScale;
+		public double SelectPolyStrokeSize => 1.5 / ZoomScale;
 
 		private EditorState editorState = NoMode.Instance;
 
@@ -96,17 +99,22 @@ namespace PlotDigitizer.App
 			}
 		}
 
-
 		public Editor()
 		{
 			InitializeComponent();
 			Loaded += Editor_Loaded;
 			Unloaded += Editor_Unloaded;
 			EditManager.PropertyChanged += EditManager_PropertyChanged;
-			eraserOriginalSize = eraserRect.Width;
-			eraserOriginalStrokeThickness = eraserRect.StrokeThickness;
-			pencilOriginalSize = pencilPointer.Width;
-			pencilOriginalStrokeThickness = pencilPointer.StrokeThickness;
+			ImageControl.Loaded += ImageControl_Loaded;
+		}
+
+		/// <summary>
+		/// This makes sure <see cref="ImageControl.ActualWidth"/> is evaludated.
+		/// </summary>
+		private void ImageControl_Loaded(object sender, RoutedEventArgs e)
+		{
+			OnPropertyChanged(nameof(EraserSize));
+			OnPropertyChanged(nameof(PencilSize));
 		}
 
 		public void Initialise(Image<Rgba, byte> image)
@@ -210,14 +218,6 @@ namespace PlotDigitizer.App
 			if (BlockInteraction) {
 				e.Handled = true;
 			}
-		}
-
-		private void PanZoomGrid_MouseWheel(object sender, double scale)
-		{
-			eraserRect.Width = eraserOriginalSize / scale;
-			eraserRect.StrokeThickness = eraserOriginalStrokeThickness / scale;
-			pencilPointer.Width = pencilOriginalSize / scale;
-			pencilPointer.StrokeThickness = pencilOriginalStrokeThickness / scale;
 		}
 
 		public void OnPropertyChanged(string propertyName)
