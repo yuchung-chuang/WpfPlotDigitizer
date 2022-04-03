@@ -1,8 +1,6 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
 
-using GalaSoft.MvvmLight.Command;
-
 using Microsoft.Win32;
 using PlotDigitizer.Core;
 using System;
@@ -17,7 +15,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.Extensions.DependencyInjection;
-using System.Diagnostics;
+using System.Linq;
 
 namespace PlotDigitizer.App
 {
@@ -109,7 +107,6 @@ namespace PlotDigitizer.App
 				_ => throw new NotImplementedException(),
 			};
 			OnPropertyChanged(nameof(ImageSource));
-			ExportCommand.RaiseCanExecuteChanged();
 		}
 
 		private void OnPropertyChanged(string propertyName)
@@ -213,7 +210,7 @@ namespace PlotDigitizer.App
 			}
 		}
 
-		private bool CanExport() => points != null;
+		private bool CanExport() => points != null && points.Count() > 0;
 	}
 
 	public enum ExportResults

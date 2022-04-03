@@ -4,7 +4,6 @@ using Microsoft.Win32;
 using PlotDigitizer.Core;
 using PropertyChanged;
 using System;
-using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;

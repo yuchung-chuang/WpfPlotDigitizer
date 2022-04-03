@@ -1,8 +1,6 @@
-﻿using GalaSoft.MvvmLight.Command;
-using PlotDigitizer.Core;
+﻿using PlotDigitizer.Core;
 using PropertyChanged;
 using System;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
