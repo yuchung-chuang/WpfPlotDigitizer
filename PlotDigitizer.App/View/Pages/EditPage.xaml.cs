@@ -18,7 +18,6 @@ namespace PlotDigitizer.App
     public partial class EditPage : Page, INotifyPropertyChanged
     {
         private readonly Model model;
-        private readonly List<ToggleButton> stateButtons;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -64,11 +63,6 @@ namespace PlotDigitizer.App
             InitializeComponent();
             Loaded += EditPage_Loaded;
             Unloaded += EditPage_Unloaded;
-
-            stateButtons = new List<ToggleButton>
-            {
-                PencilButton, EraserButton, RectButton, PolyButton,
-            };
         }
 
 
