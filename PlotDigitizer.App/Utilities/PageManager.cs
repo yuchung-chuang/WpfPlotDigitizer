@@ -1,5 +1,4 @@
-﻿using GalaSoft.MvvmLight.Command;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -9,26 +8,12 @@ namespace PlotDigitizer.App
 {
     public class PageManager : INotifyPropertyChanged
     {
-        private int pageIndex = 0;
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         /// Public read/write access to allow two-way binding 
         /// </summary>
-        public int PageIndex
-        {
-            get => pageIndex;
-            set
-            {
-                if (value != pageIndex)
-                {
-                    pageIndex = value;
-                    BackCommand.RaiseCanExecuteChanged();
-                    NextCommand.RaiseCanExecuteChanged();
-                }
-            }
-        }
+        public int PageIndex { get; set; } = 0;
         public List<Page> PageList { get; private set; }
 
         public Page CurrentPage => PageList[PageIndex];

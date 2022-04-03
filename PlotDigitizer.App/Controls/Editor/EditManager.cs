@@ -1,5 +1,4 @@
-﻿using GalaSoft.MvvmLight.CommandWpf;
-
+﻿
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -7,23 +6,9 @@ namespace PlotDigitizer.App
 {
 	public class EditManager<TObject> : INotifyPropertyChanged
 	{
-		private int index;
-
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		public int Index
-		{
-			get => index;
-			private set
-			{
-				if (value != index)
-				{
-					index = value;
-					UndoCommand.RaiseCanExecuteChanged();
-					RedoCommand.RaiseCanExecuteChanged(); 
-				}
-			}
-		}
+		public int Index { get; private set; }
 		public List<TObject> ObjectList { get; private set; }
 
 		public TObject CurrentObject => ObjectList[Index];
@@ -63,7 +48,7 @@ namespace PlotDigitizer.App
 			{
 				"initialise",
 			};
-			index = 0;
+			Index = 0;
 		}
 
 		protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

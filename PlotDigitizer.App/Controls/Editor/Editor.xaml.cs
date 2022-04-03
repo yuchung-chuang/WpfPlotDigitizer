@@ -163,11 +163,11 @@ namespace PlotDigitizer.App
 			var mainWindow = Application.Current.MainWindow;
 			mainWindow.PreviewKeyDown += MainWindow_KeyDown;
 			undoCommandBinding = new CommandBinding(ApplicationCommands.Undo,
-				(s, e) => EditManager.UndoCommand.Execute(null),
-				(s, e) => e.CanExecute = EditManager.UndoCommand.CanExecute(null));
+				(s, e) => EditManager.UndoCommand.Execute(),
+				(s, e) => e.CanExecute = EditManager.UndoCommand.CanExecute());
 			redoCommandBinding = new CommandBinding(ApplicationCommands.Redo,
-				(s, e) => EditManager.RedoCommand.Execute(null),
-				(s, e) => e.CanExecute = EditManager.RedoCommand.CanExecute(null));
+				(s, e) => EditManager.RedoCommand.Execute(),
+				(s, e) => e.CanExecute = EditManager.RedoCommand.CanExecute());
 			mainWindow.CommandBindings.Add(undoCommandBinding);
 			mainWindow.CommandBindings.Add(redoCommandBinding);
 		}

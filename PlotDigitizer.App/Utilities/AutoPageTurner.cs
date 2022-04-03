@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 
 namespace PlotDigitizer.App
 {
@@ -15,8 +14,8 @@ namespace PlotDigitizer.App
 
 		private void LoadPage_NextPage(object sender, EventArgs e)
 		{
-			if (pageManager.NextCommand.CanExecute(null)) {
-				pageManager.NextCommand.Execute(null);
+			if (pageManager.NextCommand.CanExecute()) {
+				pageManager.NextCommand.Execute();
 			}
 		}
 
