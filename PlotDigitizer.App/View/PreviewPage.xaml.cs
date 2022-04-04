@@ -24,29 +24,25 @@ namespace PlotDigitizer.App
 	{
 		private readonly Model model;
 		private readonly IServiceProvider provider;
-		private IEnumerable<PointD> data;
-		private IEnumerable<PointD> points;
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		[OnChangedMethod(nameof(OnDataTypeChanged))]
-		public DataType DataType { get; private set; }
-
-		public Image<Rgba, byte> Image { get; private set; }
-		public ImageSource ImageSource => Image?.ToBitmapSource();
+		public ImageSource ImageSource => model?.PreviewImage?.ToBitmapSource();
 
 		public RelayCommand ExportCommand { get; private set; }
 
+		[OnChangedMethod(nameof(OnIsDiscreteChanged))]
 		public bool IsDiscrete
 		{
-			get => DataType == DataType.Discrete;
-			set => DataType = value ? DataType.Discrete : DataType.Continuous;
+			get => model?.Setting.DataType == DataType.Discrete;
+			set => model.Setting.DataType = value ? DataType.Discrete : DataType.Continuous;
 		}
 
+		[OnChangedMethod(nameof(OnIsContinuousChanged))]
 		public bool IsContinuous
 		{
-			get => DataType == DataType.Continuous;
-			set => DataType = value ? DataType.Continuous : DataType.Discrete;
+			get => model?.Setting.DataType == DataType.Continuous;
+			set => model.Setting.DataType = value ? DataType.Continuous : DataType.Discrete;
 		}
 		public bool Enabled => model != null && model.EdittedImage != null;
 
@@ -55,7 +51,6 @@ namespace PlotDigitizer.App
 			InitializeComponent();
 			ExportCommand = new RelayCommand(Export, CanExport);
 			Loaded += PreviewPage_Loaded;
-			Unloaded += PreviewPage_Unloaded;
 		}
 		public PreviewPage(Model model, IServiceProvider provider) : this()
 		{
@@ -79,7 +74,8 @@ namespace PlotDigitizer.App
 				return;
 			}
 			if (e.PropertyName == nameof(setting.DataType)) {
-				DataType = setting.DataType;
+				OnPropertyChanged(nameof(IsDiscrete));
+				OnPropertyChanged(nameof(IsContinuous));
 			}
 		}
 
@@ -91,29 +87,16 @@ namespace PlotDigitizer.App
 			ExtractPoints();
 		}
 
-		private void PreviewPage_Unloaded(object sender, RoutedEventArgs e)
-		{
-			if (!Enabled) {
-				return;
-			}
-			model.Setting.DataType = DataType;
-		}
 		private void ExtractPoints()
 		{
 			if (!Enabled) {
 				return;
 			}
-			Image = model.EdittedImage.Copy();
-			points = DataType switch
-			{
-				DataType.Discrete => Methods.GetDiscretePoints(Image),
-				DataType.Continuous => Methods.GetContinuousPoints(Image),
-				_ => throw new NotImplementedException(),
-			};
+			model.ExtractData();
 			OnPropertyChanged(nameof(ImageSource));
 		}
-
-		private void OnDataTypeChanged() => ExtractPoints();
+		private void OnIsDiscreteChanged() => ExtractPoints();
+		private void OnIsContinuousChanged() => ExtractPoints();
 
 		private void OnPropertyChanged(string propertyName)
 		{
@@ -122,7 +105,6 @@ namespace PlotDigitizer.App
 
 		private void Export()
 		{
-			data = Methods.TransformData(points, new System.Drawing.Size(Image.Width, Image.Height), model.Setting.AxisLimit, model.Setting.AxisLogBase);
 			var saveFileDialog = new SaveFileDialog
 			{
 				Filter =
@@ -144,7 +126,7 @@ namespace PlotDigitizer.App
 
 				var content = new StringBuilder();
 				content.AppendLine("X" + seperator + "Y");
-				foreach (var point in data) {
+				foreach (var point in model.Data) {
 					content.AppendLine(point.X.ToString() + seperator + point.Y.ToString());
 #if DEBUG
 					Thread.Sleep(250);
@@ -217,7 +199,7 @@ namespace PlotDigitizer.App
 			}
 		}
 
-		private bool CanExport() => points != null && points.Count() > 0;
+		private bool CanExport() => model?.Data?.Count() > 0;
 	}
 
 	public enum ExportResults
