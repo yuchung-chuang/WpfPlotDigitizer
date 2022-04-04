@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "PlotDigitizer.CLI": {
+      "commandName": "Project",
+      "commandLineArgs": "-i Assets\\test.png -s \"Assets\\PlotDigitizer Setting.json\" -o output.csv"
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+	"AxisLimit": {
+		"Left": 900,
+		"Top": 0,
+		"Width": 70,
+		"Height": 20
+	},
+	"AxisLogBase": {
+		"X": 0,
+		"Y": 0
+	},
+	"AxisLocation": {
+		"Location": {
+			"IsEmpty": false,
+			"X": 138,
+			"Y": 100
+		},
+		"Size": {
+			"IsEmpty": false,
+			"Width": 632,
+			"Height": 399
+		},
+		"X": 138,
+		"Y": 100,
+		"Width": 632,
+		"Height": 399,
+		"Left": 138,
+		"Top": 100,
+		"Right": 770,
+		"Bottom": 499,
+		"IsEmpty": false
+	},
+	"FilterMin": {
+		"Red": 0,
+		"Green": 0,
+		"Blue": 0,
+		"Alpha": 255
+	},
+	"FilterMax": {
+		"Red": 126,
+		"Green": 254,
+		"Blue": 254,
+		"Alpha": 255
+	},
+	"DataType": 1
+}
