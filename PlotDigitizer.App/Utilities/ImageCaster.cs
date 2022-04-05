@@ -12,7 +12,7 @@ using Bitmap = System.Drawing.Bitmap;
 
 namespace PlotDigitizer.App
 {
-	public static class ImageConverter
+	public static class ImageCaster
 	{
 		/// <summary>
 		/// Convert an IImage to a WPF BitmapSource. The result can be used in the Set Property of Image.Source
@@ -30,10 +30,8 @@ namespace PlotDigitizer.App
 		public static BitmapSource ToBitmapSource(this Bitmap bitmap)
 		{
 			var hBitmap = bitmap.GetHbitmap();
-			BitmapSource source;
-
 			try {
-				source = Imaging.CreateBitmapSourceFromHBitmap(
+				return Imaging.CreateBitmapSourceFromHBitmap(
 							 hBitmap,
 							 IntPtr.Zero,
 							 Int32Rect.Empty,
@@ -42,32 +40,6 @@ namespace PlotDigitizer.App
 			finally {
 				DeleteObject(hBitmap);
 			}
-
-			return source;
-		}
-
-		public static Bitmap ToBitmap(this BitmapSource source)
-		{
-			using var stream = new MemoryStream();
-			var enc = new PngBitmapEncoder(); // 使用PngEncoder才不會流失透明度
-			enc.Frames.Add(BitmapFrame.Create(source));
-			enc.Save(stream);
-			return new Bitmap(stream);
-		}
-
-		public static BitmapImage ToBitmapImage(this BitmapSource source)
-		{
-			using var stream = new MemoryStream();
-			var encoder = new PngBitmapEncoder();
-			encoder.Frames.Add(BitmapFrame.Create(source));
-			encoder.Save(stream);
-
-			var image = new BitmapImage();
-			stream.Position = 0;
-			image.BeginInit();
-			image.StreamSource = stream;
-			image.EndInit();
-			return image;
 		}
 
 		/// <summary>
@@ -77,5 +49,14 @@ namespace PlotDigitizer.App
 		/// <returns></returns>
 		[DllImport("gdi32")]
 		private static extern int DeleteObject(IntPtr o);
+		public static Bitmap ToBitmap(this BitmapSource source)
+		{
+			var stream = new MemoryStream(); // Do NOT dispose the memory stream for an bitmap, it should stay open during the lifetime of the bitmap
+			var enc = new PngBitmapEncoder(); // 使用PngEncoder才不會流失透明度
+			enc.Frames.Add(BitmapFrame.Create(source));
+			enc.Save(stream);
+			return new Bitmap(stream);
+		}
+
 	}
 }

@@ -8,7 +8,8 @@
 			d:DesignHeight="450"
 			d:DesignWidth="800"
 			Title="AxisLimitPage"
-			x:Name="root">
+			x:Name="root"
+			d:DataContext="{d:DesignInstance Type=local:AxisLimitPageViewModel, IsDesignTimeCreatable=True}">
 
 	<Page.Resources>
 		<Style TargetType="StackPanel">
@@ -29,9 +30,20 @@
 			<Setter Property="VerticalAlignment"
 							Value="Center" />
 		</Style>
+		<ControlTemplate x:Key="ValidationTemplate">
+			<DockPanel>
+				<TextBlock DockPanel.Dock="Bottom"
+									 Foreground="Red"
+									 Text="{Binding AdornedElement.(Validation.Errors), Converter={local:ValidationErrorMessageConverter}, ElementName=adorner}"/>
+				<Border BorderBrush="Red"
+								BorderThickness="1"
+								HorizontalAlignment="Left">
+					<AdornedElementPlaceholder Name="adorner" />
+				</Border>
+			</DockPanel>
+		</ControlTemplate>
 	</Page.Resources>
-	<Grid DataContext="{Binding ElementName=root}"
-				IsEnabled="{Binding Enabled}">
+	<Grid IsEnabled="{Binding Enabled}">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*" />
 			<ColumnDefinition Width="4*" />
@@ -42,21 +54,51 @@
 		</Grid.RowDefinitions>
 		<local:ImageViewer Grid.Column="1"
 											 Margin="5"
-											 ImageSource="{Binding ImageSource}"/>
+											 ImageSource="{Binding Model.InputImage, Converter={local:ImageSourceConverter}}"/>
 		<UniformGrid Rows="3"
 								 Columns="1"
 								 HorizontalAlignment="Center">
 			<StackPanel>
 				<Label Content="YMax" />
-				<TextBox Text="{Binding AxisYMax, UpdateSourceTrigger=LostFocus}"/>
+				<TextBox Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
+					<TextBox.Text>
+						<Binding Path="Model.Setting.AxLimYMax"
+										 Converter="{local:DoubleToStringConverter}"
+										 UpdateSourceTrigger="LostFocus">
+							<Binding.ValidationRules>
+								<local:NumberValidation />
+							</Binding.ValidationRules>
+						</Binding>
+					</TextBox.Text>
+				</TextBox>
 			</StackPanel>
 			<StackPanel>
 				<Label Content="YLog" />
-				<TextBox Text="{Binding AxisYLog, UpdateSourceTrigger=LostFocus}"/>
+				<TextBox Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
+					<TextBox.Text>
+						<Binding Path="Model.Setting.AxLimYLog"
+										 Converter="{local:DoubleToStringConverter}"
+										 UpdateSourceTrigger="LostFocus">
+							<Binding.ValidationRules>
+								<local:NumberValidation />
+							</Binding.ValidationRules>
+						</Binding>
+					</TextBox.Text>
+				</TextBox>
 			</StackPanel>
 			<StackPanel>
 				<Label Content="YMin" />
-				<TextBox Text="{Binding AxisYMin, UpdateSourceTrigger=LostFocus}"/>
+				<TextBox Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
+					<TextBox.Text>
+						<Binding Path="Model.Setting.AxLimYMin"
+										 Converter="{local:DoubleToStringConverter}"
+										 UpdateSourceTrigger="LostFocus">
+							<Binding.ValidationRules>
+								<local:NumberValidation />
+							</Binding.ValidationRules>
+						</Binding>
+					</TextBox.Text>
+				</TextBox>
 			</StackPanel>
 		</UniformGrid>
 		<UniformGrid Columns="3"
@@ -67,15 +109,45 @@
 								 VerticalAlignment="Center">
 			<StackPanel>
 				<Label Content="XMin" />
-				<TextBox Text="{Binding AxisXMin, UpdateSourceTrigger=LostFocus}"/>
+				<TextBox Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
+					<TextBox.Text>
+						<Binding Path="Model.Setting.AxLimXMin"
+										 Converter="{local:DoubleToStringConverter}"
+										 UpdateSourceTrigger="LostFocus">
+							<Binding.ValidationRules>
+								<local:NumberValidation />
+							</Binding.ValidationRules>
+						</Binding>
+					</TextBox.Text>
+				</TextBox>
 			</StackPanel>
 			<StackPanel>
 				<Label Content="XLog" />
-				<TextBox Text="{Binding AxisXLog, UpdateSourceTrigger=LostFocus}"/>
+				<TextBox Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
+					<TextBox.Text>
+						<Binding Path="Model.Setting.AxLimXLog"
+										 Converter="{local:DoubleToStringConverter}"
+										 UpdateSourceTrigger="LostFocus">
+							<Binding.ValidationRules>
+								<local:NumberValidation />
+							</Binding.ValidationRules>
+						</Binding>
+					</TextBox.Text>
+				</TextBox>
 			</StackPanel>
 			<StackPanel>
 				<Label Content="XMax" />
-				<TextBox Text="{Binding AxisXMax, UpdateSourceTrigger=LostFocus}"/>
+				<TextBox Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
+					<TextBox.Text>
+						<Binding Path="Model.Setting.AxLimXMax"
+										 Converter="{local:DoubleToStringConverter}"
+										 UpdateSourceTrigger="LostFocus">
+							<Binding.ValidationRules>
+								<local:NumberValidation />
+							</Binding.ValidationRules>
+						</Binding>
+					</TextBox.Text>
+				</TextBox>
 			</StackPanel>
 		</UniformGrid>
 	</Grid>
