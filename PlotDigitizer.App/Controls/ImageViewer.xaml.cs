@@ -1,19 +1,16 @@
-﻿using System.ComponentModel;
+﻿using PropertyChanged;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace PlotDigitizer.App
 {
-	/// <summary>
-	/// Interaction logic for ImageViewer.xaml
-	/// </summary>
-	public partial class ImageViewer : UserControl, INotifyPropertyChanged
+	[AddINotifyPropertyChangedInterface]
+	public partial class ImageViewer : UserControl
 	{
 		public static readonly DependencyProperty ImageSourceProperty =
 			DependencyProperty.Register(nameof(ImageSource), typeof(ImageSource), typeof(ImageViewer), new PropertyMetadata());
-
-		public event PropertyChangedEventHandler PropertyChanged;
 
 		public ImageSource ImageSource
 		{

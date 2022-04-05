@@ -6,8 +6,9 @@
 						 xmlns:local="clr-namespace:PlotDigitizer.App"
 						 mc:Ignorable="d"
 						 d:DesignHeight="450"
-						 d:DesignWidth="800">
-	<Viewbox>
+						 d:DesignWidth="800"
+						 x:Name="root">
+	<Viewbox DataContext="{Binding ElementName=root}">
 		<Grid>
 			<Grid.Background>
 				<DrawingBrush TileMode="Tile"
@@ -19,7 +20,7 @@
 					</DrawingBrush.Drawing>
 				</DrawingBrush>
 			</Grid.Background>
-			<Image Source="{Binding ImageSource}"
+			<Image Source="{Binding ImageSource, Converter={local:DebugConverter}}"
 						 local:Pan.IsEnabled="True"
 						 local:Zoom.IsEnabled="True" />
 			<Border BorderBrush="Black"
