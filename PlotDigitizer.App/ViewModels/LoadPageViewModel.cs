@@ -2,12 +2,9 @@
 using Emgu.CV.Structure;
 using PlotDigitizer.Core;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Text;
 using System.Windows;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace PlotDigitizer.App
@@ -40,15 +37,11 @@ namespace PlotDigitizer.App
 
 		public BitmapSource LoadImage(string filename)
 		{
-			if (!File.Exists(filename)) {
-				MessageBox.Show("Input file is not valid.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-				return null;
-			}
 			try {
 				return new BitmapImage(new Uri(filename));
 			}
 			catch (Exception ex) {
-				MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+				OnMessageBoxRequested(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
 				return null;
 			}
 		}
@@ -59,7 +52,7 @@ namespace PlotDigitizer.App
 			} else if (Clipboard.ContainsFileDropList()) {
 				SetModelImage(LoadImage(Clipboard.GetFileDropList()[0]));
 			} else {
-				MessageBox.Show("Clipboard does not contain image.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+				OnMessageBoxRequested("Clipboard does not contain image.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
 				return;
 			}
 		}

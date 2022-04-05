@@ -32,6 +32,12 @@ namespace PlotDigitizer.App
 		{
 			this.viewModel = viewModel;
 			DataContext = viewModel;
+			viewModel.MessageBoxRequested += ViewModel_MessageBoxRequested;
+		}
+
+		private void ViewModel_MessageBoxRequested(object sender, MessageEventArgs e)
+		{
+			MessageBox.Show(e.Message, e.Caption, e.Button, e.Image, e.Result, e.Options);
 		}
 
 		private void BrowseButton_Loaded(object sender, RoutedEventArgs e)
