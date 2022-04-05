@@ -6,10 +6,10 @@ namespace PlotDigitizer.App
 	{
 		private readonly PageManager pageManager;
 
-		public AutoPageTurner(PageManager pageManager, LoadPage loadPage)
+		public AutoPageTurner(PageManager pageManager, LoadPageViewModel viewModel)
 		{
 			this.pageManager = pageManager;
-			loadPage.NextPage += LoadPage_NextPage;
+			viewModel.NextPage += LoadPage_NextPage;
 		}
 
 		private void LoadPage_NextPage(object sender, EventArgs e)

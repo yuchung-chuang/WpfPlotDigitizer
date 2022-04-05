@@ -30,7 +30,7 @@ namespace PlotDigitizer.App
 			// simply trigger the creation of auto-page turner, it will do it's job
 			provider.GetService<AutoPageTurner>();
 #if DEBUG
-			//Test();
+			Test();
 #endif
 			var window = provider.GetService<Window>();
 			window.Show();
@@ -48,6 +48,7 @@ namespace PlotDigitizer.App
 			services.AddSingleton<FilterPage>();
 			services.AddSingleton<EditPage>();
 			services.AddSingleton<PreviewPage>();
+			
 			services.AddSingleton(provider =>
 			{
 				return new List<Page>
@@ -60,11 +61,13 @@ namespace PlotDigitizer.App
 					provider.GetService<PreviewPage>(),
 				};
 			});
-
+			
 			services.AddTransient(provider => new ProgressPopup
 			{
 				Owner = provider.GetService<Window>()
 			});
+
+			services.AddSingleton<LoadPageViewModel>();
 		}
 
 		private void Test()

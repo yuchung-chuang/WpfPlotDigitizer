@@ -12,12 +12,13 @@
 			DragOver="Page_DragOver"
 			AllowDrop="True"
 			Background="Transparent"
-			x:Name="root">
+			x:Name="root"
+			d:DataContext="{d:DesignInstance Type=local:LoadPageViewModel, IsDesignTimeCreatable=True}">
 	<Page.CommandBindings>
 		<CommandBinding Command="ApplicationCommands.Paste"
 										Executed="Paste_Executed" />
 	</Page.CommandBindings>
-	<Grid DataContext="{Binding ElementName=root}">
+	<Grid>
 		<Grid Name="objectGroup"
 					HorizontalAlignment="Center"
 					VerticalAlignment="Center">
@@ -47,7 +48,7 @@
 							HorizontalAlignment="Center"
 							ToolTip="Shortcut: Ctrl + V"
 							d:LayoutOverrides="Height"
-							Click="PasteButton_Click" />
+							Command="{Binding PasteCommand}" />
 			<TextBlock HorizontalAlignment="Center"
 								 Margin="0,0,0,41"
 								 TextWrapping="Wrap"
