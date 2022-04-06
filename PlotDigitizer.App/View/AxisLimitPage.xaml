@@ -43,7 +43,7 @@
 			</DockPanel>
 		</ControlTemplate>
 	</Page.Resources>
-	<Grid IsEnabled="{Binding Enabled}">
+	<Grid IsEnabled="{Binding IsEnabled}">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*" />
 			<ColumnDefinition Width="4*" />

@@ -7,7 +7,7 @@ namespace PlotDigitizer.App
 {
 	public class AxisLimitPageViewModel : ViewModelBase
 	{
-		public bool Enabled => Model != null && Model.InputImage != null;
+		public bool IsEnabled => Model != null && Model.InputImage != null;
 
 		public Model Model { get; }
 
@@ -23,7 +23,7 @@ namespace PlotDigitizer.App
 		private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			if (e.PropertyName == nameof(Model.InputImage)) {
-				OnPropertyChanged(nameof(Enabled));
+				OnPropertyChanged(nameof(IsEnabled));
 			}
 		}
 	}
