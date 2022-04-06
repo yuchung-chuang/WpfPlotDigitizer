@@ -8,21 +8,21 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="AxisPage"
-			x:Name="root">
+			x:Name="root"
+			d:DataContext="{d:DesignInstance Type=local:AxisPageViewModel, IsDesignTimeCreatable=True}">
 
 	<Grid Margin="5"
-				DataContext="{Binding ElementName=root}"
-				IsEnabled="{Binding Enabled}">
+				IsEnabled="{Binding IsEnabled}">
 		<Viewbox Name="imageViewBox">
 			<Grid>
 				<Grid local:Pan.IsEnabled="True"
 							local:Zoom.IsEnabled="True">
 					<local:Axis x:Name="axisControl"
-											ImageSource="{Binding ImageSource}"
-											AxisLeft="{Binding AxisLeft, Mode=TwoWay}"
-											AxisTop="{Binding AxisTop, Mode=TwoWay}"
-											AxisWidth="{Binding AxisWidth, Mode=TwoWay}"
-											AxisHeight="{Binding AxisHeight, Mode=TwoWay}">
+											ImageSource="{Binding Model.InputImage, Converter={local:ImageSourceConverter}}"
+											AxisLeft="{Binding Model.Setting.AxisLeft, Mode=TwoWay}"
+											AxisTop="{Binding Model.Setting.AxisTop, Mode=TwoWay}"
+											AxisWidth="{Binding Model.Setting.AxisWidth, Mode=TwoWay}"
+											AxisHeight="{Binding Model.Setting.AxisHeight, Mode=TwoWay}">
 						<i:Interaction.Triggers>
 							<i:EventTrigger EventName="MouseDoubleClick">
 								<i:InvokeCommandAction Command="{Binding GetAxisCommand}" />

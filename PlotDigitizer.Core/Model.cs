@@ -36,7 +36,9 @@ namespace PlotDigitizer.Core
 		public Model()
 		{
 			Setting.PropertyChanged += Setting_PropertyChanged;
+			Setting.AxisLocationSetted += Setting_AxisLocationChanged;
 		}
+
 
 		public void Load(Setting setting)
 		{
@@ -70,15 +72,13 @@ namespace PlotDigitizer.Core
 		private void OnCroppedImageChanged() => FilterImage();
 		private void OnFilteredImageChanged() => EdittedImage = FilteredImage;
 		private void OnEdittedImageChanged() => ExtractData();
+		private void Setting_AxisLocationChanged(object sender, EventArgs e) => CropImage();
 		private void Setting_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			if (InputImage is null) {
 				return;
 			}
 			switch (e.PropertyName) {
-				case nameof(Setting.AxisLocation):
-					CropImage();
-					break;
 				case nameof(Setting.FilterMin):
 					FilterImage();
 					break;
@@ -92,14 +92,8 @@ namespace PlotDigitizer.Core
 					break;
 			}
 		}
-		private void CropImage()
-		{
-			CroppedImage = Methods.CropImage(InputImage, Setting.AxisLocation);
-		}
-		private void FilterImage()
-		{
-			FilteredImage = Methods.FilterRGB(CroppedImage, Setting.FilterMin, Setting.FilterMax);
-		}
+		public void CropImage() => CroppedImage = Methods.CropImage(InputImage, Setting.AxisLocation);
+		private void FilterImage() => FilteredImage = Methods.FilterRGB(CroppedImage, Setting.FilterMin, Setting.FilterMax);
 	}
 
 	public enum SaveType

@@ -69,6 +69,7 @@ namespace PlotDigitizer.App
 
 			services.AddSingleton<LoadPageViewModel>();
 			services.AddSingleton<AxisLimitPageViewModel>();
+			services.AddSingleton<AxisPageViewModel>();
 		}
 
 		private void Test()
@@ -81,7 +82,7 @@ namespace PlotDigitizer.App
 			model.Setting.FilterMax = new Rgba(126, 254, 254, byte.MaxValue);
 			model.Setting.DataType = DataType.Discrete;
 
-			provider.GetService<PageManager>().GoToByTypeCommand.Execute(typeof(AxisLimitPage));
+			provider.GetService<PageManager>().GoToByTypeCommand.Execute(typeof(PreviewPage));
 		}
 	}
 }

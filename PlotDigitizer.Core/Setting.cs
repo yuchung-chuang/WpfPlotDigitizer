@@ -1,4 +1,5 @@
 ﻿using Emgu.CV.Structure;
+using PropertyChanged;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -20,16 +21,16 @@ namespace PlotDigitizer.Core
 		[JsonIgnore]
 		[XmlIgnore]
 		public double AxLimXLength => AxLimXMax - AxLimXMin;
-		
+
 		[JsonIgnore]
 		[XmlIgnore]
 		public double AxLimYLength => AxLimYMax - AxLimYMin;
-		
+
 		[JsonIgnore]
 		[XmlIgnore]
 		public RectangleD AxisLimit
 		{
-			get => new RectangleD(AxLimXMin, AxLimYMin, AxLimXLength, AxLimYLength); 
+			get => new RectangleD(AxLimXMin, AxLimYMin, AxLimXLength, AxLimYLength);
 			set
 			{
 				AxLimXMin = value.X;
@@ -38,10 +39,10 @@ namespace PlotDigitizer.Core
 				AxLimYMax = value.Bottom;
 			}
 		}
-		
+
 		[JsonIgnore]
 		[XmlIgnore]
-		public PointD AxisLogBase 
+		public PointD AxisLogBase
 		{
 			get => new PointD(AxLimXLog, AxLimYLog);
 			set
@@ -51,7 +52,35 @@ namespace PlotDigitizer.Core
 			}
 		}
 
-		public Rectangle AxisLocation { get; set; }
+		public double AxisLeft { get; set; }
+		public double AxisTop { get; set; }
+		public double AxisWidth { get; set; }
+		public double AxisHeight { get; set; }
+
+		[JsonIgnore]
+		[XmlIgnore]
+		public Rectangle AxisLocation
+		{
+			get => new Rectangle((int)Math.Round(AxisLeft),
+								(int)Math.Round(AxisTop),
+								(int)Math.Round(AxisWidth),
+								(int)Math.Round(AxisHeight));
+			set
+			{
+				AxisLeft = value.Left;
+				AxisTop = value.Top;
+				AxisWidth = value.Width;
+				AxisHeight = value.Height;
+				OnAxisLocationSetted();
+			}
+		}
+
+		public event EventHandler AxisLocationSetted;
+
+		private void OnAxisLocationSetted()
+		{
+			AxisLocationSetted?.Invoke(this, EventArgs.Empty);
+		}
 
 		public Rgba FilterMin { get; set; } = new Rgba(0, 0, 0, byte.MaxValue);
 
