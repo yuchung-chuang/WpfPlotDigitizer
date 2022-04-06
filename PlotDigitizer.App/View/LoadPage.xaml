@@ -72,7 +72,7 @@
 					 Margin="55,66,0,222"
 					 Width="184"
 					 Visibility="Hidden" 
-					 Source="{Binding ImageSource}"/>
+					 Source="{Binding Model.InputImage, Converter={local:ImageSourceConverter}}"/>
 
 	</Grid>
 </Page>

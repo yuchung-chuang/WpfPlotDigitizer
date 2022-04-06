@@ -2,8 +2,6 @@
 using Emgu.CV.Structure;
 using PlotDigitizer.Core;
 using System;
-using System.ComponentModel;
-using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
@@ -11,13 +9,12 @@ namespace PlotDigitizer.App
 {
 	public class LoadPageViewModel : ViewModelBase
 	{
-		private readonly Model model;
-
 		public event EventHandler NextPage;
 
-		public BitmapSource ImageSource => model?.InputImage?.ToBitmapSource();
-
 		public RelayCommand PasteCommand { get; private set; }
+
+		public Model Model { get; }
+
 		public LoadPageViewModel()
 		{
 			PasteCommand = new RelayCommand(PasteImage);
@@ -26,12 +23,11 @@ namespace PlotDigitizer.App
 
 		public LoadPageViewModel(Model model) : this()
 		{
-			this.model = model;
-			model.PropertyChanged += Model_PropertyChanged;
+			Model = model;
 		}
 		public void SetModelImage(BitmapSource source)
 		{
-			model.InputImage = source.ToBitmap().ToImage<Rgba, byte>();
+			Model.InputImage = source.ToBitmap().ToImage<Rgba, byte>();
 			OnNextPage();
 		}
 
@@ -54,13 +50,6 @@ namespace PlotDigitizer.App
 			} else {
 				OnMessageBoxRequested("Clipboard does not contain image.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
 				return;
-			}
-		}
-
-		private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-			if (e.PropertyName == nameof(model.InputImage)) {
-				OnPropertyChanged(nameof(ImageSource));
 			}
 		}
 

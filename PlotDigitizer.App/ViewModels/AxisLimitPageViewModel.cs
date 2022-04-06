@@ -1,7 +1,5 @@
 ﻿using PlotDigitizer.Core;
-using PropertyChanged;
 using System.ComponentModel;
-using System.Windows.Media;
 
 namespace PlotDigitizer.App
 {

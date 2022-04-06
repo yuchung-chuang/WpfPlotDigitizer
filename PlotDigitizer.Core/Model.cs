@@ -39,7 +39,6 @@ namespace PlotDigitizer.Core
 			Setting.AxisLocationSetted += Setting_AxisLocationChanged;
 		}
 
-
 		public void Load(Setting setting)
 		{
 			foreach (var property in typeof(Setting).GetProperties()) {
@@ -62,16 +61,6 @@ namespace PlotDigitizer.Core
 			Data = Methods.TransformData(points, new Size(PreviewImage.Width, PreviewImage.Height), Setting.AxisLimit, Setting.AxisLogBase);
 		}
 
-		private void OnInputImageChanged()
-		{
-			if (Setting.AxisLocation == default) {
-				Setting.AxisLocation = Methods.GetAxisLocation(InputImage) ?? new Rectangle(InputImage.Width / 4, InputImage.Height / 4, InputImage.Width / 2, InputImage.Height / 2);
-			}
-			CropImage();
-		}
-		private void OnCroppedImageChanged() => FilterImage();
-		private void OnFilteredImageChanged() => EdittedImage = FilteredImage;
-		private void OnEdittedImageChanged() => ExtractData();
 		private void Setting_AxisLocationChanged(object sender, EventArgs e) => CropImage();
 		private void Setting_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
@@ -92,6 +81,16 @@ namespace PlotDigitizer.Core
 					break;
 			}
 		}
+		private void OnInputImageChanged()
+		{
+			if (Setting.AxisLocation == default) {
+				Setting.AxisLocation = Methods.GetAxisLocation(InputImage) ?? new Rectangle(InputImage.Width / 4, InputImage.Height / 4, InputImage.Width / 2, InputImage.Height / 2);
+			}
+			CropImage();
+		}
+		private void OnCroppedImageChanged() => FilterImage();
+		private void OnFilteredImageChanged() => EdittedImage = FilteredImage;
+		private void OnEdittedImageChanged() => ExtractData();
 		public void CropImage() => CroppedImage = Methods.CropImage(InputImage, Setting.AxisLocation);
 		private void FilterImage() => FilteredImage = Methods.FilterRGB(CroppedImage, Setting.FilterMin, Setting.FilterMax);
 	}

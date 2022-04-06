@@ -82,9 +82,35 @@ namespace PlotDigitizer.Core
 			AxisLocationSetted?.Invoke(this, EventArgs.Empty);
 		}
 
-		public Rgba FilterMin { get; set; } = new Rgba(0, 0, 0, byte.MaxValue);
 
-		public Rgba FilterMax { get; set; } = new Rgba(byte.MaxValue - 1, byte.MaxValue - 1, byte.MaxValue - 1, byte.MaxValue);
+		public double MinR { get; set; } = 0;
+		public double MaxR { get; set; } = byte.MaxValue - 1;
+		public double MinG { get; set; } = 0;
+		public double MaxG { get; set; } = byte.MaxValue - 1;
+		public double MinB { get; set; } = 0;
+		public double MaxB { get; set; } = byte.MaxValue - 1;
+
+		public Rgba FilterMin
+		{
+			get => new Rgba(MinR, MinG, MinB, byte.MaxValue);
+			set
+			{
+				MinR = value.Red;
+				MinG = value.Green;
+				MinB = value.Blue;
+			}
+		}
+
+		public Rgba FilterMax
+		{
+			get => new Rgba(MaxR, MaxG, MaxB, byte.MaxValue);
+			set
+			{
+				MaxR = value.Red;
+				MaxG = value.Green;
+				MaxB = value.Blue;
+			}
+		}
 
 		public DataType DataType { get; set; }
 

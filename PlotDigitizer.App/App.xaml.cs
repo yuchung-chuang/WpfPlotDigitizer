@@ -82,7 +82,7 @@ namespace PlotDigitizer.App
 			model.Setting.FilterMax = new Rgba(126, 254, 254, byte.MaxValue);
 			model.Setting.DataType = DataType.Discrete;
 
-			provider.GetService<PageManager>().GoToByTypeCommand.Execute(typeof(PreviewPage));
+			provider.GetService<PageManager>().GoToByTypeCommand.Execute(typeof(AxisLimitPage));
 		}
 	}
 }
