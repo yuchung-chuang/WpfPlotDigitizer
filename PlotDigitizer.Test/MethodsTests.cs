@@ -57,10 +57,33 @@ namespace PlotDigitizer.Core.Tests
 			Assert.AreEqual(image[roi.Bottom - 1, roi.Right - 1], croppedImage[roi.Height - 1, roi.Width - 1]);
 		}
 
-		[TestMethod()]
-		public void FilterRGBTest()
+		[DataTestMethod()]
+		[DataRow("Assets/data.png")]
+		[DataRow("Assets/Graph-1.jpg")]
+		[DataRow("Assets/Hysteresis-loop-of-cobalt-ferrite-samples-CF-CF300_30-and-CF600_180.png")]
+		[DataRow("Assets/Inseam-v-Height-Graph.jpg")]
+		[DataRow("Assets/rnaseqdedemo_19.png")]
+		[DataRow("Assets/scatter_and_hist_border.png")]
+		[DataRow("Assets/Screenshot 2021-06-26 230901.png")]
+		public void InvalidCropImageTest(string uriString)
 		{
-			Assert.Fail();
+			var image = new BitmapImage(new Uri(@"pack://siteoforigin:,,,/" + uriString, UriKind.Absolute)).ToBitmap().ToImage<Rgba, byte>();
+			var roi = new Rectangle(int.MinValue, int.MinValue, int.MaxValue, int.MaxValue);
+			var croppedImage = Methods.CropImage(image, roi);
+			Assert.AreEqual(image.Size, croppedImage.Size);
+		}
+
+
+		[DataTestMethod()]
+		[DataRow("Assets/static-test-image.png", 0, 0, 0, 255, 255, 255, 255)]
+		[DataRow("Assets/static-test-image.png", 255, 0, 0, 255, 255, 255, 0)]
+		public void FilterRGBTest(string uriString, int minR, int minG, int minB, int maxR, int maxG, int maxB, int result)
+		{
+			var image = new BitmapImage(new Uri(@"pack://siteoforigin:,,,/" + uriString, UriKind.Absolute)).ToBitmap().ToImage<Rgba, byte>();
+			var min = new Rgba(minR, minG, minB, byte.MaxValue);
+			var max = new Rgba(maxR, maxG, maxB, byte.MaxValue);
+			var filteredImage = Methods.FilterRGB(image, min, max);
+			Assert.AreEqual(result, filteredImage[0, 0].Alpha);
 		}
 
 		[TestMethod()]

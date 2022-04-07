@@ -8,6 +8,7 @@ namespace PlotDigitizer.App
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
 
+		public bool IsInitialised => ObjectList != null;
 		public int Index { get; private set; }
 		public List<TObject> ObjectList { get; private set; }
 

@@ -29,46 +29,41 @@ namespace PlotDigitizer.App
 
 			// simply trigger the creation of auto-page turner, it will do it's job
 			provider.GetService<AutoPageTurner>();
+
+			provider.GetService<MainWindowViewModel>();
+			provider.GetService<LoadPageViewModel>();
+			provider.GetService<AxisLimitPageViewModel>();
+			provider.GetService<AxisPageViewModel>();
+			provider.GetService<FilterPageViewModel>();
+			provider.GetService<PreviewPageViewModel>();
+
+			var window = provider.GetService<MainWindow>();
+			MainWindow = window;
 #if DEBUG
 			Test();
 #endif
-			var window = provider.GetService<Window>();
-			MainWindow = window;
 			window.Show();
 		}
 
 		private void ConfigureServices(IServiceCollection services)
 		{
-			services.AddSingleton<IMessageBoxService, MessageBoxService>();
-			services.AddSingleton<IFileDialogService, FileDialogService>();
-			services.AddSingleton<IAwaitTaskService, AwaitTaskService>();
-
-			services.AddSingleton<Window, MainWindow>();
-			services.AddSingleton<Model>();
-			services.AddSingleton<AutoPageTurner>();
-			services.AddSingleton<PageManager>();
-			services.AddSingleton<LoadPage>();
-			services.AddSingleton<AxisLimitPage>();
-			services.AddSingleton<AxisPage>();
-			services.AddSingleton<FilterPage>();
-			services.AddSingleton<EditPage>();
-			services.AddSingleton<PreviewPage>();
-			
-			services.AddSingleton(provider =>
-			{
-				return new List<Page>
-				{
-					provider.GetService<LoadPage>(),
-					provider.GetService<AxisLimitPage>(),
-					provider.GetService<AxisPage>(),
-					provider.GetService<FilterPage>(),
-					provider.GetService<EditPage>(),
-					provider.GetService<PreviewPage>(),
-				};
-			});
-
+			services.AddTransient<IMessageBoxService, MessageBoxService>();
+			services.AddTransient<IFileDialogService, FileDialogService>();
+			services.AddTransient<IAwaitTaskService, AwaitTaskService>();
 			services.AddTransient<ProgressPopup>();
+			services.AddTransient<AutoPageTurner>();
 
+			services.AddTransient<MainWindow>();
+			services.AddTransient<LoadPage>();
+			services.AddTransient<AxisLimitPage>();
+			services.AddTransient<AxisPage>();
+			services.AddTransient<FilterPage>();
+			services.AddSingleton<EditPage>();
+			services.AddTransient<PreviewPage>();
+			
+			services.AddSingleton<PageManager>();
+			services.AddSingleton<Model>();
+			services.AddSingleton<MainWindowViewModel>();
 			services.AddSingleton<LoadPageViewModel>();
 			services.AddSingleton<AxisLimitPageViewModel>();
 			services.AddSingleton<AxisPageViewModel>();

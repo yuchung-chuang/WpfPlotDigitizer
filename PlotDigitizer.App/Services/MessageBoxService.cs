@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using PlotDigitizer.Core;
+using System.Windows;
 
 namespace PlotDigitizer.App
 {

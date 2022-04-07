@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Services\FileDialogResults.cs" />
+    <Compile Remove="Services\IAwaitTaskService.cs" />
+    <Compile Remove="Services\IFileDialogService.cs" />
+    <Compile Remove="Services\IMessageBoxService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Assets\pan.cur" />
   </ItemGroup>
 

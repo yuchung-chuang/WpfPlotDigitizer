@@ -2,10 +2,7 @@
 using Emgu.CV.Structure;
 using PlotDigitizer.Core;
 using PropertyChanged;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 
 namespace PlotDigitizer.App
 {

@@ -45,12 +45,4 @@ namespace PlotDigitizer.App
 
 		
 	}
-
-	public enum ExportResults
-	{
-		None,
-		Sucessful,
-		Failed,
-		Canceled
-	}
 }

@@ -1,34 +1,28 @@
 ﻿using Microsoft.Win32;
+using PlotDigitizer.Core;
 
 namespace PlotDigitizer.App
 {
 	public class FileDialogService : IFileDialogService
 	{
-		public FileDialogResults OpenFileDialog()
+		public FileDialogResults OpenFileDialog(string filter = null, string filename = null)
 		{
 			var dialog = new OpenFileDialog
 			{
-				Filter = "Images (*.jpg;*.jpeg;*.png;*.bmp;*.tif) |*.jpg;*.jpeg;*.png;*.bmp;*.tif|" +
-				"(*.jpg;*.jpeg) |*.jpg;*.jpeg|" +
-				"(*.png) |*.png|" +
-				"(*.bmp) |*.bmp|" +
-				"(*.tif) |*.tif|" +
-				"Any |*.*"
+				Filter = filter,
+				FileName = filename,
 			};
 
 			var isValid = dialog.ShowDialog();
 			return new FileDialogResults(dialog.FileName, isValid ?? false);
 		}
 
-		public FileDialogResults SaveFileDialog()
+		public FileDialogResults SaveFileDialog(string filter = null, string filename = null)
 		{
 			var dialog = new SaveFileDialog
 			{
-				Filter =
-				"Comma-separated values file (*.csv) |*.csv|" +
-				"Text file (*.txt) |*.txt|" +
-				"Any (*.*) |*.*",
-				FileName = "output",
+				Filter = filter,
+				FileName = filename,
 			};
 			var isValid = dialog.ShowDialog();
 			return new FileDialogResults(dialog.FileName, isValid ?? false);

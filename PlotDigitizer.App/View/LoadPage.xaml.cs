@@ -41,7 +41,35 @@ namespace PlotDigitizer.App
 
 		private void Paste_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			viewModel.PasteCommand.Execute();
+			PasteImage();
+		}
+
+		private void SetModelImage(BitmapSource source)
+		{
+			viewModel.Model.InputImage = source.ToBitmap().ToImage<Rgba, byte>();
+			viewModel.RaiseNextPage();
+		}
+
+		private BitmapSource LoadImage(string filename)
+		{
+			try {
+				return new BitmapImage(new Uri(filename));
+			}
+			catch (Exception ex) {
+				MessageBox.Show(ex.Message, "Warning");
+				return null;
+			}
+		}
+		private void PasteImage()
+		{
+			if (Clipboard.ContainsImage()) {
+				SetModelImage(Clipboard.GetImage());
+			} else if (Clipboard.ContainsFileDropList()) {
+				SetModelImage(LoadImage(Clipboard.GetFileDropList()[0]));
+			} else {
+				MessageBox.Show("Clipboard does not contain image.", "Warning");
+				return;
+			}
 		}
 
 		private void Page_DragOver(object sender, DragEventArgs e)
@@ -65,11 +93,11 @@ namespace PlotDigitizer.App
 		{
 			if (isDropFile) {
 				var filename = (e.Data.GetData(DataFormats.FileDrop) as string[])[0];
-				var image = viewModel.LoadImage(filename);
-				viewModel.SetModelImage(image);
+				var image = LoadImage(filename);
+				SetModelImage(image);
 			} else if (isDropUrl) {
 				var uri = new Uri(e.Data.GetData(DataFormats.Text).ToString(), UriKind.Absolute);
-				viewModel.SetModelImage(new BitmapImage(uri));
+				SetModelImage(new BitmapImage(uri));
 			}
 		}
 	}

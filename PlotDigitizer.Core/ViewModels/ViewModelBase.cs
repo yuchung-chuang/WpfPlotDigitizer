@@ -1,8 +1,6 @@
-﻿using System;
-using System.ComponentModel;
-using System.Windows;
+﻿using System.ComponentModel;
 
-namespace PlotDigitizer.App
+namespace PlotDigitizer.Core
 {
 	public abstract class ViewModelBase : INotifyPropertyChanged
 	{

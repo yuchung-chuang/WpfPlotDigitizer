@@ -105,17 +105,18 @@ namespace PlotDigitizer.App
 			Loaded += Editor_Loaded;
 			Unloaded += Editor_Unloaded;
 			EditManager.PropertyChanged += EditManager_PropertyChanged;
-			ImageControl.Loaded += ImageControl_Loaded;
+			ImageControl.SizeChanged += ImageControl_SizeChanged;
 		}
 
 		/// <summary>
 		/// This makes sure <see cref="ImageControl.ActualWidth"/> is evaludated.
 		/// </summary>
-		private void ImageControl_Loaded(object sender, RoutedEventArgs e)
+		private void ImageControl_SizeChanged(object sender, SizeChangedEventArgs e)
 		{
 			OnPropertyChanged(nameof(EraserSize));
 			OnPropertyChanged(nameof(PencilSize));
 		}
+
 
 		public void Initialise(Image<Rgba, byte> image)
 		{
@@ -174,7 +175,9 @@ namespace PlotDigitizer.App
 
 		private void Editor_Unloaded(object sender, RoutedEventArgs e)
 		{
-			var mainWindow = Application.Current.MainWindow;
+			if (!(Application.Current.MainWindow is Window mainWindow)) {
+				return;
+			}
 			mainWindow.PreviewKeyDown -= MainWindow_KeyDown;
 			mainWindow.CommandBindings.Remove(undoCommandBinding);
 			mainWindow.CommandBindings.Remove(redoCommandBinding);

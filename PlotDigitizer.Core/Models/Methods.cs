@@ -46,18 +46,10 @@ namespace PlotDigitizer.Core
 
 		public static Image<Rgba, byte> CropImage(Image<Rgba, byte> image, Rectangle roi)
 		{
-			if (roi.X > image.Width) {
-				roi.X = 0;
-			}
-			if (roi.Y > image.Height) {
-				roi.Y = 0;
-			}
-			if (roi.Right > image.Width) {
-				roi.Width = image.Width - roi.X;
-			}
-			if (roi.Bottom > image.Height) {
-				roi.Height = image.Height - roi.Y;
-			}
+			roi.X = Math.Max(roi.X, 0);
+			roi.Y = Math.Max(roi.Y, 0);
+			roi.Width = Math.Min(roi.Width, image.Width);
+			roi.Height = Math.Min(roi.Height, image.Height);
 			return image.Copy(roi);
 		}
 

@@ -1,13 +1,11 @@
 ﻿using PlotDigitizer.Core;
 using PropertyChanged;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace PlotDigitizer.App
 {
@@ -84,7 +82,10 @@ namespace PlotDigitizer.App
 
 		private void Export()
 		{
-			var result = fileDialogService.SaveFileDialog();
+			var filter = "Comma-separated values file (*.csv) |*.csv|" +
+				"Text file (*.txt) |*.txt|" +
+				"Any (*.*) |*.*";
+			var result = fileDialogService.SaveFileDialog(filter, "output");
 			if (!result.IsValid)
 				return;
 
@@ -156,5 +157,13 @@ namespace PlotDigitizer.App
 		}
 
 		private bool CanExport() => Model?.Data?.Count() > 0;
+	}
+
+	public enum ExportResults
+	{
+		None,
+		Canceled,
+		Failed,
+		Sucessful,
 	}
 }

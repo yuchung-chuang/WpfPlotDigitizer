@@ -1,10 +1,7 @@
 ﻿using Emgu.CV.Structure;
-using PropertyChanged;
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Text.Json.Serialization;
-using System.Xml.Serialization;
 
 namespace PlotDigitizer.Core
 {

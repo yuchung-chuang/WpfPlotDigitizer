@@ -9,8 +9,9 @@
 				Title="MainWindow"
 				Height="450"
 				Width="800"
-				WindowStartupLocation="CenterScreen">
-	<DockPanel DataContext="{Binding ElementName=root}">
+				WindowStartupLocation="CenterScreen"
+				d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel, IsDesignTimeCreatable=True}">
+	<DockPanel>
 		<DockPanel DockPanel.Dock="Top">
 			<DockPanel.Resources>
 				<Style TargetType="Button">

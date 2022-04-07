@@ -5,16 +5,17 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Microsoft.Extensions.DependencyInjection;
+using PlotDigitizer.Core;
 
 namespace PlotDigitizer.App
 {
 	public class AwaitTaskService : IAwaitTaskService
 	{
-		private readonly IServiceProvider serviceProvider;
+		private readonly ProgressPopup popup;
 
-		public AwaitTaskService(IServiceProvider serviceProvider)
+		public AwaitTaskService(ProgressPopup popup)
 		{
-			this.serviceProvider = serviceProvider;
+			this.popup = popup;
 		}
 
 		public async Task<T> RunAsync<T>(Func<CancellationToken, T> func)
@@ -25,7 +26,6 @@ namespace PlotDigitizer.App
 			var token = cts.Token;
 			var saveTask = new Task<T>(() => func.Invoke(token), token);
 
-			var popup = serviceProvider.GetService<ProgressPopup>();
 			popup.Owner = Application.Current.MainWindow;
 			popup.Canceled += (sender, e) => cts.Cancel();
 			Debug.WriteLine(popup.GetHashCode());
