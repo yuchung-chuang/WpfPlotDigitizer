@@ -32,35 +32,11 @@ namespace PlotDigitizer.App
 		{
 			this.viewModel = viewModel;
 			DataContext = viewModel;
-			viewModel.MessageBoxRequested += ViewModel_MessageBoxRequested;
-		}
-
-		private void ViewModel_MessageBoxRequested(object sender, MessageEventArgs e)
-		{
-			MessageBox.Show(e.Message, e.Caption, e.Button, e.Image, e.Result, e.Options);
 		}
 
 		private void BrowseButton_Loaded(object sender, RoutedEventArgs e)
 		{
 			(sender as UIElement).Focus();
-		}
-
-		private void BrowseButton_Click(object sender, RoutedEventArgs e)
-		{
-			var dialog = new OpenFileDialog
-			{
-				Filter = "Images (*.jpg;*.jpeg;*.png;*.bmp;*.tif) |*.jpg;*.jpeg;*.png;*.bmp;*.tif|" +
-				"(*.jpg;*.jpeg) |*.jpg;*.jpeg|" +
-				"(*.png) |*.png|" +
-				"(*.bmp) |*.bmp|" +
-				"(*.tif) |*.tif|" +
-				"Any |*.*"
-			};
-			if (dialog.ShowDialog() != true) {
-				return;
-			}
-			var image = viewModel.LoadImage(dialog.FileName);
-			viewModel.SetModelImage(image);
 		}
 
 		private void Paste_Executed(object sender, ExecutedRoutedEventArgs e)

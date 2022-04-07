@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Drawing;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace PlotDigitizer.App
@@ -34,7 +36,10 @@ namespace PlotDigitizer.App
 		}
 		private void AxisPage_Unloaded(object sender, RoutedEventArgs e)
 		{
-			viewModel.Model.CropImage();
+			if (!viewModel.IsEnabled) {
+				return;
+			}
+			viewModel.Model.Setting.AxisLocation = viewModel.AxisLocation;
 		}
 	}
 }

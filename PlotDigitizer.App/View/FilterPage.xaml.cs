@@ -40,8 +40,8 @@ namespace PlotDigitizer.App
 			if (!viewModel.IsEnabled) {
 				return;
 			}
-			//model.Setting.FilterMin = new Rgba(MinR, MinG, MinB, byte.MaxValue);
-			//model.Setting.FilterMax = new Rgba(MaxR, MaxG, MaxB, byte.MaxValue);
+			viewModel.Model.Setting.FilterMin = viewModel.FilterMin;
+			viewModel.Model.Setting.FilterMax = viewModel.FilterMax;
 		}
 	}
 }

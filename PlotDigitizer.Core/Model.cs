@@ -36,7 +36,6 @@ namespace PlotDigitizer.Core
 		public Model()
 		{
 			Setting.PropertyChanged += Setting_PropertyChanged;
-			Setting.AxisLocationSetted += Setting_AxisLocationChanged;
 		}
 
 		public void Load(Setting setting)
@@ -58,22 +57,28 @@ namespace PlotDigitizer.Core
 				DataType.Continuous => Methods.GetContinuousPoints(PreviewImage),
 				_ => throw new NotImplementedException(),
 			};
+			OnPropertyChanged(nameof(PreviewImage));
 			Data = Methods.TransformData(points, new Size(PreviewImage.Width, PreviewImage.Height), Setting.AxisLimit, Setting.AxisLogBase);
 		}
-
-		private void Setting_AxisLocationChanged(object sender, EventArgs e) => CropImage();
+		private void OnPropertyChanged(string propertyName)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
 		private void Setting_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			if (InputImage is null) {
 				return;
 			}
 			switch (e.PropertyName) {
-				case nameof(Setting.FilterMin):
-					FilterImage();
+				case nameof(Setting.AxisLocation):
+					CropImage();
 					break;
+				case nameof(Setting.FilterMin):
 				case nameof(Setting.FilterMax):
 					FilterImage();
 					break;
+				case nameof(Setting.AxisLogBase):
+				case nameof(Setting.AxisLimit):
 				case nameof(Setting.DataType):
 					ExtractData();
 					break;
@@ -85,13 +90,15 @@ namespace PlotDigitizer.Core
 		{
 			if (Setting.AxisLocation == default) {
 				Setting.AxisLocation = Methods.GetAxisLocation(InputImage) ?? new Rectangle(InputImage.Width / 4, InputImage.Height / 4, InputImage.Width / 2, InputImage.Height / 2);
+				// image will be cropped once the AxisLocation is set
+			} else {
+				CropImage();
 			}
-			CropImage();
 		}
 		private void OnCroppedImageChanged() => FilterImage();
 		private void OnFilteredImageChanged() => EdittedImage = FilteredImage;
 		private void OnEdittedImageChanged() => ExtractData();
-		public void CropImage() => CroppedImage = Methods.CropImage(InputImage, Setting.AxisLocation);
+		private void CropImage() => CroppedImage = Methods.CropImage(InputImage, Setting.AxisLocation);
 		private void FilterImage() => FilteredImage = Methods.FilterRGB(CroppedImage, Setting.FilterMin, Setting.FilterMax);
 	}
 

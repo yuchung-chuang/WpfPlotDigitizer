@@ -11,6 +11,40 @@ namespace PlotDigitizer.App
 {
 	public class FilterPageViewModel : ViewModelBase
 	{
+		[OnChangedMethod(nameof(OnMinRChanged))]
+		public double MinR { get; set; } = 0;
+		[OnChangedMethod(nameof(OnMaxRChanged))]
+		public double MaxR { get; set; } = byte.MaxValue - 1;
+		[OnChangedMethod(nameof(OnMinGChanged))]
+		public double MinG { get; set; } = 0;
+		[OnChangedMethod(nameof(OnMaxGChanged))]
+		public double MaxG { get; set; } = byte.MaxValue - 1;
+		[OnChangedMethod(nameof(OnMinBChanged))]
+		public double MinB { get; set; } = 0;
+		[OnChangedMethod(nameof(OnMaxBChanged))]
+		public double MaxB { get; set; } = byte.MaxValue - 1;
+
+		public Rgba FilterMin
+		{
+			get => new Rgba(MinR, MinG, MinB, byte.MaxValue);
+			set
+			{
+				MinR = value.Red;
+				MinG = value.Green;
+				MinB = value.Blue;
+			}
+		}
+
+		public Rgba FilterMax
+		{
+			get => new Rgba(MaxR, MaxG, MaxB, byte.MaxValue); 
+			set
+			{
+				MaxR = value.Red;
+				MaxG = value.Green;
+				MaxB = value.Blue;
+			}
+		}
 		public bool IsEnabled => Model != null && Model.CroppedImage != null;
 
 		public Image<Rgba, byte> Image { get; private set; }
@@ -41,15 +75,11 @@ namespace PlotDigitizer.App
 			if (!(sender is Setting setting)) {
 				return;
 			}
-			//if (e.PropertyName == nameof(setting.FilterMin)) {
-			//	MinR = setting.FilterMin.Red;
-			//	MinG = setting.FilterMin.Green;
-			//	MinB = setting.FilterMin.Blue;
-			//} else if (e.PropertyName == nameof(setting.FilterMax)) {
-			//	MaxR = setting.FilterMax.Red;
-			//	MaxG = setting.FilterMax.Green;
-			//	MaxB = setting.FilterMax.Blue;
-			//}
+			if (e.PropertyName == nameof(setting.FilterMin)) {
+				FilterMin = setting.FilterMin;
+			} else if (e.PropertyName == nameof(setting.FilterMax)) {
+				FilterMax = setting.FilterMax;
+			}
 		}
 
 		public void FilterImage()
@@ -57,7 +87,7 @@ namespace PlotDigitizer.App
 			if (!IsEnabled) {
 				return;
 			}
-			//Image = Methods.FilterRGB(CroppedImage, FilterMin, FilterMax);
+			Image = Methods.FilterRGB(CroppedImage, FilterMin, FilterMax);
 		}
 
 		private void OnMinRChanged() => FilterImage();

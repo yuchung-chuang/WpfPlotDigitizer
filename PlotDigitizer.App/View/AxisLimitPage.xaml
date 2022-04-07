@@ -62,7 +62,7 @@
 				<Label Content="YMax" />
 				<TextBox Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
 					<TextBox.Text>
-						<Binding Path="Model.Setting.AxLimYMax"
+						<Binding Path="AxLimYMax"
 										 Converter="{local:DoubleToStringConverter}"
 										 UpdateSourceTrigger="LostFocus">
 							<Binding.ValidationRules>
@@ -76,7 +76,7 @@
 				<Label Content="YLog" />
 				<TextBox Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
 					<TextBox.Text>
-						<Binding Path="Model.Setting.AxLimYLog"
+						<Binding Path="AxLimYLog"
 										 Converter="{local:DoubleToStringConverter}"
 										 UpdateSourceTrigger="LostFocus">
 							<Binding.ValidationRules>
@@ -90,7 +90,7 @@
 				<Label Content="YMin" />
 				<TextBox Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
 					<TextBox.Text>
-						<Binding Path="Model.Setting.AxLimYMin"
+						<Binding Path="AxLimYMin"
 										 Converter="{local:DoubleToStringConverter}"
 										 UpdateSourceTrigger="LostFocus">
 							<Binding.ValidationRules>
@@ -111,7 +111,7 @@
 				<Label Content="XMin" />
 				<TextBox Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
 					<TextBox.Text>
-						<Binding Path="Model.Setting.AxLimXMin"
+						<Binding Path="AxLimXMin"
 										 Converter="{local:DoubleToStringConverter}"
 										 UpdateSourceTrigger="LostFocus">
 							<Binding.ValidationRules>
@@ -125,7 +125,7 @@
 				<Label Content="XLog" />
 				<TextBox Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
 					<TextBox.Text>
-						<Binding Path="Model.Setting.AxLimXLog"
+						<Binding Path="AxLimXLog"
 										 Converter="{local:DoubleToStringConverter}"
 										 UpdateSourceTrigger="LostFocus">
 							<Binding.ValidationRules>
@@ -139,7 +139,7 @@
 				<Label Content="XMax" />
 				<TextBox Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
 					<TextBox.Text>
-						<Binding Path="Model.Setting.AxLimXMax"
+						<Binding Path="AxLimXMax"
 										 Converter="{local:DoubleToStringConverter}"
 										 UpdateSourceTrigger="LostFocus">
 							<Binding.ValidationRules>

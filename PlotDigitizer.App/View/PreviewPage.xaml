@@ -8,10 +8,10 @@
 			d:DesignHeight="450"
 			d:DesignWidth="800"
 			Title="PreviewPage"
-			Name="root">
+			Name="root"
+			d:DataContext="{d:DesignInstance Type=local:PreviewPageViewModel, IsDesignTimeCreatable=True}">
 
-	<DockPanel DataContext="{Binding ElementName=root}"
-						 IsEnabled="{Binding Enabled}">
+	<DockPanel IsEnabled="{Binding IsEnabled}">
 		<DockPanel DockPanel.Dock="Top"
 							 Background="LightGray"
 							 Height="30">
@@ -90,7 +90,7 @@
 			<Grid />
 		</DockPanel>
 		<Grid>
-			<local:ImageViewer ImageSource="{Binding ImageSource}"
+			<local:ImageViewer ImageSource="{Binding Model.PreviewImage, Converter={local:ImageSourceConverter}}"
 												 Margin="5" />
 		</Grid>
 	</DockPanel>

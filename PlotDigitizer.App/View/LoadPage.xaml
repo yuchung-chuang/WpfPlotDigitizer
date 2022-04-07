@@ -63,7 +63,7 @@
 							Content="Browse"
 							HorizontalAlignment="Center"
 							VerticalAlignment="Bottom"
-							Click="BrowseButton_Click"
+							Command="{Binding BrowseCommand}"
 							Loaded="BrowseButton_Loaded"/>
 
 		</Grid>

@@ -9,21 +9,28 @@ namespace PlotDigitizer.App
 {
 	public class LoadPageViewModel : ViewModelBase
 	{
+		private readonly IMessageBoxService messageBoxService;
+		private readonly IFileDialogService fileDialogService;
+
 		public event EventHandler NextPage;
 
 		public RelayCommand PasteCommand { get; private set; }
+		public RelayCommand BrowseCommand { get; private set; }
 
 		public Model Model { get; }
 
 		public LoadPageViewModel()
 		{
 			PasteCommand = new RelayCommand(PasteImage);
+			BrowseCommand = new RelayCommand(Browse);
 		}
 
 
-		public LoadPageViewModel(Model model) : this()
+		public LoadPageViewModel(Model model, IMessageBoxService messageBoxService, IFileDialogService fileDialogService) : this()
 		{
 			Model = model;
+			this.messageBoxService = messageBoxService;
+			this.fileDialogService = fileDialogService;
 		}
 		public void SetModelImage(BitmapSource source)
 		{
@@ -37,7 +44,7 @@ namespace PlotDigitizer.App
 				return new BitmapImage(new Uri(filename));
 			}
 			catch (Exception ex) {
-				OnMessageBoxRequested(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+				messageBoxService.Show_OK(ex.Message, "Warning");
 				return null;
 			}
 		}
@@ -48,7 +55,7 @@ namespace PlotDigitizer.App
 			} else if (Clipboard.ContainsFileDropList()) {
 				SetModelImage(LoadImage(Clipboard.GetFileDropList()[0]));
 			} else {
-				OnMessageBoxRequested("Clipboard does not contain image.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+				messageBoxService.Show_OK("Clipboard does not contain image.", "Warning");
 				return;
 			}
 		}
@@ -56,6 +63,16 @@ namespace PlotDigitizer.App
 		private void OnNextPage()
 		{
 			NextPage?.Invoke(this, null);
+		}
+
+		private void Browse()
+		{
+			var result = fileDialogService.OpenFileDialog();
+			if (!result.IsValid) {
+				return;
+			}
+			var image = LoadImage(result.FileName);
+			SetModelImage(image);
 		}
 
 	}

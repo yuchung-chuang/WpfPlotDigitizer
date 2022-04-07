@@ -33,11 +33,16 @@ namespace PlotDigitizer.App
 			Test();
 #endif
 			var window = provider.GetService<Window>();
+			MainWindow = window;
 			window.Show();
 		}
 
 		private void ConfigureServices(IServiceCollection services)
 		{
+			services.AddSingleton<IMessageBoxService, MessageBoxService>();
+			services.AddSingleton<IFileDialogService, FileDialogService>();
+			services.AddSingleton<IAwaitTaskService, AwaitTaskService>();
+
 			services.AddSingleton<Window, MainWindow>();
 			services.AddSingleton<Model>();
 			services.AddSingleton<AutoPageTurner>();
@@ -61,15 +66,14 @@ namespace PlotDigitizer.App
 					provider.GetService<PreviewPage>(),
 				};
 			});
-			
-			services.AddTransient(provider => new ProgressPopup
-			{
-				Owner = provider.GetService<Window>()
-			});
+
+			services.AddTransient<ProgressPopup>();
 
 			services.AddSingleton<LoadPageViewModel>();
 			services.AddSingleton<AxisLimitPageViewModel>();
 			services.AddSingleton<AxisPageViewModel>();
+			services.AddSingleton<FilterPageViewModel>();
+			services.AddSingleton<PreviewPageViewModel>();
 		}
 
 		private void Test()
@@ -82,7 +86,7 @@ namespace PlotDigitizer.App
 			model.Setting.FilterMax = new Rgba(126, 254, 254, byte.MaxValue);
 			model.Setting.DataType = DataType.Discrete;
 
-			provider.GetService<PageManager>().GoToByTypeCommand.Execute(typeof(AxisLimitPage));
+			provider.GetService<PageManager>().GoToByTypeCommand.Execute(typeof(PreviewPage));
 		}
 	}
 }
