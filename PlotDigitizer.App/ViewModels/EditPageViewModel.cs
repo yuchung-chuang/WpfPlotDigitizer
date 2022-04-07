@@ -11,29 +11,39 @@ using System.Text;
 namespace PlotDigitizer.App
 {
 	public class EditPageViewModel : ViewModelBase
-	{        
-        public bool Enabled => Model != null && Model.FilteredImage != null;
+	{
+        public IEnumerable<string> UndoList => EditManager?.TagList?.GetRange(0, EditManager.Index + 1).Reverse<string>();
 
+        public IEnumerable<string> RedoList => EditManager?.TagList?.GetRange(EditManager.Index, EditManager.TagList.Count - EditManager.Index);
+
+        public EditManager<Image<Rgba, byte>> EditManager { get; set; } = new EditManager<Image<Rgba, byte>>();
+
+        public Model Model { get; private set; }
+        public bool IsEnabled => Model != null && Model.FilteredImage != null;
         
-        public Model Model { get; }
 		public EditPageViewModel()
 		{
-
+            EditManager.PropertyChanged += EditManager_PropertyChanged;
 		}
 		public EditPageViewModel(Model model) : this()
 		{
 			Model = model;
             model.PropertyChanged += Model_PropertyChanged;
         }
-        /// <summary>
-        /// Do NOT initialise it when loading, so long as the <see cref="Model.FilteredImage"/> is un changed, the previous editting is retained. 
-        /// </summary>
+
         private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(Model.FilteredImage)) {
-                OnPropertyChanged(nameof(Enabled));
+                OnPropertyChanged(nameof(IsEnabled));
             }
         }
 
+        private void EditManager_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(EditManager.Index)) {
+                OnPropertyChanged(nameof(UndoList));
+                OnPropertyChanged(nameof(RedoList));
+            }
+        }
     }
 }

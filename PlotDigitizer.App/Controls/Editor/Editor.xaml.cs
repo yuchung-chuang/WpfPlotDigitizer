@@ -1,5 +1,7 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
+using PropertyChanged;
+using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,6 +27,13 @@ namespace PlotDigitizer.App
 		public static readonly DependencyProperty BlockInteractionProperty =
 			DependencyProperty.Register("BlockInteraction", typeof(bool), typeof(Editor), new PropertyMetadata(false));
 
+		public static readonly DependencyProperty EditorStateProperty =
+			DependencyProperty.Register("EditorState", typeof(EditorState), typeof(Editor), new PropertyMetadata(NoMode.Instance, OnEditorStateChanged));
+
+		public static readonly DependencyProperty EditManagerProperty =
+			DependencyProperty.Register("EditManager", typeof(EditManager<Image<Rgba,byte>>), typeof(Editor), new PropertyMetadata(default, OnEditManagerChanged));
+
+
 		public double ZoomScale { get; set; }
 		public double EraserSize => ImageControl.ActualWidth * 0.05 / ZoomScale;
 		public double PencilSize => ImageControl.ActualWidth * 0.01 / ZoomScale;
@@ -32,10 +41,6 @@ namespace PlotDigitizer.App
 		public double PencilStrokeSize => 1.5 / ZoomScale;
 		public double SelectRectStrokeSize => 1.5 / ZoomScale;
 		public double SelectPolyStrokeSize => 1.5 / ZoomScale;
-
-		private EditorState editorState = NoMode.Instance;
-
-		private EdittingState edittingState = NotEditting.Instance;
 
 		private CommandBinding undoCommandBinding;
 
@@ -71,41 +76,47 @@ namespace PlotDigitizer.App
 
 		public Image<Rgba, byte> Image { get; private set; }
 
-
-		public EditManager<Image<Rgba, byte>> EditManager { get; } = new EditManager<Image<Rgba, byte>>();
+		public EditManager<Image<Rgba,byte>> EditManager
+		{
+			get { return (EditManager<Image<Rgba,byte>>)GetValue(EditManagerProperty); }
+			set { SetValue(EditManagerProperty, value); }
+		}
 
 		public EditorState EditorState
 		{
-			get => editorState;
-			set
-			{
-				if (editorState != value) {
-					editorState = value;
-					editorState.Enter(this);
-				}
-			}
+			get { return (EditorState)GetValue(EditorStateProperty); }
+			set { SetValue(EditorStateProperty, value); }
 		}
 
-		public EdittingState EdittingState
-		{
-			get => edittingState;
-			set
-			{
-				if (edittingState != value) {
-					edittingState = value;
-					edittingState.Enter(this);
-					UpdateVisibility(value);
-				}
-			}
-		}
+		[OnChangedMethod(nameof(OnEdittingStateChanged))]
+		public EdittingState EdittingState { get; set; } = NotEditting.Instance;
 
 		public Editor()
 		{
 			InitializeComponent();
 			Loaded += Editor_Loaded;
 			Unloaded += Editor_Unloaded;
-			EditManager.PropertyChanged += EditManager_PropertyChanged;
 			ImageControl.SizeChanged += ImageControl_SizeChanged;
+		}
+		private static void OnEditorStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			if (!(d is Editor editor)) {
+				return;
+			}
+			editor.EditorState.Enter(editor);
+		}
+		private static void OnEditManagerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			if (!(d is Editor editor)) {
+				return;
+			}
+			editor.EditManager.PropertyChanged += editor.EditManager_PropertyChanged;
+		}
+
+		private void OnEdittingStateChanged()
+		{
+			EdittingState.Enter(this);
+			UpdateVisibility();
 		}
 
 		/// <summary>
@@ -121,12 +132,11 @@ namespace PlotDigitizer.App
 		public void Initialise(Image<Rgba, byte> image)
 		{
 			Image = image.Copy();
-			EditManager.Initialise(image);
 		}
 
-		private void UpdateVisibility(EdittingState value)
+		private void UpdateVisibility()
 		{
-			switch (value) {
+			switch (EdittingState) {
 				case NotEditting _:
 					selectRect.Visibility = Visibility.Hidden;
 					selectPoly.Visibility = Visibility.Hidden;

@@ -62,7 +62,7 @@ namespace PlotDigitizer.App
 
 		private void Redo() => Index++;
 
-		private bool CanRedo() => Index < ObjectList.Count - 1;
+		private bool CanRedo() => Index < (ObjectList?.Count ?? 0) - 1;
 
 		private void GoTo(int targetIndex) => Index = targetIndex;
 

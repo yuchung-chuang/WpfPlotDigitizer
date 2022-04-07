@@ -8,10 +8,10 @@
 			d:DesignHeight="450"
 			d:DesignWidth="800"
 			Title="EditPage"
-			x:Name="root">
+			x:Name="root"
+			d:DataContext="{d:DesignInstance Type=local:EditPageViewModel, IsDesignTimeCreatable=True}">
 
-	<DockPanel DataContext="{Binding ElementName=root}"
-						 IsEnabled="{Binding Enabled}">
+	<DockPanel IsEnabled="{Binding IsEnabled}">
 		<DockPanel DockPanel.Dock="Top"
 							 Height="30"
 							 Background="LightGray">
@@ -86,12 +86,10 @@
 										Value="{Binding RelativeSource={RelativeSource self}, Path=ActualHeight}" />
 					</Style>
 				</StackPanel.Resources>
-				<RadioButton x:Name="PencilButton"
-										 IsChecked="{Binding IsPencil, Mode=TwoWay}">
+				<RadioButton x:Name="PencilButton">
 					<Path Data="M0 12v3h3l8-8-3-3-8 8zm3 2H1v-2h1v1h1v1zm10.3-9.3L12 6 9 3l1.3-1.3a.996.996 0 011.41 0l1.59 1.59c.39.39.39 1.02 0 1.41z" />
 				</RadioButton>
-				<RadioButton x:Name="EraserButton"
-										 IsChecked="{Binding IsEraser, Mode=TwoWay}">
+				<RadioButton x:Name="EraserButton">
 					<Path Data="M532.693 832l-202.667-202.624-202.837-206.635c-32.683-33.237-32.469-87.125 0.512-120.107l183.424-183.424c7.979-8.064 18.816-12.544 30.165-12.544h512.043v85.333h-296.875l308.139 308.139c33.28 33.28 33.28 87.381 0 120.661l-211.243 211.2c-33.237 33.28-87.381 33.28-120.661 0zM358.955 192l-170.88 170.923 202.581 206.379 31.701 31.701 211.2-211.2-194.432-194.432c-1.067-1.067-2.048-2.219-2.944-3.371h-77.227z"
 								RenderTransformOrigin="0.5,0.5">
 						<Path.RenderTransform>
@@ -106,12 +104,10 @@
 						</Path.RenderTransform>
 					</Path>
 				</RadioButton>
-				<RadioButton x:Name="RectButton"
-										 IsChecked="{Binding IsRect, Mode=TwoWay}">
+				<RadioButton x:Name="RectButton">
 					<Path Data="M2,4H8V6H16V4H22V10H20V14H22V20H16V18H8V20H2V14H4V10H2V4M16,10V8H8V10H6V14H8V16H16V14H18V10H16M4,6V8H6V6H4M18,6V8H20V6H18M4,16V18H6V16H4M18,16V18H20V16H18Z" />
 				</RadioButton>
-				<RadioButton x:Name="PolyButton"
-										 IsChecked="{Binding IsPoly, Mode=TwoWay}">
+				<RadioButton x:Name="PolyButton">
 					<Path Data="M853.333 354.773v101.077c49.536 17.707 85.333 64.597 85.333 120.149 0 70.571-57.429 128-128 128-35.2 0-67.115-14.293-90.283-37.376l-167.040 66.816c0.427 4.395 1.323 8.704 1.323 13.227 0 70.571-57.429 128-128 128s-128-57.429-128-128c0-32.512 12.587-61.909 32.64-84.523l-71.424-95.189c-14.464 5.675-30.080 9.045-46.549 9.045-70.571 0-128-57.429-128-128s57.429-128 128-128c6.784 0 13.355 0.981 19.84 2.005l82.56-110.037c-10.581-18.603-17.067-39.765-17.067-62.635 0-70.571 57.429-128 128-128 57.941 0 106.453 38.955 122.155 91.861l169.045 33.792c23.381-24.704 56.235-40.32 92.8-40.32 70.571 0 128 57.429 128 128 0 55.552-35.797 102.443-85.333 120.107zM810.667 618.667c23.552 0 42.667-19.157 42.667-42.667s-19.115-42.667-42.667-42.667-42.667 19.157-42.667 42.667 19.115 42.667 42.667 42.667zM426.667 789.333c23.552 0 42.667-19.157 42.667-42.667s-19.115-42.667-42.667-42.667-42.667 19.157-42.667 42.667 19.115 42.667 42.667 42.667zM170.667 448c0 23.509 19.115 42.667 42.667 42.667s42.667-19.157 42.667-42.667-19.115-42.667-42.667-42.667-42.667 19.157-42.667 42.667zM426.667 106.667c-23.552 0-42.667 19.115-42.667 42.667s19.115 42.667 42.667 42.667 42.667-19.115 42.667-42.667-19.115-42.667-42.667-42.667zM544.469 199.339c-19.499 45.781-64.981 77.995-117.803 77.995-16.469 0-32.085-3.371-46.549-9.088l-71.424 95.189c20.053 22.656 32.64 52.053 32.64 84.565 0 22.869-6.485 44.032-17.024 62.592l82.56 110.080c6.485-1.024 13.013-2.005 19.797-2.005 35.2 0 67.115 14.293 90.283 37.376l167.040-66.816c-0.427-4.395-1.323-8.704-1.323-13.227 0-55.552 35.797-102.443 85.333-120.107v-101.077c-49.536-17.664-85.333-64.597-85.333-120.107 0-2.603 0.64-4.992 0.768-7.552l-138.965-27.819zM810.667 192c-23.552 0-42.667 19.115-42.667 42.667s19.115 42.667 42.667 42.667 42.667-19.115 42.667-42.667-19.115-42.667-42.667-42.667z" />
 				</RadioButton>
 			</StackPanel>
@@ -121,6 +117,24 @@
 									Margin="20"
 									ModifierKeys="Ctrl"
 									BlockInteraction="True"
-									ToolTip="Ctrl + left click to erase image and select region, press delete/backspace to delete a region. Left double click to complete a polygon." />
+									EditManager="{Binding EditManager}"
+									ToolTip="Ctrl + left click to erase image and select region, press delete/backspace to delete a region. Left double click to complete a polygon.">
+			<local:Editor.EditorState>
+				<MultiBinding Converter="{local:EditorStateConverter}">
+					<Binding Path="IsChecked"
+									 Mode="TwoWay"
+									 ElementName="PencilButton" />
+					<Binding Path="IsChecked"
+									 Mode="TwoWay"
+									 ElementName="EraserButton" />
+					<Binding Path="IsChecked"
+									 Mode="TwoWay"
+									 ElementName="RectButton" />
+					<Binding Path="IsChecked"
+									 Mode="TwoWay"
+									 ElementName="PolyButton" />
+				</MultiBinding>
+			</local:Editor.EditorState>
+		</local:Editor>
 	</DockPanel>
 </Page>

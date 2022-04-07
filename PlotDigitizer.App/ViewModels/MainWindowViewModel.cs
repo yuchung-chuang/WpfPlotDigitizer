@@ -16,7 +16,7 @@ namespace PlotDigitizer.App
 
 		public PageManager PageManager { get; private set; }
 
-		public IEnumerable<string> PageNameList => PageManager.PageTypeList.Select(page => page.GetType().Name);
+		public IEnumerable<string> PageNameList => PageManager.PageTypeList.Select(type => type.Name);
 
 		public RelayCommand SaveSettingCommand { get; set; }
 

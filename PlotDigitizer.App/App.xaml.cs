@@ -58,9 +58,9 @@ namespace PlotDigitizer.App
 			services.AddTransient<AxisLimitPage>();
 			services.AddTransient<AxisPage>();
 			services.AddTransient<FilterPage>();
-			services.AddSingleton<EditPage>();
+			services.AddTransient<EditPage>();
 			services.AddTransient<PreviewPage>();
-			
+
 			services.AddSingleton<PageManager>();
 			services.AddSingleton<Model>();
 			services.AddSingleton<MainWindowViewModel>();
@@ -68,6 +68,7 @@ namespace PlotDigitizer.App
 			services.AddSingleton<AxisLimitPageViewModel>();
 			services.AddSingleton<AxisPageViewModel>();
 			services.AddSingleton<FilterPageViewModel>();
+			services.AddSingleton<EditPageViewModel>();
 			services.AddSingleton<PreviewPageViewModel>();
 		}
 
@@ -81,7 +82,7 @@ namespace PlotDigitizer.App
 			model.Setting.FilterMax = new Rgba(126, 254, 254, byte.MaxValue);
 			model.Setting.DataType = DataType.Discrete;
 
-			provider.GetService<PageManager>().GoToByTypeCommand.Execute(typeof(PreviewPage));
+			provider.GetService<PageManager>().GoToByTypeCommand.Execute(typeof(EditPage));
 		}
 	}
 }

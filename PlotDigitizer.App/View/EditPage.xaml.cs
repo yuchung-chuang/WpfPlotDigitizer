@@ -14,48 +14,15 @@ namespace PlotDigitizer.App
 {
 	public partial class EditPage : Page, INotifyPropertyChanged
 	{
+		private readonly EditPageViewModel viewModel;
+
+		public Model Model { get; }
+
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		public IEnumerable<string> UndoList => EditManager?.TagList.GetRange(0, EditManager.Index + 1).Reverse<string>();
+		//public Image<Rgba, byte> Image => editor?.Image;
+		//public EditManager<Image<Rgba, byte>> EditManager => editor?.EditManager;
 
-		public IEnumerable<string> RedoList => EditManager?.TagList.GetRange(EditManager.Index, EditManager.TagList.Count - EditManager.Index);
-
-		public EditManager<Image<Rgba, byte>> EditManager => editor?.EditManager;
-
-		public Image<Rgba, byte> Image => editor?.Image;
-
-		[DependsOn(nameof(Model))]
-		public bool Enabled => Model != null && Model.FilteredImage != null;
-
-		[DependsOn(null, new[] { nameof(IsPencil), nameof(IsEraser), nameof(IsRect), nameof(IsPoly) })]
-		public bool IsPencil
-		{
-			get => editor?.EditorState is PencilMode;
-			set => editor.EditorState = PencilMode.Instance;
-		}
-
-		[DependsOn(null, new[] { nameof(IsPencil), nameof(IsEraser), nameof(IsRect), nameof(IsPoly) })]
-		public bool IsEraser
-		{
-			get => editor?.EditorState is EraserMode;
-			set => editor.EditorState = EraserMode.Instance;
-		}
-
-		[DependsOn(null, new[] { nameof(IsPencil), nameof(IsEraser), nameof(IsRect), nameof(IsPoly) })]
-		public bool IsRect
-		{
-			get => editor?.EditorState is RectMode;
-			set => editor.EditorState = RectMode.Instance;
-		}
-
-		[DependsOn(null, new[] { nameof(IsPencil), nameof(IsEraser), nameof(IsRect), nameof(IsPoly) })]
-		public bool IsPoly
-		{
-			get => editor?.EditorState is PolyMode;
-			set => editor.EditorState = PolyMode.Instance;
-		}
-
-		public Model Model { get; private set; }
 
 		public EditPage()
 		{
@@ -65,11 +32,13 @@ namespace PlotDigitizer.App
 		}
 
 
-		public EditPage(Model model) : this()
+		public EditPage(Model model, EditPageViewModel viewModel) : this()
 		{
 			Model = model;
+			this.viewModel = viewModel;
+			DataContext = viewModel;
 			model.PropertyChanged += Model_PropertyChanged;
-			EditManager.PropertyChanged += EditManager_PropertyChanged;
+			viewModel.EditManager.PropertyChanged += EditManager_PropertyChanged;
 		}
 
 		/// <summary>
@@ -77,12 +46,15 @@ namespace PlotDigitizer.App
 		/// </summary>
 		private void EditPage_Loaded(object sender, RoutedEventArgs e)
 		{
-			if (!Enabled) {
+			if (!viewModel.IsEnabled) {
 				return;
 			}
-			OnPropertyChanged(nameof(Enabled));
-			if (!EditManager.IsInitialised) {
+			//OnPropertyChanged(nameof(Enabled));
+			if (!viewModel.EditManager.IsInitialised) {
 				editor.Initialise(Model.FilteredImage);
+				editor.EditManager.Initialise(Model.FilteredImage);
+			} else {
+				editor.Initialise(editor.EditManager.CurrentObject.Copy());
 			}
 			UndoButton.GetBindingExpression(ButtonBase.CommandProperty).UpdateTarget();
 			RedoButton.GetBindingExpression(ButtonBase.CommandProperty).UpdateTarget();
@@ -95,23 +67,21 @@ namespace PlotDigitizer.App
 		{
 			if (e.PropertyName == nameof(Model.FilteredImage)) {
 				editor.Initialise(Model.FilteredImage);
-				OnPropertyChanged(nameof(Enabled));
+				editor.EditManager.Initialise(Model.FilteredImage);
 			}
 		}
 
 		private void EditPage_Unloaded(object sender, RoutedEventArgs e)
 		{
-			if (!Enabled) {
+			if (!viewModel.IsEnabled) {
 				return;
 			}
-			Model.EdittedImage = Image;
+			Model.EdittedImage = editor.Image;
 		}
 
 		private void EditManager_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName == nameof(EditManager.Index)) {
-				OnPropertyChanged(nameof(UndoList));
-				OnPropertyChanged(nameof(RedoList));
+			if (e.PropertyName == nameof(viewModel.EditManager.Index)) {
 				UndoComboBox.SelectedIndex = 0;
 				RedoComboBox.SelectedIndex = 0;
 			}
@@ -127,9 +97,9 @@ namespace PlotDigitizer.App
 			var comboBox = sender as ComboBox;
 			if (comboBox.SelectedIndex <= 0)
 				return;
-			var targetIndex = EditManager.Index - comboBox.SelectedIndex;
-			if (EditManager.GoToCommand.CanExecute(targetIndex))
-				EditManager.GoToCommand.Execute(targetIndex);
+			var targetIndex = viewModel.EditManager.Index - comboBox.SelectedIndex;
+			if (viewModel.EditManager.GoToCommand.CanExecute(targetIndex))
+				viewModel.EditManager.GoToCommand.Execute(targetIndex);
 		}
 
 		private void RedoComboBox_DropDownClosed(object sender, EventArgs e)
@@ -137,9 +107,9 @@ namespace PlotDigitizer.App
 			var comboBox = sender as ComboBox;
 			if (comboBox.SelectedIndex <= 0)
 				return;
-			var targetIndex = EditManager.Index + comboBox.SelectedIndex;
-			if (EditManager.GoToCommand.CanExecute(targetIndex))
-				EditManager.GoToCommand.Execute(targetIndex);
+			var targetIndex = viewModel.EditManager.Index + comboBox.SelectedIndex;
+			if (viewModel.EditManager.GoToCommand.CanExecute(targetIndex))
+				viewModel.EditManager.GoToCommand.Execute(targetIndex);
 		}
 
 	}
