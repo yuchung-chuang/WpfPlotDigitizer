@@ -3,7 +3,7 @@ using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace PlotDigitizer.App
+namespace PlotDigitizer.Core
 {
 	public class RgbaConverter : JsonConverter<Rgba>
 	{
