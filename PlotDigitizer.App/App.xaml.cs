@@ -30,11 +30,13 @@ namespace PlotDigitizer.App
 			// simply trigger the creation of auto-page turner, it will do it's job
 			provider.GetService<AutoPageTurner>();
 
+			// need to trigger the creation of these viewmodels before showing the views to set up model updating pipeline beforehand
 			provider.GetService<MainWindowViewModel>();
 			provider.GetService<LoadPageViewModel>();
 			provider.GetService<AxisLimitPageViewModel>();
 			provider.GetService<AxisPageViewModel>();
 			provider.GetService<FilterPageViewModel>();
+			provider.GetService<EditPageViewModel>();
 			provider.GetService<PreviewPageViewModel>();
 
 			var window = provider.GetService<MainWindow>();
