@@ -85,23 +85,5 @@ namespace PlotDigitizer.Core.Tests
 			var filteredImage = Methods.FilterRGB(image, min, max);
 			Assert.AreEqual(result, filteredImage[0, 0].Alpha);
 		}
-
-		[TestMethod()]
-		public void GetContinuousPointsTest()
-		{
-			Assert.Fail();
-		}
-
-		[TestMethod()]
-		public void GetDiscretePointsTest()
-		{
-			Assert.Fail();
-		}
-
-		[TestMethod()]
-		public void TransformDataTest()
-		{
-			Assert.Fail();
-		}
 	}
 }
