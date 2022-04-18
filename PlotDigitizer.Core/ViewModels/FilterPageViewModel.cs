@@ -5,7 +5,7 @@ using System.ComponentModel;
 
 namespace PlotDigitizer.Core
 {
-	public class FilterPageViewModel : ViewModelBase
+	public class FilterPageViewModel : PageViewModelBase
 	{
 		[OnChangedMethod(nameof(OnMinRChanged))]
 		public double MinR { get; set; } = 0;
@@ -48,7 +48,7 @@ namespace PlotDigitizer.Core
 		public Model Model { get; }
 		public FilterPageViewModel()
 		{
-
+			Name = "FilterPage";
 		}
 
 		public FilterPageViewModel(Model model) : this()
@@ -92,5 +92,22 @@ namespace PlotDigitizer.Core
 		private void OnMaxRChanged() => FilterImage();
 		private void OnMaxGChanged() => FilterImage();
 		private void OnMaxBChanged() => FilterImage();
+
+		public override void Enter()
+		{
+			base.Enter();
+			if (IsEnabled) {
+				FilterImage();
+			}
+		}
+
+		public override void Leave()
+		{
+			base.Leave();
+			if (IsEnabled) {
+				Model.Setting.FilterMin = FilterMin;
+				Model.Setting.FilterMax = FilterMax;
+			}
+		}
 	}
 }

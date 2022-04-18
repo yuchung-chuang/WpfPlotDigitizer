@@ -4,13 +4,14 @@
 				xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 				xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 				xmlns:local="clr-namespace:PlotDigitizer.App"
+				xmlns:core="clr-namespace:PlotDigitizer.Core;assembly=PlotDigitizer.Core"
 				mc:Ignorable="d"
 				x:Name="root"
 				Title="MainWindow"
 				Height="450"
 				Width="800"
 				WindowStartupLocation="CenterScreen"
-				d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel, IsDesignTimeCreatable=True}">
+				d:DataContext="{d:DesignInstance Type=core:MainWindowViewModel, IsDesignTimeCreatable=True}">
 	<DockPanel>
 		<DockPanel DockPanel.Dock="Top">
 			<DockPanel.Resources>
@@ -64,11 +65,32 @@
 			</StackPanel>
 		</DockPanel>
 		<Grid>
+			<Grid.Resources>
+				<DataTemplate DataType="{x:Type core:LoadPageViewModel}">
+					<local:LoadPage />
+				</DataTemplate>
+				<DataTemplate DataType="{x:Type core:AxisLimitPageViewModel}">
+					<local:AxisLimitPage />
+				</DataTemplate>
+				<DataTemplate DataType="{x:Type core:AxisPageViewModel}">
+					<local:AxisPage />
+				</DataTemplate>
+				<DataTemplate DataType="{x:Type core:FilterPageViewModel}">
+					<local:FilterPage />
+				</DataTemplate>
+				<DataTemplate DataType="{x:Type core:EditPageViewModel}">
+					<local:EditPage />
+				</DataTemplate>
+				<DataTemplate DataType="{x:Type core:PreviewPageViewModel}">
+					<local:PreviewPage />
+				</DataTemplate>
+			</Grid.Resources>
 
 			<Frame x:Name="mainFrame"
 						 NavigationUIVisibility="Hidden"
 						 Navigating="mainFrame_Navigating"
 						 Content="{Binding PageManager.CurrentPage}" />
+			<!--<ContentControl Content="{Binding PageManager.CurrentPage}" />-->
 
 		</Grid>
 	</DockPanel>

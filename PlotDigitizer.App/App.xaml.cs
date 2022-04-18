@@ -17,9 +17,6 @@ using System.Windows.Media.Imaging;
 
 namespace PlotDigitizer.App
 {
-	/// <summary>
-	/// Interaction logic for App.xaml
-	/// </summary>
 	public partial class App : Application
 	{
 		private IHost host;
@@ -41,30 +38,20 @@ namespace PlotDigitizer.App
 				})
 				.ConfigureServices((context, services) =>
 				{
-					services.AddTransient<IMessageBoxService, MessageBoxService>();
-					services.AddTransient<IFileDialogService, FileDialogService>();
-					services.AddTransient<IAwaitTaskService, AwaitTaskService>();
-					services.AddTransient<IClipboard, Clipboard>();
-					services.AddTransient<ProgressPopup>();
-					services.AddTransient<AutoPageTurner>();
+					services.AddTransient<IMessageBoxService, MessageBoxService>()
+					.AddTransient<IFileDialogService, FileDialogService>()
+					.AddTransient<IAwaitTaskService, AwaitTaskService>()
+					.AddTransient<IClipboard, Clipboard>()
+					.AddSingleton<IModel, Model2>()
+					.AddSingleton<ISetting, Setting2>()
+					.AddSingleton<Model>()
 
-					services.AddTransient<MainWindow>();
-					services.AddTransient<LoadPage>();
-					services.AddTransient<AxisLimitPage>();
-					services.AddTransient<AxisPage>();
-					services.AddTransient<FilterPage>();
-					services.AddTransient<EditPage>();
-					services.AddTransient<PreviewPage>();
+					.AddTransient<ProgressPopup>()
+					.AddTransient<AutoPageTurner>()
 
-					services.AddSingleton<PageManager>();
-					services.AddSingleton<Model>();
-					services.AddSingleton<MainWindowViewModel>();
-					services.AddSingleton<LoadPageViewModel>();
-					services.AddSingleton<AxisLimitPageViewModel>();
-					services.AddSingleton<AxisPageViewModel>();
-					services.AddSingleton<FilterPageViewModel>();
-					services.AddSingleton<EditPageViewModel>();
-					services.AddSingleton<PreviewPageViewModel>();
+					.AddViewModels()
+					.AddModelNodes();
+					
 				})
 				.ConfigureLogging((context, builder) =>
 				{
@@ -76,19 +63,21 @@ namespace PlotDigitizer.App
 			await host.StartAsync();
 
 			var logger = host.Services.GetService<ILogger<App>>();
+			var config = host.Services.GetRequiredService<IConfiguration>();
+
 			logger?.LogInformation($"{this} started.");
 
-			Initialise();
+			InitialiseServices();
 
-			var window = host.Services.GetRequiredService<MainWindow>();
-			MainWindow = window;
-
-			var config = host.Services.GetRequiredService<IConfiguration>();
 			var isRunTest = config.GetSection("AppSettings").GetValue<bool>("RunTest");
 			if (isRunTest)
 				Test();
 
-			window.Show();
+			MainWindow = new MainWindow
+			{
+				DataContext = host.Services.GetRequiredService<MainWindowViewModel>()
+			};
+			MainWindow.Show();
 			logger?.LogInformation($"{MainWindow} Loaded.");
 		}
 
@@ -98,30 +87,22 @@ namespace PlotDigitizer.App
 			host.Dispose();
 		}
 
-		private void Initialise()
+		private void InitialiseServices()
 		{
 			var services = host.Services;
 			// simply trigger the creation of auto-page turner, it will do it's job
 			services.GetRequiredService<AutoPageTurner>();
 
 			// need to trigger the creation of these viewmodels before showing the views to set up model updating pipeline beforehand
-			services.GetRequiredService<MainWindowViewModel>();
-			services.GetRequiredService<LoadPageViewModel>();
-			services.GetRequiredService<AxisLimitPageViewModel>();
-			services.GetRequiredService<AxisPageViewModel>();
-			services.GetRequiredService<FilterPageViewModel>();
-			services.GetRequiredService<EditPageViewModel>();
-			services.GetRequiredService<PreviewPageViewModel>();
-
-			var pageManager = services.GetRequiredService<PageManager>();
-			pageManager.Initialise(new List<Type>
+			var vm = services.GetRequiredService<MainWindowViewModel>();
+			vm.PageManager.Initialise(new List<PageViewModelBase>
 			{
-				typeof(LoadPage),
-				typeof(AxisLimitPage),
-				typeof(AxisPage),
-				typeof(FilterPage),
-				typeof(EditPage),
-				typeof(PreviewPage)
+				services.GetRequiredService<LoadPageViewModel       >(),
+				services.GetRequiredService<AxisLimitPageViewModel  >(),
+				services.GetRequiredService<AxisPageViewModel       >(),
+				services.GetRequiredService<FilterPageViewModel     >(),
+				//services.GetRequiredService<EditPageViewModel		>(),
+				services.GetRequiredService<PreviewPageViewModel    >(),
 			});
 		}
 		private void Test()
@@ -135,7 +116,7 @@ namespace PlotDigitizer.App
 			model.Setting.FilterMax = new Rgba(126, 254, 254, byte.MaxValue);
 			model.Setting.DataType = DataType.Discrete;
 
-			provider.GetRequiredService<PageManager>().GoToByTypeCommand.Execute(typeof(PreviewPage));
+			provider.GetRequiredService<MainWindowViewModel>().PageManager.GoToByTypeCommand.Execute(typeof(PreviewPageViewModel));
 		}
 	}
 }

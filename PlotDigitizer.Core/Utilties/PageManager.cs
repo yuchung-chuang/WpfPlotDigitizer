@@ -1,10 +1,9 @@
-﻿using PlotDigitizer.Core;
-using PropertyChanged;
+﻿using PropertyChanged;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PlotDigitizer.App
+namespace PlotDigitizer.Core
 {
     [AddINotifyPropertyChangedInterface]
     public class PageManager

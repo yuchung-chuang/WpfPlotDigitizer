@@ -115,6 +115,9 @@ namespace PlotDigitizer.App
 			if (!(d is Editor editor)) {
 				return;
 			}
+			if (editor.EditManager is null) {
+				return;
+			}
 			editor.EditManager.PropertyChanged += editor.EditManager_PropertyChanged;
 		}
 

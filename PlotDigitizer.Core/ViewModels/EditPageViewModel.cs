@@ -10,19 +10,23 @@ using System.Text;
 
 namespace PlotDigitizer.Core
 {
-	public class EditPageViewModel : ViewModelBase
+	public class EditPageViewModel : PageViewModelBase
 	{
         public IEnumerable<string> UndoList => EditManager?.TagList?.GetRange(0, EditManager.Index + 1).Reverse<string>();
 
         public IEnumerable<string> RedoList => EditManager?.TagList?.GetRange(EditManager.Index, EditManager.TagList.Count - EditManager.Index);
 
-        public EditManager<Image<Rgba, byte>> EditManager { get; set; } = new EditManager<Image<Rgba, byte>>();
+        public EditManager<Image<Rgba, byte>> EditManager { 
+            get; 
+            set; 
+        } = new EditManager<Image<Rgba, byte>>();
 
         public Model Model { get; private set; }
         public bool IsEnabled => Model != null && Model.FilteredImage != null;
         
 		public EditPageViewModel()
 		{
+            Name = "EditPage";
             EditManager.PropertyChanged += EditManager_PropertyChanged;
 		}
 		public EditPageViewModel(Model model) : this()

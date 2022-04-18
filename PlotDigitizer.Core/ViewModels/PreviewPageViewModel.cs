@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace PlotDigitizer.Core
 {
-	public class PreviewPageViewModel : ViewModelBase
+	public class PreviewPageViewModel : PageViewModelBase
 	{
 		private readonly IMessageBoxService messageBox;
 		private readonly IFileDialogService fileDialog;
@@ -37,6 +37,7 @@ namespace PlotDigitizer.Core
 		public Model Model { get; }
 		public PreviewPageViewModel()
 		{
+			Name = "PreviewPage";
 			ExportCommand = new RelayCommand(Export, CanExport);
 		}
 		public PreviewPageViewModel(Model model,
@@ -172,6 +173,19 @@ namespace PlotDigitizer.Core
 		}
 
 		private bool CanExport() => Model?.Data?.Count() > 0;
+
+		public override void Enter()
+		{
+			base.Enter();
+			if (IsEnabled) {
+				ExtractPoints();
+			}
+		}
+
+		public override void Leave()
+		{
+			base.Leave();
+		}
 	}
 
 	public enum ExportResults

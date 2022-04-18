@@ -7,9 +7,9 @@ namespace PlotDigitizer.App
 	{
 		private readonly PageManager pageManager;
 
-		public AutoPageTurner(PageManager pageManager, LoadPageViewModel viewModel)
+		public AutoPageTurner(MainWindowViewModel mainWindowViewModel, LoadPageViewModel viewModel)
 		{
-			this.pageManager = pageManager;
+			pageManager = mainWindowViewModel.PageManager;
 			viewModel.NextPage += LoadPage_NextPage;
 		}
 

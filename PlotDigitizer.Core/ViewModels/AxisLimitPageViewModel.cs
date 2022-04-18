@@ -2,7 +2,7 @@
 
 namespace PlotDigitizer.Core
 {
-	public class AxisLimitPageViewModel : ViewModelBase
+	public class AxisLimitPageViewModel : PageViewModelBase
 	{
 		public double AxLimXMax { get; set; } = double.NaN;
 		public double AxLimXMin { get; set; } = double.NaN;
@@ -38,7 +38,7 @@ namespace PlotDigitizer.Core
 
 		public AxisLimitPageViewModel()
 		{
-
+			Name = "AxisLimitPage";
 		}
 		public AxisLimitPageViewModel(Model model) : this()
 		{
@@ -65,6 +65,22 @@ namespace PlotDigitizer.Core
 			if (e.PropertyName == nameof(Model.InputImage)) {
 				OnPropertyChanged(nameof(IsEnabled));
 			}
+		}
+
+		public override void Enter()
+		{
+			base.Enter();
+
+		}
+
+		public override void Leave()
+		{
+			base.Leave();
+			if (!IsEnabled) {
+				return;
+			}
+			Model.Setting.AxisLimit = AxisLimit;
+			Model.Setting.AxisLogBase = AxisLogBase;
 		}
 	}
 }

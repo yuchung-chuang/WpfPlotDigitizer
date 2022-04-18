@@ -14,7 +14,6 @@ namespace PlotDigitizer.App
 	public partial class LoadPage : Page
 	{
 		private readonly LoadPageViewModel viewModel;
-		private readonly IServiceProvider provider;
 		private bool isDropFile;
 		private bool isDropUrl;
 		private bool isDropEnabled;
@@ -25,13 +24,7 @@ namespace PlotDigitizer.App
 #if DEBUG
 			Loaded += (s, e) => imageControl.Visibility = Visibility.Visible;
 #endif
-		}
-
-		public LoadPage(LoadPageViewModel viewModel, IServiceProvider provider) : this()
-		{
-			this.viewModel = viewModel;
-			this.provider = provider;
-			DataContext = viewModel;
+			viewModel = DataContext as LoadPageViewModel;
 		}
 
 		private void BrowseButton_Loaded(object sender, RoutedEventArgs e)
@@ -71,7 +64,7 @@ namespace PlotDigitizer.App
 			} else if (isDropUrl) {
 				var uri = new Uri(e.Data.GetData(DataFormats.Text).ToString(), UriKind.Absolute);
 
-				var popup = provider.GetRequiredService<ProgressPopup>();
+				var popup = new ProgressPopup();
 				popup.Owner = Application.Current.MainWindow;
 				popup.IsIndeterminate = false;
 				

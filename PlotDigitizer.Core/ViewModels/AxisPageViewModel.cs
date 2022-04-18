@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace PlotDigitizer.Core
 {
-	public class AxisPageViewModel : ViewModelBase
+	public class AxisPageViewModel : PageViewModelBase
 	{
 		public double AxisLeft { get; set; }
 		public double AxisTop { get; set; }
@@ -31,6 +31,7 @@ namespace PlotDigitizer.Core
 		public RelayCommand GetAxisCommand { get; set; }
 		public AxisPageViewModel()
 		{
+			Name = "AxisPage";
 			GetAxisCommand = new RelayCommand(GetAxis, CanGetAxis);
 		}
 
@@ -62,6 +63,28 @@ namespace PlotDigitizer.Core
 		{
 			var image = Model.InputImage;
 			AxisLocation = Methods.GetAxisLocation(image) ?? new Rectangle(image.Width / 4, image.Height / 4, image.Width / 2, image.Height / 2);
+		}
+
+		public override void Enter()
+		{
+			base.Enter();
+			if (!IsEnabled) {
+				return;
+			}
+			if (Model.Setting.AxisLocation == default) {
+				if (GetAxisCommand.CanExecute()) {
+					GetAxisCommand.Execute();
+				}
+			}
+		}
+
+		public override void Leave()
+		{
+			base.Leave();
+			if (!IsEnabled) {
+				return;
+			}
+			Model.Setting.AxisLocation = AxisLocation;
 		}
 	}
 }

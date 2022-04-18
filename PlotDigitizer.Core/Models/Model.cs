@@ -10,7 +10,7 @@ using System.Reflection;
 
 namespace PlotDigitizer.Core
 {
-	public class Model : INotifyPropertyChanged
+	public class Model : INotifyPropertyChanged, IModel
 	{
 		private readonly ILogger<Model> logger;
 
@@ -134,11 +134,5 @@ namespace PlotDigitizer.Core
 			FilteredImage = Methods.FilterRGB(CroppedImage, Setting.FilterMin, Setting.FilterMax);
 			logger.LogInformation($"{GetType()}.{MethodBase.GetCurrentMethod().Name} completed.");
 		}
-	}
-
-	public enum SaveType
-	{
-		CSV,
-		TXT,
 	}
 }

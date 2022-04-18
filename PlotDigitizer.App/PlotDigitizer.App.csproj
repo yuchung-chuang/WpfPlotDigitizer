@@ -8,18 +8,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ViewModels\**" />
+    <EmbeddedResource Remove="ViewModels\**" />
+    <None Remove="ViewModels\**" />
+    <Page Remove="ViewModels\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Controls\Editor\EditManager.cs" />
     <Compile Remove="Services\FileDialogResults.cs" />
     <Compile Remove="Services\IAwaitTaskService.cs" />
     <Compile Remove="Services\IFileDialogService.cs" />
     <Compile Remove="Services\IMessageBoxService.cs" />
+    <Compile Remove="Utilities\PageManager.cs" />
     <Compile Remove="Utilities\RelayCommand.cs" />
-    <Compile Remove="ViewModels\AxisLimitPageViewModel.cs" />
-    <Compile Remove="ViewModels\AxisPageViewModel.cs" />
-    <Compile Remove="ViewModels\EditPageViewModel.cs" />
-    <Compile Remove="ViewModels\FilterPageViewModel.cs" />
-    <Compile Remove="ViewModels\LoadPageViewModel.cs" />
-    <Compile Remove="ViewModels\PreviewPageViewModel.cs" />
   </ItemGroup>
 
   <ItemGroup>

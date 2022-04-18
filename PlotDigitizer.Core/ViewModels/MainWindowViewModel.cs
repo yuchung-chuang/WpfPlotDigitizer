@@ -7,14 +7,14 @@ using System.Text;
 using System.Text.Json;
 using System.Xml.Serialization;
 
-namespace PlotDigitizer.App
+namespace PlotDigitizer.Core
 {
 	public class MainWindowViewModel : ViewModelBase
 	{
 		private readonly IFileDialogService fileDialogService;
 		private readonly IMessageBoxService messageBoxService;
 
-		public PageManager PageManager { get; private set; }
+		public PageManager PageManager { get; private set; } = new PageManager();
 
 		public IEnumerable<string> PageNameList => PageManager.PageList.Select(vm => vm.Name);
 
@@ -30,12 +30,10 @@ namespace PlotDigitizer.App
 		}
 
 		public MainWindowViewModel(
-			PageManager pageManager, 
 			Model model,
 			IFileDialogService fileDialogService,
 			IMessageBoxService messageBoxService)
 		{
-			PageManager = pageManager;
 			Model = model;
 			this.fileDialogService = fileDialogService;
 			this.messageBoxService = messageBoxService;

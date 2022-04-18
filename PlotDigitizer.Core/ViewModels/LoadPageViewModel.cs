@@ -4,7 +4,7 @@ using System;
 
 namespace PlotDigitizer.Core
 {
-	public class LoadPageViewModel : ViewModelBase
+	public class LoadPageViewModel : PageViewModelBase
 	{
 		private readonly IFileDialogService fileDialogService;
 		private readonly IClipboard clipboard;
@@ -15,16 +15,16 @@ namespace PlotDigitizer.Core
 		public RelayCommand BrowseCommand { get; private set; }
 		public RelayCommand PasteCommand { get; private set; }
 
-		public Model Model { get; }
+		public IModel Model { get; }
 
 		public LoadPageViewModel()
 		{
+			Name = "LoadPage";
 			BrowseCommand = new RelayCommand(Browse);
 			PasteCommand = new RelayCommand(Paste);
 		}
 
-
-		public LoadPageViewModel(Model model, 
+		public LoadPageViewModel(IModel model, 
 			IFileDialogService fileDialogService,
 			IClipboard clipboard,
 			IMessageBoxService messageBox) : this()

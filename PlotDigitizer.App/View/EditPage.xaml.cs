@@ -14,25 +14,16 @@ namespace PlotDigitizer.App
 {
 	public partial class EditPage : Page
 	{
-		private readonly EditPageViewModel viewModel;
+		private EditPageViewModel viewModel;
 
-		public Model Model { get; }
+		public Model Model { get; private set; }
 
 		public EditPage()
 		{
 			InitializeComponent();
 			Loaded += EditPage_Loaded;
 			Unloaded += EditPage_Unloaded;
-		}
 
-
-		public EditPage(Model model, EditPageViewModel viewModel) : this()
-		{
-			Model = model;
-			this.viewModel = viewModel;
-			DataContext = viewModel;
-			model.PropertyChanged += Model_PropertyChanged;
-			viewModel.EditManager.PropertyChanged += EditManager_PropertyChanged;
 		}
 
 		/// <summary>
@@ -40,6 +31,11 @@ namespace PlotDigitizer.App
 		/// </summary>
 		private void EditPage_Loaded(object sender, RoutedEventArgs e)
 		{
+			viewModel = DataContext as EditPageViewModel;
+			Model = viewModel.Model;
+			Model.PropertyChanged += Model_PropertyChanged;
+			viewModel.EditManager.PropertyChanged += EditManager_PropertyChanged;
+
 			if (!viewModel.IsEnabled) {
 				return;
 			}
@@ -69,6 +65,8 @@ namespace PlotDigitizer.App
 			if (!viewModel.IsEnabled) {
 				return;
 			}
+			Model.PropertyChanged -= Model_PropertyChanged;
+			viewModel.EditManager.PropertyChanged -= EditManager_PropertyChanged;
 			Model.EdittedImage = editor.Image;
 		}
 

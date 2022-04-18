@@ -14,17 +14,11 @@ using System.Xml.Serialization;
 
 namespace PlotDigitizer.App
 {
-	[AddINotifyPropertyChangedInterface]
 	public partial class MainWindow : Window
 	{
 		public MainWindow()
 		{
 			InitializeComponent();
-		}
-
-		public MainWindow(MainWindowViewModel viewModel) : this()
-		{
-			DataContext = viewModel;
 		}
 
 		private void mainFrame_Navigating(object sender, NavigatingCancelEventArgs e)
