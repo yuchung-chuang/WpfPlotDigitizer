@@ -1,9 +1,8 @@
-﻿using PlotDigitizer.Core;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Drawing;
 
-namespace PlotDigitizer.App
+namespace PlotDigitizer.Core
 {
 	public class AxisPageViewModel : ViewModelBase
 	{

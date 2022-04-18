@@ -38,5 +38,23 @@ namespace PlotDigitizer.App
 			
 			return result;
 		}
+
+		public async Task RunAsync(Action<CancellationToken> func)
+		{
+			Mouse.OverrideCursor = Cursors.Wait;
+
+			var cts = new CancellationTokenSource();
+			var token = cts.Token;
+			var saveTask = new Task(() => func.Invoke(token), token);
+
+			popup.Owner = Application.Current.MainWindow;
+			popup.Canceled += (sender, e) => cts.Cancel();
+			popup.Show();
+
+			saveTask.Start();
+			await saveTask;
+			popup.Close();
+			Mouse.OverrideCursor = null;
+		}
 	}
 }

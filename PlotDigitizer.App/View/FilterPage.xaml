@@ -4,12 +4,13 @@
 			xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			xmlns:local="clr-namespace:PlotDigitizer.App"
+			xmlns:core="clr-namespace:PlotDigitizer.Core;assembly=PlotDigitizer.Core"
 			mc:Ignorable="d"
 			d:DesignHeight="450"
 			d:DesignWidth="800"
 			Title="FilterPage"
 			x:Name="root"
-			d:DataContext="{d:DesignInstance Type=local:FilterPageViewModel, IsDesignTimeCreatable=True}">
+			d:DataContext="{d:DesignInstance Type=core:FilterPageViewModel, IsDesignTimeCreatable=True}">
 
 	<DockPanel IsEnabled="{Binding IsEnabled}">
 		<UniformGrid Rows="3"

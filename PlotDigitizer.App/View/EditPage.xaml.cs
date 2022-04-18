@@ -12,17 +12,11 @@ using System.Windows.Controls.Primitives;
 
 namespace PlotDigitizer.App
 {
-	public partial class EditPage : Page, INotifyPropertyChanged
+	public partial class EditPage : Page
 	{
 		private readonly EditPageViewModel viewModel;
 
 		public Model Model { get; }
-
-		public event PropertyChangedEventHandler PropertyChanged;
-
-		//public Image<Rgba, byte> Image => editor?.Image;
-		//public EditManager<Image<Rgba, byte>> EditManager => editor?.EditManager;
-
 
 		public EditPage()
 		{
@@ -49,7 +43,6 @@ namespace PlotDigitizer.App
 			if (!viewModel.IsEnabled) {
 				return;
 			}
-			//OnPropertyChanged(nameof(Enabled));
 			if (!viewModel.EditManager.IsInitialised) {
 				editor.Initialise(Model.FilteredImage);
 				editor.EditManager.Initialise(Model.FilteredImage);
@@ -85,11 +78,6 @@ namespace PlotDigitizer.App
 				UndoComboBox.SelectedIndex = 0;
 				RedoComboBox.SelectedIndex = 0;
 			}
-		}
-
-		private void OnPropertyChanged(string propertyName)
-		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 
 		private void UndoComboBox_DropDownClosed(object sender, EventArgs e)

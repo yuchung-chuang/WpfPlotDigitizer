@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace PlotDigitizer.App
+namespace PlotDigitizer.Core
 {
 	public class RelayCommand : ICommand
 	{

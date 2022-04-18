@@ -134,7 +134,7 @@ namespace PlotDigitizer.App
 			IsPanning = false;
 		}
 
-		private static bool InputCheck(FrameworkElement element, MouseButtonEventArgs e)
+		private static bool InputCheck(FrameworkElement element, MouseButtonEventArgs _)
 		{
 			var mouseButton = GetMouseButton(element);
 			var key = GetModifierKeys(element);
@@ -313,28 +313,17 @@ namespace PlotDigitizer.App
 		/// <param name="durationMs">動畫的時長。</param>
 		public static void BeginAnimation<PropertyType>(this IAnimatable animatable, DependencyProperty dp, PropertyType to, double durationMs)
 		{
-			DependencyObject animation;
 			var duration = TimeSpan.FromMilliseconds(durationMs);
-			switch (to) {
-				case int i:
-					animation = new Int32Animation(i, duration);
-					break;
-				case double d:
-					animation = new DoubleAnimation(d, duration);
-					break;
-				case Color color:
-					animation = new ColorAnimation(color, duration);
-					break;
-				case Thickness thickness:
-					animation = new ThicknessAnimation(thickness, duration);
-					break;
-				case Rect rect:
-					animation = new RectAnimation(rect, duration);
-					break;
-				default:
-					throw new NotSupportedException();
-			}
-			animatable.BeginAnimation(dp, animation as AnimationTimeline);
+			AnimationTimeline animation = to switch
+			{
+				int i => new Int32Animation(i, duration),
+				double d => new DoubleAnimation(d, duration),
+				Color color => new ColorAnimation(color, duration),
+				Thickness thickness => new ThicknessAnimation(thickness, duration),
+				Rect rect => new RectAnimation(rect, duration),
+				_ => throw new NotSupportedException(),
+			};
+			animatable.BeginAnimation(dp, animation);
 		}
 	}
 }

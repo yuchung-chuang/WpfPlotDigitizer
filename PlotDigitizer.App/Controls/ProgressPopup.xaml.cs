@@ -1,14 +1,17 @@
-﻿using System;
+﻿using PropertyChanged;
+using System;
 using System.Windows;
 
 namespace PlotDigitizer.App
 {
-	/// <summary>
-	/// Interaction logic for WaitWindow.xaml
-	/// </summary>
+	[AddINotifyPropertyChangedInterface]
 	public partial class ProgressPopup : Window
 	{
 		public event EventHandler Canceled;
+
+		public int Value { get; set; }
+
+		public bool IsIndeterminate { get; set; } = true;
 
 		public ProgressPopup()
 		{

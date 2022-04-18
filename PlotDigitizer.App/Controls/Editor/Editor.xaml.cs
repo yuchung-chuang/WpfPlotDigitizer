@@ -1,5 +1,6 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
+using PlotDigitizer.Core;
 using PropertyChanged;
 using System;
 using System.ComponentModel;
@@ -98,6 +99,8 @@ namespace PlotDigitizer.App
 			Unloaded += Editor_Unloaded;
 			ImageControl.SizeChanged += ImageControl_SizeChanged;
 		}
+
+		[SuppressPropertyChangedWarnings]
 		private static void OnEditorStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			if (!(d is Editor editor)) {
@@ -105,6 +108,8 @@ namespace PlotDigitizer.App
 			}
 			editor.EditorState.Enter(editor);
 		}
+		
+		[SuppressPropertyChangedWarnings]
 		private static void OnEditManagerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			if (!(d is Editor editor)) {

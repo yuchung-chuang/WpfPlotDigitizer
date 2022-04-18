@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PropertyChanged;
+using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -184,6 +185,7 @@ namespace PlotDigitizer.App
 				AxisHeight = mousePos.Y - AxisTop;
 		}
 
+		[SuppressPropertyChangedWarnings]
 		private static void OnAxisLeftChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			var axis = d as Axis;
@@ -191,6 +193,7 @@ namespace PlotDigitizer.App
 			axis.OnPropertyChanged(nameof(AxisRelative));
 		}
 
+		[SuppressPropertyChangedWarnings]
 		private static void OnAxisTopChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			var axis = d as Axis;
@@ -198,18 +201,21 @@ namespace PlotDigitizer.App
 			axis.OnPropertyChanged(nameof(AxisRelative));
 		}
 
+		[SuppressPropertyChangedWarnings]
 		private static void OnAxisWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			var axis = d as Axis;
 			axis.OnPropertyChanged(nameof(AxisRelative));
 		}
 
+		[SuppressPropertyChangedWarnings]
 		private static void OnAxisHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			var axis = d as Axis;
 			axis.OnPropertyChanged(nameof(AxisRelative));
 		}
 
+		[SuppressPropertyChangedWarnings]
 		private static void OnImageSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			var axis = d as Axis;
@@ -261,11 +267,11 @@ namespace PlotDigitizer.App
 			}
 		}
 
-		private bool InputCheck(MouseButtonEventArgs e)
+		private bool InputCheck(MouseButtonEventArgs _)
 		{
 			return IsPressed(MouseButton);
 
-			bool IsPressed(MouseButton mouseButton)
+			static bool IsPressed(MouseButton mouseButton)
 			{
 				return mouseButton switch
 				{

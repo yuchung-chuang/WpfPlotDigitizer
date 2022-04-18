@@ -1,4 +1,5 @@
-﻿using PropertyChanged;
+﻿using PlotDigitizer.Core;
+using PropertyChanged;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,7 +16,10 @@ namespace PlotDigitizer.App
         /// <summary>
         /// Public read/write access to allow two-way binding 
         /// </summary>
+        [OnChangedMethod(nameof(OnPageIndexChanged))]
         public int PageIndex { get; set; } = 0;
+
+        [OnChangedMethod(nameof(OnPageTypeListChanged))]
         public List<Type> PageTypeList { get; private set; }
 
         public Page CurrentPage => serviceProvider.GetService(PageTypeList[PageIndex]) as Page;
@@ -59,5 +63,15 @@ namespace PlotDigitizer.App
         private void GoTo(Type type) => PageIndex = PageTypeList.FindIndex(t => t == type);
 
         private bool CanGoTo(Type type) => PageTypeList.Any(t => t == type);
+        private void OnPageIndexChanged()
+        {
+            BackCommand.RaiseCanExecuteChanged();
+            NextCommand.RaiseCanExecuteChanged();
+        }
+        private void OnPageTypeListChanged()
+        {
+            GoToCommand.RaiseCanExecuteChanged();
+            GoToByTypeCommand.RaiseCanExecuteChanged();
+        }
     }
 }

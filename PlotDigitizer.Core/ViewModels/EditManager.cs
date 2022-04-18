@@ -1,10 +1,8 @@
-﻿
-using PlotDigitizer.Core;
-using PropertyChanged;
+﻿using PropertyChanged;
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace PlotDigitizer.App
+namespace PlotDigitizer.Core
 {
 	public class EditManager<TObject> : INotifyPropertyChanged
 	{

@@ -10,14 +10,16 @@
 				Width="200"
 				WindowStartupLocation="CenterOwner"
 				WindowState="Normal"
-				ResizeMode="NoResize">
-	<Grid>
+				ResizeMode="NoResize"
+				Name="root">
+	<Grid DataContext="{Binding ElementName=root}">
 		<ProgressBar Height="20"
 								 Width="160"
 								 Margin="0,29,0,0"
 								 HorizontalAlignment="Center"
-								 IsIndeterminate="True"
 								 VerticalAlignment="Top"
+								 IsIndeterminate="{Binding IsIndeterminate}"
+								 Value="{Binding Value}"
 								 d:LayoutOverrides="Height" />
 		<Button Height="20"
 						Width="50"

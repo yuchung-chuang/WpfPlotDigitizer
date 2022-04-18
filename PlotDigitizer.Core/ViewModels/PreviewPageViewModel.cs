@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using PlotDigitizer.Core;
 using PropertyChanged;
 using System;
 using System.ComponentModel;
@@ -9,7 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 
-namespace PlotDigitizer.App
+namespace PlotDigitizer.Core
 {
 	public class PreviewPageViewModel : ViewModelBase
 	{

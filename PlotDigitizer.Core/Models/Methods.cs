@@ -5,6 +5,7 @@ using Emgu.CV.Util;
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 
@@ -46,10 +47,19 @@ namespace PlotDigitizer.Core
 
 		public static Image<Rgba, byte> CropImage(Image<Rgba, byte> image, Rectangle roi)
 		{
-			roi.X = Math.Max(roi.X, 0);
-			roi.Y = Math.Max(roi.Y, 0);
-			roi.Width = Math.Min(roi.Width, image.Width);
-			roi.Height = Math.Min(roi.Height, image.Height);
+			if (roi.X >= image.Width || roi.X < 0) {
+				roi.X = 0;
+			}
+			if (roi.Y >= image.Height || roi.Y < 0) {
+				roi.Y = 0;
+			}
+			if (roi.X + roi.Width > image.Width) {
+				roi.Width = image.Width - roi.X;
+			}
+			if (roi.Y + roi.Height > image.Height) {
+				roi.Height = image.Height - roi.Y;
+			}
+			Debug.Assert(roi.Right <= image.Width && roi.Bottom <= image.Height);
 			return image.Copy(roi);
 		}
 

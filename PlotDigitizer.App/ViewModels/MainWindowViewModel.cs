@@ -39,15 +39,6 @@ namespace PlotDigitizer.App
 			Model = model;
 			this.fileDialogService = fileDialogService;
 			this.messageBoxService = messageBoxService;
-			pageManager.Initialise(new List<Type>
-			{
-				typeof(LoadPage),
-				typeof(AxisLimitPage),
-				typeof(AxisPage),
-				typeof(FilterPage),
-				typeof(EditPage),
-				typeof(PreviewPage)
-			});
 		}
 
 		private void SaveSetting()

@@ -1,21 +1,20 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
-using Microsoft.Win32;
 using PlotDigitizer.Core;
-using PropertyChanged;
 using System;
-using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace PlotDigitizer.App
 {
 	public partial class LoadPage : Page
 	{
 		private readonly LoadPageViewModel viewModel;
+		private readonly IServiceProvider provider;
 		private bool isDropFile;
 		private bool isDropUrl;
 		private bool isDropEnabled;
@@ -28,9 +27,10 @@ namespace PlotDigitizer.App
 #endif
 		}
 
-		public LoadPage(LoadPageViewModel viewModel) : this()
+		public LoadPage(LoadPageViewModel viewModel, IServiceProvider provider) : this()
 		{
 			this.viewModel = viewModel;
+			this.provider = provider;
 			DataContext = viewModel;
 		}
 
@@ -41,34 +41,8 @@ namespace PlotDigitizer.App
 
 		private void Paste_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			PasteImage();
-		}
-
-		private void SetModelImage(BitmapSource source)
-		{
-			viewModel.Model.InputImage = source.ToBitmap().ToImage<Rgba, byte>();
-			viewModel.RaiseNextPage();
-		}
-
-		private BitmapSource LoadImage(string filename)
-		{
-			try {
-				return new BitmapImage(new Uri(filename));
-			}
-			catch (Exception ex) {
-				MessageBox.Show(ex.Message, "Warning");
-				return null;
-			}
-		}
-		private void PasteImage()
-		{
-			if (Clipboard.ContainsImage()) {
-				SetModelImage(Clipboard.GetImage());
-			} else if (Clipboard.ContainsFileDropList()) {
-				SetModelImage(LoadImage(Clipboard.GetFileDropList()[0]));
-			} else {
-				MessageBox.Show("Clipboard does not contain image.", "Warning");
-				return;
+			if (viewModel.PasteCommand.CanExecute()) {
+				viewModel.PasteCommand.Execute();
 			}
 		}
 
@@ -93,11 +67,34 @@ namespace PlotDigitizer.App
 		{
 			if (isDropFile) {
 				var filename = (e.Data.GetData(DataFormats.FileDrop) as string[])[0];
-				var image = LoadImage(filename);
-				SetModelImage(image);
+				viewModel.SetModelImage(new Image<Rgba, byte>(filename));
 			} else if (isDropUrl) {
 				var uri = new Uri(e.Data.GetData(DataFormats.Text).ToString(), UriKind.Absolute);
-				SetModelImage(new BitmapImage(uri));
+
+				var popup = provider.GetRequiredService<ProgressPopup>();
+				popup.Owner = Application.Current.MainWindow;
+				popup.IsIndeterminate = false;
+				
+				var bitmapImage = new BitmapImage();
+				bitmapImage.BeginInit();
+				bitmapImage.UriSource = uri;
+				bitmapImage.DownloadProgress += (s, e) =>
+				{
+					popup.Value = e.Progress;
+				};
+				bitmapImage.DownloadCompleted += (s, e) =>
+				{
+					viewModel.SetModelImage(bitmapImage.ToBitmap().ToImage<Rgba, byte>());
+					popup.Close();
+				};
+				bitmapImage.DownloadFailed += (s, e) =>
+				{
+					MessageBox.Show(e.ErrorException.Message);
+					popup.Close();
+				};
+				bitmapImage.EndInit();
+
+				popup.Show();
 			}
 		}
 	}

@@ -8,10 +8,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controls\Editor\EditManager.cs" />
     <Compile Remove="Services\FileDialogResults.cs" />
     <Compile Remove="Services\IAwaitTaskService.cs" />
     <Compile Remove="Services\IFileDialogService.cs" />
     <Compile Remove="Services\IMessageBoxService.cs" />
+    <Compile Remove="Utilities\RelayCommand.cs" />
+    <Compile Remove="ViewModels\AxisLimitPageViewModel.cs" />
+    <Compile Remove="ViewModels\AxisPageViewModel.cs" />
+    <Compile Remove="ViewModels\EditPageViewModel.cs" />
+    <Compile Remove="ViewModels\FilterPageViewModel.cs" />
+    <Compile Remove="ViewModels\LoadPageViewModel.cs" />
+    <Compile Remove="ViewModels\PreviewPageViewModel.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,7 +29,13 @@
   <ItemGroup>
     <PackageReference Include="Emgu.CV.Bitmap" Version="4.5.5.4823" />
     <PackageReference Include="Emgu.CV.runtime.windows" Version="4.5.5.4823" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="6.0.0" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
     <PackageReference Include="PropertyChanged.Fody" Version="3.4.0" />
     <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
@@ -36,6 +50,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Assets\test_image.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
