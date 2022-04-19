@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 
 namespace PlotDigitizer.Core
 {
-	public interface IClipboard
+	public interface IClipboardService
 	{
 		bool ContainsFileDropList();
 		bool ContainsImage();

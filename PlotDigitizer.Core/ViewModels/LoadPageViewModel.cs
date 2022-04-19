@@ -16,7 +16,7 @@ namespace PlotDigitizer.Core
 	{
 		private readonly IFileDialogService fileDialogService;
 		private readonly IAwaitTaskService awaitTaskService;
-		private readonly IClipboard clipboard;
+		private readonly IClipboardService clipboard;
 		private readonly IMessageBoxService messageBox;
 
 		public event EventHandler NextPage;
@@ -38,7 +38,7 @@ namespace PlotDigitizer.Core
 		public LoadPageViewModel(Model model,
 			IFileDialogService fileDialogService,
 			IAwaitTaskService awaitTaskService,
-			IClipboard clipboard,
+			IClipboardService clipboard,
 			IMessageBoxService messageBox) : this()
 		{
 			Model = model;

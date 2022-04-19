@@ -33,7 +33,7 @@ namespace PlotDigitizer.App
 					services.AddTransient<IMessageBoxService, MessageBoxService>()
 					.AddTransient<IFileDialogService, FileDialogService>()
 					.AddTransient<IAwaitTaskService, AwaitTaskService>()
-					.AddTransient<IClipboard, ClipboardService>()
+					.AddTransient<IClipboardService, ClipboardService>()
 
 					.AddTransient<AutoPageTurner>()
 

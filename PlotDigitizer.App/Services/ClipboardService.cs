@@ -6,7 +6,7 @@ using System.Windows;
 
 namespace PlotDigitizer.App
 {
-	public class ClipboardService : IClipboard
+	public class ClipboardService : IClipboardService
 	{
 		public bool ContainsImage() => Clipboard.ContainsImage();
 
