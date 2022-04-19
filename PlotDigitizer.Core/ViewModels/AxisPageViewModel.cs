@@ -65,7 +65,8 @@ namespace PlotDigitizer.Core
 		private void GetAxis()
 		{
 			var image = Model.InputImage;
-			AxisLocation = Methods.GetAxisLocation(image) ?? new Rectangle(image.Width / 4, image.Height / 4, image.Width / 2, image.Height / 2);
+			AxisLocation = Methods.GetAxisLocation(image) ?? 
+				new Rectangle(image.Width / 4, image.Height / 4, image.Width / 2, image.Height / 2);
 		}
 
 		public override void Enter()

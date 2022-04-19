@@ -111,7 +111,7 @@ namespace PlotDigitizer.App
 			setting.Load(settingTmp);
 
 			var mainWindowViewModel = provider.GetRequiredService<MainWindowViewModel>();
-			mainWindowViewModel.PageManager.GoToByTypeCommand.Execute(typeof(PreviewPageViewModel));
+			mainWindowViewModel.PageManager.GoToByTypeCommand.Execute(typeof(EditPageViewModel));
 		}
 	}
 }
