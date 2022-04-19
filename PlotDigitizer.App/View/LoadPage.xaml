@@ -20,10 +20,10 @@
 														 EventArgsConverter="{local:DropEventArgsConverter}"/>
 		</i:EventTrigger>
 	</i:Interaction.Triggers>
-	<UserControl.CommandBindings>
-		<CommandBinding Command="ApplicationCommands.Paste"
-										Executed="Paste_Executed" />
-	</UserControl.CommandBindings>
+	<i:Interaction.Behaviors>
+		<local:RelayCommandBinding ApplicationCommand="{x:Static ApplicationCommands.Paste}"
+															 Command="{Binding PasteCommand}" />
+	</i:Interaction.Behaviors>
 	<Grid>
 		<Grid Name="objectGroup"
 					HorizontalAlignment="Center"
@@ -69,9 +69,11 @@
 							Content="Browse"
 							HorizontalAlignment="Center"
 							VerticalAlignment="Bottom"
-							Command="{Binding BrowseCommand}"
-							Loaded="BrowseButton_Loaded"/>
-
+							Command="{Binding BrowseCommand}">
+				<i:Interaction.Behaviors>
+					<local:FocusOnLoaded />
+				</i:Interaction.Behaviors>
+			</Button>
 		</Grid>
 		<Image x:Name="imageControl"
 					 HorizontalAlignment="Left"

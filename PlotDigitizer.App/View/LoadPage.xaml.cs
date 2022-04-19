@@ -12,32 +12,12 @@ namespace PlotDigitizer.App
 {
 	public partial class LoadPage : UserControl
 	{
-		private LoadPageViewModel viewModel;
-
 		public LoadPage()
 		{
 			InitializeComponent();
 #if DEBUG
 			Loaded += (s, e) => imageControl.Visibility = Visibility.Visible;
 #endif
-			Loaded += LoadPage_Loaded;
-		}
-
-		private void LoadPage_Loaded(object sender, RoutedEventArgs e)
-		{
-			viewModel = DataContext as LoadPageViewModel;
-		}
-
-		private void BrowseButton_Loaded(object sender, RoutedEventArgs e)
-		{
-			(sender as UIElement).Focus();
-		}
-
-		private void Paste_Executed(object sender, ExecutedRoutedEventArgs e)
-		{
-			if (viewModel.PasteCommand.CanExecute()) {
-				viewModel.PasteCommand.Execute();
-			}
 		}
 
 		private void Page_DragOver(object sender, DragEventArgs e)
@@ -56,6 +36,5 @@ namespace PlotDigitizer.App
 				e.Handled = true;
 			}
 		}
-
 	}
 }

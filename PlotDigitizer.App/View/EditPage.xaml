@@ -12,6 +12,12 @@
 			x:Name="root"
 			d:DataContext="{d:DesignInstance Type=core:EditPageViewModel, IsDesignTimeCreatable=True}">
 
+	<i:Interaction.Behaviors>
+		<local:RelayCommandBinding ApplicationCommand="{x:Static ApplicationCommands.Undo}"
+															 Command="{Binding EditManager.UndoCommand}" />
+		<local:RelayCommandBinding ApplicationCommand="{x:Static ApplicationCommands.Redo}"
+															 Command="{Binding EditManager.RedoCommand}" />
+	</i:Interaction.Behaviors>
 	<DockPanel IsEnabled="{Binding IsEnabled}">
 		<DockPanel DockPanel.Dock="Top"
 							 Height="30"

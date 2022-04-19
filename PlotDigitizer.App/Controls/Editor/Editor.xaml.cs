@@ -174,15 +174,6 @@ namespace PlotDigitizer.App
 		{
 			var mainWindow = Application.Current.MainWindow;
 			mainWindow.PreviewKeyDown += MainWindow_KeyDown;
-			
-			undoCommandBinding = new CommandBinding(ApplicationCommands.Undo,
-				(s, e) => EditManager.UndoCommand.Execute(),
-				(s, e) => e.CanExecute = EditManager.UndoCommand.CanExecute());
-			redoCommandBinding = new CommandBinding(ApplicationCommands.Redo,
-				(s, e) => EditManager.RedoCommand.Execute(),
-				(s, e) => e.CanExecute = EditManager.RedoCommand.CanExecute());
-			mainWindow.CommandBindings.Add(undoCommandBinding);
-			mainWindow.CommandBindings.Add(redoCommandBinding);
 
 			editManager = EditManager; // keep a reference for unsubscription when unloading
 			editManager.PropertyChanged += EditManager_PropertyChanged;
@@ -194,8 +185,6 @@ namespace PlotDigitizer.App
 				return;
 			}
 			mainWindow.PreviewKeyDown -= MainWindow_KeyDown;
-			mainWindow.CommandBindings.Remove(undoCommandBinding);
-			mainWindow.CommandBindings.Remove(redoCommandBinding);
 
 			editManager.PropertyChanged -= EditManager_PropertyChanged;
 		}
