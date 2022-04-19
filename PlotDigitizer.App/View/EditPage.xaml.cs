@@ -36,7 +36,6 @@ namespace PlotDigitizer.App
 			}
 			if (!viewModel.EditManager.IsInitialised) {
 				editor.Initialise(Model.FilteredImage);
-				editor.EditManager.Initialise(Model.FilteredImage);
 			} else {
 				editor.Initialise(editor.EditManager.CurrentObject.Copy());
 			}
@@ -51,7 +50,6 @@ namespace PlotDigitizer.App
 		{
 			if (e.PropertyName == nameof(Core.Model.FilteredImage)) {
 				editor.Initialise(Model.FilteredImage);
-				editor.EditManager.Initialise(Model.FilteredImage);
 			}
 		}
 
@@ -73,25 +71,25 @@ namespace PlotDigitizer.App
 			}
 		}
 
-		private void UndoComboBox_DropDownClosed(object sender, EventArgs e)
-		{
-			var comboBox = sender as ComboBox;
-			if (comboBox.SelectedIndex <= 0)
-				return;
-			var targetIndex = viewModel.EditManager.Index - comboBox.SelectedIndex;
-			if (viewModel.EditManager.GoToCommand.CanExecute(targetIndex))
-				viewModel.EditManager.GoToCommand.Execute(targetIndex);
-		}
+		//private void UndoComboBox_DropDownClosed(object sender, EventArgs e)
+		//{
+		//	var comboBox = sender as ComboBox;
+		//	if (comboBox.SelectedIndex <= 0)
+		//		return;
+		//	var targetIndex = viewModel.EditManager.Index - comboBox.SelectedIndex;
+		//	if (viewModel.EditManager.GoToCommand.CanExecute(targetIndex))
+		//		viewModel.EditManager.GoToCommand.Execute(targetIndex);
+		//}
 
-		private void RedoComboBox_DropDownClosed(object sender, EventArgs e)
-		{
-			var comboBox = sender as ComboBox;
-			if (comboBox.SelectedIndex <= 0)
-				return;
-			var targetIndex = viewModel.EditManager.Index + comboBox.SelectedIndex;
-			if (viewModel.EditManager.GoToCommand.CanExecute(targetIndex))
-				viewModel.EditManager.GoToCommand.Execute(targetIndex);
-		}
+		//private void RedoComboBox_DropDownClosed(object sender, EventArgs e)
+		//{
+		//	var comboBox = sender as ComboBox;
+		//	if (comboBox.SelectedIndex <= 0)
+		//		return;
+		//	var targetIndex = viewModel.EditManager.Index + comboBox.SelectedIndex;
+		//	if (viewModel.EditManager.GoToCommand.CanExecute(targetIndex))
+		//		viewModel.EditManager.GoToCommand.Execute(targetIndex);
+		//}
 
 	}
 }

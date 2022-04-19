@@ -20,6 +20,13 @@ namespace PlotDigitizer.Core
 			this.filterMin = filterMin;
 			this.filterMax = filterMax;
 			this.dataType = dataType;
+
+			//axisLimit.Updated += (s, e) => RaisePropetyChanged(nameof(AxisLimit));
+			//axisLogBase.Updated += (s, e) => RaisePropetyChanged(nameof(AxisLogBase));
+			//axisLocation.Updated += (s, e) => RaisePropetyChanged(nameof(AxisLocation));
+			//filterMin.Updated += (s, e) => RaisePropetyChanged(nameof(FilterMin));
+			//filterMax.Updated += (s, e) => RaisePropetyChanged(nameof(FilterMax));
+			//dataType.Updated += (s, e) => RaisePropetyChanged(nameof(DataType));
 		}
 
 		public override RectangleD AxisLimit

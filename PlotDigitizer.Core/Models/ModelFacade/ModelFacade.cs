@@ -57,6 +57,13 @@ namespace PlotDigitizer.Core
 			this.edittedImage = edittedImage;
 			this.previewImage = previewImage;
 			this.data = data;
+
+			inputImage.Updated += (s, e) => RaisePropertyChanged(nameof(InputImage));
+			croppedImage.Updated += (s, e) => RaisePropertyChanged(nameof(CroppedImage));
+			filteredImage.Updated += (s, e) => RaisePropertyChanged(nameof(FilteredImage));
+			edittedImage.Updated += (s, e) => RaisePropertyChanged(nameof(EdittedImage));
+			previewImage.Updated += (s, e) => RaisePropertyChanged(nameof(PreviewImage));
+			data.Updated += (s, e) => RaisePropertyChanged(nameof(Data));
 		}
 	}
 }

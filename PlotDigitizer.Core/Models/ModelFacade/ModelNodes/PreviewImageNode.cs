@@ -21,8 +21,10 @@ namespace PlotDigitizer.Core
 		{
 			this.edittedImage = edittedImage;
 			this.dataType = dataType;
-			edittedImage.Updated += DependencyUpdated;
-			dataType.Updated += DependencyUpdated;
+			edittedImage.Updated += (s,e) => OnOutdated();
+			edittedImage.Outdated += (s,e) => OnOutdated();
+			dataType.Updated += (s,e) => OnOutdated();
+			dataType.Outdated += (s,e) => OnOutdated();
 		}
 
 		public override void Update()

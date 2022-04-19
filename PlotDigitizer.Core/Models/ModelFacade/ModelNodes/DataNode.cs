@@ -18,10 +18,13 @@ namespace PlotDigitizer.Core
 			this.previewImage = previewImage;
 			this.axisLimit = axisLimit;
 			this.axisLogBase = axisLogBase;
-			previewImage.Updated += DependencyUpdated;
-			axisLimit.Updated += DependencyUpdated;
-			axisLogBase.Updated += DependencyUpdated;
-			dataType.Updated += DependencyUpdated;
+			previewImage.Updated += (s,e) => OnOutdated();
+			previewImage.Outdated += (s,e) => OnOutdated();
+			axisLimit.Updated += (s,e) => OnOutdated();
+			axisLimit.Outdated += (s,e) => OnOutdated();
+			axisLogBase.Updated += (s,e) => OnOutdated();
+			axisLogBase.Outdated += (s,e) => OnOutdated();
+			//dataType.Updated += (s,e) => OnOutdated();
 		}
 
 		public override void Update()

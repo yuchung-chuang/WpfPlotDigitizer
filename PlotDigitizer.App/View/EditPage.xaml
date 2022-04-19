@@ -5,6 +5,7 @@
 			xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			xmlns:local="clr-namespace:PlotDigitizer.App"
 			xmlns:core="clr-namespace:PlotDigitizer.Core;assembly=PlotDigitizer.Core"
+			xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
 			mc:Ignorable="d"
 			d:DesignHeight="450"
 			d:DesignWidth="800"
@@ -54,8 +55,14 @@
 					</Path>
 				</Button>
 				<ComboBox Name="UndoComboBox"
-									ItemsSource="{Binding UndoList}"
-									DropDownClosed="UndoComboBox_DropDownClosed" />
+									ItemsSource="{Binding UndoList}">
+					<i:Interaction.Triggers>
+						<i:EventTrigger EventName="DropDownClosed">
+							<i:InvokeCommandAction Command="{Binding UndoToCommand}"
+																		 CommandParameter="{Binding ElementName=UndoComboBox, Path=SelectedIndex}" />
+						</i:EventTrigger>
+					</i:Interaction.Triggers>
+				</ComboBox>
 				<Button Name="RedoButton"
 								Command="{Binding EditManager.RedoCommand}">
 					<Path Data="M127.16875 92.25L132.4625 100.1625A6.15 6.15 0 0 0 141.05625 101.78125C143.90625 99.84375 144.68125 95.96875 142.7875 93.1375L129.0625 72.625A6.15 6.15 0 0 0 120.46875 71.00625L99.8125 85.04375A6.2625 6.2625 0 0 0 98.08125 93.68125A6.15 6.15 0 0 0 106.675 95.30625L115.075 89.5875C108.925 110.0875 90.125 125 67.89375 125C40.6625 125 18.58125 102.6125 18.58125 75S40.6625 25 67.89375 25C71.3 25 74.0625 22.2 74.0625 18.75S71.3 12.5 67.89375 12.5C33.85 12.5 6.25 40.48125 6.25 75S33.85 137.5 67.89375 137.5C96.04375 137.5 119.78125 118.375 127.16875 92.25z"
@@ -73,8 +80,14 @@
 					</Path>
 				</Button>
 				<ComboBox Name="RedoComboBox"
-									ItemsSource="{Binding RedoList}"
-									DropDownClosed="RedoComboBox_DropDownClosed" />
+									ItemsSource="{Binding RedoList}">
+					<i:Interaction.Triggers>
+						<i:EventTrigger EventName="DropDownClosed">
+							<i:InvokeCommandAction Command="{Binding RedoToCommand}"
+																		 CommandParameter="{Binding ElementName=RedoComboBox, Path=SelectedIndex}" />
+						</i:EventTrigger>
+					</i:Interaction.Triggers>
+				</ComboBox>
 			</StackPanel>
 			<StackPanel Orientation="Horizontal"
 									HorizontalAlignment="Right">

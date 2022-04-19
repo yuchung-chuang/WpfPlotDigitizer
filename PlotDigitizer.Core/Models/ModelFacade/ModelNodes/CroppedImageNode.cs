@@ -12,8 +12,10 @@ namespace PlotDigitizer.Core
 		{
 			this.inputImage = inputImage;
 			this.axisLocation = axisLocation;
-			inputImage.Updated += DependencyUpdated;
-			axisLocation.Updated += DependencyUpdated;
+			inputImage.Updated += (s,e) => OnOutdated();
+			inputImage.Outdated += (s, e) => OnOutdated();
+			axisLocation.Updated += (s, e) => OnOutdated();
+			axisLocation.Outdated += (s, e) => OnOutdated();
 		}
 
 		public override void Update()

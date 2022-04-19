@@ -14,10 +14,19 @@ namespace PlotDigitizer.Core
 		/// </summary>
 		protected virtual void OnUpdated()
 		{
-			Updated?.Invoke(this, EventArgs.Empty);
 			IsUpdated = true;
+			Updated?.Invoke(this, EventArgs.Empty);
 		}
 
+		public event EventHandler Outdated;
+		/// <summary>
+		/// should be hooked to dependencies' <see cref="Updated"/> and <see cref="Outdated"/> events in the constructor.
+		/// </summary>
+		protected virtual void OnOutdated()
+		{
+			IsUpdated = false; 
+			Outdated?.Invoke(this, EventArgs.Empty); // broadcast the update to every dependent nodes
+		}
 		public bool CheckUpdate()
 		{
 			if (!IsUpdated) {
@@ -40,10 +49,5 @@ namespace PlotDigitizer.Core
 			return Value;
 		}
 
-		protected virtual void DependencyUpdated(object sender, EventArgs e)
-		{
-			Updated?.Invoke(this, EventArgs.Empty); // broadcast the update to every dependent nodes
-			IsUpdated = false; 
-		}
 	}
 }
