@@ -86,11 +86,7 @@
 				</DataTemplate>
 			</Grid.Resources>
 
-			<Frame x:Name="mainFrame"
-						 NavigationUIVisibility="Hidden"
-						 Navigating="mainFrame_Navigating"
-						 Content="{Binding PageManager.CurrentPage}" />
-			<!--<ContentControl Content="{Binding PageManager.CurrentPage}" />-->
+			<ContentControl Content="{Binding PageManager.CurrentPage}" />
 
 		</Grid>
 	</DockPanel>

@@ -10,7 +10,7 @@ using System.Windows.Media.Imaging;
 
 namespace PlotDigitizer.App
 {
-	public partial class LoadPage : Page
+	public partial class LoadPage : UserControl
 	{
 		private LoadPageViewModel viewModel;
 

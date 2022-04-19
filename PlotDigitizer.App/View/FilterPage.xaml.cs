@@ -2,7 +2,7 @@
 
 namespace PlotDigitizer.App
 {
-	public partial class FilterPage : Page
+	public partial class FilterPage : UserControl
 	{
 		public FilterPage()
 		{

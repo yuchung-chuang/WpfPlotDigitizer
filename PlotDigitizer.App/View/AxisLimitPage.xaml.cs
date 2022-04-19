@@ -2,7 +2,7 @@
 
 namespace PlotDigitizer.App
 {
-	public partial class AxisLimitPage : Page
+	public partial class AxisLimitPage : UserControl
 	{
 		public AxisLimitPage()
 		{

@@ -2,7 +2,7 @@
 
 namespace PlotDigitizer.App
 {
-	public partial class PreviewPage : Page
+	public partial class PreviewPage : UserControl
 	{
 		public PreviewPage()
 		{

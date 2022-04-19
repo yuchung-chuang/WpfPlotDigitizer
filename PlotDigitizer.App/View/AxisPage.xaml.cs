@@ -2,7 +2,7 @@
 
 namespace PlotDigitizer.App
 {
-	public partial class AxisPage : Page
+	public partial class AxisPage : UserControl
 	{
 		public AxisPage()
 		{

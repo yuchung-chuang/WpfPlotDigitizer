@@ -7,7 +7,7 @@ using System.Windows.Controls.Primitives;
 
 namespace PlotDigitizer.App
 {
-	public partial class EditPage : Page
+	public partial class EditPage : UserControl
 	{
 		private EditPageViewModel viewModel;
 

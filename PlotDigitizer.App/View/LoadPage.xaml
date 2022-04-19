@@ -1,4 +1,4 @@
-﻿<Page x:Class="PlotDigitizer.App.LoadPage"
+﻿<UserControl x:Class="PlotDigitizer.App.LoadPage"
 			xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -9,7 +9,6 @@
 			mc:Ignorable="d"
 			d:DesignHeight="450"
 			d:DesignWidth="800"
-			Title="LoadPage"
 			DragOver="Page_DragOver"
 			AllowDrop="True"
 			Background="Transparent"
@@ -21,10 +20,10 @@
 														 EventArgsConverter="{local:DropEventArgsConverter}"/>
 		</i:EventTrigger>
 	</i:Interaction.Triggers>
-	<Page.CommandBindings>
+	<UserControl.CommandBindings>
 		<CommandBinding Command="ApplicationCommands.Paste"
 										Executed="Paste_Executed" />
-	</Page.CommandBindings>
+	</UserControl.CommandBindings>
 	<Grid>
 		<Grid Name="objectGroup"
 					HorizontalAlignment="Center"
@@ -82,4 +81,4 @@
 					 Source="{Binding Model.InputImage, Converter={local:ImageSourceConverter}}"/>
 
 	</Grid>
-</Page>
+</UserControl>

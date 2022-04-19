@@ -184,7 +184,7 @@ namespace PlotDigitizer.App
 			mainWindow.CommandBindings.Add(undoCommandBinding);
 			mainWindow.CommandBindings.Add(redoCommandBinding);
 
-			editManager = EditManager; // keep a reference
+			editManager = EditManager; // keep a reference for unsubscription when unloading
 			editManager.PropertyChanged += EditManager_PropertyChanged;
 		}
 
@@ -200,7 +200,7 @@ namespace PlotDigitizer.App
 			editManager.PropertyChanged -= EditManager_PropertyChanged;
 		}
 
-		private void mainGrid_MouseDown(object sender, MouseButtonEventArgs e)
+		private void MainGrid_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			if (!MouseDownInputCheck()) {
 				return;
@@ -214,13 +214,13 @@ namespace PlotDigitizer.App
 			}
 		}
 
-		private void mainGrid_MouseMove(object sender, MouseEventArgs e)
+		private void MainGrid_MouseMove(object sender, MouseEventArgs e)
 		{
 			EditorState.MouseMove(this, e);
 			EdittingState.MouseMove(this, e);
 		}
 
-		private void mainGrid_MouseUp(object sender, MouseButtonEventArgs e)
+		private void MainGrid_MouseUp(object sender, MouseButtonEventArgs e)
 		{
 			EditorState.MouseUp(this, e);
 			EdittingState.MouseUp(this, e);

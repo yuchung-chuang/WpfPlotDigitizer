@@ -534,8 +534,7 @@ namespace PlotDigitizer.App
 		private T EnforceInstance<T>(string partName)
 			where T : FrameworkElement, new()
 		{
-			var element = GetTemplateChild(partName) as T;
-			if (element == null)
+			if (!(GetTemplateChild(partName) is T element))
 				element = new T();
 			return element;
 		}
@@ -565,27 +564,16 @@ namespace PlotDigitizer.App
 	/// </summary>
 	public class RangeSelectionChangedEventArgs : RoutedEventArgs
 	{
-		private long newRangeStart;
-
-		private long newRangeStop;
 
 		/// <summary>
 		/// The new range start selected in the range slider
 		/// </summary>
-		public long NewRangeStart
-		{
-			get { return newRangeStart; }
-			set { newRangeStart = value; }
-		}
+		public long NewRangeStart { get; set; }
 
 		/// <summary>
 		/// The new range stop selected in the range slider
 		/// </summary>
-		public long NewRangeStop
-		{
-			get { return newRangeStop; }
-			set { newRangeStop = value; }
-		}
+		public long NewRangeStop { get; set; }
 
 		/// <summary>
 		/// sets the range start and range stop for the event args
@@ -594,8 +582,8 @@ namespace PlotDigitizer.App
 		/// <param name="newRangeStop">The new range stop set</param>
 		internal RangeSelectionChangedEventArgs(long newRangeStart, long newRangeStop)
 		{
-			this.newRangeStart = newRangeStart;
-			this.newRangeStop = newRangeStop;
+			this.NewRangeStart = newRangeStart;
+			this.NewRangeStop = newRangeStop;
 		}
 
 		/// <summary>

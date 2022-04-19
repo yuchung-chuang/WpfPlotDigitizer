@@ -11,9 +11,9 @@
 	<Grid x:Name="mainGrid"
 				DataContext="{Binding ElementName=root}"
 				Background="Transparent"
-				PreviewMouseDown="mainGrid_MouseDown"
-				PreviewMouseMove="mainGrid_MouseMove"
-				PreviewMouseUp="mainGrid_MouseUp">
+				PreviewMouseDown="MainGrid_MouseDown"
+				PreviewMouseMove="MainGrid_MouseMove"
+				PreviewMouseUp="MainGrid_MouseUp">
 		<Viewbox>
 			<Grid>
 				<Grid.Background>
