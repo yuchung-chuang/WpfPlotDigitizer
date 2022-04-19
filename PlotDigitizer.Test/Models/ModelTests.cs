@@ -29,7 +29,7 @@ namespace PlotDigitizer.Core.Tests
 			{
 				InputImage = new BitmapImage(new Uri(@"pack://siteoforigin:,,,/Assets/test_image.png")).ToBitmap().ToImage<Rgba, byte>()
 			};
-			var setting = new Setting()
+			var setting = new SettingFacade()
 			{
 				AxisLimit = new RectangleD(900, 0, 70, 20),
 				AxisLocation = new Rectangle(138, 100, 632, 399),
@@ -45,7 +45,7 @@ namespace PlotDigitizer.Core.Tests
 		public void ModelTest2()
 		{
 			var model = new Model();
-			var setting = new Setting()
+			var setting = new SettingFacade()
 			{
 				AxisLimit = new RectangleD(900, 0, 70, 20),
 				AxisLocation = new Rectangle(138, 100, 632, 399),
@@ -63,7 +63,7 @@ namespace PlotDigitizer.Core.Tests
 		public void LoadTest()
 		{
 			var model = new Model();
-			var setting = new Setting()
+			var setting = new SettingFacade()
 			{
 				AxisLimit = new RectangleD(900, 0, 70, 20),
 				AxisLocation = new Rectangle(138, 100, 632, 399),
@@ -73,7 +73,7 @@ namespace PlotDigitizer.Core.Tests
 			};
 			model.Load(setting);
 
-			Assert.IsTrue(typeof(Setting).GetProperties().All(prop => 
+			Assert.IsTrue(typeof(SettingFacade).GetProperties().All(prop => 
 				// need to use Equals() instead of == operator to do value comparison (as ValueType overrides the Equals() method)
 				Equals(prop.GetValue(setting), prop.GetValue(model.Setting))));
 		}

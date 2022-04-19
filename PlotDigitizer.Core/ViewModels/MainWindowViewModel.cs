@@ -1,9 +1,6 @@
-﻿using PlotDigitizer.Core;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Xml.Serialization;
 
@@ -11,6 +8,7 @@ namespace PlotDigitizer.Core
 {
 	public class MainWindowViewModel : ViewModelBase
 	{
+		private readonly Setting setting;
 		private readonly IFileDialogService fileDialogService;
 		private readonly IMessageBoxService messageBoxService;
 
@@ -31,10 +29,12 @@ namespace PlotDigitizer.Core
 
 		public MainWindowViewModel(
 			Model model,
+			Setting setting,
 			IFileDialogService fileDialogService,
-			IMessageBoxService messageBoxService)
+			IMessageBoxService messageBoxService) : this()
 		{
 			Model = model;
+			this.setting = setting;
 			this.fileDialogService = fileDialogService;
 			this.messageBoxService = messageBoxService;
 		}
@@ -51,7 +51,7 @@ namespace PlotDigitizer.Core
 			switch (Path.GetExtension(results.FileName).ToLower()) {
 				default:
 				case ".json":
-					var json = JsonSerializer.Serialize(Model.Setting, new JsonSerializerOptions
+					var json = JsonSerializer.Serialize(setting, new JsonSerializerOptions
 					{
 						Converters = { new RgbaConverter() }
 					});
@@ -60,7 +60,7 @@ namespace PlotDigitizer.Core
 				case ".xml": {
 						var xmlSerializer = new XmlSerializer(typeof(Setting));
 						using var stream = new FileStream(results.FileName, FileMode.OpenOrCreate);
-						xmlSerializer.Serialize(stream, Model.Setting);
+						xmlSerializer.Serialize(stream, setting.Copy());
 						break;
 					}
 			}
@@ -96,7 +96,7 @@ namespace PlotDigitizer.Core
 					messageBoxService.Show_OK("Cannot load this file. File extension must be either .json or .xml", "PlotDigitizer");
 					return;
 			}
-			Model.Load(setting);
+			this.setting.Load(setting);
 			messageBoxService.Show_OK("Setting is loaded successfully.", "PlotDigitizer");
 		}
 	}

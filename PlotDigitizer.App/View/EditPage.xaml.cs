@@ -1,11 +1,6 @@
-﻿using Emgu.CV;
-using Emgu.CV.Structure;
-using PlotDigitizer.Core;
-using PropertyChanged;
+﻿using PlotDigitizer.Core;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -54,7 +49,7 @@ namespace PlotDigitizer.App
 		/// </summary>
 		private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName == nameof(Model.FilteredImage)) {
+			if (e.PropertyName == nameof(Core.Model.FilteredImage)) {
 				editor.Initialise(Model.FilteredImage);
 				editor.EditManager.Initialise(Model.FilteredImage);
 			}

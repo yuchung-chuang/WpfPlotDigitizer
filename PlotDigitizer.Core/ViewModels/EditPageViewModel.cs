@@ -1,16 +1,13 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
-using PlotDigitizer.Core;
-using PropertyChanged;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 
 namespace PlotDigitizer.Core
 {
-	public class EditPageViewModel : PageViewModelBase
+    public class EditPageViewModel : PageViewModelBase
 	{
         public IEnumerable<string> UndoList => EditManager?.TagList?.GetRange(0, EditManager.Index + 1).Reverse<string>();
 
@@ -37,8 +34,8 @@ namespace PlotDigitizer.Core
 
         private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(Model.FilteredImage)) {
-                OnPropertyChanged(nameof(IsEnabled));
+            if (e.PropertyName == nameof(Core.Model.FilteredImage)) {
+                base.OnPropertyChanged(nameof(IsEnabled));
             }
         }
 

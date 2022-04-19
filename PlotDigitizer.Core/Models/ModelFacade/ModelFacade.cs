@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PlotDigitizer.Core
 {
-	public class Model2 : IModel
+	public class ModelFacade : Model
 	{
 		private readonly InputImageNode inputImage;
 		private readonly CroppedImageNode croppedImage;
@@ -13,43 +13,38 @@ namespace PlotDigitizer.Core
 		private readonly PreviewImageNode previewImage;
 		private readonly DataNode data;
 
-		public Image<Rgba, byte> InputImage
+		public override Image<Rgba, byte> InputImage
 		{
 			get => inputImage.Get();
 			set => inputImage.Set(value);
 		}
-
-		public Image<Rgba, byte> CroppedImage
+		public override Image<Rgba, byte> CroppedImage
 		{
 			get => croppedImage.Get();
-			private set => croppedImage.Set(value);
+			protected set => croppedImage.Set(value);
 		}
-
-		public Image<Rgba, byte> FilteredImage
+		public override Image<Rgba, byte> FilteredImage
 		{
 			get => filteredImage.Get();
-			private set => filteredImage.Set(value);
+			protected set => filteredImage.Set(value);
 		}
-
-		public Image<Rgba, byte> EdittedImage
+		public override Image<Rgba, byte> EdittedImage
 		{
 			get => edittedImage.Get();
 			set => edittedImage.Set(value);
 		}
-
-		public Image<Rgba, byte> PreviewImage
+		public override Image<Rgba, byte> PreviewImage
 		{
 			get => previewImage.Get();
-			private set => previewImage.Set(value);
+			protected set => previewImage.Set(value);
 		}
-
-		public IEnumerable<PointD> Data
+		public override IEnumerable<PointD> Data
 		{
 			get => data.Get();
-			private set => data.Set(value);
+			protected set => data.Set(value);
 		}
 
-		public Model2(InputImageNode inputImage,
+		public ModelFacade(InputImageNode inputImage,
 			CroppedImageNode croppedImage,
 			FilteredImageNode filteredImage,
 			EdittedImageNode edittedImage,

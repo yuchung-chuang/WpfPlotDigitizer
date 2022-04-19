@@ -1,14 +1,9 @@
-﻿using PlotDigitizer.Core;
-using Emgu.CV;
+﻿using Emgu.CV;
 using Emgu.CV.Structure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PlotDigitizer.App;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
-using System.IO.Packaging;
-using System.Text;
 using System.Windows.Media.Imaging;
 
 namespace PlotDigitizer.Core.Tests

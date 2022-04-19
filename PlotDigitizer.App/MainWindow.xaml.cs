@@ -1,16 +1,6 @@
-﻿using Microsoft.Win32;
-using PlotDigitizer.Core;
-using PropertyChanged;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
+﻿using System;
 using System.Windows;
 using System.Windows.Navigation;
-using System.Xml;
-using System.Xml.Serialization;
 
 namespace PlotDigitizer.App
 {

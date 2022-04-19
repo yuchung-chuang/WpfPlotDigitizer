@@ -7,13 +7,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace PlotDigitizer.App
 {
 	public partial class LoadPage : Page
 	{
-		private readonly LoadPageViewModel viewModel;
+		private LoadPageViewModel viewModel;
 		private bool isDropFile;
 		private bool isDropUrl;
 		private bool isDropEnabled;
@@ -24,6 +23,11 @@ namespace PlotDigitizer.App
 #if DEBUG
 			Loaded += (s, e) => imageControl.Visibility = Visibility.Visible;
 #endif
+			Loaded += LoadPage_Loaded;
+		}
+
+		private void LoadPage_Loaded(object sender, RoutedEventArgs e)
+		{
 			viewModel = DataContext as LoadPageViewModel;
 		}
 
@@ -64,10 +68,12 @@ namespace PlotDigitizer.App
 			} else if (isDropUrl) {
 				var uri = new Uri(e.Data.GetData(DataFormats.Text).ToString(), UriKind.Absolute);
 
-				var popup = new ProgressPopup();
-				popup.Owner = Application.Current.MainWindow;
-				popup.IsIndeterminate = false;
-				
+				var popup = new ProgressPopup
+				{
+					Owner = Application.Current.MainWindow,
+					IsIndeterminate = false
+				};
+
 				var bitmapImage = new BitmapImage();
 				bitmapImage.BeginInit();
 				bitmapImage.UriSource = uri;

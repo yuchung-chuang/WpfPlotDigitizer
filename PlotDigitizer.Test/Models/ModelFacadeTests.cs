@@ -3,18 +3,15 @@ using Emgu.CV.Structure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PlotDigitizer.App;
-using PlotDigitizer.Core;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Media.Imaging;
 
 namespace PlotDigitizer.Core.Tests
 {
 	[TestClass()]
-	public class Model2Tests
+	public class ModelFacadeTests
 	{
 		private ServiceProvider provider;
 
@@ -25,8 +22,8 @@ namespace PlotDigitizer.Core.Tests
 				new System.Windows.Application();
 
 			var services = new ServiceCollection();
-			services.AddSingleton<IModel, Model2>()
-				.AddSingleton<ISetting, Setting2>()
+			services.AddSingleton<Model, ModelFacade>()
+				.AddSingleton<Setting, SettingFacade>()
 				.AddModelNodes();
 
 			provider = services.BuildServiceProvider();
@@ -35,9 +32,9 @@ namespace PlotDigitizer.Core.Tests
 		[TestMethod()]
 		public void ModelTest()
 		{
-			var model = provider.GetRequiredService<IModel>();
+			var model = provider.GetRequiredService<Model>();
 			model.InputImage = new BitmapImage(new Uri(@"pack://siteoforigin:,,,/Assets/test_image.png")).ToBitmap().ToImage<Rgba, byte>();
-			var setting = provider.GetRequiredService<ISetting>();
+			var setting = provider.GetRequiredService<Setting>();
 			var settingTmp = new Setting()
 			{
 				AxisLimit = new RectangleD(900, 0, 70, 20),
@@ -54,8 +51,8 @@ namespace PlotDigitizer.Core.Tests
 		[TestMethod()]
 		public void ModelTest2()
 		{
-			var model = provider.GetRequiredService<IModel>();
-			var setting = provider.GetRequiredService<ISetting>();
+			var model = provider.GetRequiredService<Model>();
+			var setting = provider.GetRequiredService<Setting>();
 			var settingTmp = new Setting()
 			{
 				AxisLimit = new RectangleD(900, 0, 70, 20),
@@ -74,7 +71,7 @@ namespace PlotDigitizer.Core.Tests
 		[TestMethod()]
 		public void LoadTest()
 		{
-			var setting = provider.GetRequiredService<ISetting>();
+			var setting = provider.GetRequiredService<Setting>();
 			var settingTmp = new Setting()
 			{
 				AxisLimit = new RectangleD(900, 0, 70, 20),
@@ -85,7 +82,7 @@ namespace PlotDigitizer.Core.Tests
 			};
 			setting.Load(settingTmp);
 
-			Assert.IsTrue(typeof(ISetting).GetProperties().All(prop =>
+			Assert.IsTrue(typeof(Setting).GetProperties().All(prop =>
 				// need to use Equals() instead of == operator to do value comparison (as ValueType overrides the Equals() method)
 				Equals(prop.GetValue(setting), prop.GetValue(settingTmp))));
 		}

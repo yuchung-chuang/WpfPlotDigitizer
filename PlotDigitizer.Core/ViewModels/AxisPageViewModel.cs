@@ -6,6 +6,8 @@ namespace PlotDigitizer.Core
 {
 	public class AxisPageViewModel : PageViewModelBase
 	{
+		private readonly Setting setting;
+
 		public double AxisLeft { get; set; }
 		public double AxisTop { get; set; }
 		public double AxisWidth { get; set; }
@@ -35,24 +37,25 @@ namespace PlotDigitizer.Core
 			GetAxisCommand = new RelayCommand(GetAxis, CanGetAxis);
 		}
 
-		public AxisPageViewModel(Model model) : this()
+		public AxisPageViewModel(Model model, Setting setting) : this()
 		{
 			Model = model;
+			this.setting = setting;
 			model.PropertyChanged += Model_PropertyChanged;
-			model.Setting.PropertyChanged += Setting_PropertyChanged;
+			setting.PropertyChanged += Setting_PropertyChanged;
 		}
 
 		private void Setting_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			if (e.PropertyName == nameof(Setting.AxisLocation)) {
-				AxisLocation = Model.Setting.AxisLocation;
+				AxisLocation = setting.AxisLocation;
 			}
 		}
 
 		private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName == nameof(Model.InputImage)) {
-				OnPropertyChanged(nameof(IsEnabled));
+			if (e.PropertyName == nameof(Core.Model.InputImage)) {
+				base.OnPropertyChanged(nameof(IsEnabled));
 				GetAxisCommand.RaiseCanExecuteChanged();
 			}
 		}
@@ -71,7 +74,7 @@ namespace PlotDigitizer.Core
 			if (!IsEnabled) {
 				return;
 			}
-			if (Model.Setting.AxisLocation == default) {
+			if (setting.AxisLocation == default) {
 				if (GetAxisCommand.CanExecute()) {
 					GetAxisCommand.Execute();
 				}
@@ -84,7 +87,7 @@ namespace PlotDigitizer.Core
 			if (!IsEnabled) {
 				return;
 			}
-			Model.Setting.AxisLocation = AxisLocation;
+			setting.AxisLocation = AxisLocation;
 		}
 	}
 }

@@ -7,6 +7,8 @@ namespace PlotDigitizer.Core
 {
 	public class FilterPageViewModel : PageViewModelBase
 	{
+		private readonly Setting setting;
+
 		[OnChangedMethod(nameof(OnMinRChanged))]
 		public double MinR { get; set; } = 0;
 		[OnChangedMethod(nameof(OnMaxRChanged))]
@@ -51,18 +53,18 @@ namespace PlotDigitizer.Core
 			Name = "FilterPage";
 		}
 
-		public FilterPageViewModel(Model model) : this()
+		public FilterPageViewModel(Model model, Setting setting) : this()
 		{
 			Model = model;
-
+			this.setting = setting;
 			model.PropertyChanged += Model_PropertyChanged;
-			model.Setting.PropertyChanged += Setting_PropertyChanged;
+			setting.PropertyChanged += Setting_PropertyChanged;
 		}
 
 		private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName == nameof(Model.CroppedImage)) {
-				OnPropertyChanged(nameof(IsEnabled));
+			if (e.PropertyName == nameof(Core.Model.CroppedImage)) {
+				base.OnPropertyChanged(nameof(IsEnabled));
 			}
 		}
 
@@ -71,9 +73,9 @@ namespace PlotDigitizer.Core
 			if (!(sender is Setting setting)) {
 				return;
 			}
-			if (e.PropertyName == nameof(setting.FilterMin)) {
+			if (e.PropertyName == nameof(Setting.FilterMin)) {
 				FilterMin = setting.FilterMin;
-			} else if (e.PropertyName == nameof(setting.FilterMax)) {
+			} else if (e.PropertyName == nameof(Setting.FilterMax)) {
 				FilterMax = setting.FilterMax;
 			}
 		}
@@ -105,8 +107,8 @@ namespace PlotDigitizer.Core
 		{
 			base.Leave();
 			if (IsEnabled) {
-				Model.Setting.FilterMin = FilterMin;
-				Model.Setting.FilterMax = FilterMax;
+				setting.FilterMin = FilterMin;
+				setting.FilterMax = FilterMax;
 			}
 		}
 	}

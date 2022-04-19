@@ -1,11 +1,9 @@
 ﻿using Emgu.CV.Structure;
-using System;
 using System.Drawing;
 
 namespace PlotDigitizer.Core
 {
-	[Serializable]
-	public class Setting2 : ISetting
+	public class SettingFacade : Setting
 	{
 		private readonly AxisLimitNode axisLimit;
 		private readonly AxisLogBaseNode axisLogBase;
@@ -14,7 +12,7 @@ namespace PlotDigitizer.Core
 		private readonly FilterMaxNode filterMax;
 		private readonly DataTypeNode dataType;
 
-		public Setting2(AxisLimitNode axisLimit, AxisLogBaseNode axisLogBase, AxisLocationNode axisLocation, FilterMinNode filterMin, FilterMaxNode filterMax, DataTypeNode dataType)
+		public SettingFacade(AxisLimitNode axisLimit, AxisLogBaseNode axisLogBase, AxisLocationNode axisLocation, FilterMinNode filterMin, FilterMaxNode filterMax, DataTypeNode dataType)
 		{
 			this.axisLimit = axisLimit;
 			this.axisLogBase = axisLogBase;
@@ -24,42 +22,32 @@ namespace PlotDigitizer.Core
 			this.dataType = dataType;
 		}
 
-		public void Load(ISetting setting)
-		{
-			foreach (var property in typeof(ISetting).GetProperties()) {
-				var value = property.GetValue(setting);
-				if (value != default) {
-					property.SetValue(this, value);
-				}
-			}
-		}
-
-		public RectangleD AxisLimit
+		public override RectangleD AxisLimit
 		{
 			get => axisLimit.Get();
 			set => axisLimit.Set(value);
 		}
-		public PointD AxisLogBase
+		public override PointD AxisLogBase
 		{
 			get => axisLogBase.Get();
 			set => axisLogBase.Set(value);
 		}
-		public Rectangle AxisLocation
+		public override Rectangle AxisLocation
 		{
 			get => axisLocation.Get();
 			set => axisLocation.Set(value);
 		}
-		public Rgba FilterMin
+		public override Rgba FilterMin
 		{
 			get => filterMin.Get();
 			set => filterMin.Set(value);
 		}
-		public Rgba FilterMax
+		public override Rgba FilterMax
 		{
 			get => filterMax.Get();
 			set => filterMax.Set(value);
 		}
-		public DataType DataType
+		public override DataType DataType
 		{
 			get => dataType.Get();
 			set => dataType.Set(value);

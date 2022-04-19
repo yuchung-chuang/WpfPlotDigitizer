@@ -15,7 +15,7 @@ namespace PlotDigitizer.Core
 		public RelayCommand BrowseCommand { get; private set; }
 		public RelayCommand PasteCommand { get; private set; }
 
-		public IModel Model { get; }
+		public Model Model { get; }
 
 		public LoadPageViewModel()
 		{
@@ -24,7 +24,7 @@ namespace PlotDigitizer.Core
 			PasteCommand = new RelayCommand(Paste);
 		}
 
-		public LoadPageViewModel(IModel model, 
+		public LoadPageViewModel(Model model, 
 			IFileDialogService fileDialogService,
 			IClipboard clipboard,
 			IMessageBoxService messageBox) : this()

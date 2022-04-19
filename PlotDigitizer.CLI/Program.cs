@@ -10,11 +10,17 @@ using System.Text.Json;
 using System.CommandLine;
 using System.Threading.Tasks;
 using System.CommandLine.Parsing;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace PlotDigitizer.CLI
 {
 	class Program
 	{
+		private static IHost host;
+		private static ILogger<Program> logger;
+
 		// $ PlotDigitizer
 
 		// -i		/image/path 										(required)
@@ -59,21 +65,56 @@ namespace PlotDigitizer.CLI
 				}
 			}, imageOption, settingOption, outputOption);
 
+
+			host = Host.CreateDefaultBuilder()
+				.ConfigureServices((context, services) =>
+				{
+					services
+					.AddSingleton<Model, ModelFacade>()
+					.AddSingleton<Setting, SettingFacade>()
+					.AddViewModels()
+					.AddModelNodes();
+				})
+				.ConfigureLogging((context, builder) =>
+				{
+					builder.ClearProviders() // to override the default set of logging providers added by the default host
+						.AddConsole()
+						.AddDebug()
+						.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logs"));
+				})
+				.Build();
+			await host.StartAsync();
+			logger = host.Services.GetRequiredService<ILogger<Program>>();
+			logger.LogInformation("Application started.");
+
+			logger.LogInformation("Command Invoking...");
 			await rootCommand.InvokeAsync(args);
+			logger.LogInformation("Command executed.");
+
+			await host.StopAsync(TimeSpan.FromSeconds(5));
+			host.Dispose();
+			logger.LogInformation("Application terminated.");
 		}
 
 		private static void Run(FileInfo imageFile, FileInfo settingFile, FileInfo outputFile)
 		{
-			var model = new Model();
+			var model = host.Services.GetRequiredService<Model>();
+			var setting = host.Services.GetRequiredService<Setting>();
 
+			logger.LogInformation("Loading image...");
 			var image = Image.FromFile(imageFile.FullName) as Bitmap;
 			model.InputImage = image.ToImage<Rgba, byte>();
+			logger.LogInformation("Image loaded.");
 
+			logger.LogInformation("Loading setting...");
 			var json = File.ReadAllText(settingFile.FullName);
-			var setting = JsonSerializer.Deserialize(json, typeof(Setting)) as Setting;
-			model.Load(setting);
+			var settingTmp = JsonSerializer.Deserialize(json, typeof(Setting)) as Setting;
+			setting.Load(settingTmp);
+			logger.LogInformation("Setting loaded.");
 
+			logger.LogInformation("Saving data...");
 			SaveData(model.Data, outputFile.FullName);
+			logger.LogInformation("Data saved.");
 		}
 
 		private static void SaveData(IEnumerable<PointD> data, string fileName)
@@ -87,13 +128,15 @@ namespace PlotDigitizer.CLI
 						SaveAsTXT();
 						break;
 					default:
-						throw new FormatException("Output file format is not recognized. Please use either .csv or .txt as file extension.");
+						var ex = new FormatException("Output file format is not recognized. Please use either .csv or .txt as file extension.");
+						logger.LogCritical(ex.Message);
+						throw ex;
 				}
-				Console.WriteLine("The data has been exported successfully.");
+				logger.LogInformation("The data has been exported successfully.");
 			}
 			catch (Exception ex) {
-				Console.WriteLine(ex.Message);
-				Console.WriteLine("Something went wrong... try again? (y/n)");
+				logger.LogError(ex.Message);
+				logger.LogInformation("Something went wrong... try again? (y/n)");
 				var response = Console.ReadKey(); 
 				Console.WriteLine(); // insert a line break after the response key
 				if (response.Key == ConsoleKey.Y) {

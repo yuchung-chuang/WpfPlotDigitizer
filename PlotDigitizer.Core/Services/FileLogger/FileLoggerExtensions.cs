@@ -1,11 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PlotDigitizer.Core
 {
-    public static class FileLoggerExtensions
+	public static class FileLoggerExtensions
     {
         public static ILoggerFactory AddFile(this ILoggerFactory factory, string filePath)
         {

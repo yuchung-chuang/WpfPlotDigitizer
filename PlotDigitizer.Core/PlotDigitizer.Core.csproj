@@ -6,14 +6,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Models\old\**" />
+	  <EmbeddedResource Remove="Models\old\**" />
+	  <None Remove="Models\old\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Emgu.CV" Version="4.5.5.4823" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
 		<PackageReference Include="PropertyChanged.Fody" Version="3.4.0" />
 		<PackageReference Include="System.Text.Json" Version="6.0.2" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Models\ModelNodes\" />
 	</ItemGroup>
 
 </Project>

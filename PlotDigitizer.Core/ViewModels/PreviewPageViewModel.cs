@@ -12,6 +12,7 @@ namespace PlotDigitizer.Core
 {
 	public class PreviewPageViewModel : PageViewModelBase
 	{
+		private readonly Setting setting;
 		private readonly IMessageBoxService messageBox;
 		private readonly IFileDialogService fileDialog;
 		private readonly IAwaitTaskService awaitTask;
@@ -22,15 +23,15 @@ namespace PlotDigitizer.Core
 		[OnChangedMethod(nameof(OnIsDiscreteChanged))]
 		public bool IsDiscrete
 		{
-			get => Model?.Setting.DataType == DataType.Discrete;
-			set => Model.Setting.DataType = value ? DataType.Discrete : DataType.Continuous;
+			get => setting.DataType == DataType.Discrete;
+			set => setting.DataType = value ? DataType.Discrete : DataType.Continuous;
 		}
 
 		[OnChangedMethod(nameof(OnIsContinuousChanged))]
 		public bool IsContinuous
 		{
-			get => Model?.Setting.DataType == DataType.Continuous;
-			set => Model.Setting.DataType = value ? DataType.Continuous : DataType.Discrete;
+			get => setting.DataType == DataType.Continuous;
+			set => setting.DataType = value ? DataType.Continuous : DataType.Discrete;
 		}
 		public bool IsEnabled => Model != null && Model.EdittedImage != null;
 
@@ -40,35 +41,38 @@ namespace PlotDigitizer.Core
 			Name = "PreviewPage";
 			ExportCommand = new RelayCommand(Export, CanExport);
 		}
-		public PreviewPageViewModel(Model model,
+		public PreviewPageViewModel(
+			Model model,
+			Setting setting,
 			IMessageBoxService messageBox,
 			IFileDialogService fileDialog,
 			IAwaitTaskService awaitTask,
 			ILogger<PreviewPageViewModel> logger) : this()
 		{
 			Model = model;
+			this.setting = setting;
 			this.messageBox = messageBox;
 			this.fileDialog = fileDialog;
 			this.awaitTask = awaitTask;
 			this.logger = logger;
 			model.PropertyChanged += Model_PropertyChanged;
-			model.Setting.PropertyChanged += Setting_PropertyChanged;
+			setting.PropertyChanged += Setting_PropertyChanged;
 
 		}
 		private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName == nameof(Model.EdittedImage)) {
-				OnPropertyChanged(nameof(IsEnabled));
+			if (e.PropertyName == nameof(Core.Model.EdittedImage)) {
+				base.OnPropertyChanged(nameof(IsEnabled));
 				logger.LogDebug($"{GetType()}.{MethodBase.GetCurrentMethod().Name} completed.");
 			}
 		}
 
 		private void Setting_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			if (!(sender is Setting setting)) {
+			if (!(sender is Setting)) {
 				return;
 			}
-			if (e.PropertyName == nameof(setting.DataType)) {
+			if (e.PropertyName == nameof(Setting.DataType)) {
 				OnPropertyChanged(nameof(IsDiscrete));
 				OnPropertyChanged(nameof(IsContinuous));
 				logger.LogDebug($"{GetType()}.{MethodBase.GetCurrentMethod().Name} completed.");
@@ -92,7 +96,7 @@ namespace PlotDigitizer.Core
 			if (!IsEnabled) {
 				return;
 			}
-			Model.ExtractData();
+			Model.RaisePropertyChanged(nameof(Core.Model.PreviewImage));
 			logger.LogInformation($"{GetType()}.{MethodBase.GetCurrentMethod().Name} completed.");
 		}
 
@@ -154,7 +158,7 @@ namespace PlotDigitizer.Core
 					foreach (var point in Model.Data) {
 						content.AppendLine(point.X.ToString() + seperator + point.Y.ToString());
 #if DEBUG
-						Thread.Sleep(250);
+						Thread.Sleep(0);
 						//throw new Exception("Test error");
 #endif
 						if (token.IsCancellationRequested) {

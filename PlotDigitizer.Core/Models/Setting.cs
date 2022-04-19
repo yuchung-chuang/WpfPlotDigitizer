@@ -6,20 +6,33 @@ using System.Drawing;
 namespace PlotDigitizer.Core
 {
 	[Serializable]
-	public class Setting : INotifyPropertyChanged, ISetting
+	public class Setting : INotifyPropertyChanged
 	{
-		public RectangleD AxisLimit { get; set; }
-		public PointD AxisLogBase { get; set; }
-		public Rectangle AxisLocation { get; set; }
-		public Rgba FilterMin { get; set; }
-		public Rgba FilterMax { get; set; }
-		public DataType DataType { get; set; }
+		public virtual RectangleD AxisLimit { get; set; }
+		public virtual Rectangle AxisLocation { get; set; }
+		public virtual PointD AxisLogBase { get; set; }
+		public virtual Rgba FilterMax { get; set; }
+		public virtual Rgba FilterMin { get; set; }
+		public virtual DataType DataType { get; set; }
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		public void Load(ISetting setting)
+		public Setting Copy()
 		{
-			foreach (var property in typeof(ISetting).GetProperties()) {
+			return new Setting
+			{
+				AxisLimit = AxisLimit,
+				AxisLogBase = AxisLogBase,
+				AxisLocation = AxisLocation,
+				FilterMin = FilterMin,
+				FilterMax = FilterMax,
+				DataType = DataType,
+			};
+		}
+
+		public void Load(Setting setting)
+		{
+			foreach (var property in typeof(Setting).GetProperties()) {
 				var value = property.GetValue(setting);
 				if (value != default) {
 					property.SetValue(this, value);

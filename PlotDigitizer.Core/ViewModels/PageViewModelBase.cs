@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PlotDigitizer.Core
+﻿namespace PlotDigitizer.Core
 {
 	public class PageViewModelBase : ViewModelBase
 	{

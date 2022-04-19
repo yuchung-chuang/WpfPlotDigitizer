@@ -15,6 +15,7 @@
 	  <PackageReference Include="Emgu.CV" Version="4.5.5.4823" />
 	  <PackageReference Include="Emgu.CV.Bitmap" Version="4.5.5.4823" />
 	  <PackageReference Include="Emgu.CV.runtime.windows" Version="4.5.5.4823" />
+	  <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
 	  <PackageReference Include="system.commandline" Version="2.0.0-beta3.22114.1" />
 	</ItemGroup>
 
@@ -23,6 +24,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Update="appsettings.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Assets\PlotDigitizer Setting.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
