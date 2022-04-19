@@ -33,6 +33,7 @@ namespace PlotDigitizer.App
 		public static readonly DependencyProperty EditManagerProperty =
 			DependencyProperty.Register("EditManager", typeof(EditManager<Image<Rgba, byte>>), typeof(Editor), new PropertyMetadata(default));
 
+		public static readonly DependencyProperty ImageProperty = DependencyProperty.Register("Image", typeof(Image<Rgba,byte>), typeof(Editor), new PropertyMetadata(default));
 
 		public double ZoomScale { get; set; }
 		public double EraserSize => ImageControl.ActualWidth * 0.05 / ZoomScale;
@@ -75,7 +76,11 @@ namespace PlotDigitizer.App
 
 		public ImageSource ImageSource => Image?.ToBitmapSource();
 
-		public Image<Rgba, byte> Image { get; private set; }
+		public Image<Rgba,byte> Image
+		{
+			get { return (Image<Rgba,byte>)GetValue(ImageProperty); }
+			set { SetValue(ImageProperty, value); }
+		}
 
 		public EditManager<Image<Rgba, byte>> EditManager
 		{
@@ -161,7 +166,6 @@ namespace PlotDigitizer.App
 		private void EditManager_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			if (e.PropertyName == nameof(EditManager.Index)) {
-				// after using editor, editmanager somehow becomes null
 				Image = EditManager.CurrentObject.Copy();
 			}
 		}
@@ -180,7 +184,7 @@ namespace PlotDigitizer.App
 			mainWindow.CommandBindings.Add(undoCommandBinding);
 			mainWindow.CommandBindings.Add(redoCommandBinding);
 
-			editManager = EditManager; // keep a reference
+			var editManager = EditManager; // keep a reference
 			editManager.PropertyChanged += EditManager_PropertyChanged;
 		}
 
@@ -193,7 +197,7 @@ namespace PlotDigitizer.App
 			mainWindow.CommandBindings.Remove(undoCommandBinding);
 			mainWindow.CommandBindings.Remove(redoCommandBinding);
 
-			editManager.PropertyChanged -= EditManager_PropertyChanged;
+			//editManager.PropertyChanged -= EditManager_PropertyChanged;
 		}
 
 		private void mainGrid_MouseDown(object sender, MouseButtonEventArgs e)

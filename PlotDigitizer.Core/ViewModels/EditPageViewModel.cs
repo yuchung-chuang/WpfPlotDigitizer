@@ -14,7 +14,7 @@ namespace PlotDigitizer.Core
         public IEnumerable<string> RedoList => EditManager?.TagList?.GetRange(EditManager.Index, EditManager.TagList.Count - EditManager.Index);
 
         public EditManager<Image<Rgba, byte>> EditManager { get; set; } = new EditManager<Image<Rgba, byte>>();
-
+        public Image<Rgba,byte> Image { get; set; }
         public Model Model { get; private set; }
         public bool IsEnabled => Model != null && Model.FilteredImage != null;
         public RelayCommand<int> UndoToCommand { get; set; }
@@ -67,6 +67,17 @@ namespace PlotDigitizer.Core
             var targetIndex = EditManager.Index + index;
             if (EditManager.GoToCommand.CanExecute(targetIndex))
                 EditManager.GoToCommand.Execute(targetIndex);
+        }
+
+        public override void Enter()
+        {
+            base.Enter();
+        }
+
+        public override void Leave()
+        {
+            base.Leave();
+            Model.EdittedImage = Image;
         }
     }
 }

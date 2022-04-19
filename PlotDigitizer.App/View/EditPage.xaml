@@ -131,6 +131,7 @@
 									Margin="20"
 									ModifierKeys="Ctrl"
 									BlockInteraction="True"
+									Image="{Binding Image, Mode=OneWayToSource}"
 									EditManager="{Binding EditManager}"
 									ToolTip="Ctrl + left click to erase image and select region, press delete/backspace to delete a region. Left double click to complete a polygon.">
 			<local:Editor.EditorState>
