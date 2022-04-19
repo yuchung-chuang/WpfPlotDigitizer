@@ -25,8 +25,6 @@ namespace PlotDigitizer.App
 		{
 			viewModel = DataContext as EditPageViewModel;
 			Model = viewModel.Model;
-			Model.PropertyChanged += Model_PropertyChanged;
-			viewModel.EditManager.PropertyChanged += EditManager_PropertyChanged;
 
 			if (!viewModel.IsEnabled) {
 				return;
@@ -36,6 +34,8 @@ namespace PlotDigitizer.App
 			} else {
 				editor.Initialise(editor.EditManager.CurrentObject.Copy());
 			}
+			Model.PropertyChanged += Model_PropertyChanged;
+			viewModel.EditManager.PropertyChanged += EditManager_PropertyChanged;
 		}
 
 		/// <summary>
@@ -50,7 +50,12 @@ namespace PlotDigitizer.App
 
 		private void EditPage_Unloaded(object sender, RoutedEventArgs e)
 		{
-
+			if (!viewModel.IsEnabled) {
+				return;
+			}
+			// make sure to unsubscribe the events to avoid memory leak!!!
+			Model.PropertyChanged -= Model_PropertyChanged;
+			viewModel.EditManager.PropertyChanged -= EditManager_PropertyChanged;
 		}
 
 		private void EditManager_PropertyChanged(object sender, PropertyChangedEventArgs e)

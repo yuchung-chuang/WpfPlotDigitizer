@@ -184,7 +184,7 @@ namespace PlotDigitizer.App
 			mainWindow.CommandBindings.Add(undoCommandBinding);
 			mainWindow.CommandBindings.Add(redoCommandBinding);
 
-			var editManager = EditManager; // keep a reference
+			editManager = EditManager; // keep a reference
 			editManager.PropertyChanged += EditManager_PropertyChanged;
 		}
 
@@ -197,7 +197,7 @@ namespace PlotDigitizer.App
 			mainWindow.CommandBindings.Remove(undoCommandBinding);
 			mainWindow.CommandBindings.Remove(redoCommandBinding);
 
-			//editManager.PropertyChanged -= EditManager_PropertyChanged;
+			editManager.PropertyChanged -= EditManager_PropertyChanged;
 		}
 
 		private void mainGrid_MouseDown(object sender, MouseButtonEventArgs e)
