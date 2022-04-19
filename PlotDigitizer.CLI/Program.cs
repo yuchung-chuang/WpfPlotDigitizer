@@ -31,7 +31,40 @@ namespace PlotDigitizer.CLI
 		// -v		about menu											(independent)
 		static async Task Main(string[] args)
 		{
+			var rootCommand = ConfigureCommand();
 
+			host = Host.CreateDefaultBuilder()
+				.ConfigureServices((context, services) =>
+				{
+					services
+					.AddSingleton<Model, ModelFacade>()
+					.AddSingleton<Setting, SettingFacade>()
+					.AddViewModels()
+					.AddModelNodes();
+				})
+				.ConfigureLogging((context, builder) =>
+				{
+					builder.ClearProviders() // to override the default set of logging providers added by the default host
+						.AddConsole()
+						.AddDebug()
+						.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logs"));
+				})
+				.Build();
+			await host.StartAsync();
+			logger = host.Services.GetRequiredService<ILogger<Program>>();
+			logger.LogInformation("Application started.");
+
+			logger.LogInformation("Command Invoking...");
+			await rootCommand.InvokeAsync(args);
+			logger.LogInformation("Command executed.");
+
+			await host.StopAsync(TimeSpan.FromSeconds(5));
+			host.Dispose();
+			logger.LogInformation("Application terminated.");
+		}
+
+		private static RootCommand ConfigureCommand()
+		{
 			var imageOption = new Option<FileInfo>("-i").ExistingOnly();
 			imageOption.AddAlias("--image");
 			imageOption.Arity = ArgumentArity.ExactlyOne;
@@ -64,36 +97,7 @@ namespace PlotDigitizer.CLI
 					Console.WriteLine(ex.Message);
 				}
 			}, imageOption, settingOption, outputOption);
-
-
-			host = Host.CreateDefaultBuilder()
-				.ConfigureServices((context, services) =>
-				{
-					services
-					.AddSingleton<Model, ModelFacade>()
-					.AddSingleton<Setting, SettingFacade>()
-					.AddViewModels()
-					.AddModelNodes();
-				})
-				.ConfigureLogging((context, builder) =>
-				{
-					builder.ClearProviders() // to override the default set of logging providers added by the default host
-						.AddConsole()
-						.AddDebug()
-						.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logs"));
-				})
-				.Build();
-			await host.StartAsync();
-			logger = host.Services.GetRequiredService<ILogger<Program>>();
-			logger.LogInformation("Application started.");
-
-			logger.LogInformation("Command Invoking...");
-			await rootCommand.InvokeAsync(args);
-			logger.LogInformation("Command executed.");
-
-			await host.StopAsync(TimeSpan.FromSeconds(5));
-			host.Dispose();
-			logger.LogInformation("Application terminated.");
+			return rootCommand;
 		}
 
 		private static void Run(FileInfo imageFile, FileInfo settingFile, FileInfo outputFile)

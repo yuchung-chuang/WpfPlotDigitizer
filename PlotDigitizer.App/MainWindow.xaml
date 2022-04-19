@@ -5,6 +5,7 @@
 				xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 				xmlns:local="clr-namespace:PlotDigitizer.App"
 				xmlns:core="clr-namespace:PlotDigitizer.Core;assembly=PlotDigitizer.Core"
+				xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
 				mc:Ignorable="d"
 				x:Name="root"
 				Title="MainWindow"
@@ -12,6 +13,18 @@
 				Width="800"
 				WindowStartupLocation="CenterScreen"
 				d:DataContext="{d:DesignInstance Type=core:MainWindowViewModel, IsDesignTimeCreatable=True}">
+	<Window.InputBindings>
+		<KeyBinding Command="{x:Static NavigationCommands.NextPage}"
+								Gesture="Right" />
+		<KeyBinding Command="{x:Static NavigationCommands.PreviousPage}"
+								Gesture="Left" />
+	</Window.InputBindings>
+	<i:Interaction.Behaviors>
+		<local:RelayCommandBinding ApplicationCommand="{x:Static NavigationCommands.NextPage}"
+															 Command="{Binding PageManager.NextCommand}" />
+		<local:RelayCommandBinding ApplicationCommand="{x:Static NavigationCommands.PreviousPage}"
+															 Command="{Binding PageManager.BackCommand}" />
+	</i:Interaction.Behaviors>
 	<DockPanel>
 		<DockPanel DockPanel.Dock="Top">
 			<DockPanel.Resources>

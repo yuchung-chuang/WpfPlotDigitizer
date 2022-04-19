@@ -8,6 +8,5 @@ namespace PlotDigitizer.App
 		{
 			InitializeComponent();
 		}
-
 	}
 }

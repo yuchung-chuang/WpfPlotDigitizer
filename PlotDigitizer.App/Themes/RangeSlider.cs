@@ -180,6 +180,7 @@ namespace PlotDigitizer.App
 		private long movableRange = 0;
 
 		private double movableWidth = 0;
+		private EventHandler widthChangedHandler;
 
 		/// <summary>
 		/// Event raised whenever the selected range is changed
@@ -259,8 +260,19 @@ namespace PlotDigitizer.App
 			CommandBindings.Add(new CommandBinding(MoveAllBack, MoveAllBackHandler));
 
 			//hook to the size change event of the range slider
-			DependencyPropertyDescriptor.FromProperty(ActualWidthProperty, typeof(RangeSlider)).
-				AddValueChanged(this, delegate { ReCalculateWidths(); });
+			widthChangedHandler = new EventHandler((s, e) => ReCalculateWidths());
+			DependencyPropertyDescriptor
+				.FromProperty(ActualWidthProperty, typeof(RangeSlider))
+				.AddValueChanged(this, widthChangedHandler);
+			Unloaded += RangeSlider_Unloaded;
+		}
+
+		private void RangeSlider_Unloaded(object sender, RoutedEventArgs e)
+		{
+			// make sure you always unhook the extenal events to avoid event-induced memory leakages!!!
+			DependencyPropertyDescriptor
+				.FromProperty(ActualWidthProperty, typeof(RangeSlider))
+				.RemoveValueChanged(this, widthChangedHandler);
 		}
 
 		#region Command handlers
@@ -380,7 +392,7 @@ namespace PlotDigitizer.App
 		public override void OnApplyTemplate()
 		{
 			base.OnApplyTemplate();
-
+			
 			visualElementsContainer = EnforceInstance<StackPanel>("PART_RangeSliderContainer");
 			centerThumb = EnforceInstance<Thumb>("PART_MiddleThumb");
 			leftButton = EnforceInstance<RepeatButton>("PART_LeftEdge");
@@ -469,8 +481,6 @@ namespace PlotDigitizer.App
 
 		#endregion event handlers for visual elements to drag the range
 
-
-
 		#region logic to calculate the range
 
 		//recalculates the movableRange. called from the RangeStop setter, RangeStart setter and MinRange setter
@@ -528,6 +538,8 @@ namespace PlotDigitizer.App
 			e.RoutedEvent = RangeSelectionChangedEvent;
 			RaiseEvent(e);
 		}
+
+		
 
 		#region Helper
 
