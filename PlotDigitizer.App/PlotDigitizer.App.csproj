@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <Compile Remove="Controls\Editor\EditManager.cs" />
+    <Compile Remove="Services\AutoPageTurner.cs" />
     <Compile Remove="Services\FileDialogResults.cs" />
     <Compile Remove="Services\IAwaitTaskService.cs" />
     <Compile Remove="Services\IFileDialogService.cs" />
