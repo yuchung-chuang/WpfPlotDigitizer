@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
@@ -17,11 +19,13 @@ namespace PlotDigitizer.App
 	public partial class App : Application
 	{
 		private IHost host;
+		private ILogger<App> logger;
 
 		public App()
 		{
 			Startup += App_Startup;
 			Exit += App_Exit;
+			SetupExceptionHandling();
 		}
 
 		private async void App_Startup(object sender, StartupEventArgs e)
@@ -51,7 +55,7 @@ namespace PlotDigitizer.App
 				.Build();
 			await host.StartAsync();
 
-			var logger = host.Services.GetService<ILogger<App>>();
+			logger = host.Services.GetService<ILogger<App>>();
 			var config = host.Services.GetRequiredService<IConfiguration>();
 
 			logger?.LogInformation($"{this} started.");
@@ -111,6 +115,39 @@ namespace PlotDigitizer.App
 
 			var mainWindowViewModel = provider.GetRequiredService<MainWindowViewModel>();
 			mainWindowViewModel.PageManager.GoToByTypeCommand.Execute(typeof(EditPageViewModel));
+		}
+
+		private void SetupExceptionHandling()
+		{
+			AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+				LogUnhandledException((Exception)e.ExceptionObject, "AppDomain.CurrentDomain.UnhandledException");
+
+			DispatcherUnhandledException += (s, e) =>
+			{
+				LogUnhandledException(e.Exception, "Application.Current.DispatcherUnhandledException");
+				e.Handled = true;
+			};
+
+			TaskScheduler.UnobservedTaskException += (s, e) =>
+			{
+				LogUnhandledException(e.Exception, "TaskScheduler.UnobservedTaskException");
+				e.SetObserved();
+			};
+		}
+
+		private void LogUnhandledException(Exception exception, string source)
+		{
+			var message = $"Unhandled exception ({source})";
+			try {
+				var assemblyName = Assembly.GetExecutingAssembly().GetName();
+				message = string.Format("Unhandled exception in {0} v{1}", assemblyName.Name, assemblyName.Version);
+			}
+			catch (Exception ex) {
+				logger.LogError(ex, "Exception in LogUnhandledException");
+			}
+			finally {
+				logger.LogError(exception, message);
+			}
 		}
 	}
 }
