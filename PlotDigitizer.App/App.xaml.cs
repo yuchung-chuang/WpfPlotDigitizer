@@ -90,7 +90,7 @@ namespace PlotDigitizer.App
 				services.GetRequiredService<AxisLimitPageViewModel  >(),
 				services.GetRequiredService<AxisPageViewModel       >(),
 				services.GetRequiredService<FilterPageViewModel     >(),
-				//services.GetRequiredService<EditPageViewModel		>(),
+				services.GetRequiredService<EditPageViewModel       >(),
 				services.GetRequiredService<PreviewPageViewModel    >(),
 			});
 		}

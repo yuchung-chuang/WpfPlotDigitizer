@@ -31,7 +31,7 @@ namespace PlotDigitizer.App
 			DependencyProperty.Register("EditorState", typeof(EditorState), typeof(Editor), new PropertyMetadata(NoMode.Instance, OnEditorStateChanged));
 
 		public static readonly DependencyProperty EditManagerProperty =
-			DependencyProperty.Register("EditManager", typeof(EditManager<Image<Rgba,byte>>), typeof(Editor), new PropertyMetadata(default, OnEditManagerChanged));
+			DependencyProperty.Register("EditManager", typeof(EditManager<Image<Rgba, byte>>), typeof(Editor), new PropertyMetadata(default));
 
 
 		public double ZoomScale { get; set; }
@@ -45,6 +45,7 @@ namespace PlotDigitizer.App
 		private CommandBinding undoCommandBinding;
 
 		private CommandBinding redoCommandBinding;
+		private EditManager<Image<Rgba, byte>> editManager;
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
@@ -76,9 +77,9 @@ namespace PlotDigitizer.App
 
 		public Image<Rgba, byte> Image { get; private set; }
 
-		public EditManager<Image<Rgba,byte>> EditManager
+		public EditManager<Image<Rgba, byte>> EditManager
 		{
-			get { return (EditManager<Image<Rgba,byte>>)GetValue(EditManagerProperty); }
+			get { return (EditManager<Image<Rgba, byte>>)GetValue(EditManagerProperty); }
 			set { SetValue(EditManagerProperty, value); }
 		}
 
@@ -106,18 +107,6 @@ namespace PlotDigitizer.App
 				return;
 			}
 			editor.EditorState.Enter(editor);
-		}
-		
-		[SuppressPropertyChangedWarnings]
-		private static void OnEditManagerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			if (!(d is Editor editor)) {
-				return;
-			}
-			if (editor.EditManager is null) {
-				return;
-			}
-			editor.EditManager.PropertyChanged += editor.EditManager_PropertyChanged;
 		}
 
 		private void OnEdittingStateChanged()
@@ -172,6 +161,7 @@ namespace PlotDigitizer.App
 		private void EditManager_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			if (e.PropertyName == nameof(EditManager.Index)) {
+				// after using editor, editmanager somehow becomes null
 				Image = EditManager.CurrentObject.Copy();
 			}
 		}
@@ -180,6 +170,7 @@ namespace PlotDigitizer.App
 		{
 			var mainWindow = Application.Current.MainWindow;
 			mainWindow.PreviewKeyDown += MainWindow_KeyDown;
+			
 			undoCommandBinding = new CommandBinding(ApplicationCommands.Undo,
 				(s, e) => EditManager.UndoCommand.Execute(),
 				(s, e) => e.CanExecute = EditManager.UndoCommand.CanExecute());
@@ -188,6 +179,9 @@ namespace PlotDigitizer.App
 				(s, e) => e.CanExecute = EditManager.RedoCommand.CanExecute());
 			mainWindow.CommandBindings.Add(undoCommandBinding);
 			mainWindow.CommandBindings.Add(redoCommandBinding);
+
+			editManager = EditManager; // keep a reference
+			editManager.PropertyChanged += EditManager_PropertyChanged;
 		}
 
 		private void Editor_Unloaded(object sender, RoutedEventArgs e)
@@ -198,6 +192,8 @@ namespace PlotDigitizer.App
 			mainWindow.PreviewKeyDown -= MainWindow_KeyDown;
 			mainWindow.CommandBindings.Remove(undoCommandBinding);
 			mainWindow.CommandBindings.Remove(redoCommandBinding);
+
+			editManager.PropertyChanged -= EditManager_PropertyChanged;
 		}
 
 		private void mainGrid_MouseDown(object sender, MouseButtonEventArgs e)
