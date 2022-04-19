@@ -3,18 +3,24 @@
 			xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
 			xmlns:local="clr-namespace:PlotDigitizer.App"
 			xmlns:core="clr-namespace:PlotDigitizer.Core"
 			mc:Ignorable="d"
 			d:DesignHeight="450"
 			d:DesignWidth="800"
 			Title="LoadPage"
-			Drop="Page_Drop"
 			DragOver="Page_DragOver"
 			AllowDrop="True"
 			Background="Transparent"
 			x:Name="root"
 			d:DataContext="{d:DesignInstance Type=core:LoadPageViewModel, IsDesignTimeCreatable=True}">
+	<i:Interaction.Triggers>
+		<i:EventTrigger EventName="Drop">
+			<i:InvokeCommandAction Command="{Binding DropCommand}" 
+														 EventArgsConverter="{local:DropEventArgsConverter}"/>
+		</i:EventTrigger>
+	</i:Interaction.Triggers>
 	<Page.CommandBindings>
 		<CommandBinding Command="ApplicationCommands.Paste"
 										Executed="Paste_Executed" />

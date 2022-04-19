@@ -18,6 +18,7 @@ namespace PlotDigitizer.Core
 			this.previewImage = previewImage;
 			this.axisLimit = axisLimit;
 			this.axisLogBase = axisLogBase;
+			previewImage.Updated += DependencyUpdated;
 			axisLimit.Updated += DependencyUpdated;
 			axisLogBase.Updated += DependencyUpdated;
 			dataType.Updated += DependencyUpdated;

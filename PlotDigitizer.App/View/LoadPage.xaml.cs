@@ -13,9 +13,6 @@ namespace PlotDigitizer.App
 	public partial class LoadPage : Page
 	{
 		private LoadPageViewModel viewModel;
-		private bool isDropFile;
-		private bool isDropUrl;
-		private bool isDropEnabled;
 
 		public LoadPage()
 		{
@@ -45,14 +42,14 @@ namespace PlotDigitizer.App
 
 		private void Page_DragOver(object sender, DragEventArgs e)
 		{
-			isDropFile = e.Data.GetDataPresent(DataFormats.FileDrop)
+			var isDropFile = e.Data.GetDataPresent(DataFormats.FileDrop)
 				&& File.Exists((e.Data.GetData(DataFormats.FileDrop) as string[])[0]);
-			isDropUrl = e.Data.GetDataPresent(DataFormats.Text)
+			var isDropUrl = e.Data.GetDataPresent(DataFormats.Text)
 				// check if it's valid Uri
 				&& Uri.TryCreate(e.Data.GetData(DataFormats.Text).ToString(), UriKind.Absolute, out var uri)
 				// check if it's a web uri
 				&& (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
-			isDropEnabled = isDropFile || isDropUrl;
+			var isDropEnabled = isDropFile || isDropUrl;
 
 			e.Effects = isDropEnabled ? DragDropEffects.Copy : DragDropEffects.None;
 			if (!isDropEnabled) {
@@ -60,41 +57,5 @@ namespace PlotDigitizer.App
 			}
 		}
 
-		private void Page_Drop(object sender, DragEventArgs e)
-		{
-			if (isDropFile) {
-				var filename = (e.Data.GetData(DataFormats.FileDrop) as string[])[0];
-				viewModel.SetModelImage(new Image<Rgba, byte>(filename));
-			} else if (isDropUrl) {
-				var uri = new Uri(e.Data.GetData(DataFormats.Text).ToString(), UriKind.Absolute);
-
-				var popup = new ProgressPopup
-				{
-					Owner = Application.Current.MainWindow,
-					IsIndeterminate = false
-				};
-
-				var bitmapImage = new BitmapImage();
-				bitmapImage.BeginInit();
-				bitmapImage.UriSource = uri;
-				bitmapImage.DownloadProgress += (s, e) =>
-				{
-					popup.Value = e.Progress;
-				};
-				bitmapImage.DownloadCompleted += (s, e) =>
-				{
-					viewModel.SetModelImage(bitmapImage.ToBitmap().ToImage<Rgba, byte>());
-					popup.Close();
-				};
-				bitmapImage.DownloadFailed += (s, e) =>
-				{
-					MessageBox.Show(e.ErrorException.Message);
-					popup.Close();
-				};
-				bitmapImage.EndInit();
-
-				popup.Show();
-			}
-		}
 	}
 }

@@ -42,7 +42,7 @@ namespace PlotDigitizer.Core
 		private readonly Action<TParam> action;
 		private readonly Func<TParam, bool> canAction;
 
-		public RelayCommand(Action<TParam> action, Func<TParam, bool> canAction)
+		public RelayCommand(Action<TParam> action, Func<TParam, bool> canAction = null)
 		{
 			this.action = action;
 			this.canAction = canAction;

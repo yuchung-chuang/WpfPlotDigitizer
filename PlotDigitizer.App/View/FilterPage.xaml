@@ -65,6 +65,6 @@
 												 RangeStopSelected="{Binding MaxB, Mode=TwoWay}"/>
 		</UniformGrid>
 		<local:ImageViewer Margin="5"
-											 ImageSource="{Binding Image, Converter={local:ImageSourceConverter}}" />
+											 ImageSource="{Binding Image, Converter={local:ImageSourceConverter} }" />
 	</DockPanel>
 </Page>

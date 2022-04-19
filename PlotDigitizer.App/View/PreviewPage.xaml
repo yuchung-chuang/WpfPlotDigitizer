@@ -91,7 +91,7 @@
 			<Grid />
 		</DockPanel>
 		<Grid>
-			<local:ImageViewer ImageSource="{Binding Model.PreviewImage, Converter={local:ImageSourceConverter}}"
+			<local:ImageViewer ImageSource="{Binding Model.PreviewImage, Converter={local:ImageSourceConverter} }"
 												 Margin="5" />
 		</Grid>
 	</DockPanel>

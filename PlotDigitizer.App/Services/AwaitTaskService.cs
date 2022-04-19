@@ -9,48 +9,54 @@ namespace PlotDigitizer.App
 {
 	public class AwaitTaskService : IAwaitTaskService
 	{
-		public async Task<T> RunAsync<T>(Func<CancellationToken, T> func)
+		private CancellationToken token;
+		private ProgressPopup popup;
+
+		private void Prepare()
 		{
 			Mouse.OverrideCursor = Cursors.Wait;
 
 			var cts = new CancellationTokenSource();
-			var token = cts.Token;
-			var saveTask = new Task<T>(() => func.Invoke(token), token);
+			token = cts.Token;
 
-			var popup = new ProgressPopup
+			popup = new ProgressPopup
 			{
 				Owner = Application.Current.MainWindow
 			};
 			popup.Canceled += (sender, e) => cts.Cancel();
 			popup.Show();
-
-			saveTask.Start();
-			var result = await saveTask;
+		}
+		private void Cleanup()
+		{
 			popup.Close();
 			Mouse.OverrideCursor = null;
-			
+		}
+		public async Task<T> RunAsync<T>(Func<CancellationToken, T> func)
+		{
+			Prepare();
+			var saveTask = new Task<T>(() => func.Invoke(token), token);
+			saveTask.Start();
+			var result = await saveTask;
+			Cleanup();
+
 			return result;
 		}
 
 		public async Task RunAsync(Action<CancellationToken> func)
 		{
-			Mouse.OverrideCursor = Cursors.Wait;
-
-			var cts = new CancellationTokenSource();
-			var token = cts.Token;
+			Prepare();
 			var saveTask = new Task(() => func.Invoke(token), token);
-
-			var popup = new ProgressPopup
-			{
-				Owner = Application.Current.MainWindow
-			};
-			popup.Canceled += (sender, e) => cts.Cancel();
-			popup.Show();
-
 			saveTask.Start();
 			await saveTask;
-			popup.Close();
-			Mouse.OverrideCursor = null;
+			Cleanup();
+		}
+
+		public async Task<T> RunAsync<T>(Func<CancellationToken, Task<T>> func)
+		{
+			Prepare();
+			var result = await func.Invoke(token);
+			Cleanup();
+			return result;
 		}
 	}
 }
