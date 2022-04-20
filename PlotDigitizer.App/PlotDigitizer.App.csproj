@@ -1,60 +1,60 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <UseWPF>true</UseWPF>
-    <ApplicationIcon>Assets\icon_digitizer.ico</ApplicationIcon>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<UseWPF>true</UseWPF>
+		<ApplicationIcon>Assets\icon_digitizer.ico</ApplicationIcon>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="ViewModels\**" />
-    <EmbeddedResource Remove="ViewModels\**" />
-    <None Remove="ViewModels\**" />
-    <Page Remove="ViewModels\**" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Remove="ViewModels\**" />
+		<EmbeddedResource Remove="ViewModels\**" />
+		<None Remove="ViewModels\**" />
+		<Page Remove="ViewModels\**" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="Controls\Editor\EditManager.cs" />
-    <Compile Remove="Services\AutoPageTurner.cs" />
-    <Compile Remove="Services\FileDialogResults.cs" />
-    <Compile Remove="Services\IAwaitTaskService.cs" />
-    <Compile Remove="Services\IFileDialogService.cs" />
-    <Compile Remove="Services\IMessageBoxService.cs" />
-    <Compile Remove="Services\ServiceExtensions.cs" />
-    <Compile Remove="Utilities\PageManager.cs" />
-    <Compile Remove="Utilities\RelayCommand.cs" />
-    <Compile Remove="Utilities\ValueConverters\SelectionChangedEventArgsConverter.cs" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Remove="Controls\Editor\EditManager.cs" />
+		<Compile Remove="Services\AutoPageTurner.cs" />
+		<Compile Remove="Services\FileDialogResults.cs" />
+		<Compile Remove="Services\IAwaitTaskService.cs" />
+		<Compile Remove="Services\IFileDialogService.cs" />
+		<Compile Remove="Services\IMessageBoxService.cs" />
+		<Compile Remove="Services\ServiceExtensions.cs" />
+		<Compile Remove="Utilities\PageManager.cs" />
+		<Compile Remove="Utilities\RelayCommand.cs" />
+		<Compile Remove="Utilities\ValueConverters\SelectionChangedEventArgsConverter.cs" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Remove="Assets\icon_digitizer.png" />
-    <None Remove="Assets\pan.cur" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="Assets\icon_digitizer.png" />
+		<None Remove="Assets\pan.cur" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Emgu.CV.runtime.windows" Version="4.5.5.4823" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
-    <PackageReference Include="PropertyChanged.Fody" Version="3.4.0" PrivateAssets="All" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Emgu.CV.runtime.windows" Version="4.5.5.4823" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+		<PackageReference Include="PropertyChanged.Fody" Version="3.4.0" PrivateAssets="All" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\PlotDigitizer.Core\PlotDigitizer.Core.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\PlotDigitizer.Core\PlotDigitizer.Core.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Resource Include="Assets\icon_digitizer.png" />
-    <Resource Include="Assets\pan.cur" />
-  </ItemGroup>
+	<ItemGroup>
+		<Resource Include="Assets\icon_digitizer.png" />
+		<Resource Include="Assets\pan.cur" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\test_image.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Update="appsettings.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\test_image.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 
 </Project>
