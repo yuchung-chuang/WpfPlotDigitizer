@@ -28,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Assets\icon_digitizer.png" />
     <None Remove="Assets\pan.cur" />
   </ItemGroup>
 
@@ -43,6 +44,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\icon_digitizer.png" />
     <Resource Include="Assets\pan.cur" />
   </ItemGroup>
 

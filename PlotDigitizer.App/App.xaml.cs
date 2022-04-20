@@ -30,6 +30,9 @@ namespace PlotDigitizer.App
 
 		private async void App_Startup(object sender, StartupEventArgs e)
 		{
+			var splashWindow = new SplashWindow();
+			splashWindow.Show();
+
 			// app host
 			host = Host.CreateDefaultBuilder()
 				.ConfigureServices((context, services) =>
@@ -70,6 +73,7 @@ namespace PlotDigitizer.App
 			{
 				DataContext = host.Services.GetRequiredService<MainWindowViewModel>()
 			};
+			splashWindow.Close();
 			MainWindow.Show();
 			logger?.LogInformation($"{MainWindow} Loaded.");
 		}
