@@ -11,19 +11,26 @@ namespace PlotDigitizer.App
 	/// </summary>
 	public static class Zoom
 	{
-		public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.RegisterAttached(
-		  "IsEnabled",
-		  typeof(bool),
-		  typeof(Zoom),
-		  new PropertyMetadata(OnIsEnabledChanged));
+		public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.RegisterAttached("IsEnabled", typeof(bool), typeof(Zoom), new PropertyMetadata(OnIsEnabledChanged));
 
-		public static readonly DependencyProperty ModifierKeysProperty =
-			DependencyProperty.RegisterAttached("ModifierKeys", typeof(ModifierKeys), typeof(Zoom), new PropertyMetadata(ModifierKeys.None));
+		public static readonly DependencyProperty GestureProperty = DependencyProperty.RegisterAttached("Gesture", typeof(MouseGesture), typeof(Zoom), new PropertyMetadata(new MouseGesture(MouseAction.WheelClick, ModifierKeys.None)));
 
 		public static readonly DependencyProperty MouseWheelProperty =
 			DependencyProperty.RegisterAttached("MouseWheel", typeof(EventHandler<double>), typeof(Zoom), new PropertyMetadata(null));
 
 		public static readonly DependencyProperty ScaleProperty = DependencyProperty.RegisterAttached("Scale", typeof(double), typeof(Zoom), new PropertyMetadata(1d));
+
+
+		[AttachedPropertyBrowsableForType(typeof(UIElement))]
+		public static MouseGesture GetGesture(DependencyObject obj)
+		{
+			return (MouseGesture)obj.GetValue(GestureProperty);
+		}
+
+		public static void SetGesture(DependencyObject obj, MouseGesture value)
+		{
+			obj.SetValue(GestureProperty, value);
+		}
 
 		[AttachedPropertyBrowsableForType(typeof(UIElement))]
 		public static double GetScale(DependencyObject obj) 
@@ -38,17 +45,6 @@ namespace PlotDigitizer.App
 
 		public static void SetIsEnabled(DependencyObject obj, bool value)
 		  => obj.SetValue(IsEnabledProperty, value);
-
-		[AttachedPropertyBrowsableForType(typeof(UIElement))]
-		public static ModifierKeys GetModifierKeys(DependencyObject obj)
-		{
-			return (ModifierKeys)obj.GetValue(ModifierKeysProperty);
-		}
-
-		public static void SetModifierKeys(DependencyObject obj, ModifierKeys value)
-		{
-			obj.SetValue(ModifierKeysProperty, value);
-		}
 
 		[AttachedPropertyBrowsableForType(typeof(UIElement))]
 		public static EventHandler<double> GetMouseWheel(DependencyObject obj) 
@@ -76,6 +72,9 @@ namespace PlotDigitizer.App
 		private static void Element_MouseWheel(object sender, MouseWheelEventArgs e)
 		{
 			if (!(sender is FrameworkElement element)) {
+				return;
+			}
+			if (!GetGesture(element).Matches(element, e)) {
 				return;
 			}
 			var transforms = (element.RenderTransform as TransformGroup).Children;

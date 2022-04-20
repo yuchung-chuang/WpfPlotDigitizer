@@ -17,8 +17,11 @@
 		<Viewbox Name="imageViewBox">
 			<Grid>
 				<Grid local:Pan.IsEnabled="True"
-							local:Zoom.IsEnabled="True">
+							local:Pan.Gesture="LeftClick"
+							local:Zoom.IsEnabled="True"
+							local:Zoom.Gesture="WheelClick">
 					<local:Axis x:Name="axisControl"
+											Gesture="LeftClick"
 											ImageSource="{Binding Model.InputImage, Converter={local:ImageSourceConverter} }"
 											AxisLeft="{Binding AxisLeft, Mode=TwoWay}"
 											AxisTop="{Binding AxisTop, Mode=TwoWay}"

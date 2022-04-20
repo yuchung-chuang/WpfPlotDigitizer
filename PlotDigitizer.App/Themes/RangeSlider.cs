@@ -180,7 +180,7 @@ namespace PlotDigitizer.App
 		private long movableRange = 0;
 
 		private double movableWidth = 0;
-		private EventHandler widthChangedHandler;
+		private readonly EventHandler widthChangedHandler;
 
 		/// <summary>
 		/// Event raised whenever the selected range is changed

@@ -23,6 +23,9 @@ namespace PlotDigitizer.App
 		public static readonly DependencyProperty ModifierKeysProperty =
 			DependencyProperty.RegisterAttached("ModifierKeys", typeof(ModifierKeys), typeof(Pan), new PropertyMetadata(ModifierKeys.None));
 
+		public static readonly DependencyProperty GestureProperty = DependencyProperty.RegisterAttached("Gesture", typeof(MouseGesture), typeof(Pan), new PropertyMetadata(new MouseGesture(MouseAction.LeftClick)));
+
+
 		private static readonly Cursor panCursor = new Uri(@"/Assets/pan.cur", UriKind.Relative).ToCursor();
 
 		private static Cursor cursorCache;
@@ -41,6 +44,16 @@ namespace PlotDigitizer.App
 
 		public static void SetIsEnabled(UIElement element, bool value)
 		  => element.SetValue(IsEnabledProperty, value);
+
+		[AttachedPropertyBrowsableForType(typeof(UIElement))]
+		public static MouseGesture GetGesture(DependencyObject obj)
+		{
+			return (MouseGesture)obj.GetValue(GestureProperty);
+		}
+		public static void SetGesture(DependencyObject obj, MouseGesture value)
+		{
+			obj.SetValue(GestureProperty, value);
+		}
 
 		[AttachedPropertyBrowsableForType(typeof(UIElement))]
 		public static MouseButton GetMouseButton(DependencyObject obj)
@@ -90,7 +103,7 @@ namespace PlotDigitizer.App
 			if (!(sender is FrameworkElement element)) {
 				return;
 			}
-			if (!InputCheck(element, e)) {
+			if (!GetGesture(element).Matches(element, e)) {
 				return;
 			}
 			var transforms = (element.RenderTransform as TransformGroup).Children;
@@ -131,36 +144,6 @@ namespace PlotDigitizer.App
 			element.ReleaseMouseCapture();
 			element.Cursor = cursorCache;
 			IsPanning = false;
-		}
-
-		private static bool InputCheck(FrameworkElement element, MouseButtonEventArgs _)
-		{
-			var mouseButton = GetMouseButton(element);
-			var key = GetModifierKeys(element);
-			return IsMouseButtonPressed(mouseButton) && IsKeyPressed(key);
-
-			static bool IsKeyPressed(ModifierKeys key)
-			{
-				return key == ModifierKeys.None || Contains(Keyboard.Modifiers, key);
-
-				static bool Contains(ModifierKeys a, ModifierKeys b)
-				{
-					return (a & b) == b;
-				}
-			}
-
-			static bool IsMouseButtonPressed(MouseButton mouseButton)
-			{
-				return mouseButton switch
-				{
-					MouseButton.Left => Mouse.LeftButton == MouseButtonState.Pressed,
-					MouseButton.Right => Mouse.RightButton == MouseButtonState.Pressed,
-					MouseButton.Middle => Mouse.MiddleButton == MouseButtonState.Pressed,
-					MouseButton.XButton1 => Mouse.XButton1 == MouseButtonState.Pressed,
-					MouseButton.XButton2 => Mouse.XButton2 == MouseButtonState.Pressed,
-					_ => true,
-				};
-			}
 		}
 	}
 }

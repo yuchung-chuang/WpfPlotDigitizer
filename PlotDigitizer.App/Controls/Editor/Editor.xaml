@@ -29,7 +29,9 @@
 				</Grid.Background>
 				<Grid x:Name="PanZoomGrid"
 							local:Pan.IsEnabled="True"
+							local:Pan.Gesture="LeftClick"
 							local:Zoom.IsEnabled="True"
+							local:Zoom.Gesture="WheelClick"
 							local:Zoom.Scale="{Binding ZoomScale, Mode=OneWayToSource}">
 					<Image Name="ImageControl"
 								 Source="{Binding ImageSource}" />

@@ -22,7 +22,9 @@
 			</Grid.Background>
 			<Image Source="{Binding ImageSource}"
 						 local:Pan.IsEnabled="True"
-						 local:Zoom.IsEnabled="True" />
+						 local:Pan.Gesture="LeftClick"
+						 local:Zoom.IsEnabled="True"
+						 local:Zoom.Gesture="WheelClick" />
 			<Border BorderBrush="Black"
 							BorderThickness="1"/>
 		</Grid>

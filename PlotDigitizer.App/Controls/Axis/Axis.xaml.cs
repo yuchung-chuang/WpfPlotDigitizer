@@ -1,5 +1,4 @@
 ﻿using PropertyChanged;
-using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -53,6 +52,9 @@ namespace PlotDigitizer.App
 		public static readonly DependencyProperty MouseButtonProperty =
 			DependencyProperty.Register(nameof(MouseButton), typeof(MouseButton), typeof(Axis), new PropertyMetadata(MouseButton.Left));
 
+		public static readonly DependencyProperty GestureProperty = DependencyProperty.Register(nameof(Gesture), typeof(MouseGesture), typeof(Axis), new PropertyMetadata(new MouseGesture(MouseAction.LeftClick)));
+
+
 		private readonly double tol = 10;
 
 		private bool IsAdjust = false;
@@ -97,6 +99,11 @@ namespace PlotDigitizer.App
 			set => SetValue(ImageSourceProperty, value);
 		}
 
+		public MouseGesture Gesture
+		{
+			get { return (MouseGesture)GetValue(GestureProperty); }
+			set { SetValue(GestureProperty, value); }
+		}
 		public MouseButton MouseButton
 		{
 			get { return (MouseButton)GetValue(MouseButtonProperty); }
@@ -132,7 +139,7 @@ namespace PlotDigitizer.App
 		protected override void OnMouseDown(MouseButtonEventArgs e)
 		{
 			base.OnMouseDown(e);
-			if (!InputCheck(e))
+			if (!Gesture.Matches(this,e))
 				return;
 			var mousePos = e.GetPosition(gridMain);
 			State = GetState(mousePos);
@@ -266,90 +273,5 @@ namespace PlotDigitizer.App
 					break;
 			}
 		}
-
-		private bool InputCheck(MouseButtonEventArgs _)
-		{
-			return IsPressed(MouseButton);
-
-			static bool IsPressed(MouseButton mouseButton)
-			{
-				return mouseButton switch
-				{
-					MouseButton.Left => Mouse.LeftButton == MouseButtonState.Pressed,
-					MouseButton.Right => Mouse.RightButton == MouseButtonState.Pressed,
-					MouseButton.Middle => Mouse.MiddleButton == MouseButtonState.Pressed,
-					MouseButton.XButton1 => Mouse.XButton1 == MouseButtonState.Pressed,
-					MouseButton.XButton2 => Mouse.XButton2 == MouseButtonState.Pressed,
-					_ => true,
-				};
-			}
-		}
-	}
-
-	public enum AdjustType
-	{
-		None = 0,
-		Left = 1,
-		Top = 2,
-		Right = 4,
-		Bottom = 8,
-		LeftTop = Left | Top,
-		RightTop = Right | Top,
-		LeftBottom = Left | Bottom,
-		RightBottom = Right | Bottom,
-	}
-
-	public static class AxisHelpers
-	{
-		public static dynamic Add(this Enum enumA, Enum enumB)
-		{
-			var (a, b) = ConvertEnums(enumA, enumB);
-			return a | b;
-		}
-
-		public static bool Contain(this Enum enumA, Enum enumB)
-		{
-			var (a, b) = ConvertEnums(enumA, enumB);
-			return (a & b) == b;
-		}
-
-		public static double Clamp(double value, double Max, double Min)
-		{
-			if (Min > Max)
-				Swap(ref Max, ref Min);
-
-			if (value > Max)
-				return Max;
-			else if (value < Min)
-				return Min;
-			else
-				return value;
-		}
-
-		public static void Swap<T>(ref T x, ref T y) => (x, y) = (y, x);
-
-		/// <summary>
-		/// 判斷<paramref name="value"/>是否位於閉區間[<paramref name="Max"/>,<paramref name="Min"/>]中。<paramref name="excludeBoundary"/>為真時，改為判斷開區間(<paramref name="Max"/>,<paramref name="Min"/>)。
-		/// </summary>
-		public static bool IsIn(double value, double Max, double Min, bool excludeBoundary = false)
-		{
-			if (Min > Max)
-				Swap(ref Max, ref Min);
-			if (!excludeBoundary)
-				return (value <= Max && value >= Min) ? true : false;
-			else
-				return (value < Max && value > Min) ? true : false;
-		}
-
-		/// <summary>
-		/// 判斷<paramref name="A"/>是否約等於<paramref name="B"/>。
-		/// </summary>
-		/// <param name="tol">容許誤差。</param>
-		public static bool ApproxEqual(double A, double B, double tol)
-		{
-			return IsIn(A, B + tol, B - tol);
-		}
-
-		private static (ulong a, ulong b) ConvertEnums(Enum enumA, Enum enumB) => (Convert.ToUInt64(enumA), Convert.ToUInt64(enumB));
 	}
 }
