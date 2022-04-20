@@ -10,12 +10,11 @@ namespace PlotDigitizer.App
 {
 	public class PolySelected : EdittingState
 	{
-		public static PolySelected Instance { get; } = new PolySelected();
 		public override void MouseDown(Editor editor, MouseButtonEventArgs e)
 		{
 			base.MouseDown(editor, e);
-			editor.EdittingState = NotEditting.Instance;
-			PolyMode.Instance.MouseDown(editor, e);
+			editor.EdittingState = NotEditting;
+			EditorState.PolyMode.MouseDown(editor, e);
 		}
 
 		public override void KeyDown(Editor editor, KeyEventArgs e)
@@ -28,7 +27,7 @@ namespace PlotDigitizer.App
 			// erase pixels within poly
 			var points = new VectorOfPoint(selectPoly.Points.Select(p =>
 			{
-				return new System.Drawing.Point((int)Math.Round(p.X), (int)Math.Round(p.Y));
+				return new Point((int)Math.Round(p.X), (int)Math.Round(p.Y));
 			}).ToArray());
 			Methods.EraseImage(Image, points);
 			// execute edit command
@@ -37,7 +36,7 @@ namespace PlotDigitizer.App
 				EditManager.EditCommand.Execute((image, "Delete polygon region"));
 			}
 
-			editor.EdittingState = NotEditting.Instance;
+			editor.EdittingState = NotEditting;
 		}
 	}
 }

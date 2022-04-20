@@ -48,10 +48,10 @@
 				
 			</UniformGrid.Resources>
 			<local:RangeSlider Background="#FFFF9595"
-												 Foreground="Red" 
+												 Foreground="Red"
 												 x:Name="RangeSliderRed"
 												 RangeStartSelected="{Binding MinR, Mode=TwoWay}"
-												 RangeStopSelected="{Binding MaxR, Mode=TwoWay}"/>
+												 RangeStopSelected="{Binding MaxR, Mode=TwoWay}" />
 			<local:RangeSlider Background="#FF95FF95"
 												 Foreground="Lime"
 												 x:Name="RangeSliderGreen"

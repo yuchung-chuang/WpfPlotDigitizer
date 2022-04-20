@@ -134,11 +134,13 @@
 
 		<local:Editor x:Name="editor"
 									Margin="20"
-									ModifierKeys="Ctrl"
+									EditGesture="Control+LeftClick"
+									SelectedGesture="Control+LeftDoubleClick"
+									DeleteKey="Delete"
 									BlockInteraction="True"
 									Image="{Binding Image, Mode=OneWayToSource}"
 									EditManager="{Binding EditManager}"
-									ToolTip="Ctrl + left click to erase image and select region, press delete/backspace to delete a region. Left double click to complete a polygon.">
+									ToolTip="Ctrl + left click to erase image and select region, press delete to delete a region. Left double click to complete a polygon.">
 			<local:Editor.EditorState>
 				<MultiBinding Converter="{local:EditorStateConverter}">
 					<Binding Path="IsChecked"

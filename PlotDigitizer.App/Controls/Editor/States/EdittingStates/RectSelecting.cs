@@ -7,13 +7,12 @@ namespace PlotDigitizer.App
 {
 	public class RectSelecting : EdittingState
 	{
-		public static RectSelecting Instance { get; } = new RectSelecting();
 		public override void MouseMove(Editor editor, MouseEventArgs e)
 		{
 			base.MouseMove(editor, e);
 			var selectRect = editor.selectRect;
 			var Image = editor.Image;
-			var mouseDownPos = RectMode.Instance.MouseDownPos;
+			var mouseDownPos = EditorState.RectMode.MouseDownPos;
 			var position = e.GetPosition(editor.editCanvas);
 			if (position.X < 0) {
 				Canvas.SetLeft(selectRect, 0);
@@ -55,7 +54,7 @@ namespace PlotDigitizer.App
 		{
 			base.MouseUp(editor, e);
 			editor.mainGrid.ReleaseMouseCapture();
-			editor.EdittingState = RectSelected.Instance;
+			editor.EdittingState = RectSelected;
 		}
 	}
 }

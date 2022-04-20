@@ -10,11 +10,10 @@ namespace PlotDigitizer.App
 	public class Erasing : EdittingState
 	{
 		private static readonly int fps = 24;
-		public static Erasing Instance { get; } = new Erasing();
 		public override void MouseMove(Editor editor, MouseEventArgs e)
 		{
 			base.MouseMove(editor, e);
-			var stopwatch = EraserMode.Instance.Stopwatch;
+			var stopwatch = EditorState.EraserMode.Stopwatch;
 
 			var centre = e.GetPosition(editor.editCanvas);
 			var size = new Vector(editor.eraserRect.ActualWidth, editor.eraserRect.ActualHeight);
@@ -44,7 +43,7 @@ namespace PlotDigitizer.App
 			if (editor.EditManager.EditCommand.CanExecute((image, "erase image")))
 				editor.EditManager.EditCommand.Execute((image, "erase image"));
 
-			editor.EdittingState = NotEditting.Instance;
+			editor.EdittingState = NotEditting;
 		}
 	}
 }

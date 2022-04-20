@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Linq;
 
 namespace PlotDigitizer.App
 {
@@ -15,25 +16,33 @@ namespace PlotDigitizer.App
 	/// </summary>
 	public partial class Editor : UserControl, INotifyPropertyChanged
 	{
-		public static readonly DependencyProperty MouseButtonProperty =
-			DependencyProperty.Register("MouseButton", typeof(MouseButton), typeof(Editor), new PropertyMetadata(MouseButton.Left));
+		private EditManager<Image<Rgba, byte>> editManager;
+		//public static readonly DependencyProperty MouseButtonProperty =
+		//	DependencyProperty.Register("MouseButton", typeof(MouseButton), typeof(Editor), new PropertyMetadata(MouseButton.Left));
 
-		public static readonly DependencyProperty ModifierKeysProperty =
-			DependencyProperty.Register("ModifierKeys", typeof(ModifierKeys), typeof(Editor), new PropertyMetadata(ModifierKeys.None));
+		//public static readonly DependencyProperty ModifierKeysProperty =
+		//	DependencyProperty.Register("ModifierKeys", typeof(ModifierKeys), typeof(Editor), new PropertyMetadata(ModifierKeys.None));
 
-		public static readonly DependencyProperty DeleteKeysProperty =
-			DependencyProperty.Register("DeleteKeys", typeof(Key), typeof(Editor), new PropertyMetadata(Key.Delete | Key.Back));
+		//public static readonly DependencyProperty DeleteKeysProperty =
+		//	DependencyProperty.Register("DeleteKeys", typeof(Key), typeof(Editor), new PropertyMetadata(Key.Delete | Key.Back));
 
 		public static readonly DependencyProperty BlockInteractionProperty =
 			DependencyProperty.Register("BlockInteraction", typeof(bool), typeof(Editor), new PropertyMetadata(false));
 
 		public static readonly DependencyProperty EditorStateProperty =
-			DependencyProperty.Register("EditorState", typeof(EditorState), typeof(Editor), new PropertyMetadata(NoMode.Instance, OnEditorStateChanged));
+			DependencyProperty.Register("EditorState", typeof(EditorState), typeof(Editor), new PropertyMetadata(EditorState.NoMode, OnEditorStateChanged));
 
 		public static readonly DependencyProperty EditManagerProperty =
 			DependencyProperty.Register("EditManager", typeof(EditManager<Image<Rgba, byte>>), typeof(Editor), new PropertyMetadata(default));
 
-		public static readonly DependencyProperty ImageProperty = DependencyProperty.Register("Image", typeof(Image<Rgba,byte>), typeof(Editor), new PropertyMetadata(default));
+		public static readonly DependencyProperty ImageProperty = DependencyProperty.Register("Image", typeof(Image<Rgba, byte>), typeof(Editor), new PropertyMetadata(default));
+
+		public static readonly DependencyProperty EditGestureProperty = DependencyProperty.Register(nameof(EditGesture), typeof(MouseGesture), typeof(Editor), new PropertyMetadata(new MouseGesture(MouseAction.LeftClick)));
+
+		public static readonly DependencyProperty SelectedGestureProperty = DependencyProperty.Register("SelectedGesture", typeof(MouseGesture), typeof(Editor), new PropertyMetadata(new MouseGesture(MouseAction.LeftDoubleClick)));
+
+		public static readonly DependencyProperty DeleteKeyProperty = DependencyProperty.Register("DeleteKey", typeof(KeyGesture), typeof(Editor), new PropertyMetadata(new KeyGesture(Key.Delete)));
+
 
 		public double ZoomScale { get; set; }
 		public double EraserSize => ImageControl.ActualWidth * 0.05 / ZoomScale;
@@ -43,31 +52,23 @@ namespace PlotDigitizer.App
 		public double SelectRectStrokeSize => 1.5 / ZoomScale;
 		public double SelectPolyStrokeSize => 1.5 / ZoomScale;
 
-		private CommandBinding undoCommandBinding;
-
-		private CommandBinding redoCommandBinding;
-		private EditManager<Image<Rgba, byte>> editManager;
-
 		public event PropertyChangedEventHandler PropertyChanged;
-
-		public MouseButton MouseButton
+		
+		public MouseGesture SelectedGesture
 		{
-			get { return (MouseButton)GetValue(MouseButtonProperty); }
-			set { SetValue(MouseButtonProperty, value); }
+			get { return (MouseGesture)GetValue(SelectedGestureProperty); }
+			set { SetValue(SelectedGestureProperty, value); }
 		}
-
-		public ModifierKeys ModifierKeys
+		public KeyGesture DeleteKey
 		{
-			get { return (ModifierKeys)GetValue(ModifierKeysProperty); }
-			set { SetValue(ModifierKeysProperty, value); }
+			get { return (KeyGesture)GetValue(DeleteKeyProperty); }
+			set { SetValue(DeleteKeyProperty, value); }
 		}
-
-		public Key DeleteKeys
+		public MouseGesture EditGesture
 		{
-			get { return (Key)GetValue(DeleteKeysProperty); }
-			set { SetValue(DeleteKeysProperty, value); }
+			get { return (MouseGesture)GetValue(EditGestureProperty); }
+			set { SetValue(EditGestureProperty, value); }
 		}
-
 		public bool BlockInteraction
 		{
 			get { return (bool)GetValue(BlockInteractionProperty); }
@@ -95,7 +96,7 @@ namespace PlotDigitizer.App
 		}
 
 		[OnChangedMethod(nameof(OnEdittingStateChanged))]
-		public EdittingState EdittingState { get; set; } = NotEditting.Instance;
+		public EdittingState EdittingState { get; set; } = EdittingState.NotEditting;
 
 		public Editor()
 		{
@@ -128,7 +129,6 @@ namespace PlotDigitizer.App
 			OnPropertyChanged(nameof(EraserSize));
 			OnPropertyChanged(nameof(PencilSize));
 		}
-
 
 		public void Initialise(Image<Rgba, byte> image)
 		{
@@ -177,6 +177,9 @@ namespace PlotDigitizer.App
 
 			editManager = EditManager; // keep a reference for unsubscription when unloading
 			editManager.PropertyChanged += EditManager_PropertyChanged;
+
+			EdittingState.PolySelecting.EditGesture = EditGesture;
+			EdittingState.PolySelecting.SelectedGesture = SelectedGesture;
 		}
 
 		private void Editor_Unloaded(object sender, RoutedEventArgs e)
@@ -191,7 +194,7 @@ namespace PlotDigitizer.App
 
 		private void MainGrid_MouseDown(object sender, MouseButtonEventArgs e)
 		{
-			if (!MouseDownInputCheck()) {
+			if (!EditGesture.Matches(sender,e) && !SelectedGesture.Matches(sender,e)) {
 				return;
 			}
 
@@ -217,7 +220,7 @@ namespace PlotDigitizer.App
 
 		private void MainWindow_KeyDown(object sender, KeyEventArgs e)
 		{
-			if (!DeleteInputCheck(e)) {
+			if (!DeleteKey.Matches(sender,e)) {
 				return;
 			}
 
@@ -232,44 +235,6 @@ namespace PlotDigitizer.App
 		public void OnPropertyChanged(string propertyName)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
-
-		private bool MouseDownInputCheck()
-		{
-			return IsMouseButtonPressed(MouseButton) && IsKeyPressed(ModifierKeys);
-
-			static bool IsKeyPressed(ModifierKeys key)
-			{
-				return key == ModifierKeys.None || Contains(Keyboard.Modifiers, key);
-
-				static bool Contains(ModifierKeys a, ModifierKeys b)
-				{
-					return (a & b) == b;
-				}
-			}
-
-			static bool IsMouseButtonPressed(MouseButton mouseButton)
-			{
-				return mouseButton switch
-				{
-					MouseButton.Left => Mouse.LeftButton == MouseButtonState.Pressed,
-					MouseButton.Right => Mouse.RightButton == MouseButtonState.Pressed,
-					MouseButton.Middle => Mouse.MiddleButton == MouseButtonState.Pressed,
-					MouseButton.XButton1 => Mouse.XButton1 == MouseButtonState.Pressed,
-					MouseButton.XButton2 => Mouse.XButton2 == MouseButtonState.Pressed,
-					_ => true,
-				};
-			}
-		}
-
-		private bool DeleteInputCheck(KeyEventArgs e)
-		{
-			return Contain(DeleteKeys, e.Key);
-
-			static bool Contain(Key a, Key b)
-			{
-				return (a & b) == b;
-			}
 		}
 	}
 }

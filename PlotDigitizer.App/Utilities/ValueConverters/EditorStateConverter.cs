@@ -18,11 +18,11 @@ namespace PlotDigitizer.App
 			var index = booleans.IndexOf(true);
 			return index switch
 			{
-				0 => PencilMode.Instance,
-				1 => EraserMode.Instance,
-				2 => RectMode.Instance,
-				3 => PolyMode.Instance,
-				_ => NoMode.Instance,
+				0 => EditorState.PencilMode,
+				1 => EditorState.EraserMode,
+				2 => EditorState.RectMode,
+				3 => EditorState.PolyMode,
+				_ => EditorState.NoMode,
 			};
 		}
 

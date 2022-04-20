@@ -18,7 +18,6 @@ namespace PlotDigitizer.App
 			InitializeComponent();
 			Loaded += EditPage_Loaded;
 			Unloaded += EditPage_Unloaded;
-
 		}
 
 		private void EditPage_Loaded(object sender, RoutedEventArgs e)

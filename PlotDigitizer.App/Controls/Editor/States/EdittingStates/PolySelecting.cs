@@ -5,7 +5,8 @@ namespace PlotDigitizer.App
 {
 	public class PolySelecting : EdittingState
 	{
-		public static PolySelecting Instance { get; } = new PolySelecting();
+		public MouseGesture EditGesture { get; set; } = new MouseGesture(MouseAction.LeftClick);
+		public MouseGesture SelectedGesture { get; set; } = new MouseGesture(MouseAction.LeftDoubleClick);
 		public override void MouseDown(Editor editor, MouseButtonEventArgs e)
 		{
 			base.MouseDown(editor, e);
@@ -13,16 +14,13 @@ namespace PlotDigitizer.App
 			var selectPoly = editor.selectPoly;
 
 			var position = e.GetPosition(editCanvas);
-			if (e.ClickCount == 1) {
+			if (EditGesture.Matches(editor,e)) {
 				selectPoly.Points[^1] = position;
 				selectPoly.Points.Add(position);
 			}
-			else if (e.ClickCount == 2) {
+			else if (SelectedGesture.Matches(editor,e)) {
 				selectPoly.Points.Add(selectPoly.Points[0]);
-				editor.EdittingState = PolySelected.Instance;
-			}
-			else {
-				throw new Exception();
+				editor.EdittingState = PolySelected;
 			}
 		}
 

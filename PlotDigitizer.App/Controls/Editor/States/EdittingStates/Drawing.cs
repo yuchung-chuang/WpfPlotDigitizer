@@ -9,11 +9,10 @@ namespace PlotDigitizer.App
 	public class Drawing : EdittingState
 	{
 		private static readonly int fps = 24;
-		public static Drawing Instance { get; } = new Drawing();
 		public override void MouseMove(Editor editor, MouseEventArgs e)
 		{
 			base.MouseMove(editor, e);
-			var stopwatch = PencilMode.Instance.Stopwatch;
+			var stopwatch = EditorState.PencilMode.Stopwatch;
 
 			var centre = e.GetPosition(editor.editCanvas);
 			var size = new Vector(editor.pencilPointer.ActualWidth, editor.pencilPointer.ActualHeight);
@@ -43,7 +42,7 @@ namespace PlotDigitizer.App
 			if (editor.EditManager.EditCommand.CanExecute((image, "draw image")))
 				editor.EditManager.EditCommand.Execute((image, "draw image"));
 
-			editor.EdittingState = NotEditting.Instance;
+			editor.EdittingState = NotEditting;
 		}
 	}
 }

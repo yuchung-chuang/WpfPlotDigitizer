@@ -8,12 +8,11 @@ namespace PlotDigitizer.App
 {
 	public class RectSelected : EdittingState
 	{
-		public static RectSelected Instance { get; } = new RectSelected();
 		public override void MouseDown(Editor editor, MouseButtonEventArgs e)
 		{
 			base.MouseDown(editor, e);
-			editor.EdittingState = NotEditting.Instance;
-			RectMode.Instance.MouseDown(editor, e);
+			editor.EdittingState = NotEditting;
+			EditorState.RectMode.MouseDown(editor, e);
 		}
 
 		public override void KeyDown(Editor editor, KeyEventArgs e)
@@ -35,7 +34,7 @@ namespace PlotDigitizer.App
 			if (EditManager.EditCommand.CanExecute((image, "Delete rectangle region"))) {
 				EditManager.EditCommand.Execute((image, "Delete rectangle region"));
 			}
-			editor.EdittingState = NotEditting.Instance;
+			editor.EdittingState = NotEditting;
 		}
 	}
 }
