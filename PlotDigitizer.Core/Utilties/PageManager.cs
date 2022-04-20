@@ -1,37 +1,46 @@
 ﻿using PropertyChanged;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace PlotDigitizer.Core
 {
-    [AddINotifyPropertyChangedInterface]
-    public class PageManager
+    public class PageManager : INotifyPropertyChanged
     {
-        /// <summary>
-        /// Public read/write access to allow two-way binding 
-        /// </summary>
-        [OnChangedMethod(nameof(OnPageIndexChanged))]
-        public int PageIndex { get; set; } = 0;
+        private const int INITIAL_PAGE_INDEX = 0;
+        private int browseIndex = 0;
+        private readonly IList<int> browseHistory = new List<int>(10) { INITIAL_PAGE_INDEX };
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [OnChangedMethod(nameof(OnPageIndexChanged))]
+        public int PageIndex { get; set; } = INITIAL_PAGE_INDEX;
         [OnChangedMethod(nameof(OnPageTypeListChanged))]
-        public List<PageViewModelBase> PageList { get; private set; }
+        public IList<PageViewModelBase> PageList { get; private set; }
         public PageViewModelBase CurrentPage => PageList[PageIndex];
 
-        public RelayCommand BackCommand { get; private set; }
-        public RelayCommand NextCommand { get; private set; }
+        public RelayCommand PreviousPageCommand { get; private set; }
+        public RelayCommand NextPageCommand { get; private set; }
         public RelayCommand<int> GoToCommand { get; private set; }
         public RelayCommand<Type> GoToByTypeCommand { get; private set; }
+        public RelayCommand BrowseBackCommand { get; private set; }
+        public RelayCommand BrowseForwardCommand { get; private set; }
 
         public PageManager()
         {
-            BackCommand = new RelayCommand(GoBack, CanGoBack);
-            NextCommand = new RelayCommand(GoNext, CanGoNext);
+            PreviousPageCommand = new RelayCommand(PreviousPage, CanPreviousPage);
+            NextPageCommand = new RelayCommand(NextPage, CanNextPage);
             GoToCommand = new RelayCommand<int>(GoTo, CanGoTo);
             GoToByTypeCommand = new RelayCommand<Type>(GoTo, CanGoTo);
+            BrowseBackCommand = new RelayCommand(BrowseBack, CanBrowseBack);
+            BrowseForwardCommand = new RelayCommand(BrowseForward, CanBrowseForward);
         }
 
-        public void Initialise(List<PageViewModelBase> pageList)
+        private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+
+        public void Initialise(IList<PageViewModelBase> pageList)
         {
             PageList = pageList;
             PageIndex = 0;
@@ -40,28 +49,63 @@ namespace PlotDigitizer.Core
         public PageViewModelBase GetPage(Type type) => PageList.FirstOrDefault(t => t.GetType() == type);
 
         public TPage GetPage<TPage>() where TPage : PageViewModelBase => PageList.FirstOrDefault(t => t.GetType() == typeof(TPage)) as TPage;
+        private void BrowseBack() => PageIndex = browseHistory[--browseIndex];
 
-        private void GoBack() => PageIndex--;
+        private bool CanBrowseBack() => browseIndex > 0;
 
-        private bool CanGoBack() => PageIndex > 0;
+        private void BrowseForward() => PageIndex = browseHistory[++browseIndex];
 
-        private void GoNext() => PageIndex++;
+        private bool CanBrowseForward() => browseIndex < browseHistory.Count() - 1;
 
-        private bool CanGoNext() => PageIndex < PageList.Count - 1;
+        private void PreviousPage()
+        {
+            PageIndex--;
+            UpdateBrowseHistory();
+        }
 
-        private void GoTo(int targetIndex) => PageIndex = targetIndex;
+        private bool CanPreviousPage() => PageIndex > 0;
 
-        private bool CanGoTo(int targetIndex) => targetIndex >= 0 && targetIndex < PageList.Count;
+        private void NextPage()
+        {
+            PageIndex++;
+            UpdateBrowseHistory();
+        }
 
-        private void GoTo(Type type) => PageIndex = PageList.FindIndex(t => t.GetType() == type);
+        private bool CanNextPage() => PageIndex < PageList.Count - 1;
+
+        private void GoTo(int targetIndex)
+        {
+            PageIndex = targetIndex;
+            UpdateBrowseHistory();
+        }
+
+        private bool CanGoTo(int targetIndex) => targetIndex >= 0 && targetIndex < PageList.Count && targetIndex != PageIndex;
+
+        private void GoTo(Type type)
+        {
+            PageIndex = PageList.IndexOf(GetPage(type));
+            UpdateBrowseHistory();
+        }
 
         private bool CanGoTo(Type type) => PageList.Any(t => t.GetType() == type);
         private void OnPageIndexChanged(int oldIndex, int newIndex)
         {
-            BackCommand.RaiseCanExecuteChanged();
-            NextCommand.RaiseCanExecuteChanged();
+            PreviousPageCommand.RaiseCanExecuteChanged();
+            NextPageCommand.RaiseCanExecuteChanged();
             PageList[oldIndex].Leave();
             PageList[newIndex].Enter();
+        }
+        private void UpdateBrowseHistory()
+        {
+            while (browseIndex != browseHistory.Count() - 1) {
+                browseHistory.RemoveAt(browseHistory.Count() - 1);
+            }
+            browseHistory.Add(PageIndex);
+            browseIndex++;
+
+            if (browseHistory.Count() == 10) {
+                browseHistory.RemoveAt(0);
+            }
         }
         private void OnPageTypeListChanged()
         {

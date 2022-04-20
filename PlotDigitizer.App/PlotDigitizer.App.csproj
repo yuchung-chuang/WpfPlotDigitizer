@@ -24,6 +24,7 @@
     <Compile Remove="Services\ServiceExtensions.cs" />
     <Compile Remove="Utilities\PageManager.cs" />
     <Compile Remove="Utilities\RelayCommand.cs" />
+    <Compile Remove="Utilities\ValueConverters\SelectionChangedEventArgsConverter.cs" />
   </ItemGroup>
 
   <ItemGroup>

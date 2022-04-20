@@ -21,9 +21,13 @@
 	</Window.InputBindings>
 	<i:Interaction.Behaviors>
 		<local:RelayCommandBinding ApplicationCommand="{x:Static NavigationCommands.NextPage}"
-															 Command="{Binding PageManager.NextCommand}" />
+															 Command="{Binding PageManager.PreviousPageCommand}" />
 		<local:RelayCommandBinding ApplicationCommand="{x:Static NavigationCommands.PreviousPage}"
-															 Command="{Binding PageManager.BackCommand}" />
+															 Command="{Binding PageManager.NextPageCommand}" />
+		<local:RelayCommandBinding ApplicationCommand="{x:Static NavigationCommands.BrowseBack}"
+															 Command="{Binding PageManager.BrowseBackCommand}" />
+		<local:RelayCommandBinding ApplicationCommand="{x:Static NavigationCommands.BrowseForward}"
+															 Command="{Binding PageManager.BrowseForwardCommand}" />
 	</i:Interaction.Behaviors>
 	<DockPanel>
 		<DockPanel DockPanel.Dock="Top">
@@ -46,17 +50,24 @@
 									Height="30"
 									Background="LightGray">
 				<Button x:Name="PrevPageButton"
-								Command="{Binding PageManager.BackCommand}">
+								Command="{Binding PageManager.PreviousPageCommand}">
 					<Path Data="M427 277v-42h-260l119 -120l-30 -30l-171 171l171 171l30 -30l-119 -120h260z" />
 				</Button>
 				<Button x:Name="NextPageButton"
-								Command="{Binding PageManager.NextCommand}">
+								Command="{Binding PageManager.NextPageCommand}">
 					<Path Data="M256 427l171 -171l-171 -171l-30 30l119 120h-260v42h260l-119 120z" />
 				</Button>
 				<ComboBox Name="NaviComboBox"
 									ItemsSource="{Binding PageNameList}"
-									SelectedIndex="{Binding PageManager.PageIndex, Mode=TwoWay}"
-									Width="20" />
+									SelectedIndex="{Binding PageManager.PageIndex, Mode=OneWay}"
+									Width="20">
+					<i:Interaction.Triggers>
+						<i:EventTrigger EventName="SelectionChanged">
+							<i:InvokeCommandAction Command="{Binding PageManager.GoToCommand}"
+																		 EventArgsParameterPath="Source.SelectedIndex" />
+						</i:EventTrigger>
+					</i:Interaction.Triggers>
+				</ComboBox>
 			</StackPanel>
 			<StackPanel DockPanel.Dock="Right"
 									Orientation="Horizontal"

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Navigation;
+using System.Windows.Input;
 
 namespace PlotDigitizer.App
 {

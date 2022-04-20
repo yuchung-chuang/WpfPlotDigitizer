@@ -14,8 +14,8 @@ namespace PlotDigitizer.Core
 
 		private void LoadPage_NextPage(object sender, EventArgs e)
 		{
-			if (pageManager.NextCommand.CanExecute()) {
-				pageManager.NextCommand.Execute();
+			if (pageManager.NextPageCommand.CanExecute()) {
+				pageManager.NextPageCommand.Execute();
 			}
 		}
 
