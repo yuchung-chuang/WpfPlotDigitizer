@@ -9,11 +9,11 @@ namespace PlotDigitizer.App
 		public override object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
 		{
 			if (!values.All(v => v is bool)) {
-				throw new NotImplementedException();
+				return null;
 			}
 			var booleans = values.Select(v => (bool)v).ToList();
 			if (booleans.Where(v => v == true).Count() > 1) {
-				throw new NotImplementedException();
+				return null;
 			}
 			var index = booleans.IndexOf(true);
 			return index switch

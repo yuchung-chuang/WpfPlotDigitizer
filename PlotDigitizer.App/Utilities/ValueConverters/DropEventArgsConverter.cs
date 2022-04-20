@@ -28,7 +28,7 @@ namespace PlotDigitizer.App
 				args.Type = DropEventArgs.DropType.Url;
 				args.Url = uri;
 			} else {
-				throw new Exception("Unknown drop type.");
+				return null;
 			}
 
 			return args;
