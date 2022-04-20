@@ -21,9 +21,9 @@
 	</Window.InputBindings>
 	<i:Interaction.Behaviors>
 		<local:RelayCommandBinding ApplicationCommand="{x:Static NavigationCommands.NextPage}"
-															 Command="{Binding PageManager.PreviousPageCommand}" />
-		<local:RelayCommandBinding ApplicationCommand="{x:Static NavigationCommands.PreviousPage}"
 															 Command="{Binding PageManager.NextPageCommand}" />
+		<local:RelayCommandBinding ApplicationCommand="{x:Static NavigationCommands.PreviousPage}"
+															 Command="{Binding PageManager.PreviousPageCommand}" />
 		<local:RelayCommandBinding ApplicationCommand="{x:Static NavigationCommands.BrowseBack}"
 															 Command="{Binding PageManager.BrowseBackCommand}" />
 		<local:RelayCommandBinding ApplicationCommand="{x:Static NavigationCommands.BrowseForward}"

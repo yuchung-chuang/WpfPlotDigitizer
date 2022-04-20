@@ -105,6 +105,7 @@ namespace PlotDigitizer.Core
 
             if (browseHistory.Count() == 10) {
                 browseHistory.RemoveAt(0);
+                browseIndex--;
             }
         }
         private void OnPageTypeListChanged()
