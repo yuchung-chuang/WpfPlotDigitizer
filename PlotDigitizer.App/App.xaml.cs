@@ -1,10 +1,13 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+
 using PlotDigitizer.Core;
+
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -47,7 +50,6 @@ namespace PlotDigitizer.App
 					.AddSingleton<Setting, SettingFacade>()
 					.AddViewModels()
 					.AddModelNodes();
-
 				})
 				.ConfigureLogging((context, builder) =>
 				{
@@ -101,6 +103,7 @@ namespace PlotDigitizer.App
 				services.GetRequiredService<PreviewPageViewModel    >(),
 			});
 		}
+
 		private void Test()
 		{
 			var provider = host.Services;

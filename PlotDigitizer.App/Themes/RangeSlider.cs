@@ -196,8 +196,8 @@ namespace PlotDigitizer.App
 		/// </summary>
 		public long RangeStart
 		{
-			get { return (long)GetValue(RangeStartProperty); }
-			set { SetValue(RangeStartProperty, value); }
+			get => (long)GetValue(RangeStartProperty);
+			set => SetValue(RangeStartProperty, value);
 		}
 
 		/// <summary>
@@ -205,8 +205,8 @@ namespace PlotDigitizer.App
 		/// </summary>
 		public long RangeStop
 		{
-			get { return (long)GetValue(RangeStopProperty); }
-			set { SetValue(RangeStopProperty, value); }
+			get => (long)GetValue(RangeStopProperty);
+			set => SetValue(RangeStopProperty, value);
 		}
 
 		/// <summary>
@@ -214,8 +214,8 @@ namespace PlotDigitizer.App
 		/// </summary>
 		public long RangeStartSelected
 		{
-			get { return (long)GetValue(RangeStartSelectedProperty); }
-			set { SetValue(RangeStartSelectedProperty, value); }
+			get => (long)GetValue(RangeStartSelectedProperty);
+			set => SetValue(RangeStartSelectedProperty, value);
 		}
 
 		/// <summary>
@@ -223,8 +223,8 @@ namespace PlotDigitizer.App
 		/// </summary>
 		public long RangeStopSelected
 		{
-			get { return (long)GetValue(RangeStopSelectedProperty); }
-			set { SetValue(RangeStopSelectedProperty, value); }
+			get => (long)GetValue(RangeStopSelectedProperty);
+			set => SetValue(RangeStopSelectedProperty, value);
 		}
 
 		/// <summary>
@@ -233,8 +233,8 @@ namespace PlotDigitizer.App
 		/// <exception cref="ArgumentOutOfRangeException">Thrown when MinRange is set less than 0</exception>
 		public long MinRange
 		{
-			get { return (long)GetValue(MinRangeProperty); }
-			set { SetValue(MinRangeProperty, value); }
+			get => (long)GetValue(MinRangeProperty);
+			set => SetValue(MinRangeProperty, value);
 		}
 
 		#endregion properties and events
@@ -313,8 +313,7 @@ namespace PlotDigitizer.App
 			if (span > 0) {
 				if (RangeStopSelected + span > RangeStop)
 					span = RangeStop - RangeStopSelected;
-			}
-			else {
+			} else {
 				if (RangeStartSelected + span < RangeStart)
 					span = RangeStart - RangeStartSelected;
 			}
@@ -392,7 +391,7 @@ namespace PlotDigitizer.App
 		public override void OnApplyTemplate()
 		{
 			base.OnApplyTemplate();
-			
+
 			visualElementsContainer = EnforceInstance<StackPanel>("PART_RangeSliderContainer");
 			centerThumb = EnforceInstance<Thumb>("PART_MiddleThumb");
 			leftButton = EnforceInstance<RepeatButton>("PART_LeftEdge");
@@ -417,30 +416,15 @@ namespace PlotDigitizer.App
 		}
 
 		//ensures that the new value (newValue param) is a valid value. returns false if not
-		private static double GetChangeKeepPositive(double width, double increment)
-		{
-			return Math.Max(width + increment, 0) - width;
-		}
+		private static double GetChangeKeepPositive(double width, double increment) => Math.Max(width + increment, 0) - width;
 
-		private void MoveAllBackHandler(object sender, ExecutedRoutedEventArgs e)
-		{
-			ResetSelection(true);
-		}
+		private void MoveAllBackHandler(object sender, ExecutedRoutedEventArgs e) => ResetSelection(true);
 
-		private void MoveAllForwardHandler(object sender, ExecutedRoutedEventArgs e)
-		{
-			ResetSelection(false);
-		}
+		private void MoveAllForwardHandler(object sender, ExecutedRoutedEventArgs e) => ResetSelection(false);
 
-		private void MoveBackHandler(object sender, ExecutedRoutedEventArgs e)
-		{
-			MoveSelection(true);
-		}
+		private void MoveBackHandler(object sender, ExecutedRoutedEventArgs e) => MoveSelection(true);
 
-		private void MoveForwardHandler(object sender, ExecutedRoutedEventArgs e)
-		{
-			MoveSelection(false);
-		}
+		private void MoveForwardHandler(object sender, ExecutedRoutedEventArgs e) => MoveSelection(false);
 
 		#endregion Command handlers
 
@@ -461,16 +445,10 @@ namespace PlotDigitizer.App
 		}
 
 		//left repeat button clicked
-		private void LeftButtonClick(object sender, RoutedEventArgs e)
-		{
-			MoveSelection(true);
-		}
+		private void LeftButtonClick(object sender, RoutedEventArgs e) => MoveSelection(true);
 
 		//right repeat button clicked
-		private void RightButtonClick(object sender, RoutedEventArgs e)
-		{
-			MoveSelection(false);
-		}
+		private void RightButtonClick(object sender, RoutedEventArgs e) => MoveSelection(false);
 
 		//drag thumb from the middle
 		private void CenterThumbDragDelta(object sender, DragDeltaEventArgs e)
@@ -484,10 +462,7 @@ namespace PlotDigitizer.App
 		#region logic to calculate the range
 
 		//recalculates the movableRange. called from the RangeStop setter, RangeStart setter and MinRange setter
-		private void ReCalculateRanges()
-		{
-			movableRange = RangeStop - RangeStart - MinRange;
-		}
+		private void ReCalculateRanges() => movableRange = RangeStop - RangeStart - MinRange;
 
 		//recalculates the movableWidth. called whenever the width of the control changes
 		private void ReCalculateWidths()
@@ -539,8 +514,6 @@ namespace PlotDigitizer.App
 			RaiseEvent(e);
 		}
 
-		
-
 		#region Helper
 
 		private T EnforceInstance<T>(string partName)
@@ -576,7 +549,6 @@ namespace PlotDigitizer.App
 	/// </summary>
 	public class RangeSelectionChangedEventArgs : RoutedEventArgs
 	{
-
 		/// <summary>
 		/// The new range start selected in the range slider
 		/// </summary>
@@ -594,8 +566,8 @@ namespace PlotDigitizer.App
 		/// <param name="newRangeStop">The new range stop set</param>
 		internal RangeSelectionChangedEventArgs(long newRangeStart, long newRangeStop)
 		{
-			this.NewRangeStart = newRangeStart;
-			this.NewRangeStop = newRangeStop;
+			NewRangeStart = newRangeStart;
+			NewRangeStop = newRangeStop;
 		}
 
 		/// <summary>

@@ -14,13 +14,14 @@ namespace PlotDigitizer.Core
 			this.croppedImage = croppedImage;
 			this.filterMin = filterMin;
 			this.filterMax = filterMax;
-			croppedImage.Updated += (s,e) => OnOutdated();
-			croppedImage.Outdated += (s,e) => OnOutdated();
-			filterMin.Updated += (s,e) => OnOutdated();
-			filterMin.Outdated += (s,e) => OnOutdated();
-			filterMax.Updated += (s,e) => OnOutdated();
-			filterMax.Outdated += (s,e) => OnOutdated();
+			croppedImage.Updated += (s, e) => OnOutdated();
+			croppedImage.Outdated += (s, e) => OnOutdated();
+			filterMin.Updated += (s, e) => OnOutdated();
+			filterMin.Outdated += (s, e) => OnOutdated();
+			filterMax.Updated += (s, e) => OnOutdated();
+			filterMax.Outdated += (s, e) => OnOutdated();
 		}
+
 		public override void Update()
 		{
 			if (!croppedImage.CheckUpdate() || !filterMin.CheckUpdate() || !filterMax.CheckUpdate()) {

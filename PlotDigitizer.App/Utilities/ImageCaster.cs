@@ -21,11 +21,9 @@ namespace PlotDigitizer.App
 		/// <returns>The equivalent BitmapSource</returns>
 		public static BitmapSource ToBitmapSource<TColor, TDepth>(this Image<TColor, TDepth> image)
 			where TColor : struct, IColor
-			where TDepth : new()
-		{
+			where TDepth : new() =>
 			// must convert to bgra to retain the transparency
-			return image.Convert<Bgra, byte>().ToBitmap().ToBitmapSource();
-		}
+			image.Convert<Bgra, byte>().ToBitmap().ToBitmapSource();
 
 		public static BitmapSource ToBitmapSource(this Bitmap bitmap)
 		{
@@ -49,6 +47,7 @@ namespace PlotDigitizer.App
 		/// <returns></returns>
 		[DllImport("gdi32")]
 		private static extern int DeleteObject(IntPtr o);
+
 		public static Bitmap ToBitmap(this BitmapSource source)
 		{
 			var stream = new MemoryStream(); // Do NOT dispose the memory stream for an bitmap, it should stay open during the lifetime of the bitmap
@@ -57,6 +56,5 @@ namespace PlotDigitizer.App
 			enc.Save(stream);
 			return new Bitmap(stream);
 		}
-
 	}
 }

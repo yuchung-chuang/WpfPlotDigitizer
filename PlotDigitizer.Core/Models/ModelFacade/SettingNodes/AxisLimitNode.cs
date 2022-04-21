@@ -1,4 +1,5 @@
 ﻿namespace PlotDigitizer.Core
 {
-	public class AxisLimitNode : ModelNode<RectangleD> { }
+	public class AxisLimitNode : ModelNode<RectangleD>
+	{ }
 }

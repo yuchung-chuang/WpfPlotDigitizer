@@ -1,12 +1,7 @@
-﻿using Emgu.CV;
-using Emgu.CV.Structure;
-using PlotDigitizer.Core;
-using System;
+﻿using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media.Imaging;
 
 namespace PlotDigitizer.App
 {
@@ -15,9 +10,6 @@ namespace PlotDigitizer.App
 		public LoadPage()
 		{
 			InitializeComponent();
-#if DEBUG
-			Loaded += (s, e) => imageControl.Visibility = Visibility.Visible;
-#endif
 		}
 
 		private void Page_DragOver(object sender, DragEventArgs e)

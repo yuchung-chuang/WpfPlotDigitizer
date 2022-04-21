@@ -6,6 +6,7 @@ namespace PlotDigitizer.App
 	public class PencilMode : EditorState
 	{
 		public Stopwatch Stopwatch { get; } = new Stopwatch();
+
 		public override void MouseDown(Editor editor, MouseButtonEventArgs e)
 		{
 			if (editor.EdittingState != EdittingState.NotEditting) {

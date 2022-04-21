@@ -1,5 +1,6 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
+
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -16,9 +17,6 @@ namespace PlotDigitizer.Core
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		public void RaisePropertyChanged(string propertyName)
-		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
+		public void RaisePropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 	}
 }

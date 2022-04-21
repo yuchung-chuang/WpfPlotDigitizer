@@ -16,6 +16,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Include="..\.editorconfig" Link=".editorconfig" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Emgu.CV" Version="4.5.5.4823" />
 		<PackageReference Include="Emgu.CV.Bitmap" Version="4.5.5.4823" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />

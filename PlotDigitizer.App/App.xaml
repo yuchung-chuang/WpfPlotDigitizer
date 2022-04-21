@@ -1,9 +1,6 @@
 ﻿<Application x:Class="PlotDigitizer.App.App"
-						 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-						 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-						 xmlns:local="clr-namespace:PlotDigitizer.App"
-						 xmlns:core="clr-namespace:PlotDigitizer.Core;assembly=PlotDigitizer.Core">
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 	<Application.Resources>
-
 	</Application.Resources>
 </Application>

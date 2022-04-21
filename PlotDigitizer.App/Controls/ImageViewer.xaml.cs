@@ -1,4 +1,5 @@
 ﻿using PropertyChanged;
+
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -13,8 +14,8 @@ namespace PlotDigitizer.App
 
 		public ImageSource ImageSource
 		{
-			get { return (ImageSource)GetValue(ImageSourceProperty); }
-			set { SetValue(ImageSourceProperty, value); }
+			get => (ImageSource)GetValue(ImageSourceProperty);
+			set => SetValue(ImageSourceProperty, value);
 		}
 
 		public ImageViewer()

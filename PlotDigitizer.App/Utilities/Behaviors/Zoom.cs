@@ -11,64 +11,49 @@ namespace PlotDigitizer.App
 	/// </summary>
 	public static class Zoom
 	{
-		public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.RegisterAttached("IsEnabled", typeof(bool), typeof(Zoom), new PropertyMetadata(OnIsEnabledChanged));
+		#region Fields
 
 		public static readonly DependencyProperty GestureProperty = DependencyProperty.RegisterAttached("Gesture", typeof(MouseGesture), typeof(Zoom), new PropertyMetadata(new MouseGesture(MouseAction.WheelClick, ModifierKeys.None)));
+
+		public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.RegisterAttached("IsEnabled", typeof(bool), typeof(Zoom), new PropertyMetadata(OnIsEnabledChanged));
 
 		public static readonly DependencyProperty MouseWheelProperty =
 			DependencyProperty.RegisterAttached("MouseWheel", typeof(EventHandler<double>), typeof(Zoom), new PropertyMetadata(null));
 
 		public static readonly DependencyProperty ScaleProperty = DependencyProperty.RegisterAttached("Scale", typeof(double), typeof(Zoom), new PropertyMetadata(1d));
 
+		private static readonly double WheelTime = 0.1;
+
+		#endregion Fields
+
+		#region Methods
 
 		[AttachedPropertyBrowsableForType(typeof(UIElement))]
-		public static MouseGesture GetGesture(DependencyObject obj)
-		{
-			return (MouseGesture)obj.GetValue(GestureProperty);
-		}
-
-		public static void SetGesture(DependencyObject obj, MouseGesture value)
-		{
-			obj.SetValue(GestureProperty, value);
-		}
-
-		[AttachedPropertyBrowsableForType(typeof(UIElement))]
-		public static double GetScale(DependencyObject obj) 
-			=> (double)obj.GetValue(ScaleProperty);
-
-		public static void SetScale(DependencyObject obj, double value) 
-			=> obj.SetValue(ScaleProperty, value);
+		public static MouseGesture GetGesture(DependencyObject obj) => (MouseGesture)obj.GetValue(GestureProperty);
 
 		[AttachedPropertyBrowsableForType(typeof(UIElement))]
 		public static bool GetIsEnabled(DependencyObject obj)
 		  => (bool)obj.GetValue(IsEnabledProperty);
 
+		[AttachedPropertyBrowsableForType(typeof(UIElement))]
+		public static EventHandler<double> GetMouseWheel(DependencyObject obj)
+			=> (EventHandler<double>)obj.GetValue(MouseWheelProperty);
+
+		[AttachedPropertyBrowsableForType(typeof(UIElement))]
+		public static double GetScale(DependencyObject obj)
+			=> (double)obj.GetValue(ScaleProperty);
+
+		public static void SetGesture(DependencyObject obj, MouseGesture value) => obj.SetValue(GestureProperty, value);
+
 		public static void SetIsEnabled(DependencyObject obj, bool value)
 		  => obj.SetValue(IsEnabledProperty, value);
 
-		[AttachedPropertyBrowsableForType(typeof(UIElement))]
-		public static EventHandler<double> GetMouseWheel(DependencyObject obj) 
-			=> (EventHandler<double>)obj.GetValue(MouseWheelProperty);
-
-		public static void SetMouseWheel(DependencyObject obj, EventHandler<double> value) 
+		public static void SetMouseWheel(DependencyObject obj, EventHandler<double> value)
 			=> obj.SetValue(MouseWheelProperty, value);
 
-		private static void OnIsEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			if (!(d is FrameworkElement element))
-				throw new NotSupportedException($"Can only set the {IsEnabledProperty} attached behavior on a UIElement.");
+		public static void SetScale(DependencyObject obj, double value)
+							=> obj.SetValue(ScaleProperty, value);
 
-			if ((bool)e.NewValue) {
-				element.MouseWheel += Element_MouseWheel;
-				element.EnsureTransforms();
-				element.Parent?.SetValue(UIElement.ClipToBoundsProperty, true);
-			}
-			else {
-				element.MouseWheel -= Element_MouseWheel;
-			}
-		}
-
-		private static readonly double WheelTime = 0.1;
 		private static void Element_MouseWheel(object sender, MouseWheelEventArgs e)
 		{
 			if (!(sender is FrameworkElement element)) {
@@ -99,5 +84,21 @@ namespace PlotDigitizer.App
 			SetScale(element, ToScale);
 			GetMouseWheel(element)?.Invoke(element, ToScale);
 		}
+
+		private static void OnIsEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			if (!(d is FrameworkElement element))
+				throw new NotSupportedException($"Can only set the {IsEnabledProperty} attached behavior on a UIElement.");
+
+			if ((bool)e.NewValue) {
+				element.MouseWheel += Element_MouseWheel;
+				element.EnsureTransforms();
+				element.Parent?.SetValue(UIElement.ClipToBoundsProperty, true);
+			} else {
+				element.MouseWheel -= Element_MouseWheel;
+			}
+		}
+
+		#endregion Methods
 	}
 }

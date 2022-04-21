@@ -8,18 +8,27 @@ namespace PlotDigitizer.Core
 {
 	public class MainWindowViewModel : ViewModelBase
 	{
-		private readonly Setting setting;
+		#region Fields
+
 		private readonly IFileDialogService fileDialogService;
 		private readonly IMessageBoxService messageBoxService;
+		private readonly Setting setting;
 
+		#endregion Fields
+
+		#region Properties
+
+		public RelayCommand LoadSettingCommand { get; set; }
+		public Model Model { get; }
 		public PageManager PageManager { get; private set; } = new PageManager();
 
 		public IEnumerable<string> PageNameList => PageManager.PageList.Select(vm => vm.Name);
 
 		public RelayCommand SaveSettingCommand { get; set; }
 
-		public RelayCommand LoadSettingCommand { get; set; }
-		public Model Model { get; }
+		#endregion Properties
+
+		#region Constructors
 
 		public MainWindowViewModel()
 		{
@@ -39,33 +48,9 @@ namespace PlotDigitizer.Core
 			this.messageBoxService = messageBoxService;
 		}
 
-		private void SaveSetting()
-		{
-			var filter = "JSON file (*.json) |*.json|" +
-				"XML file (*.xml) |*.xml";
-			var filename = "PlotDigitizer Setting";
-			var results = fileDialogService.SaveFileDialog(filter, filename);
-			if (!results.IsValid) {
-				return;
-			}
-			switch (Path.GetExtension(results.FileName).ToLower()) {
-				default:
-				case ".json":
-					var json = JsonSerializer.Serialize(setting, new JsonSerializerOptions
-					{
-						Converters = { new RgbaConverter() }
-					});
-					File.WriteAllText(results.FileName, json);
-					break;
-				case ".xml": {
-						var xmlSerializer = new XmlSerializer(typeof(Setting));
-						using var stream = new FileStream(results.FileName, FileMode.OpenOrCreate);
-						xmlSerializer.Serialize(stream, setting.Copy());
-						break;
-					}
-			}
-			messageBoxService.Show_OK("Current setting is saved successfully.", "PlotDigitizer");
-		}
+		#endregion Constructors
+
+		#region Methods
 
 		private void LoadSetting()
 		{
@@ -86,6 +71,7 @@ namespace PlotDigitizer.Core
 						Converters = { new RgbaConverter() }
 					}) as Setting;
 					break;
+
 				case ".xml": {
 						var xmlSerializer = new XmlSerializer(typeof(Setting));
 						using var stream = new FileStream(results.FileName, FileMode.Open);
@@ -99,5 +85,36 @@ namespace PlotDigitizer.Core
 			this.setting.Load(setting);
 			messageBoxService.Show_OK("Setting is loaded successfully.", "PlotDigitizer");
 		}
+
+		private void SaveSetting()
+		{
+			var filter = "JSON file (*.json) |*.json|" +
+				"XML file (*.xml) |*.xml";
+			var filename = "PlotDigitizer Setting";
+			var results = fileDialogService.SaveFileDialog(filter, filename);
+			if (!results.IsValid) {
+				return;
+			}
+			switch (Path.GetExtension(results.FileName).ToLower()) {
+				default:
+				case ".json":
+					var json = JsonSerializer.Serialize(setting, new JsonSerializerOptions
+					{
+						Converters = { new RgbaConverter() }
+					});
+					File.WriteAllText(results.FileName, json);
+					break;
+
+				case ".xml": {
+						var xmlSerializer = new XmlSerializer(typeof(Setting));
+						using var stream = new FileStream(results.FileName, FileMode.OpenOrCreate);
+						xmlSerializer.Serialize(stream, setting.Copy());
+						break;
+					}
+			}
+			messageBoxService.Show_OK("Current setting is saved successfully.", "PlotDigitizer");
+		}
+
+		#endregion Methods
 	}
 }

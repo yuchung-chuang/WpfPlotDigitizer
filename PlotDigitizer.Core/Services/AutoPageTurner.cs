@@ -18,6 +18,5 @@ namespace PlotDigitizer.Core
 				pageManager.NextPageCommand.Execute();
 			}
 		}
-
 	}
 }

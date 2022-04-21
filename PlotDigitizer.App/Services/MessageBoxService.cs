@@ -1,14 +1,12 @@
 ﻿using PlotDigitizer.Core;
+
 using System.Windows;
 
 namespace PlotDigitizer.App
 {
 	public class MessageBoxService : IMessageBoxService
 	{
-		public void Show_OK(string message, string caption)
-		{
-			MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
-		}
+		public void Show_OK(string message, string caption) => MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
 
 		public bool Show_OkCancel(string message, string caption)
 		{

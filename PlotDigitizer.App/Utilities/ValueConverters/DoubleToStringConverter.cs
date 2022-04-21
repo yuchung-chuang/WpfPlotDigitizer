@@ -23,6 +23,5 @@ namespace PlotDigitizer.App
 			}
 			return null;
 		}
-
 	}
 }

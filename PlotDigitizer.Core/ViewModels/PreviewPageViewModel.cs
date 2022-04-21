@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
+
 using PropertyChanged;
+
 using System;
 using System.ComponentModel;
 using System.IO;
@@ -10,15 +12,36 @@ using System.Threading;
 
 namespace PlotDigitizer.Core
 {
+	public enum ExportResults
+	{
+		None,
+		Canceled,
+		Failed,
+		Sucessful,
+	}
+
 	public class PreviewPageViewModel : PageViewModelBase
 	{
-		private readonly Setting setting;
-		private readonly IMessageBoxService messageBox;
-		private readonly IFileDialogService fileDialog;
+		#region Fields
+
 		private readonly IAwaitTaskService awaitTask;
+		private readonly IFileDialogService fileDialog;
 		private readonly ILogger<PreviewPageViewModel> logger;
+		private readonly IMessageBoxService messageBox;
+		private readonly Setting setting;
+
+		#endregion Fields
+
+		#region Properties
 
 		public RelayCommand ExportCommand { get; private set; }
+
+		[OnChangedMethod(nameof(OnIsContinuousChanged))]
+		public bool IsContinuous
+		{
+			get => setting.DataType == DataType.Continuous;
+			set => setting.DataType = value ? DataType.Continuous : DataType.Discrete;
+		}
 
 		[OnChangedMethod(nameof(OnIsDiscreteChanged))]
 		public bool IsDiscrete
@@ -27,20 +50,20 @@ namespace PlotDigitizer.Core
 			set => setting.DataType = value ? DataType.Discrete : DataType.Continuous;
 		}
 
-		[OnChangedMethod(nameof(OnIsContinuousChanged))]
-		public bool IsContinuous
-		{
-			get => setting.DataType == DataType.Continuous;
-			set => setting.DataType = value ? DataType.Continuous : DataType.Discrete;
-		}
 		public bool IsEnabled => Model != null && Model.EdittedImage != null;
 
 		public Model Model { get; }
+
+		#endregion Properties
+
+		#region Constructors
+
 		public PreviewPageViewModel()
 		{
 			Name = "PreviewPage";
 			ExportCommand = new RelayCommand(Export, CanExport);
 		}
+
 		public PreviewPageViewModel(
 			Model model,
 			Setting setting,
@@ -57,38 +80,18 @@ namespace PlotDigitizer.Core
 			this.logger = logger;
 			model.PropertyChanged += Model_PropertyChanged;
 			setting.PropertyChanged += Setting_PropertyChanged;
-
 		}
-		private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
+
+		#endregion Constructors
+
+		#region Methods
+
+		public override void Enter()
 		{
-			if (e.PropertyName == nameof(Core.Model.EdittedImage)) {
-				base.OnPropertyChanged(nameof(IsEnabled));
-				logger.LogDebug($"{GetType()}.{MethodBase.GetCurrentMethod().Name} completed.");
+			base.Enter();
+			if (IsEnabled) {
+				ExtractPoints();
 			}
-		}
-
-		private void Setting_PropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-			if (!(sender is Setting)) {
-				return;
-			}
-			if (e.PropertyName == nameof(Setting.DataType)) {
-				OnPropertyChanged(nameof(IsDiscrete));
-				OnPropertyChanged(nameof(IsContinuous));
-				logger.LogDebug($"{GetType()}.{MethodBase.GetCurrentMethod().Name} completed.");
-			}
-		}
-
-		private void OnIsDiscreteChanged()
-		{
-			ExtractPoints();
-			logger.LogDebug($"{GetType()}.{MethodBase.GetCurrentMethod().Name} completed.");
-		}
-
-		private void OnIsContinuousChanged()
-		{
-			ExtractPoints();
-			logger.LogDebug($"{GetType()}.{MethodBase.GetCurrentMethod().Name} completed.");
 		}
 
 		public void ExtractPoints()
@@ -99,6 +102,10 @@ namespace PlotDigitizer.Core
 			Model.RaisePropertyChanged(nameof(Core.Model.PreviewImage));
 			logger.LogInformation($"{GetType()}.{MethodBase.GetCurrentMethod().Name} completed.");
 		}
+
+		public override void Leave() => base.Leave();
+
+		private bool CanExport() => Model?.Data?.Count() > 0;
 
 		private void Export()
 		{
@@ -132,6 +139,7 @@ namespace PlotDigitizer.Core
 					case ExportResults.Sucessful:
 						messageBox.Show_OK("The data has been exported successfully.", "Notification");
 						break;
+
 					case ExportResults.Failed: {
 							var response = messageBox.Show_Warning_OkCancel("Something went wrong... try again?", "Error");
 							if (response) {
@@ -143,6 +151,7 @@ namespace PlotDigitizer.Core
 					case ExportResults.Canceled:
 						messageBox.Show_OK("Export operation has been cancelled.", "Notification");
 						break;
+
 					case ExportResults.None:
 					default:
 						break;
@@ -157,10 +166,6 @@ namespace PlotDigitizer.Core
 					content.AppendLine("X" + seperator + "Y");
 					foreach (var point in Model.Data) {
 						content.AppendLine(point.X.ToString() + seperator + point.Y.ToString());
-#if DEBUG
-						Thread.Sleep(0);
-						//throw new Exception("Test error");
-#endif
 						if (token.IsCancellationRequested) {
 							return ExportResults.Canceled;
 						}
@@ -176,27 +181,38 @@ namespace PlotDigitizer.Core
 			}
 		}
 
-		private bool CanExport() => Model?.Data?.Count() > 0;
-
-		public override void Enter()
+		private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			base.Enter();
-			if (IsEnabled) {
-				ExtractPoints();
+			if (e.PropertyName == nameof(Core.Model.EdittedImage)) {
+				base.OnPropertyChanged(nameof(IsEnabled));
+				logger.LogDebug($"{GetType()}.{MethodBase.GetCurrentMethod().Name} completed.");
 			}
 		}
 
-		public override void Leave()
+		private void OnIsContinuousChanged()
 		{
-			base.Leave();
+			ExtractPoints();
+			logger.LogDebug($"{GetType()}.{MethodBase.GetCurrentMethod().Name} completed.");
 		}
-	}
 
-	public enum ExportResults
-	{
-		None,
-		Canceled,
-		Failed,
-		Sucessful,
+		private void OnIsDiscreteChanged()
+		{
+			ExtractPoints();
+			logger.LogDebug($"{GetType()}.{MethodBase.GetCurrentMethod().Name} completed.");
+		}
+
+		private void Setting_PropertyChanged(object sender, PropertyChangedEventArgs e)
+		{
+			if (!(sender is Setting)) {
+				return;
+			}
+			if (e.PropertyName == nameof(Setting.DataType)) {
+				OnPropertyChanged(nameof(IsDiscrete));
+				OnPropertyChanged(nameof(IsContinuous));
+				logger.LogDebug($"{GetType()}.{MethodBase.GetCurrentMethod().Name} completed.");
+			}
+		}
+
+		#endregion Methods
 	}
 }

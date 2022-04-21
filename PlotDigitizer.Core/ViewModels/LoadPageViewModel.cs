@@ -1,9 +1,8 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
+
 using System;
-using System.Drawing;
 using System.IO;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
@@ -14,18 +13,31 @@ namespace PlotDigitizer.Core
 {
 	public class LoadPageViewModel : PageViewModelBase
 	{
-		private readonly IFileDialogService fileDialogService;
+		#region Fields
+
 		private readonly IAwaitTaskService awaitTaskService;
 		private readonly IClipboardService clipboard;
+		private readonly IFileDialogService fileDialogService;
 		private readonly IMessageBoxService messageBox;
+
+		#endregion Fields
+
+		#region Events
 
 		public event EventHandler NextPage;
 
-		public RelayCommand BrowseCommand { get; private set; }
-		public RelayCommand PasteCommand { get; private set; }
-		public RelayCommand<DropEventArgs> DropCommand { get; private set; }
+		#endregion Events
 
+		#region Properties
+
+		public RelayCommand BrowseCommand { get; private set; }
+		public RelayCommand<DropEventArgs> DropCommand { get; private set; }
 		public Model Model { get; }
+		public RelayCommand PasteCommand { get; private set; }
+
+		#endregion Properties
+
+		#region Constructors
 
 		public LoadPageViewModel()
 		{
@@ -48,22 +60,9 @@ namespace PlotDigitizer.Core
 			this.messageBox = messageBox;
 		}
 
-		private void OnNextPage()
-		{
-			NextPage?.Invoke(this, null);
-		}
+		#endregion Constructors
 
-		private void Paste()
-		{
-			if (clipboard.ContainsImage()) {
-				SetModelImage(clipboard.GetImage());
-			} else if (clipboard.ContainsFileDropList()) {
-				SetModelImage(new Image<Rgba, byte>(clipboard.GetFileDropList()[0]));
-			} else {
-				messageBox.Show_OK("Clipboard does not contain image.", "Warning");
-				return;
-			}
-		}
+		#region Methods
 
 		public void SetModelImage(Image<Rgba, byte> image)
 		{
@@ -94,7 +93,7 @@ namespace PlotDigitizer.Core
 				// make sure it returns to the main thread
 				var image = await awaitTaskService.RunAsync(DownloadImage).ConfigureAwait(true);
 				// as this line updates the view
-				SetModelImage(image); 
+				SetModelImage(image);
 			}
 
 			async Task<Image<Rgba, byte>> DownloadImage(CancellationToken token)
@@ -128,9 +127,23 @@ namespace PlotDigitizer.Core
 					// delete the temperary file afterward
 					File.Delete(filePath);
 				}
-
 			}
 		}
 
+		private void OnNextPage() => NextPage?.Invoke(this, null);
+
+		private void Paste()
+		{
+			if (clipboard.ContainsImage()) {
+				SetModelImage(clipboard.GetImage());
+			} else if (clipboard.ContainsFileDropList()) {
+				SetModelImage(new Image<Rgba, byte>(clipboard.GetFileDropList()[0]));
+			} else {
+				messageBox.Show_OK("Clipboard does not contain image.", "Warning");
+				return;
+			}
+		}
+
+		#endregion Methods
 	}
 }

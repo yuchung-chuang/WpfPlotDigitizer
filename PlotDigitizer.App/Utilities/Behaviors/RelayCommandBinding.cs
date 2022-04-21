@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xaml.Behaviors;
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 using System.Windows;
 using System.Windows.Input;
 
@@ -9,21 +7,45 @@ namespace PlotDigitizer.App
 {
 	public class RelayCommandBinding : Behavior<FrameworkElement>
 	{
-		private CommandBinding commandBinding;
+
+		#region Fields
+
 		public static readonly DependencyProperty ApplicationCommandProperty =
 			DependencyProperty.Register("ApplicationCommand", typeof(ICommand), typeof(RelayCommandBinding), new PropertyMetadata(default, OnApplicationCommandChanged));
+
 		public static readonly DependencyProperty CommandProperty =
 			DependencyProperty.Register("Command", typeof(ICommand), typeof(RelayCommandBinding), new PropertyMetadata(default, OnCommandChanged));
+
+		private CommandBinding commandBinding;
+
+		#endregion Fields
+
+
+		#region Properties
+
 		public ICommand ApplicationCommand
 		{
-			get { return (ICommand)GetValue(ApplicationCommandProperty); }
-			set { SetValue(ApplicationCommandProperty, value); }
+			get => (ICommand)GetValue(ApplicationCommandProperty);
+			set => SetValue(ApplicationCommandProperty, value);
 		}
+
 		public ICommand Command
 		{
-			get { return (ICommand)GetValue(CommandProperty); }
-			set { SetValue(CommandProperty, value); }
+			get => (ICommand)GetValue(CommandProperty);
+			set => SetValue(CommandProperty, value);
 		}
+
+		#endregion Properties
+
+
+		#region Methods
+
+		protected override void OnDetaching()
+		{
+			base.OnDetaching();
+			AssociatedObject.CommandBindings.Remove(commandBinding);
+		}
+
 		private static void OnApplicationCommandChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			if (!(d is RelayCommandBinding relay)) {
@@ -33,6 +55,7 @@ namespace PlotDigitizer.App
 				relay.CreateCommandBinding();
 			}
 		}
+
 		private static void OnCommandChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			if (!(d is RelayCommandBinding relay)) {
@@ -44,34 +67,29 @@ namespace PlotDigitizer.App
 				relay.AddCommandBinding();
 			}
 		}
+
+		private void AddCommandBinding()
+		{
+			AssociatedObject.CommandBindings.Add(commandBinding);
+			CommandManager.InvalidateRequerySuggested();
+		}
+
+		private void CanExecute(object sender, CanExecuteRoutedEventArgs e) => e.CanExecute = Command == null || Command.CanExecute(e);
+
 		private void CreateCommandBinding()
 		{
 			commandBinding = new CommandBinding(ApplicationCommand,
 				new ExecutedRoutedEventHandler(Execute),
 				new CanExecuteRoutedEventHandler(CanExecute));
 		}
-		private void AddCommandBinding()
-		{
-			AssociatedObject.CommandBindings.Add(commandBinding);
-			CommandManager.InvalidateRequerySuggested();
-		}
+		private void Execute(object sender, ExecutedRoutedEventArgs e) => Command?.Execute(e);
+
 		private void RemoveCommandBinding()
 		{
 			AssociatedObject.CommandBindings.Remove(commandBinding);
 			CommandManager.InvalidateRequerySuggested();
 		}
-		private void CanExecute(object sender, CanExecuteRoutedEventArgs e)
-		{
-			e.CanExecute = Command == null || Command.CanExecute(e);
-		}
-		private void Execute(object sender, ExecutedRoutedEventArgs e)
-		{
-			Command?.Execute(e);
-		}
-		protected override void OnDetaching()
-		{
-			base.OnDetaching();
-			AssociatedObject.CommandBindings.Remove(commandBinding);
-		}
+
+		#endregion Methods
 	}
 }

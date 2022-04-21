@@ -1,4 +1,5 @@
 ﻿using Emgu.CV.Structure;
+
 using System.Drawing;
 
 namespace PlotDigitizer.Core
@@ -34,26 +35,31 @@ namespace PlotDigitizer.Core
 			get => axisLimit.Get();
 			set => axisLimit.Set(value);
 		}
+
 		public override PointD AxisLogBase
 		{
 			get => axisLogBase.Get();
 			set => axisLogBase.Set(value);
 		}
+
 		public override Rectangle AxisLocation
 		{
 			get => axisLocation.Get();
 			set => axisLocation.Set(value);
 		}
+
 		public override Rgba FilterMin
 		{
 			get => filterMin.Get();
 			set => filterMin.Set(value);
 		}
+
 		public override Rgba FilterMax
 		{
 			get => filterMax.Get();
 			set => filterMax.Set(value);
 		}
+
 		public override DataType DataType
 		{
 			get => dataType.Get();

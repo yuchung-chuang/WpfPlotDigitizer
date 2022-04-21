@@ -4,6 +4,5 @@ namespace PlotDigitizer.Core
 {
 	public class AxisLocationNode : ModelNode<Rectangle>
 	{
-
 	}
 }

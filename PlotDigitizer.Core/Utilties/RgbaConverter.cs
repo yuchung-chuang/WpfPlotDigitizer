@@ -1,4 +1,5 @@
 ﻿using Emgu.CV.Structure;
+
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -9,7 +10,6 @@ namespace PlotDigitizer.Core
 	{
 		public override Rgba Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
 		{
-
 			var color = new Rgba();
 			object obj = color; // since rgba is a struct, it's necessary to box/unbox it to a class in order to take advantage of GetProperty().SetValue()
 			string property = null;
@@ -20,13 +20,16 @@ namespace PlotDigitizer.Core
 					case JsonTokenType.PropertyName:
 						property = reader.GetString();
 						break;
+
 					case JsonTokenType.Number:
 						var value = reader.GetDouble();
 						typeof(Rgba).GetProperty(property).SetValue(obj, value);
 						break;
+
 					case JsonTokenType.EndObject:
 						isDone = true;
 						break;
+
 					default:
 						break;
 				}

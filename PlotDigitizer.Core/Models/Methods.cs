@@ -33,7 +33,6 @@ namespace PlotDigitizer.Core
 				rectangles.Add(CvInvoke.BoundingRectangle(approxContour));
 			}
 
-
 			var filtered = rectangles.Where(r =>
 				r.Width * r.Height > image.Width * image.Height * 0.25 &&
 				r.Width * r.Height < image.Width * image.Height * 0.9);
@@ -71,20 +70,11 @@ namespace PlotDigitizer.Core
 			return image;
 		}
 
-		public static void EraseImage(Image<Rgba, byte> image, Rectangle rect)
-		{
-			CvInvoke.Rectangle(image, rect, new Rgba().MCvScalar, -1);
-		}
+		public static void EraseImage(Image<Rgba, byte> image, Rectangle rect) => CvInvoke.Rectangle(image, rect, new Rgba().MCvScalar, -1);
 
-		public static void EraseImage(Image<Rgba, byte> image, IInputArray points)
-		{
-			CvInvoke.FillPoly(image, points, new Rgba().MCvScalar);
-		}
+		public static void EraseImage(Image<Rgba, byte> image, IInputArray points) => CvInvoke.FillPoly(image, points, new Rgba().MCvScalar);
 
-		public static void DrawImage(Image<Rgba, byte> image, Point centre, int radius)
-		{
-			CvInvoke.Circle(image, centre, radius, new Rgba(0, 0, 0, 255).MCvScalar, -1);
-		}
+		public static void DrawImage(Image<Rgba, byte> image, Point centre, int radius) => CvInvoke.Circle(image, centre, radius, new Rgba(0, 0, 0, 255).MCvScalar, -1);
 
 		public static IEnumerable<PointD> GetContinuousPoints(Image<Rgba, byte> image)
 		{
@@ -166,7 +156,5 @@ namespace PlotDigitizer.Core
 				return Math.Log(num) / Math.Log(Base);
 			}
 		}
-
-		
 	}
 }

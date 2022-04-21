@@ -12,7 +12,7 @@ namespace PlotDigitizer.Core
 		{
 			this.inputImage = inputImage;
 			this.axisLocation = axisLocation;
-			inputImage.Updated += (s,e) => OnOutdated();
+			inputImage.Updated += (s, e) => OnOutdated();
 			inputImage.Outdated += (s, e) => OnOutdated();
 			axisLocation.Updated += (s, e) => OnOutdated();
 			axisLocation.Outdated += (s, e) => OnOutdated();

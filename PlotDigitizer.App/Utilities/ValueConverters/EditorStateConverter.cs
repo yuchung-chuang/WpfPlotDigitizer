@@ -36,21 +36,24 @@ namespace PlotDigitizer.App
 				case PencilMode _:
 					booleans[0] = true;
 					break;
+
 				case EraserMode _:
 					booleans[1] = true;
 					break;
+
 				case RectMode _:
 					booleans[2] = true;
 					break;
+
 				case PolyMode _:
 					booleans[3] = true;
 					break;
+
 				default:
 				case NoMode _:
 					break;
 			}
 			return booleans.Cast<object>().ToArray();
 		}
-
 	}
 }

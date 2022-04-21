@@ -1,13 +1,15 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
+
 using PlotDigitizer.Core;
+
 using PropertyChanged;
+
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Linq;
 
 namespace PlotDigitizer.App
 {
@@ -16,87 +18,96 @@ namespace PlotDigitizer.App
 	/// </summary>
 	public partial class Editor : UserControl, INotifyPropertyChanged
 	{
-		private EditManager<Image<Rgba, byte>> editManager;
-		//public static readonly DependencyProperty MouseButtonProperty =
-		//	DependencyProperty.Register("MouseButton", typeof(MouseButton), typeof(Editor), new PropertyMetadata(MouseButton.Left));
-
-		//public static readonly DependencyProperty ModifierKeysProperty =
-		//	DependencyProperty.Register("ModifierKeys", typeof(ModifierKeys), typeof(Editor), new PropertyMetadata(ModifierKeys.None));
-
-		//public static readonly DependencyProperty DeleteKeysProperty =
-		//	DependencyProperty.Register("DeleteKeys", typeof(Key), typeof(Editor), new PropertyMetadata(Key.Delete | Key.Back));
+		#region Fields
 
 		public static readonly DependencyProperty BlockInteractionProperty =
 			DependencyProperty.Register("BlockInteraction", typeof(bool), typeof(Editor), new PropertyMetadata(false));
 
-		public static readonly DependencyProperty EditorStateProperty =
-			DependencyProperty.Register("EditorState", typeof(EditorState), typeof(Editor), new PropertyMetadata(EditorState.NoMode, OnEditorStateChanged));
+		public static readonly DependencyProperty DeleteKeyProperty = DependencyProperty.Register("DeleteKey", typeof(KeyGesture), typeof(Editor), new PropertyMetadata(new KeyGesture(Key.Delete)));
+
+		public static readonly DependencyProperty EditGestureProperty = DependencyProperty.Register(nameof(EditGesture), typeof(MouseGesture), typeof(Editor), new PropertyMetadata(new MouseGesture(MouseAction.LeftClick)));
 
 		public static readonly DependencyProperty EditManagerProperty =
 			DependencyProperty.Register("EditManager", typeof(EditManager<Image<Rgba, byte>>), typeof(Editor), new PropertyMetadata(default));
 
-		public static readonly DependencyProperty ImageProperty = DependencyProperty.Register("Image", typeof(Image<Rgba, byte>), typeof(Editor), new PropertyMetadata(default));
+		public static readonly DependencyProperty EditorStateProperty =
+			DependencyProperty.Register("EditorState", typeof(EditorState), typeof(Editor), new PropertyMetadata(EditorState.NoMode, OnEditorStateChanged));
 
-		public static readonly DependencyProperty EditGestureProperty = DependencyProperty.Register(nameof(EditGesture), typeof(MouseGesture), typeof(Editor), new PropertyMetadata(new MouseGesture(MouseAction.LeftClick)));
+		public static readonly DependencyProperty ImageProperty = DependencyProperty.Register("Image", typeof(Image<Rgba, byte>), typeof(Editor), new PropertyMetadata(default));
 
 		public static readonly DependencyProperty SelectedGestureProperty = DependencyProperty.Register("SelectedGesture", typeof(MouseGesture), typeof(Editor), new PropertyMetadata(new MouseGesture(MouseAction.LeftDoubleClick)));
 
-		public static readonly DependencyProperty DeleteKeyProperty = DependencyProperty.Register("DeleteKey", typeof(KeyGesture), typeof(Editor), new PropertyMetadata(new KeyGesture(Key.Delete)));
+		private EditManager<Image<Rgba, byte>> editManager;
 
+		#endregion Fields
 
-		public double ZoomScale { get; set; }
-		public double EraserSize => ImageControl.ActualWidth * 0.05 / ZoomScale;
-		public double PencilSize => ImageControl.ActualWidth * 0.01 / ZoomScale;
-		public double EraserStrokeSize => 1.5 / ZoomScale;
-		public double PencilStrokeSize => 1.5 / ZoomScale;
-		public double SelectRectStrokeSize => 1.5 / ZoomScale;
-		public double SelectPolyStrokeSize => 1.5 / ZoomScale;
+		#region Events
 
 		public event PropertyChangedEventHandler PropertyChanged;
-		
-		public MouseGesture SelectedGesture
-		{
-			get { return (MouseGesture)GetValue(SelectedGestureProperty); }
-			set { SetValue(SelectedGestureProperty, value); }
-		}
-		public KeyGesture DeleteKey
-		{
-			get { return (KeyGesture)GetValue(DeleteKeyProperty); }
-			set { SetValue(DeleteKeyProperty, value); }
-		}
-		public MouseGesture EditGesture
-		{
-			get { return (MouseGesture)GetValue(EditGestureProperty); }
-			set { SetValue(EditGestureProperty, value); }
-		}
+
+		#endregion Events
+
+		#region Properties
+
 		public bool BlockInteraction
 		{
-			get { return (bool)GetValue(BlockInteractionProperty); }
-			set { SetValue(BlockInteractionProperty, value); }
+			get => (bool)GetValue(BlockInteractionProperty);
+			set => SetValue(BlockInteractionProperty, value);
 		}
 
-		public ImageSource ImageSource => Image?.ToBitmapSource();
-
-		public Image<Rgba,byte> Image
+		public KeyGesture DeleteKey
 		{
-			get { return (Image<Rgba,byte>)GetValue(ImageProperty); }
-			set { SetValue(ImageProperty, value); }
+			get => (KeyGesture)GetValue(DeleteKeyProperty);
+			set => SetValue(DeleteKeyProperty, value);
+		}
+
+		public MouseGesture EditGesture
+		{
+			get => (MouseGesture)GetValue(EditGestureProperty);
+			set => SetValue(EditGestureProperty, value);
 		}
 
 		public EditManager<Image<Rgba, byte>> EditManager
 		{
-			get { return (EditManager<Image<Rgba, byte>>)GetValue(EditManagerProperty); }
-			set { SetValue(EditManagerProperty, value); }
+			get => (EditManager<Image<Rgba, byte>>)GetValue(EditManagerProperty);
+			set => SetValue(EditManagerProperty, value);
 		}
 
 		public EditorState EditorState
 		{
-			get { return (EditorState)GetValue(EditorStateProperty); }
-			set { SetValue(EditorStateProperty, value); }
+			get => (EditorState)GetValue(EditorStateProperty);
+			set => SetValue(EditorStateProperty, value);
 		}
 
 		[OnChangedMethod(nameof(OnEdittingStateChanged))]
 		public EdittingState EdittingState { get; set; } = EdittingState.NotEditting;
+
+		public double EraserSize => ImageControl.ActualWidth * 0.05 / ZoomScale;
+		public double EraserStrokeSize => 1.5 / ZoomScale;
+
+		public Image<Rgba, byte> Image
+		{
+			get => (Image<Rgba, byte>)GetValue(ImageProperty);
+			set => SetValue(ImageProperty, value);
+		}
+
+		public ImageSource ImageSource => Image?.ToBitmapSource();
+		public double PencilSize => ImageControl.ActualWidth * 0.01 / ZoomScale;
+		public double PencilStrokeSize => 1.5 / ZoomScale;
+
+		public MouseGesture SelectedGesture
+		{
+			get => (MouseGesture)GetValue(SelectedGestureProperty);
+			set => SetValue(SelectedGestureProperty, value);
+		}
+
+		public double SelectPolyStrokeSize => 1.5 / ZoomScale;
+		public double SelectRectStrokeSize => 1.5 / ZoomScale;
+		public double ZoomScale { get; set; }
+
+		#endregion Properties
+
+		#region Constructors
 
 		public Editor()
 		{
@@ -106,6 +117,14 @@ namespace PlotDigitizer.App
 			ImageControl.SizeChanged += ImageControl_SizeChanged;
 		}
 
+		#endregion Constructors
+
+		#region Methods
+
+		public void Initialise(Image<Rgba, byte> image) => Image = image.Copy();
+
+		public void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
 		[SuppressPropertyChangedWarnings]
 		private static void OnEditorStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
@@ -113,54 +132,6 @@ namespace PlotDigitizer.App
 				return;
 			}
 			editor.EditorState.Enter(editor);
-		}
-
-		private void OnEdittingStateChanged()
-		{
-			EdittingState.Enter(this);
-			UpdateVisibility();
-		}
-
-		/// <summary>
-		/// This makes sure <see cref="ImageControl.ActualWidth"/> is evaludated.
-		/// </summary>
-		private void ImageControl_SizeChanged(object sender, SizeChangedEventArgs e)
-		{
-			OnPropertyChanged(nameof(EraserSize));
-			OnPropertyChanged(nameof(PencilSize));
-		}
-
-		public void Initialise(Image<Rgba, byte> image)
-		{
-			Image = image.Copy();
-		}
-
-		private void UpdateVisibility()
-		{
-			switch (EdittingState) {
-				case NotEditting _:
-					selectRect.Visibility = Visibility.Hidden;
-					selectPoly.Visibility = Visibility.Hidden;
-					eraserRect.Visibility = Visibility.Hidden;
-					pencilPointer.Visibility = Visibility.Hidden;
-					break;
-				case RectSelected _:
-				case RectSelecting _:
-					selectRect.Visibility = Visibility.Visible;
-					break;
-				case PolySelected _:
-				case PolySelecting _:
-					selectPoly.Visibility = Visibility.Visible;
-					break;
-				case Erasing _:
-					eraserRect.Visibility = Visibility.Visible;
-					break;
-				case Drawing _:
-					pencilPointer.Visibility = Visibility.Visible;
-					break;
-				default:
-					break;
-			}
 		}
 
 		private void EditManager_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -192,9 +163,18 @@ namespace PlotDigitizer.App
 			editManager.PropertyChanged -= EditManager_PropertyChanged;
 		}
 
+		/// <summary>
+		/// This makes sure <see cref="ImageControl.ActualWidth"/> is evaludated.
+		/// </summary>
+		private void ImageControl_SizeChanged(object sender, SizeChangedEventArgs e)
+		{
+			OnPropertyChanged(nameof(EraserSize));
+			OnPropertyChanged(nameof(PencilSize));
+		}
+
 		private void MainGrid_MouseDown(object sender, MouseButtonEventArgs e)
 		{
-			if (!EditGesture.Matches(sender,e) && !SelectedGesture.Matches(sender,e)) {
+			if (!EditGesture.Matches(sender, e) && !SelectedGesture.Matches(sender, e)) {
 				return;
 			}
 
@@ -220,7 +200,7 @@ namespace PlotDigitizer.App
 
 		private void MainWindow_KeyDown(object sender, KeyEventArgs e)
 		{
-			if (!DeleteKey.Matches(sender,e)) {
+			if (!DeleteKey.Matches(sender, e)) {
 				return;
 			}
 
@@ -232,9 +212,45 @@ namespace PlotDigitizer.App
 			}
 		}
 
-		public void OnPropertyChanged(string propertyName)
+		private void OnEdittingStateChanged()
 		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+			EdittingState.Enter(this);
+			UpdateVisibility();
 		}
+
+		private void UpdateVisibility()
+		{
+			switch (EdittingState) {
+				case NotEditting _:
+					selectRect.Visibility = Visibility.Hidden;
+					selectPoly.Visibility = Visibility.Hidden;
+					eraserRect.Visibility = Visibility.Hidden;
+					pencilPointer.Visibility = Visibility.Hidden;
+					break;
+
+				case RectSelected _:
+				case RectSelecting _:
+					selectRect.Visibility = Visibility.Visible;
+					break;
+
+				case PolySelected _:
+				case PolySelecting _:
+					selectPoly.Visibility = Visibility.Visible;
+					break;
+
+				case Erasing _:
+					eraserRect.Visibility = Visibility.Visible;
+					break;
+
+				case Drawing _:
+					pencilPointer.Visibility = Visibility.Visible;
+					break;
+
+				default:
+					break;
+			}
+		}
+
+		#endregion Methods
 	}
 }

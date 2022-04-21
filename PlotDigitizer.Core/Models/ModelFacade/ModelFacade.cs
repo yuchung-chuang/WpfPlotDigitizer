@@ -1,5 +1,6 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
+
 using System.Collections.Generic;
 
 namespace PlotDigitizer.Core
@@ -18,26 +19,31 @@ namespace PlotDigitizer.Core
 			get => inputImage.Get();
 			set => inputImage.Set(value);
 		}
+
 		public override Image<Rgba, byte> CroppedImage
 		{
 			get => croppedImage.Get();
 			protected set => croppedImage.Set(value);
 		}
+
 		public override Image<Rgba, byte> FilteredImage
 		{
 			get => filteredImage.Get();
 			protected set => filteredImage.Set(value);
 		}
+
 		public override Image<Rgba, byte> EdittedImage
 		{
 			get => edittedImage.Get();
 			set => edittedImage.Set(value);
 		}
+
 		public override Image<Rgba, byte> PreviewImage
 		{
 			get => previewImage.Get();
 			protected set => previewImage.Set(value);
 		}
+
 		public override IEnumerable<PointD> Data
 		{
 			get => data.Get();

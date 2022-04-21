@@ -13,7 +13,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlotDigitizer.CLI", "PlotDi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlotDigitizer.Test", "PlotDigitizer.Test\PlotDigitizer.Test.csproj", "{C963BD18-199B-4F62-BA9D-D2BDA2C66317}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlotDigitizer.Web", "PlotDigitizer.Web\PlotDigitizer.Web.csproj", "{B9E1F89B-F2E6-4AD8-BF2D-EAE4630274EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlotDigitizer.Web", "PlotDigitizer.Web\PlotDigitizer.Web.csproj", "{B9E1F89B-F2E6-4AD8-BF2D-EAE4630274EF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EA0AD2E-C847-455F-8FD2-11811D133A02}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

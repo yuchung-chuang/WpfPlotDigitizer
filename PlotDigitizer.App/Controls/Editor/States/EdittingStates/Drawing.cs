@@ -1,4 +1,5 @@
 ﻿using PlotDigitizer.Core;
+
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,6 +10,7 @@ namespace PlotDigitizer.App
 	public class Drawing : EdittingState
 	{
 		private static readonly int fps = 24;
+
 		public override void MouseMove(Editor editor, MouseEventArgs e)
 		{
 			base.MouseMove(editor, e);

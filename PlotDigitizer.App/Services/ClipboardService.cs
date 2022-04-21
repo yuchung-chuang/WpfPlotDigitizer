@@ -1,6 +1,8 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
+
 using PlotDigitizer.Core;
+
 using System.Collections.Specialized;
 using System.Windows;
 
@@ -12,9 +14,8 @@ namespace PlotDigitizer.App
 
 		public bool ContainsFileDropList() => Clipboard.ContainsFileDropList();
 
-		public Image<Rgba,byte> GetImage() => Clipboard.GetImage().ToBitmap().ToImage<Rgba, byte>();
+		public Image<Rgba, byte> GetImage() => Clipboard.GetImage().ToBitmap().ToImage<Rgba, byte>();
 
 		public StringCollection GetFileDropList() => Clipboard.GetFileDropList();
-
 	}
 }

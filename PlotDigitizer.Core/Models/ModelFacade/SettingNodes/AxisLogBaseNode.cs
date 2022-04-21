@@ -1,6 +1,6 @@
 ﻿namespace PlotDigitizer.Core
 {
-	public class AxisLogBaseNode : ModelNode<PointD> 
+	public class AxisLogBaseNode : ModelNode<PointD>
 	{
 		public AxisLogBaseNode()
 		{

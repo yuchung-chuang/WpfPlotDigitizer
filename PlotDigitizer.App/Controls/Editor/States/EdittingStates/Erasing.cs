@@ -1,4 +1,5 @@
 ﻿using PlotDigitizer.Core;
+
 using System;
 using System.Drawing;
 using System.Windows;
@@ -10,6 +11,7 @@ namespace PlotDigitizer.App
 	public class Erasing : EdittingState
 	{
 		private static readonly int fps = 24;
+
 		public override void MouseMove(Editor editor, MouseEventArgs e)
 		{
 			base.MouseMove(editor, e);
@@ -31,7 +33,6 @@ namespace PlotDigitizer.App
 				editor.OnPropertyChanged(nameof(editor.ImageSource));
 				stopwatch.Restart();
 			}
-
 		}
 
 		public override void MouseUp(Editor editor, MouseButtonEventArgs e)

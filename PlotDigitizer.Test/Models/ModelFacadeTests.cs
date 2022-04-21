@@ -1,8 +1,11 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using PlotDigitizer.App;
+
 using System;
 using System.Drawing;
 using System.Linq;

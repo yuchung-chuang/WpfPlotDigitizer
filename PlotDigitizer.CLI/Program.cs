@@ -1,22 +1,25 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
+
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+
 using PlotDigitizer.Core;
+
 using System;
 using System.Collections.Generic;
+using System.CommandLine;
+using System.CommandLine.Parsing;
 using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Text.Json;
-using System.CommandLine;
 using System.Threading.Tasks;
-using System.CommandLine.Parsing;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace PlotDigitizer.CLI
 {
-	class Program
+	internal class Program
 	{
 		private static IHost host;
 		private static ILogger<Program> logger;
@@ -29,7 +32,7 @@ namespace PlotDigitizer.CLI
 
 		// -h		help menu											(independent)
 		// -v		about menu											(independent)
-		static async Task Main(string[] args)
+		private static async Task Main(string[] args)
 		{
 			var rootCommand = ConfigureCommand();
 
@@ -128,9 +131,11 @@ namespace PlotDigitizer.CLI
 					case ".csv":
 						SaveAsCSV();
 						break;
+
 					case ".txt":
 						SaveAsTXT();
 						break;
+
 					default:
 						var ex = new FormatException("Output file format is not recognized. Please use either .csv or .txt as file extension.");
 						logger.LogCritical(ex.Message);
@@ -141,7 +146,7 @@ namespace PlotDigitizer.CLI
 			catch (Exception ex) {
 				logger.LogError(ex.Message);
 				logger.LogInformation("Something went wrong... try again? (y/n)");
-				var response = Console.ReadKey(); 
+				var response = Console.ReadKey();
 				Console.WriteLine(); // insert a line break after the response key
 				if (response.Key == ConsoleKey.Y) {
 					SaveData(data, fileName);

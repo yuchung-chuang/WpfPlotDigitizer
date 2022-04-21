@@ -9,6 +9,5 @@
 		public static PolySelecting PolySelecting { get; } = new PolySelecting();
 		public static RectSelected RectSelected { get; } = new RectSelected();
 		public static RectSelecting RectSelecting { get; } = new RectSelecting();
-
 	}
 }

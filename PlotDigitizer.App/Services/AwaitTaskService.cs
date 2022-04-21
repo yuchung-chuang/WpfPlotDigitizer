@@ -1,9 +1,10 @@
-﻿using System;
+﻿using PlotDigitizer.Core;
+
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using PlotDigitizer.Core;
 
 namespace PlotDigitizer.App
 {
@@ -26,11 +27,13 @@ namespace PlotDigitizer.App
 			popup.Canceled += (sender, e) => cts.Cancel();
 			popup.Show();
 		}
+
 		private void Cleanup()
 		{
 			popup.Close();
 			Mouse.OverrideCursor = null;
 		}
+
 		public async Task<T> RunAsync<T>(Func<CancellationToken, T> func)
 		{
 			Prepare();

@@ -17,6 +17,5 @@ namespace PlotDigitizer.App
 			Debugger.Break();
 			return value;
 		}
-
 	}
 }

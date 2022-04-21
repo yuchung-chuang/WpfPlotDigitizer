@@ -1,7 +1,6 @@
 ﻿namespace PlotDigitizer.App
 {
-	public class NotEditting : EdittingState 
+	public class NotEditting : EdittingState
 	{
-		
 	}
 }

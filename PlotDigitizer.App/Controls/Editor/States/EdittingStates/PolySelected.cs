@@ -1,5 +1,7 @@
 ﻿using Emgu.CV.Util;
+
 using PlotDigitizer.Core;
+
 using System;
 using System.Drawing;
 using System.Linq;

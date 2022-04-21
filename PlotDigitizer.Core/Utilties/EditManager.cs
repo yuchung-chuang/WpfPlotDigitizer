@@ -1,4 +1,5 @@
 ﻿using PropertyChanged;
+
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -6,30 +7,37 @@ namespace PlotDigitizer.Core
 {
 	public class EditManager<TObject> : INotifyPropertyChanged
 	{
+		#region Events
+
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		public bool IsInitialised => ObjectList != null;
-		
+		#endregion Events
+
+		#region Properties
+
+		public TObject CurrentObject => ObjectList[Index];
+		public string CurrentTag => TagList[Index];
+		public RelayCommand<(TObject obj, string tag)> EditCommand { get; set; }
+		public RelayCommand<int> GoToCommand { get; private set; }
+
 		[OnChangedMethod(nameof(OnIndexChanged))]
 		public int Index { get; private set; }
+
+		public bool IsInitialised => ObjectList != null;
 
 		[OnChangedMethod(nameof(OnObjectListChanged))]
 		public List<TObject> ObjectList { get; private set; }
 
-		public TObject CurrentObject => ObjectList[Index];
-		
+		public RelayCommand RedoCommand { get; private set; }
+
 		[OnChangedMethod(nameof(OnTagListChanged))]
 		public List<string> TagList { get; private set; }
 
-		public string CurrentTag => TagList[Index];
-
 		public RelayCommand UndoCommand { get; private set; }
 
-		public RelayCommand RedoCommand { get; private set; }
+		#endregion Properties
 
-		public RelayCommand<int> GoToCommand { get; private set; }
-
-		public RelayCommand<(TObject obj, string tag)> EditCommand { get; set; }
+		#region Constructors
 
 		public EditManager(TObject _object) : this()
 		{
@@ -44,6 +52,10 @@ namespace PlotDigitizer.Core
 			EditCommand = new RelayCommand<(TObject, string)>(Edit, CanEdit);
 		}
 
+		#endregion Constructors
+
+		#region Methods
+
 		public void Initialise(TObject _object)
 		{
 			ObjectList = new List<TObject>
@@ -57,20 +69,15 @@ namespace PlotDigitizer.Core
 			Index = 0;
 		}
 
+		protected virtual bool CanEdit((TObject obj, string tag) arg) => true;
+
 		protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-
-		private void Undo() => Index--;
-
-		private bool CanUndo() => Index > 0;
-
-		private void Redo() => Index++;
+		private bool CanGoTo(int targetIndex) => targetIndex >= 0 && targetIndex < TagList.Count;
 
 		private bool CanRedo() => Index < (ObjectList?.Count ?? 0) - 1;
 
-		private void GoTo(int targetIndex) => Index = targetIndex;
-
-		private bool CanGoTo(int targetIndex) => targetIndex >= 0 && targetIndex < TagList.Count;
+		private bool CanUndo() => Index > 0;
 
 		private void Edit((TObject obj, string tag) edit)
 		{
@@ -84,7 +91,8 @@ namespace PlotDigitizer.Core
 
 			Index++;
 		}
-		protected virtual bool CanEdit((TObject obj, string tag) arg) => true;
+
+		private void GoTo(int targetIndex) => Index = targetIndex;
 
 		private void OnIndexChanged()
 		{
@@ -92,14 +100,14 @@ namespace PlotDigitizer.Core
 			RedoCommand.RaiseCanExecuteChanged();
 		}
 
-		private void OnObjectListChanged()
-		{
-			RedoCommand.RaiseCanExecuteChanged();
-		}
+		private void OnObjectListChanged() => RedoCommand.RaiseCanExecuteChanged();
 
-		private void OnTagListChanged()
-		{
-			GoToCommand.RaiseCanExecuteChanged();
-		}
+		private void OnTagListChanged() => GoToCommand.RaiseCanExecuteChanged();
+
+		private void Redo() => Index++;
+
+		private void Undo() => Index--;
+
+		#endregion Methods
 	}
 }

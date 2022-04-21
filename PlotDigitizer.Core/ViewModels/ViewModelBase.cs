@@ -6,14 +6,8 @@ namespace PlotDigitizer.Core
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		protected virtual void OnPropertyChanged(string propertyName)
-		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
+		protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-		public void RaisePropertyChanged(string propertyName)
-		{
-			OnPropertyChanged(propertyName);
-		}
+		public void RaisePropertyChanged(string propertyName) => OnPropertyChanged(propertyName);
 	}
 }

@@ -21,20 +21,11 @@ namespace PlotDigitizer.Core
 
 		public event EventHandler CanExecuteChanged;
 
-		public void RaiseCanExecuteChanged()
-		{
-			CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-		}
+		public void RaiseCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 
-		public bool CanExecute(object parameter = null)
-		{
-			return canAction == null || canAction.Invoke();
-		}
+		public bool CanExecute(object parameter = null) => canAction == null || canAction.Invoke();
 
-		public void Execute(object parameter = null)
-		{
-			action?.Invoke();
-		}
+		public void Execute(object parameter = null) => action?.Invoke();
 	}
 
 	public class RelayCommand<TParam> : ICommand
@@ -50,10 +41,7 @@ namespace PlotDigitizer.Core
 
 		public event EventHandler CanExecuteChanged;
 
-		public void RaiseCanExecuteChanged()
-		{
-			CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-		}
+		public void RaiseCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 
 		public bool CanExecute(object parameter)
 		{

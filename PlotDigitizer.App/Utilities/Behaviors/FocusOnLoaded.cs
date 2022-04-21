@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xaml.Behaviors;
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 using System.Windows;
 
 namespace PlotDigitizer.App
@@ -20,10 +18,6 @@ namespace PlotDigitizer.App
 			AssociatedObject.Loaded -= AssociatedObject_Loaded;
 		}
 
-		private void AssociatedObject_Loaded(object sender, RoutedEventArgs e)
-		{
-			AssociatedObject.Focus();
-		}
-
+		private void AssociatedObject_Loaded(object sender, RoutedEventArgs e) => AssociatedObject.Focus();
 	}
 }

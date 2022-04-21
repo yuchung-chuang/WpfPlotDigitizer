@@ -1,23 +1,24 @@
 ﻿<UserControl x:Class="PlotDigitizer.App.LoadPage"
-			xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-			xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-			xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-			xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-			xmlns:local="clr-namespace:PlotDigitizer.App"
-			xmlns:core="clr-namespace:PlotDigitizer.Core;assembly=PlotDigitizer.Core"
-			mc:Ignorable="d"
-			d:DesignHeight="450"
-			d:DesignWidth="800"
-			DragOver="Page_DragOver"
-			AllowDrop="True"
-			Background="Transparent"
-			x:Name="root"
-			d:DataContext="{d:DesignInstance Type=core:LoadPageViewModel, IsDesignTimeCreatable=True}">
+						 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+						 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+						 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+						 xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+						 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+						 xmlns:local="clr-namespace:PlotDigitizer.App"
+						 xmlns:core="clr-namespace:PlotDigitizer.Core;assembly=PlotDigitizer.Core"
+						 xmlns:diag="clr-namespace:System.Diagnostics;assembly=mscorlib"
+						 mc:Ignorable="d"
+						 d:DesignHeight="450"
+						 d:DesignWidth="800"
+						 DragOver="Page_DragOver"
+						 AllowDrop="True"
+						 Background="Transparent"
+						 x:Name="root"
+						 d:DataContext="{d:DesignInstance Type=core:LoadPageViewModel, IsDesignTimeCreatable=True}">
 	<i:Interaction.Triggers>
 		<i:EventTrigger EventName="Drop">
-			<i:InvokeCommandAction Command="{Binding DropCommand}" 
-														 EventArgsConverter="{local:DropEventArgsConverter}"/>
+			<i:InvokeCommandAction Command="{Binding DropCommand}"
+														 EventArgsConverter="{local:DropEventArgsConverter}" />
 		</i:EventTrigger>
 	</i:Interaction.Triggers>
 	<i:Interaction.Behaviors>
@@ -79,8 +80,7 @@
 					 HorizontalAlignment="Left"
 					 Margin="55,66,0,222"
 					 Width="184"
-					 Visibility="Hidden" 
-					 Source="{Binding Model.InputImage, Converter={local:ImageSourceConverter}}"/>
-
+					 Visibility="{Binding Source={x:Static diag:Debugger.IsAttached}, Converter={local:VisibilityConverter}, FallbackValue={x:Static Visibility.Collapsed}}"
+					 Source="{Binding Model.InputImage, Converter={local:ImageSourceConverter}}" />
 	</Grid>
 </UserControl>

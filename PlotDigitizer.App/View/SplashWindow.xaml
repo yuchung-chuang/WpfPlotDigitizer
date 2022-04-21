@@ -15,6 +15,6 @@
 				Background="Transparent">
 	<Grid Background="Transparent">
 		<Image Source="/Assets/icon_digitizer.png"
-					 Width="300"/>
+					 Width="300" />
 	</Grid>
 </Window>

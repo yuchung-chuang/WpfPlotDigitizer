@@ -11,92 +11,46 @@ namespace PlotDigitizer.App
 	/// </summary>
 	public static class Pan
 	{
-		public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.RegisterAttached(
-		  "IsEnabled",
-		  typeof(bool),
-		  typeof(Pan),
-		  new PropertyMetadata(default(bool), OnIsEnabledChanged));
-
-		public static readonly DependencyProperty MouseButtonProperty =
-			DependencyProperty.RegisterAttached("MouseButton", typeof(MouseButton), typeof(Pan), new PropertyMetadata(MouseButton.Left));
-
-		public static readonly DependencyProperty ModifierKeysProperty =
-			DependencyProperty.RegisterAttached("ModifierKeys", typeof(ModifierKeys), typeof(Pan), new PropertyMetadata(ModifierKeys.None));
+		#region Fields
 
 		public static readonly DependencyProperty GestureProperty = DependencyProperty.RegisterAttached("Gesture", typeof(MouseGesture), typeof(Pan), new PropertyMetadata(new MouseGesture(MouseAction.LeftClick)));
 
+		public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.RegisterAttached("IsEnabled", typeof(bool), typeof(Pan), new PropertyMetadata(default(bool), OnIsEnabledChanged));
+
+		public static readonly DependencyProperty ModifierKeysProperty = DependencyProperty.RegisterAttached("ModifierKeys", typeof(ModifierKeys), typeof(Pan), new PropertyMetadata(ModifierKeys.None));
+
+		public static readonly DependencyProperty MouseButtonProperty = DependencyProperty.RegisterAttached("MouseButton", typeof(MouseButton), typeof(Pan), new PropertyMetadata(MouseButton.Left));
 
 		private static readonly Cursor panCursor = new Uri(@"/Assets/pan.cur", UriKind.Relative).ToCursor();
-
 		private static Cursor cursorCache;
-
+		private static bool IsPanning;
 		private static Point mouseAnchor;
-
 		private static TranslateTransform translate;
-
 		private static Point translateAnchor;
 
-		private static bool IsPanning;
+		#endregion Fields
+
+		#region Methods
 
 		[AttachedPropertyBrowsableForType(typeof(UIElement))]
-		public static bool GetIsEnabled(UIElement element)
-		  => (bool)element.GetValue(IsEnabledProperty);
-
-		public static void SetIsEnabled(UIElement element, bool value)
-		  => element.SetValue(IsEnabledProperty, value);
+		public static MouseGesture GetGesture(DependencyObject obj) => (MouseGesture)obj.GetValue(GestureProperty);
 
 		[AttachedPropertyBrowsableForType(typeof(UIElement))]
-		public static MouseGesture GetGesture(DependencyObject obj)
-		{
-			return (MouseGesture)obj.GetValue(GestureProperty);
-		}
-		public static void SetGesture(DependencyObject obj, MouseGesture value)
-		{
-			obj.SetValue(GestureProperty, value);
-		}
+		public static bool GetIsEnabled(UIElement element) => (bool)element.GetValue(IsEnabledProperty);
 
 		[AttachedPropertyBrowsableForType(typeof(UIElement))]
-		public static MouseButton GetMouseButton(DependencyObject obj)
-		{
-			return (MouseButton)obj.GetValue(MouseButtonProperty);
-		}
-
-		public static void SetMouseButton(DependencyObject obj, MouseButton value)
-		{
-			obj.SetValue(MouseButtonProperty, value);
-		}
+		public static ModifierKeys GetModifierKeys(DependencyObject obj) => (ModifierKeys)obj.GetValue(ModifierKeysProperty);
 
 		[AttachedPropertyBrowsableForType(typeof(UIElement))]
-		public static ModifierKeys GetModifierKeys(DependencyObject obj)
-		{
-			return (ModifierKeys)obj.GetValue(ModifierKeysProperty);
-		}
+		public static MouseButton GetMouseButton(DependencyObject obj) => (MouseButton)obj.GetValue(MouseButtonProperty);
 
-		public static void SetModifierKeys(DependencyObject obj, ModifierKeys value)
-		{
-			obj.SetValue(ModifierKeysProperty, value);
-		}
+		public static void SetGesture(DependencyObject obj, MouseGesture value) => obj.SetValue(GestureProperty, value);
 
-		private static Cursor ToCursor(this Uri uri) => new Cursor(Application.GetResourceStream(uri).Stream);
+		public static void SetIsEnabled(UIElement element, bool value) => element.SetValue(IsEnabledProperty, value);
 
-		private static void OnIsEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			if (!(d is FrameworkElement element))
-				throw new NotSupportedException($"Can only set the {IsEnabledProperty} attached behavior on a UIElement.");
+		public static void SetModifierKeys(DependencyObject obj, ModifierKeys value) => obj.SetValue(ModifierKeysProperty, value);
 
-			if ((bool)e.NewValue) {
-				element.MouseDown += Element_MouseDown;
-				element.MouseUp += Element_MouseUp;
-				element.MouseMove += Element_MouseMove;
-				element.EnsureTransforms();
-				element.Parent?.SetValue(UIElement.ClipToBoundsProperty, true);
-			}
-			else {
-				element.MouseDown -= Element_MouseDown;
-				element.MouseUp -= Element_MouseUp;
-				element.MouseMove -= Element_MouseMove;
-			}
-		}
+		public static void SetMouseButton(DependencyObject obj, MouseButton value) => obj.SetValue(MouseButtonProperty, value);
 
 		private static void Element_MouseDown(object sender, MouseButtonEventArgs e)
 		{
@@ -145,5 +99,27 @@ namespace PlotDigitizer.App
 			element.Cursor = cursorCache;
 			IsPanning = false;
 		}
+
+		private static void OnIsEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			if (!(d is FrameworkElement element))
+				throw new NotSupportedException($"Can only set the {IsEnabledProperty} attached behavior on a UIElement.");
+
+			if ((bool)e.NewValue) {
+				element.MouseDown += Element_MouseDown;
+				element.MouseUp += Element_MouseUp;
+				element.MouseMove += Element_MouseMove;
+				element.EnsureTransforms();
+				element.Parent?.SetValue(UIElement.ClipToBoundsProperty, true);
+			} else {
+				element.MouseDown -= Element_MouseDown;
+				element.MouseUp -= Element_MouseUp;
+				element.MouseMove -= Element_MouseMove;
+			}
+		}
+
+		private static Cursor ToCursor(this Uri uri) => new Cursor(Application.GetResourceStream(uri).Stream);
+
+		#endregion Methods
 	}
 }

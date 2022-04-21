@@ -9,7 +9,7 @@
 		}
 
 		public string FileName { get; set; }
-		
+
 		public bool IsValid { get; set; } = false;
 	}
 }

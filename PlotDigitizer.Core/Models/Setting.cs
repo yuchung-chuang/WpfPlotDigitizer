@@ -1,4 +1,5 @@
 ﻿using Emgu.CV.Structure;
+
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -16,10 +17,8 @@ namespace PlotDigitizer.Core
 		public virtual DataType DataType { get; set; }
 
 		public event PropertyChangedEventHandler PropertyChanged;
-		public void RaisePropetyChanged(string propertyName)
-		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
+
+		public void RaisePropetyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
 		public Setting Copy()
 		{

@@ -1,4 +1,5 @@
 ﻿using PropertyChanged;
+
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,11 +14,13 @@ namespace PlotDigitizer.App
 	/// </summary>
 	public partial class Axis : UserControl, INotifyPropertyChanged
 	{
-		public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
-			nameof(Stroke),
-			typeof(Brush),
+		#region Fields
+
+		public static readonly DependencyProperty AxisHeightProperty = DependencyProperty.Register(
+			nameof(AxisHeight),
+			typeof(double),
 			typeof(Axis),
-			new PropertyMetadata(new SolidColorBrush(Colors.Red)));
+			new PropertyMetadata(default(double), OnAxisHeightChanged));
 
 		public static readonly DependencyProperty AxisLeftProperty = DependencyProperty.Register(
 			nameof(AxisLeft),
@@ -37,11 +40,7 @@ namespace PlotDigitizer.App
 			typeof(Axis),
 			new PropertyMetadata(default(double), OnAxisWidthChanged));
 
-		public static readonly DependencyProperty AxisHeightProperty = DependencyProperty.Register(
-			nameof(AxisHeight),
-			typeof(double),
-			typeof(Axis),
-			new PropertyMetadata(default(double), OnAxisHeightChanged));
+		public static readonly DependencyProperty GestureProperty = DependencyProperty.Register(nameof(Gesture), typeof(MouseGesture), typeof(Axis), new PropertyMetadata(new MouseGesture(MouseAction.LeftClick)));
 
 		public static readonly DependencyProperty ImageSourceProperty = DependencyProperty.Register(
 			nameof(ImageSource),
@@ -52,8 +51,11 @@ namespace PlotDigitizer.App
 		public static readonly DependencyProperty MouseButtonProperty =
 			DependencyProperty.Register(nameof(MouseButton), typeof(MouseButton), typeof(Axis), new PropertyMetadata(MouseButton.Left));
 
-		public static readonly DependencyProperty GestureProperty = DependencyProperty.Register(nameof(Gesture), typeof(MouseGesture), typeof(Axis), new PropertyMetadata(new MouseGesture(MouseAction.LeftClick)));
-
+		public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
+			nameof(Stroke),
+			typeof(Brush),
+			typeof(Axis),
+			new PropertyMetadata(new SolidColorBrush(Colors.Red)));
 
 		private readonly double tol = 10;
 
@@ -61,31 +63,17 @@ namespace PlotDigitizer.App
 
 		private AdjustType State = AdjustType.None;
 
+		#endregion Fields
+
+		#region Events
+
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		public Brush Stroke
-		{
-			get => (Brush)GetValue(StrokeProperty);
-			set => SetValue(StrokeProperty, value);
-		}
+		#endregion Events
 
-		public double AxisLeft
-		{
-			get => (double)GetValue(AxisLeftProperty);
-			set => SetValue(AxisLeftProperty, AxisHelpers.Clamp(value, AxisRight - tol, 0));
-		}
+		#region Properties
 
-		public double AxisTop
-		{
-			get => (double)GetValue(AxisTopProperty);
-			set => SetValue(AxisTopProperty, AxisHelpers.Clamp(value, AxisBottom - tol, 0));
-		}
-
-		public double AxisWidth
-		{
-			get => (double)GetValue(AxisWidthProperty);
-			set => SetValue(AxisWidthProperty, AxisHelpers.Clamp(value, double.MaxValue, tol));
-		}
+		public double AxisBottom => AxisTop + AxisHeight;
 
 		public double AxisHeight
 		{
@@ -93,21 +81,10 @@ namespace PlotDigitizer.App
 			set => SetValue(AxisHeightProperty, AxisHelpers.Clamp(value, double.MaxValue, tol));
 		}
 
-		public ImageSource ImageSource
+		public double AxisLeft
 		{
-			get => (ImageSource)GetValue(ImageSourceProperty);
-			set => SetValue(ImageSourceProperty, value);
-		}
-
-		public MouseGesture Gesture
-		{
-			get { return (MouseGesture)GetValue(GestureProperty); }
-			set { SetValue(GestureProperty, value); }
-		}
-		public MouseButton MouseButton
-		{
-			get { return (MouseButton)GetValue(MouseButtonProperty); }
-			set { SetValue(MouseButtonProperty, value); }
+			get => (double)GetValue(AxisLeftProperty);
+			set => SetValue(AxisLeftProperty, AxisHelpers.Clamp(value, AxisRight - tol, 0));
 		}
 
 		public Thickness AxisMargin => new Thickness(AxisLeft, AxisTop, 0, 0);
@@ -121,9 +98,48 @@ namespace PlotDigitizer.App
 				AxisHeight / Image.PixelHeight);
 
 		public double AxisRight => AxisLeft + AxisWidth;
-		public double AxisBottom => AxisTop + AxisHeight;
+
+		public double AxisTop
+		{
+			get => (double)GetValue(AxisTopProperty);
+			set => SetValue(AxisTopProperty, AxisHelpers.Clamp(value, AxisBottom - tol, 0));
+		}
+
+		public double AxisWidth
+		{
+			get => (double)GetValue(AxisWidthProperty);
+			set => SetValue(AxisWidthProperty, AxisHelpers.Clamp(value, double.MaxValue, tol));
+		}
+
+		public MouseGesture Gesture
+		{
+			get => (MouseGesture)GetValue(GestureProperty);
+			set => SetValue(GestureProperty, value);
+		}
 
 		public BitmapSource Image => ImageSource as BitmapSource;
+
+		public ImageSource ImageSource
+		{
+			get => (ImageSource)GetValue(ImageSourceProperty);
+			set => SetValue(ImageSourceProperty, value);
+		}
+
+		public MouseButton MouseButton
+		{
+			get => (MouseButton)GetValue(MouseButtonProperty);
+			set => SetValue(MouseButtonProperty, value);
+		}
+
+		public Brush Stroke
+		{
+			get => (Brush)GetValue(StrokeProperty);
+			set => SetValue(StrokeProperty, value);
+		}
+
+		#endregion Properties
+
+		#region Constructors
 
 		public Axis()
 		{
@@ -131,15 +147,14 @@ namespace PlotDigitizer.App
 			gridMain.DataContext = this;
 		}
 
-		protected void OnPropertyChanged(string propertyName)
-		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
+		#endregion Constructors
+
+		#region Methods
 
 		protected override void OnMouseDown(MouseButtonEventArgs e)
 		{
 			base.OnMouseDown(e);
-			if (!Gesture.Matches(this,e))
+			if (!Gesture.Matches(this, e))
 				return;
 			var mousePos = e.GetPosition(gridMain);
 			State = GetState(mousePos);
@@ -153,13 +168,6 @@ namespace PlotDigitizer.App
 				// block other events
 				e.Handled = true;
 			}
-		}
-
-		protected override void OnMouseUp(MouseButtonEventArgs e)
-		{
-			base.OnMouseUp(e);
-			IsAdjust = false;
-			ReleaseMouseCapture();
 		}
 
 		protected override void OnMouseMove(MouseEventArgs e)
@@ -192,6 +200,22 @@ namespace PlotDigitizer.App
 				AxisHeight = mousePos.Y - AxisTop;
 		}
 
+		protected override void OnMouseUp(MouseButtonEventArgs e)
+		{
+			base.OnMouseUp(e);
+			IsAdjust = false;
+			ReleaseMouseCapture();
+		}
+
+		protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+		[SuppressPropertyChangedWarnings]
+		private static void OnAxisHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			var axis = d as Axis;
+			axis.OnPropertyChanged(nameof(AxisRelative));
+		}
+
 		[SuppressPropertyChangedWarnings]
 		private static void OnAxisLeftChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
@@ -210,13 +234,6 @@ namespace PlotDigitizer.App
 
 		[SuppressPropertyChangedWarnings]
 		private static void OnAxisWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			var axis = d as Axis;
-			axis.OnPropertyChanged(nameof(AxisRelative));
-		}
-
-		[SuppressPropertyChangedWarnings]
-		private static void OnAxisHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			var axis = d as Axis;
 			axis.OnPropertyChanged(nameof(AxisRelative));
@@ -255,23 +272,29 @@ namespace PlotDigitizer.App
 				case AdjustType.None:
 					Cursor = Cursors.Arrow;
 					break;
+
 				case AdjustType.Left:
 				case AdjustType.Right:
 					Cursor = Cursors.SizeWE;
 					break;
+
 				case AdjustType.Top:
 				case AdjustType.Bottom:
 					Cursor = Cursors.SizeNS;
 					break;
+
 				case AdjustType.LeftTop:
 				case AdjustType.RightBottom:
 					Cursor = Cursors.SizeNWSE;
 					break;
+
 				case AdjustType.RightTop:
 				case AdjustType.LeftBottom:
 					Cursor = Cursors.SizeNESW;
 					break;
 			}
 		}
+
+		#endregion Methods
 	}
 }

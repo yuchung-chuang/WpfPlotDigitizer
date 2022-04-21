@@ -38,20 +38,14 @@ namespace PlotDigitizer.App
 		{
 			if (Min > Max)
 				Swap(ref Max, ref Min);
-			if (!excludeBoundary)
-				return (value <= Max && value >= Min) ? true : false;
-			else
-				return (value < Max && value > Min) ? true : false;
+			return !excludeBoundary ? Min <= value && value <= Max : Min < value && value < Max;
 		}
 
 		/// <summary>
 		/// 判斷<paramref name="A"/>是否約等於<paramref name="B"/>。
 		/// </summary>
 		/// <param name="tol">容許誤差。</param>
-		public static bool ApproxEqual(double A, double B, double tol)
-		{
-			return IsIn(A, B + tol, B - tol);
-		}
+		public static bool ApproxEqual(double A, double B, double tol) => IsIn(A, B + tol, B - tol);
 
 		private static (ulong a, ulong b) ConvertEnums(Enum enumA, Enum enumB) => (Convert.ToUInt64(enumA), Convert.ToUInt64(enumB));
 	}

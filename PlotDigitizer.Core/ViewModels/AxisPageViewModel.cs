@@ -6,15 +6,20 @@ namespace PlotDigitizer.Core
 {
 	public class AxisPageViewModel : PageViewModelBase
 	{
+		#region Fields
+
 		private readonly Setting setting;
 
-		public double AxisLeft { get; set; }
-		public double AxisTop { get; set; }
-		public double AxisWidth { get; set; }
+		#endregion Fields
+
+		#region Properties
+
 		public double AxisHeight { get; set; }
+		public double AxisLeft { get; set; }
+
 		public Rectangle AxisLocation
 		{
-			get => new Rectangle(
+			get => new(
 				(int)Math.Round(AxisLeft),
 				(int)Math.Round(AxisTop),
 				(int)Math.Round(AxisWidth),
@@ -27,10 +32,17 @@ namespace PlotDigitizer.Core
 				AxisHeight = value.Height;
 			}
 		}
-		public Model Model { get; }
-		public bool IsEnabled => Model != null && Model.InputImage != null;
 
+		public double AxisTop { get; set; }
+		public double AxisWidth { get; set; }
 		public RelayCommand GetAxisCommand { get; set; }
+		public bool IsEnabled => Model != null && Model.InputImage != null;
+		public Model Model { get; }
+
+		#endregion Properties
+
+		#region Constructors
+
 		public AxisPageViewModel()
 		{
 			Name = "AxisPage";
@@ -45,29 +57,9 @@ namespace PlotDigitizer.Core
 			setting.PropertyChanged += Setting_PropertyChanged;
 		}
 
-		private void Setting_PropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-			if (e.PropertyName == nameof(Setting.AxisLocation)) {
-				AxisLocation = setting.AxisLocation;
-			}
-		}
+		#endregion Constructors
 
-		private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-			if (e.PropertyName == nameof(Core.Model.InputImage)) {
-				base.OnPropertyChanged(nameof(IsEnabled));
-				GetAxisCommand.RaiseCanExecuteChanged();
-			}
-		}
-
-		private bool CanGetAxis() => IsEnabled;
-
-		private void GetAxis()
-		{
-			var image = Model.InputImage;
-			AxisLocation = Methods.GetAxisLocation(image) ?? 
-				new Rectangle(image.Width / 4, image.Height / 4, image.Width / 2, image.Height / 2);
-		}
+		#region Methods
 
 		public override void Enter()
 		{
@@ -90,5 +82,31 @@ namespace PlotDigitizer.Core
 			}
 			setting.AxisLocation = AxisLocation;
 		}
+
+		private bool CanGetAxis() => IsEnabled;
+
+		private void GetAxis()
+		{
+			var image = Model.InputImage;
+			AxisLocation = Methods.GetAxisLocation(image) ??
+				new Rectangle(image.Width / 4, image.Height / 4, image.Width / 2, image.Height / 2);
+		}
+
+		private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName == nameof(Core.Model.InputImage)) {
+				base.OnPropertyChanged(nameof(IsEnabled));
+				GetAxisCommand.RaiseCanExecuteChanged();
+			}
+		}
+
+		private void Setting_PropertyChanged(object sender, PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName == nameof(Setting.AxisLocation)) {
+				AxisLocation = setting.AxisLocation;
+			}
+		}
+
+		#endregion Methods
 	}
 }

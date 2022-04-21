@@ -1,7 +1,10 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using PlotDigitizer.App;
+
 using System;
 using System.Drawing;
 using System.Windows.Media.Imaging;
@@ -32,7 +35,6 @@ namespace PlotDigitizer.Core.Tests
 			var axis = Methods.GetAxisLocation(image);
 			Assert.AreEqual(new Rectangle(x, y, width, height), axis);
 		}
-
 
 		[DataTestMethod()]
 		[DataRow("Assets/data.png", 77, 17, 759, 560)]
@@ -67,7 +69,6 @@ namespace PlotDigitizer.Core.Tests
 			var croppedImage = Methods.CropImage(image, roi);
 			Assert.AreEqual(image.Size, croppedImage.Size);
 		}
-
 
 		[DataTestMethod()]
 		[DataRow("Assets/static-test-image.png", 0, 0, 0, 255, 255, 255, 255)]

@@ -17,12 +17,10 @@ namespace PlotDigitizer.App
 			if (position.X < 0) {
 				Canvas.SetLeft(selectRect, 0);
 				selectRect.Width = mouseDownPos.X;
-			}
-			else if (position.X > Image.Width) {
+			} else if (position.X > Image.Width) {
 				Canvas.SetLeft(selectRect, mouseDownPos.X);
 				selectRect.Width = Image.Width - mouseDownPos.X;
-			}
-			else {
+			} else {
 				var dx = position.X - mouseDownPos.X;
 				if (dx < 0)
 					Canvas.SetLeft(selectRect, position.X);
@@ -34,12 +32,10 @@ namespace PlotDigitizer.App
 			if (position.Y < 0) {
 				Canvas.SetTop(selectRect, 0);
 				selectRect.Height = mouseDownPos.Y;
-			}
-			else if (position.Y > Image.Height) {
+			} else if (position.Y > Image.Height) {
 				Canvas.SetTop(selectRect, mouseDownPos.Y);
 				selectRect.Height = Image.Height - mouseDownPos.Y;
-			}
-			else {
+			} else {
 				var dy = position.Y - mouseDownPos.Y;
 				if (dy < 0)
 					Canvas.SetTop(selectRect, position.Y);
@@ -47,7 +43,6 @@ namespace PlotDigitizer.App
 					Canvas.SetTop(selectRect, mouseDownPos.Y);
 				selectRect.Height = Math.Abs(dy);
 			}
-
 		}
 
 		public override void MouseUp(Editor editor, MouseButtonEventArgs e)

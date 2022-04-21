@@ -5,7 +5,7 @@ using System.Windows.Markup;
 
 namespace PlotDigitizer.App
 {
-	public abstract class ValueConverterBase<T> : MarkupExtension, IValueConverter 
+	public abstract class ValueConverterBase<T> : MarkupExtension, IValueConverter
 		where T : new()
 	{
 		public abstract object Convert(object value, Type targetType, object parameter, CultureInfo culture);
@@ -13,9 +13,7 @@ namespace PlotDigitizer.App
 		public abstract object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture);
 
 		private static readonly T instance = new T();
-		public override object ProvideValue(IServiceProvider serviceProvider)
-		{
-			return instance;
-		}
+
+		public override object ProvideValue(IServiceProvider serviceProvider) => instance;
 	}
 }
