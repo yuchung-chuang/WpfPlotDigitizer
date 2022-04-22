@@ -17,3 +17,6 @@ csharp_style_unused_value_expression_statement_preference = unused_local_variabl
 
 # IDE0058: Expression value is never used
 dotnet_diagnostic.IDE0058.severity = none
+
+# IDE0022: Use expression body for methods
+dotnet_diagnostic.IDE0022.severity = none

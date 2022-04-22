@@ -1,14 +1,36 @@
-﻿@page
+﻿@page "{handler?}"
 @using PlotDigitizer.Web.Models;
 @model PlotDigitizer.Web.Pages.LoadPageModel
 @{
 	ViewData["Title"] = "LoadPage";
 }
 
+@section scripts{
+	<script>
+		$(function () {
+			$('#submit').on('click', function (evt) {
+				evt.preventDefault();
+				$.ajax({
+					url: '',
+					data: new FormData(document.forms[0]),
+					contentType: false,
+					processData: false,
+					type: 'post',
+					success: function () {
+						$('#image').load('/LoadPage/Image');
+					}
+				});
+			});
+		});
+	</script>
+}
+
 <h1>LoadPage</h1>
 
-<form method="post" enctype="multipart/form-data">
-	<input type="file" name="formFile" />
-	<input type="submit" />
-	<img src="@Model.ImageModel.InputImageSource" width="200" height="200" />
+<div id="image"></div>
+
+<form method="post">
+	<input type="file" asp-for="UploadedFile" />
+	<input type="submit" id="submit" />
 </form>
+

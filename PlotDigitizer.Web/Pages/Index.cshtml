@@ -1,28 +1,41 @@
-﻿@page
+﻿@page  "{handler?}"
 @model IndexModel
 @{
 	ViewData["Title"] = "Home page";
 }
-@{
-	var name = string.Empty;
-	if (Request.HasFormContentType) {
-		name = Request.Form["name"];
-	}
-}
 
 <div class="text-center">
-	<h1 class="display-4">Welcome</h1>
-	<p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-
+	<h1>@Model.Message</h1>
 	<form method="post">
-		<div>Name: <input name="name" /></div>
-		<div><input type="submit" /></div>
+		<input type="submit" value="Click to post" />
 	</form>
-
+	<form method="post" asp-page-handler="type1">
+		<input type="submit" value="Click to post - type1" />
+	</form>
+	<form method="post" asp-page-handler="type2">
+		<input type="submit" value="Click to post - type2" />
+	</form>
 	<a asp-page="LoadPage">To Load Page</a>
 </div>
-<div>
-	@if (!string.IsNullOrEmpty(name)) {
-		<p>Hello @name!</p>
-	}
-</div>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        val1 = "5";
+        val2 = "2";
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("Add")",
+            data: {number1: val1, number2: val2},
+            dataType: "text",
+            success: function (msg) {
+                console.log(msg);
+            },
+            error: function (req, status, error) {
+                console.log(msg);
+            }
+        });
+    });
+</script>
