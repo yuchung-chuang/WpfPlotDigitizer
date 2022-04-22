@@ -46,10 +46,8 @@ namespace PlotDigitizer.App
 					.AddTransient<IClipboardService, ClipboardService>()
 
 					.AddSingleton<AutoPageTurner>()
-					.AddSingleton<Model, ModelFacade>()
-					.AddSingleton<Setting, SettingFacade>()
-					.AddViewModels()
-					.AddModelNodes();
+					.AddModel()
+					.AddViewModels();
 				})
 				.ConfigureLogging((context, builder) =>
 				{
