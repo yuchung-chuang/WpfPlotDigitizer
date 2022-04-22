@@ -1,4 +1,5 @@
 ﻿@page
+@using PlotDigitizer.Web.Models;
 @model PlotDigitizer.Web.Pages.LoadPageModel
 @{
 	ViewData["Title"] = "LoadPage";
@@ -9,5 +10,5 @@
 <form method="post" enctype="multipart/form-data">
 	<input type="file" name="formFile" />
 	<input type="submit" />
-	<img src="@Model.ImageSource" />
+	<img src="@Model.ImageModel.InputImageSource" width="200" height="200" />
 </form>

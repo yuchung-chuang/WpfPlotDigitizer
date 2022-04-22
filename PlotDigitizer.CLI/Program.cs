@@ -43,7 +43,7 @@ namespace PlotDigitizer.CLI
 					.AddSingleton<Model, ModelFacade>()
 					.AddSingleton<Setting, SettingFacade>()
 					.AddViewModels()
-					.AddModelNodes();
+					.AddModel();
 				})
 				.ConfigureLogging((context, builder) =>
 				{

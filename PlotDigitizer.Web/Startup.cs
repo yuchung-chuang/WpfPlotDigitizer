@@ -5,6 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using PlotDigitizer.Core;
+using PlotDigitizer.Web.Models;
+
+using Westwind.AspNetCore.LiveReload;
 
 namespace PlotDigitizer.Web
 {
@@ -21,13 +24,16 @@ namespace PlotDigitizer.Web
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddRazorPages();
+			services.AddLiveReload();
 
-			services.AddModel();
+			services.AddModel()
+				.AddSingleton<Models.Model>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
+
 			if (env.IsDevelopment()) {
 				app.UseDeveloperExceptionPage();
 			} else {
@@ -36,7 +42,8 @@ namespace PlotDigitizer.Web
 				app.UseHsts();
 			}
 
-			app.UseHttpsRedirection()
+			app.UseLiveReload()
+				.UseHttpsRedirection()
 				.UseStaticFiles()
 				.UseRouting()
 				.UseAuthorization()

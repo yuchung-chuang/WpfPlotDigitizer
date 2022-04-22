@@ -27,7 +27,7 @@ namespace PlotDigitizer.Core.Tests
 			var services = new ServiceCollection();
 			services.AddSingleton<Model, ModelFacade>()
 				.AddSingleton<Setting, SettingFacade>()
-				.AddModelNodes();
+				.AddModel();
 
 			provider = services.BuildServiceProvider();
 		}
