@@ -3,9 +3,26 @@
 @{
 	ViewData["Title"] = "Home page";
 }
+@{
+	var name = string.Empty;
+	if (Request.HasFormContentType) {
+		name = Request.Form["name"];
+	}
+}
 
 <div class="text-center">
 	<h1 class="display-4">Welcome</h1>
 	<p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+	<form method="post">
+		<div>Name: <input name="name" /></div>
+		<div><input type="submit" /></div>
+	</form>
+
 	<a asp-page="LoadPage">To Load Page</a>
+</div>
+<div>
+	@if (!string.IsNullOrEmpty(name)) {
+		<p>Hello @name!</p>
+	}
 </div>

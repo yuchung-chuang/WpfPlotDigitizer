@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using PlotDigitizer.Core;
+
 namespace PlotDigitizer.Web
 {
 	public class Startup
@@ -16,7 +18,12 @@ namespace PlotDigitizer.Web
 		public IConfiguration Configuration { get; }
 
 		// This method gets called by the runtime. Use this method to add services to the container.
-		public void ConfigureServices(IServiceCollection services) => services.AddRazorPages();
+		public void ConfigureServices(IServiceCollection services)
+		{
+			services.AddRazorPages();
+
+			services.AddModel();
+		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -29,17 +36,14 @@ namespace PlotDigitizer.Web
 				app.UseHsts();
 			}
 
-			app.UseHttpsRedirection();
-			app.UseStaticFiles();
-
-			app.UseRouting();
-
-			app.UseAuthorization();
-
-			app.UseEndpoints(endpoints =>
-			{
-				endpoints.MapRazorPages();
-			});
+			app.UseHttpsRedirection()
+				.UseStaticFiles()
+				.UseRouting()
+				.UseAuthorization()
+				.UseEndpoints(endpoints =>
+				{
+					endpoints.MapRazorPages();
+				});
 		}
 	}
 }
