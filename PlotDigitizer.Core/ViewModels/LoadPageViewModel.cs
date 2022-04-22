@@ -2,6 +2,7 @@
 using Emgu.CV.Structure;
 
 using System;
+using System.Drawing;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -111,13 +112,10 @@ namespace PlotDigitizer.Core
 					var response = await httpClient.SendAsync(request);
 					// ensure it returns with a success code "200"
 					response.EnsureSuccessStatusCode();
-					// read the content as byte[]
-					var data = await response.Content.ReadAsByteArrayAsync();
-					// save the content to a temperary file
-					using var fileStream = new FileStream(filePath, FileMode.OpenOrCreate);
-					await fileStream.WriteAsync(data, 0, data.Length);
-					// load image from the file
-					return new Image<Rgba, byte>(filePath);
+					// read the content as stream
+					var stream = await response.Content.ReadAsStreamAsync();
+					// load image from the stream
+					return (Image.FromStream(stream) as Bitmap).ToImage<Rgba, byte>();
 				}
 				catch (Exception ex) {
 					messageBox.Show_OK(ex.Message, "Warning");
