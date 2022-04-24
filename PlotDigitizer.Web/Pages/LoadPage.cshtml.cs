@@ -18,10 +18,10 @@ namespace PlotDigitizer.Web.Pages
 {
 	public class LoadPageModel : PageModel
 	{
-		public Model ImageModel { get; }
+		public Model Model { get; }
 		public LoadPageModel(Model model)
 		{
-			ImageModel = model;
+			Model = model;
 		}
 
 		[BindProperty, Display(Name = "File")]
@@ -29,17 +29,17 @@ namespace PlotDigitizer.Web.Pages
 
 		public IActionResult OnGetImage()
 		{
-			return Partial("_LoadedImage", ImageModel.InputImageSource);
+			return Partial("_LoadPageView", Model.InputImageSource);
 		}
 
 		public async Task<IActionResult> OnPostAsync()
 		{
-			//ImageModel.InputImage = await formFile.ToImageAsync();
-			//ImageModel.InputImageSource = await formFile.ToImgSrcAsync();
-			//return RedirectToPage("AxisLimitPage");
-			ImageModel.InputImage = await UploadedFile.ToImageAsync();
-			ImageModel.InputImageSource = await UploadedFile.ToImgSrcAsync();
-			return Page();
+			Model.InputImage = await UploadedFile.ToImageAsync();
+			Model.InputImageSource = await UploadedFile.ToImgSrcAsync();
+			return RedirectToPage("AxisLimitPage");
+			//ImageModel.InputImage = await UploadedFile.ToImageAsync();
+			//ImageModel.InputImageSource = await UploadedFile.ToImgSrcAsync();
+			//return Page();
 		}
 	}
 }

@@ -23,8 +23,7 @@ namespace PlotDigitizer.Web
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddRazorPages();
-			services.AddLiveReload();
+			services.AddRazorPages().AddRazorRuntimeCompilation();
 
 			services.AddModel()
 				.AddSingleton<Models.Model>();
@@ -42,8 +41,7 @@ namespace PlotDigitizer.Web
 				app.UseHsts();
 			}
 
-			app.UseLiveReload()
-				.UseHttpsRedirection()
+			app.UseHttpsRedirection()
 				.UseStaticFiles()
 				.UseRouting()
 				.UseAuthorization()

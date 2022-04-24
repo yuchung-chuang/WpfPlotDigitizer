@@ -2,9 +2,54 @@
 @model PlotDigitizer.Web.Pages.AxisLimitPageModel
 @{
 	ViewData["Title"] = "AxisLimitPage";
-	
+
 }
 
 <h1>AxisLimitPage</h1>
 
-<img src="@Model.Model.InputImageSource" width="200" height="200"/>
+<form method="post">
+	<div class="container">
+		<div class="row align-items-center">
+			<div class="col-md-12 col-lg-6">
+				<img src="@Model.Model.InputImageSource" style="max-width:100%;" />
+			</div>
+
+			<div class="col-md-6 col-lg-3">
+				<div class="row">
+					<label class="col-3" asp-for="YMax">YMax</label>
+					<input class="col-9" type="text" asp-for="YMax" value="@Model.YMax" />
+					<span asp-validation-for="YMax"></span>
+				</div>
+				<div class="row">
+					<label class="col-3" asp-for="YLog">YLog</label>
+					<input class="col-9" type="text" asp-for="YLog" value="@Model.YLog" />
+					<span asp-validation-for="YLog"></span>
+				</div>
+				<div class="row">
+					<label class="col-3" asp-for="YMin">YMin</label>
+					<input class="col-9" type="text" asp-for="YMin" value="@Model.YMin" />
+					<span asp-validation-for="YMin"></span>
+				</div>
+			</div>
+			<div class="col-md-6 col-lg-3">
+				<div class="row">
+					<label class="col-3" asp-for="XMax">XMax</label>
+					<input class="col-9" type="text" asp-for="XMax" value="@Model.XMax" />
+					<span asp-validation-for="XMax"></span>
+				</div>
+				<div class="row">
+					<label class="col-3" asp-for="XLog">XLog</label>
+					<input class="col-9" type="text" asp-for="XLog" value="@Model.XLog" />
+					<span asp-validation-for="XLog"></span>
+				</div>
+				<div class="row">
+					<label class="col-3" asp-for="XMin">XMin</label>
+					<input class="col-9" type="text" asp-for="XMin" value="@Model.XMin" />
+					<span asp-validation-for="XMin"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<input type="submit" />
+</form>

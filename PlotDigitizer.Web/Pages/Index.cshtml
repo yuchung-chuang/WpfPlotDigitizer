@@ -17,25 +17,3 @@
 	</form>
 	<a asp-page="LoadPage">To Load Page</a>
 </div>
-
-
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        val1 = "5";
-        val2 = "2";
-
-        $.ajax({
-            type: "POST",
-            url: "@Url.Action("Add")",
-            data: {number1: val1, number2: val2},
-            dataType: "text",
-            success: function (msg) {
-                console.log(msg);
-            },
-            error: function (req, status, error) {
-                console.log(msg);
-            }
-        });
-    });
-</script>

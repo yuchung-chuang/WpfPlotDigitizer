@@ -1,0 +1,24 @@
+﻿@model PlotDigitizer.Web.Models.Model
+@{
+	<svg id="svg" width="@Model.InputImage.Width" height="@Model.InputImage.Height">
+		<image id="input-image" href="@Model.InputImageSource" width="@Model.InputImage.Width" height="@Model.InputImage.Height" />
+		<rect id="border" width="@Model.InputImage.Width" height="@Model.InputImage.Height" stroke="black" stroke-width="1" fill-opacity="0" />
+		<rect id="axis" style="box-sizing:border-box" x="@Model.Setting.AxisLocation.X" y="@Model.Setting.AxisLocation.Y" width="@Model.Setting.AxisLocation.Width" height="@Model.Setting.AxisLocation.Height" stroke="red" fill="white" fill-opacity="0.5" stroke-width="1" />
+	</svg>
+
+	<script>
+		$('#svg').on('click', e => {
+			if (e.detail != 2) {
+				return;
+			}
+			e.preventDefault();
+			$.get({
+				url: '/AxisPage/AxisLocation',
+				success: () => {
+					$('#view').load('/AxisPage/View');
+				}
+			});
+		});
+	</script>
+}
+

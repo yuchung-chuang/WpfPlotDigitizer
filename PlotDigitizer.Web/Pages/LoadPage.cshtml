@@ -4,32 +4,30 @@
 @{
 	ViewData["Title"] = "LoadPage";
 }
-
-@section scripts{
-	<script>
-		$(function () {
-			$('#submit').on('click', function (evt) {
-				evt.preventDefault();
-				$.ajax({
-					url: '',
-					data: new FormData(document.forms[0]),
-					contentType: false,
-					processData: false,
-					type: 'post',
-					success: function () {
-						$('#image').load('/LoadPage/Image');
-					}
+@*@section scripts{
+		<script>
+			$(() => {
+				$('#submit').on('click', (evt) => {
+					evt.preventDefault();
+					$.ajax({
+						url: '',
+						data: new FormData(document.forms[0]),
+						contentType: false,
+						processData: false,
+						type: 'post',
+						success: function () {
+							$('#image').load('/LoadPage/Image');
+						}
+					});
 				});
 			});
-		});
-	</script>
-}
-
+		</script>
+	}*@
 <h1>LoadPage</h1>
 
 <div id="image"></div>
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
 	<input type="file" asp-for="UploadedFile" />
 	<input type="submit" id="submit" />
 </form>
