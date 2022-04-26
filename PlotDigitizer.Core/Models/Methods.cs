@@ -15,6 +15,9 @@ namespace PlotDigitizer.Core
 	{
 		public static Rectangle? GetAxisLocation(Image<Rgba, byte> image)
 		{
+			if (image is null) {
+				return null;
+			}
 			var gray = new Mat();
 			CvInvoke.CvtColor(image, gray, ColorConversion.Rgba2Gray);
 
@@ -46,6 +49,9 @@ namespace PlotDigitizer.Core
 
 		public static Image<Rgba, byte> CropImage(Image<Rgba, byte> image, Rectangle roi)
 		{
+			if (image is null) {
+				return null;
+			}
 			if (roi.X >= image.Width || roi.X < 0) {
 				roi.X = 0;
 			}
@@ -64,20 +70,36 @@ namespace PlotDigitizer.Core
 
 		public static Image<Rgba, byte> FilterRGB(Image<Rgba, byte> image, Rgba min, Rgba max)
 		{
+			if (image is null) 
+				return null;
 			var mask = image.InRange(min, max);
 			image = image.Copy();
 			image.SetValue(new Rgba(0, 0, 0, 0), mask.Not());
 			return image;
 		}
 
-		public static void EraseImage(Image<Rgba, byte> image, Rectangle rect) => CvInvoke.Rectangle(image, rect, new Rgba().MCvScalar, -1);
+		public static void EraseImage(Image<Rgba, byte> image, Rectangle rect)
+		{
+			if (image is null) return;
+			CvInvoke.Rectangle(image, rect, new Rgba().MCvScalar, -1);
+		}
 
-		public static void EraseImage(Image<Rgba, byte> image, IInputArray points) => CvInvoke.FillPoly(image, points, new Rgba().MCvScalar);
+		public static void EraseImage(Image<Rgba, byte> image, IInputArray points)
+		{
+			if (image is null) return;
+			if (points is null) return;
+			CvInvoke.FillPoly(image, points, new Rgba().MCvScalar);
+		}
 
-		public static void DrawImage(Image<Rgba, byte> image, Point centre, int radius) => CvInvoke.Circle(image, centre, radius, new Rgba(0, 0, 0, 255).MCvScalar, -1);
+		public static void DrawImage(Image<Rgba, byte> image, Point centre, int radius)
+		{
+			if (image is null) return;
+			CvInvoke.Circle(image, centre, radius, new Rgba(0, 0, 0, 255).MCvScalar, -1);
+		}
 
 		public static IEnumerable<PointD> GetContinuousPoints(Image<Rgba, byte> image)
 		{
+			if (image is null) return null;
 			var points = new List<PointD>();
 			var width = image.Width;
 			var height = image.Height;
@@ -97,6 +119,7 @@ namespace PlotDigitizer.Core
 
 		public static IEnumerable<PointD> GetDiscretePoints(Image<Rgba, byte> image)
 		{
+			if (image is null) return null;
 			var points = new List<PointD>();
 			var binary = image.InRange(new Rgba(0, 0, 0, 1), new Rgba(255, 255, 255, 255));
 			using var contours = new VectorOfVectorOfPoint();
