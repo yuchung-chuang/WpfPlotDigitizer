@@ -3,17 +3,42 @@
 @{
 	ViewData["Title"] = "Home page";
 }
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@functions{
+	public string GetAntiXsrfRequestToken()
+	{
+		return Xsrf.GetAndStoreTokens(Model.HttpContext).RequestToken;
+	}
+}
+@section scripts{
+	<script>
+		$(() => {
+			$('#test').on('click', (evt) => {
+				evt.preventDefault();
+				$.post({
+					url: '',
+					headers:
+					{
+						"RequestVerificationToken": '@GetAntiXsrfRequestToken()'
+					}
+				});
+			});
+		});
+	</script>
+}
 
 <div class="text-center">
-	<h1>@Model.Message</h1>
-	<form method="post">
-		<input type="submit" value="Click to post" />
-	</form>
-	<form method="post" asp-page-handler="type1">
-		<input type="submit" value="Click to post - type1" />
-	</form>
-	<form method="post" asp-page-handler="type2">
-		<input type="submit" value="Click to post - type2" />
-	</form>
-	<a asp-page="LoadPage">To Load Page</a>
+	<h1 id="title">@Model.Message</h1>
+	@*<form method="post">
+			<input type="submit" value="Click to post" />
+		</form>
+		<form method="post" asp-page-handler="type1">
+			<input type="submit" value="Click to post - type1" />
+		</form>
+		<form method="post" asp-page-handler="type2">
+			<input type="submit" value="Click to post - type2" />
+		</form>
+		<a asp-page="LoadPage">To Load Page</a>*@
+	<button id="test" value="value">content</button>
+	@Html.AntiForgeryToken()
 </div>

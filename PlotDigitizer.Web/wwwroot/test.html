@@ -1,0 +1,79 @@
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible"
+			  content="IE=edge">
+		<meta name="viewport"
+			  content="width=device-width, initial-scale=1.0">
+		<title>Document</title>
+		<link rel="stylesheet"
+			  href="nouislider/nouislider.min.css">
+		<style>
+			#filterR,
+			#filterG,
+			#filterB {
+				margin: 50px;
+			}
+
+			#filterR .noUi-connect {
+				background: red;
+			}
+
+			#filterG .noUi-connect {
+				background: green;
+			}
+
+			#filterB .noUi-connect {
+				background: blue;
+			}
+
+		</style>
+	</head>
+
+	<body>
+		<div id="filters">
+			<div id="filterR"></div>
+			<div id="filterG"></div>
+			<div id="filterB"></div>
+		</div>
+
+		<script src="nouislider/nouislider.min.js"></script>
+		<script>
+			var filterR = document.getElementById('filterR');
+			var filterG = document.getElementById('filterG');
+			var filterB = document.getElementById('filterB');
+			var setting = {
+				step: 1,
+				start: [0, 254],
+				connect: true,
+				tooltips: true,
+				range: {
+					'min': 0,
+					'max': 255,
+				},
+				format: {
+					// 'to' the formatted value. Receives a number.
+					to: function (value) {
+						return Math.round(value).toString();
+					},
+					// 'from' the formatted value.
+					// Receives a string, should return a number.
+					from: function (value) {
+						return parseInt(value);
+					}
+				}
+			};
+			var callback = (values, handleID) => {
+
+			};
+			noUiSlider.create(filterR, setting);
+			noUiSlider.create(filterG, setting);
+			noUiSlider.create(filterB, setting);
+			filterR.noUiSlider.on('change', callback);
+			filterG.noUiSlider.on('change', callback);
+			filterB.noUiSlider.on('change', callback);
+		</script>
+	</body>
+
+</html>

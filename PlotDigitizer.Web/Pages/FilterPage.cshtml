@@ -1,5 +1,81 @@
 ﻿@page "{handler?}"
 @model PlotDigitizer.Web.Pages.FilterPageModel
 @{
-	ViewData["Title"] = "AxisPage";
+	ViewData["Title"] = "FilterPage";
 }
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@functions{
+	public string GetAntiXsrfRequestToken()
+	{
+		return Xsrf.GetAndStoreTokens(Model.HttpContext).RequestToken;
+	}
+}
+@section styles{
+	<link rel="stylesheet" href="~/css/filterPage.css" />
+}
+@section scripts{
+	<script src="~/nouislider/nouislider.min.js"></script>
+	<script>
+		$('#view').load('/FilterPage/View');
+		var filterR = document.getElementById('filterR');
+		var filterG = document.getElementById('filterG');
+		var filterB = document.getElementById('filterB');
+		var setting = {
+			step: 1,
+			start: [0, 254],
+			connect: true,
+			tooltips: true,
+			behaviour: 'tap-drag',
+			range: {
+				'min': 0,
+				'max': 255,
+			},
+			format: {
+				// 'to' the formatted value. Receives a number.
+				to: value => Math.round(value).toString(),
+				// 'from' the formatted value.
+				// Receives a string, should return a number.
+				from: value => parseInt(value),
+			}
+		};
+		var callback = (values, handleID) => {
+			var valuesR = filterR.noUiSlider.get();
+			var valuesG = filterG.noUiSlider.get();
+			var valuesB = filterB.noUiSlider.get();
+			var data = {
+				minR: parseInt(valuesR[0]),
+				maxR: parseInt(valuesR[1]),
+				minG: parseInt(valuesG[0]),
+				maxG: parseInt(valuesG[1]),
+				minB: parseInt(valuesB[0]),
+				maxB: parseInt(valuesB[1]),
+			};
+			$.post({
+				type: 'post',
+				url: '',
+				headers: {
+					"RequestVerificationToken": '@GetAntiXsrfRequestToken()'
+				},
+				data: data,
+				success: () => {
+					$('#view').load('/FilterPage/View');
+				}
+			});
+		};
+		noUiSlider.create(filterR, setting);
+		noUiSlider.create(filterG, setting);
+		noUiSlider.create(filterB, setting);
+		filterR.noUiSlider.on('change', callback);
+		filterG.noUiSlider.on('change', callback);
+		filterB.noUiSlider.on('change', callback);
+	</script>
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div id="view"></div>
+
+<div id="filterR"></div>
+<div id="filterG"></div>
+<div id="filterB"></div>
+@Html.AntiForgeryToken()

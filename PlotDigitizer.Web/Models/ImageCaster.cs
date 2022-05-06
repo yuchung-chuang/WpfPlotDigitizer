@@ -15,6 +15,21 @@ namespace PlotDigitizer.Web.Models
 {
 	public static class ImageCaster
 	{
+		public static string ToImgSrc(this Image<Rgba,byte> image)
+		{
+			var bytes = CvInvoke.Imencode(".png", image);
+			var base64 = Convert.ToBase64String(bytes);
+			return $"data:image/png;base64,{base64}";
+		}
+		public static async Task<Image<Rgba, byte>> ToImageAsync(this IFormFile formFile)
+		{
+			if (formFile is null) {
+				return null;
+			}
+			using var memoryStream = new MemoryStream();
+			await formFile.CopyToAsync(memoryStream);
+			return (Image.FromStream(memoryStream) as Bitmap).ToImage<Rgba, byte>();
+		}
 		public static async Task<string> ToImgSrcAsync(this IFormFile formFile)
 		{
 			if (formFile is null) {
@@ -29,14 +44,5 @@ namespace PlotDigitizer.Web.Models
 			return $"data:{mimeType};base64,{base64}";
 		}
 
-		public static async Task<Image<Rgba, byte>> ToImageAsync(this IFormFile formFile)
-		{
-			if (formFile is null) {
-				return null;
-			}
-			using var memoryStream = new MemoryStream();
-			await formFile.CopyToAsync(memoryStream);
-			return (Image.FromStream(memoryStream) as Bitmap).ToImage<Rgba, byte>();
-		}
 	}
 }

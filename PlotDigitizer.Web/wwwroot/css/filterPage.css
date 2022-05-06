@@ -1,0 +1,17 @@
+#filterR,
+#filterG,
+#filterB {
+	margin: 50px;
+}
+
+#filterR .noUi-connect {
+	background: red;
+}
+
+#filterG .noUi-connect {
+	background: green;
+}
+
+#filterB .noUi-connect {
+	background: blue;
+}

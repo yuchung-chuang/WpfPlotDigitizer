@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
 namespace PlotDigitizer.Web.Pages
@@ -19,9 +20,10 @@ namespace PlotDigitizer.Web.Pages
 			Message = "OnGet executed";
 		}
 
-		public void OnPost()
+		public IActionResult OnPost()
 		{
 			Message = "OnPost executed";
+			return Page();
 		}
 
 		public void OnPostType1() => Message = "Type1 posted";

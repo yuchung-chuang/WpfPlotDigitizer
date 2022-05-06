@@ -35,11 +35,7 @@ namespace PlotDigitizer.Web.Pages
 		public async Task<IActionResult> OnPostAsync()
 		{
 			Model.InputImage = await UploadedFile.ToImageAsync();
-			Model.InputImageSource = await UploadedFile.ToImgSrcAsync();
 			return RedirectToPage("AxisLimitPage");
-			//ImageModel.InputImage = await UploadedFile.ToImageAsync();
-			//ImageModel.InputImageSource = await UploadedFile.ToImgSrcAsync();
-			//return Page();
 		}
 	}
 }

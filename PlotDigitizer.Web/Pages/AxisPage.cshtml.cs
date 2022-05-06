@@ -16,15 +16,12 @@ namespace PlotDigitizer.Web.Pages
 {
 	public class AxisPageModel : PageModel
 	{
-		public AxisPageModel(Model model, Setting setting)
+		public AxisPageModel(Model model)
 		{
 			Model = model;
-			Setting = setting;
 		}
 
 		public Model Model { get; }
-
-		public Setting Setting { get; }
 
 		public void OnGet()
 		{
@@ -37,17 +34,20 @@ namespace PlotDigitizer.Web.Pages
 		}
 		public IActionResult OnGetAxisLocation()
 		{
+			if (Model.InputImage is null) {
+				return Page();
+			}
 			var rect = Methods.GetAxisLocation(Model.InputImage);
 			if (!rect.HasValue) {
 				return Page();
 			}
-			Setting.AxisLocation = new Rectangle(rect.Value.X, rect.Value.Y, rect.Value.Width, rect.Value.Height);
+			Model.Setting.AxisLocation = new Rectangle(rect.Value.X, rect.Value.Y, rect.Value.Width, rect.Value.Height);
 			return Page();
 		}
 
 		public IActionResult OnPost(int x, int y, int width, int height)
 		{
-			Setting.AxisLocation = new Rectangle(x, y, width, height);
+			Model.Setting.AxisLocation = new Rectangle(x, y, width, height);
 			return RedirectToPage("FilterPage");
 		}
 	}

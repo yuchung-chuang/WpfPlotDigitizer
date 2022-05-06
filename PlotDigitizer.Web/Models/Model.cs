@@ -11,8 +11,12 @@ namespace PlotDigitizer.Web.Models
 {
 	public class Model : ModelFacade
 	{
-		public string InputImageSource { get; set; }
 		public Setting Setting { get; }
+		public string InputImageSource => InputImage?.ToImgSrc();
+
+		public string CroppedImageSource => CroppedImage?.ToImgSrc();
+
+		public string FilteredImageSource => FilteredImage?.ToImgSrc();
 
 		public Model(InputImageNode inputImage, CroppedImageNode croppedImage, FilteredImageNode filteredImage, EdittedImageNode edittedImage, PreviewImageNode previewImage, DataNode data, Setting setting) : base(inputImage, croppedImage, filteredImage, edittedImage, previewImage, data)
 		{

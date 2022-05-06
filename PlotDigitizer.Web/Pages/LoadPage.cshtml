@@ -1,28 +1,27 @@
 ﻿@page "{handler?}"
-@using PlotDigitizer.Web.Models;
 @model PlotDigitizer.Web.Pages.LoadPageModel
 @{
 	ViewData["Title"] = "LoadPage";
 }
 @*@section scripts{
-		<script>
-			$(() => {
-				$('#submit').on('click', (evt) => {
-					evt.preventDefault();
-					$.ajax({
-						url: '',
-						data: new FormData(document.forms[0]),
-						contentType: false,
-						processData: false,
-						type: 'post',
-						success: function () {
-							$('#image').load('/LoadPage/Image');
-						}
-					});
+	<script>
+		$(() => {
+			$('#submit').on('click', (evt) => {
+				evt.preventDefault();
+				$.ajax({
+					url: '',
+					data: new FormData(document.forms[0]),
+					contentType: false,
+					processData: false,
+					type: 'post',
+					success: () => {
+						$('#image').load('/LoadPage/Image');
+					}
 				});
 			});
-		</script>
-	}*@
+		});
+	</script>
+}*@
 <h1>LoadPage</h1>
 
 <div id="image"></div>
