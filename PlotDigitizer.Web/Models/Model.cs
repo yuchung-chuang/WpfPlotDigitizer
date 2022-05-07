@@ -19,6 +19,9 @@ namespace PlotDigitizer.Web.Models
 
 		public string FilteredImageSource => FilteredImage?.ToImgSrc();
 
+		public string EdittedImageSource => EdittedImage?.ToImgSrc();
+
+
 		public Model(InputImageNode inputImage, CroppedImageNode croppedImage, FilteredImageNode filteredImage, EdittedImageNode edittedImage, PreviewImageNode previewImage, DataNode data, Setting setting) : base(inputImage, croppedImage, filteredImage, edittedImage, previewImage, data)
 		{
 			Setting = setting;

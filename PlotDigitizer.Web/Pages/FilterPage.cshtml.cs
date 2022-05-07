@@ -35,6 +35,7 @@ namespace PlotDigitizer.Web.Pages
 		{
 			Model.Setting.FilterMax = new Rgba(maxR, maxG, maxB, byte.MaxValue);
 			Model.Setting.FilterMin = new Rgba(minR, minG, minB, byte.MaxValue);
+			return Page();
 			return RedirectToPage("EditPage");
 		}
     }
