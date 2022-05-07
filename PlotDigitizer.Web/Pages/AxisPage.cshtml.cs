@@ -34,14 +34,12 @@ namespace PlotDigitizer.Web.Pages
 		}
 		public IActionResult OnGetAxisLocation()
 		{
-			if (Model.InputImage is null) {
+			var image = Model.InputImage;
+			if (image is null) {
 				return Page();
 			}
-			var rect = Methods.GetAxisLocation(Model.InputImage);
-			if (!rect.HasValue) {
-				return Page();
-			}
-			Model.Setting.AxisLocation = new Rectangle(rect.Value.X, rect.Value.Y, rect.Value.Width, rect.Value.Height);
+			var rect = Methods.GetAxisLocation(image) ?? new Rectangle(image.Width / 4, image.Height / 4, image.Width / 2, image.Height / 2);
+			Model.Setting.AxisLocation = new Rectangle(rect.X, rect.Y, rect.Width, rect.Height);
 			return Page();
 		}
 

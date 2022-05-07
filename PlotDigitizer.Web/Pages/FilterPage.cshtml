@@ -22,7 +22,6 @@
 		var filterB = document.getElementById('filterB');
 		var setting = {
 			step: 1,
-			start: [0, 254],
 			connect: true,
 			tooltips: true,
 			behaviour: 'tap-drag',
@@ -38,7 +37,7 @@
 				from: value => parseInt(value),
 			}
 		};
-		var callback = (values, handleID) => {
+		var callback = () => {
 			var valuesR = filterR.noUiSlider.get();
 			var valuesG = filterG.noUiSlider.get();
 			var valuesB = filterB.noUiSlider.get();
@@ -62,12 +61,15 @@
 				}
 			});
 		};
+		setting.start = [@Model.Model.Setting.FilterMin.Red, @Model.Model.Setting.FilterMax.Red];
 		noUiSlider.create(filterR, setting);
+		setting.start = [@Model.Model.Setting.FilterMin.Green, @Model.Model.Setting.FilterMax.Green];
 		noUiSlider.create(filterG, setting);
+		setting.start = [@Model.Model.Setting.FilterMin.Blue, @Model.Model.Setting.FilterMax.Blue];
 		noUiSlider.create(filterB, setting);
-		filterR.noUiSlider.on('change', callback);
-		filterG.noUiSlider.on('change', callback);
-		filterB.noUiSlider.on('change', callback);
+		filterR.noUiSlider.on('update', callback);
+		filterG.noUiSlider.on('update', callback);
+		filterB.noUiSlider.on('update', callback);
 	</script>
 }
 

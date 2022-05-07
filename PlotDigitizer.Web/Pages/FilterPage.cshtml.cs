@@ -26,14 +26,9 @@ namespace PlotDigitizer.Web.Pages
 			
 		}
 
-		private void FilterImage()
-		{
-
-		}
-
 		public IActionResult OnGetView()
 		{
-			return Partial("_FilterPageView", Model.FilteredImageSource);
+			return Partial("_FilterPageView", Model);
 		}
 
 		public IActionResult OnPost(int minR, int maxR, int minG, int maxG, int minB, int maxB)
