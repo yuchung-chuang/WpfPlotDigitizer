@@ -5,10 +5,7 @@
 }
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
 @functions{
-	public string GetAntiXsrfRequestToken()
-	{
-		return Xsrf.GetAndStoreTokens(Model.HttpContext).RequestToken;
-	}
+	public string GetAntiXsrfRequestToken() => Xsrf.GetAndStoreTokens(Model.HttpContext).RequestToken;
 }
 @section styles{
 	<link rel="stylesheet" href="~/css/filterPage.css" />

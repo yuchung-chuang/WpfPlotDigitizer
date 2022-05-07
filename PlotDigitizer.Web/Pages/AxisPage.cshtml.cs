@@ -25,7 +25,9 @@ namespace PlotDigitizer.Web.Pages
 
 		public void OnGet()
 		{
-			OnGetAxisLocation();
+			if (Model.Setting.AxisLocation == default) {
+				OnGetAxisLocation();
+			}
 		}
 
 		public IActionResult OnGetView()

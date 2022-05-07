@@ -11,6 +11,7 @@ namespace PlotDigitizer.Web.Models
 {
 	public class Model : ModelFacade
 	{
+		public double DisplayWidth { get; } = 500d;
 		public Setting Setting { get; }
 		public string InputImageSource => InputImage?.ToImgSrc();
 

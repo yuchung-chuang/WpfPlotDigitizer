@@ -2,10 +2,27 @@
 @model PlotDigitizer.Web.Pages.AxisPageModel
 @{
 	ViewData["Title"] = "AxisPage";
+	var rescale = Model.Model.InputImage.Width / Model.Model.DisplayWidth;
 }
 @section scripts{
 	<script src="https://unpkg.com/interactjs/dist/interact.min.js"></script>
-	<script src="~/js/axisPage.js"></script>
+	<script>
+		$('#view').load('/AxisPage/View');
+		$('#submit').click(() => {
+			var svg = document.getElementById('svg'),
+				axis = document.getElementById('axis'),
+				rectSvg = svg.getBoundingClientRect(),
+				rectAxis = axis.getBoundingClientRect(),
+				x = parseInt((rectAxis.left - rectSvg.left) * @rescale ?? 0),
+				y = parseInt((rectAxis.top - rectSvg.top  ) * @rescale ?? 0),
+				width = parseInt(rectAxis.width * @rescale ?? 0),
+				height = parseInt(rectAxis.height * @rescale ?? 0);
+			$('#x').val(x);
+			$('#y').val(y);
+			$('#width').val(width);
+			$('#height').val(height);
+		});
+	</script>
 }
 
 <h1>@ViewData["Title"]</h1>

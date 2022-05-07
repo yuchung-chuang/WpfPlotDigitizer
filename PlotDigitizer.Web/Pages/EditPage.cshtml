@@ -1,0 +1,13 @@
+﻿@page "{handler?}"
+@model PlotDigitizer.Web.Pages.EditPageModel
+@{
+	ViewData["Title"] = "EditPage";
+}
+@section scripts{ 
+	<script>
+		$('#view').load('/EditPage/View');
+	</script>
+}
+
+<h1>@ViewData["Title"]</h1>
+<div id="view"></div>

@@ -1,19 +1,72 @@
 ﻿@model PlotDigitizer.Web.Models.Model
 @{
-	<svg id="svg" width="@Model.InputImage.Width" height="@Model.InputImage.Height">
+	var displayWidth = Model.DisplayWidth;
+	var rescale = Model.InputImage.Width / displayWidth;
+	<svg id="svg" width="@displayWidth" height="@(displayWidth * Model.InputImage.Height / Model.InputImage.Width)" viewBox="0 0 @Model.InputImage.Width @Model.InputImage.Height">
 		<image id="input-image" href="@Model.InputImageSource" width="100%" height="100%" />
 		<rect id="border" width="100%" height="100%" stroke="black" stroke-width="1" fill-opacity="0" />
 		<rect id="axis" style="box-sizing:border-box" x="@Model.Setting.AxisLocation.X" y="@Model.Setting.AxisLocation.Y" width="@Model.Setting.AxisLocation.Width" height="@Model.Setting.AxisLocation.Height" stroke="red" fill="white" fill-opacity="0.5" stroke-width="1" />
 	</svg>
 
 	<script>
+		interact('#axis')
+			.draggable({
+				onmove: event => {
+					var target = event.target,
+					// keep the dragged position in the data-x/data-y attributes
+					x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+					y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+					// translate the element
+					target.style.webkitTransform =
+								target.style.transform =
+								'translate(' + x + 'px, ' + y + 'px)';
+
+					// update the posiion attributes
+					target.setAttribute('data-x', x);
+					target.setAttribute('data-y', y);
+				},
+				// keep the element within the area of it's parent
+				modifiers: [
+					interact.modifiers.restrictRect({
+						restriction: 'parent',
+						endOnly: true,
+					})
+				],
+			})
+			.resizable({
+				onmove: event => {
+					var target = event.target,
+					x = (parseFloat(target.getAttribute('data-x')) || 0),
+					y = (parseFloat(target.getAttribute('data-y')) || 0);
+
+					// update the element's style
+					target.style.width = event.rect.width * @rescale + 'px';
+					target.style.height = event.rect.height * @rescale + 'px';
+					// translate when resizing from top or left edges
+					x += event.deltaRect.left * @rescale;
+					y += event.deltaRect.top * @rescale;
+
+					target.style.webkitTransform = target.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+
+					target.setAttribute('data-x', x);
+					target.setAttribute('data-y', y);
+				},
+				edges: { left: true, right: true, bottom: true, top: true },
+				invert: 'reposition',
+				modifiers: [
+					interact.modifiers.restrictEdges({
+						outer: 'parent'
+					}),
+				],
+			});
 		$('#svg').on('click', e => {
 			if (e.detail != 2) {
 				return;
 			}
 			e.preventDefault();
 			$.get({
-				url: '/AxisPage/AxisLocation',
+			url: '/AxisPage/AxisLocation',
 				success: () => {
 					$('#view').load('/AxisPage/View');
 				}
