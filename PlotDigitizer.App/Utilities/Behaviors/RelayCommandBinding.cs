@@ -14,7 +14,7 @@ namespace PlotDigitizer.App
 			DependencyProperty.Register("ApplicationCommand", typeof(ICommand), typeof(RelayCommandBinding), new PropertyMetadata(default, OnApplicationCommandChanged));
 
 		public static readonly DependencyProperty CommandProperty =
-			DependencyProperty.Register("Command", typeof(ICommand), typeof(RelayCommandBinding), new PropertyMetadata(default, OnCommandChanged));
+			DependencyProperty.Register("Command", typeof(ICommand), typeof(RelayCommandBinding), new PropertyMetadata(default));
 
 		private CommandBinding commandBinding;
 
@@ -40,10 +40,16 @@ namespace PlotDigitizer.App
 
 		#region Methods
 
+		protected override void OnAttached()
+		{
+			base.OnAttached();
+			AddCommandBinding();
+		}
+
 		protected override void OnDetaching()
 		{
 			base.OnDetaching();
-			AssociatedObject.CommandBindings.Remove(commandBinding);
+			RemoveCommandBinding();
 		}
 
 		private static void OnApplicationCommandChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -53,42 +59,33 @@ namespace PlotDigitizer.App
 			}
 			if (e.NewValue != null) {
 				relay.CreateCommandBinding();
-			}
-		}
-
-		private static void OnCommandChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			if (!(d is RelayCommandBinding relay)) {
-				return;
-			}
-			if (e.OldValue != null) {
-				relay.RemoveCommandBinding();
-			} else if (e.NewValue != null) {
 				relay.AddCommandBinding();
 			}
 		}
-
-		private void AddCommandBinding()
-		{
-			AssociatedObject.CommandBindings.Add(commandBinding);
-			CommandManager.InvalidateRequerySuggested();
-		}
-
-		private void CanExecute(object sender, CanExecuteRoutedEventArgs e) => e.CanExecute = Command == null || Command.CanExecute(e);
-
 		private void CreateCommandBinding()
 		{
 			commandBinding = new CommandBinding(ApplicationCommand,
 				new ExecutedRoutedEventHandler(Execute),
 				new CanExecuteRoutedEventHandler(CanExecute));
 		}
-		private void Execute(object sender, ExecutedRoutedEventArgs e) => Command?.Execute(e);
+
+		private void AddCommandBinding()
+		{
+			if (AssociatedObject is null || commandBinding is null) {
+				return;
+			}
+			AssociatedObject.CommandBindings.Add(commandBinding);
+			CommandManager.InvalidateRequerySuggested();
+		}
 
 		private void RemoveCommandBinding()
 		{
 			AssociatedObject.CommandBindings.Remove(commandBinding);
 			CommandManager.InvalidateRequerySuggested();
 		}
+
+		private void Execute(object sender, ExecutedRoutedEventArgs e) => Command?.Execute(e);
+		private void CanExecute(object sender, CanExecuteRoutedEventArgs e) => e.CanExecute = Command == null || Command.CanExecute(e);
 
 		#endregion Methods
 	}
