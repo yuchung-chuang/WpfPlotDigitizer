@@ -22,10 +22,7 @@ namespace PlotDigitizer.App
 				selectRect.Width = Image.Width - mouseDownPos.X;
 			} else {
 				var dx = position.X - mouseDownPos.X;
-				if (dx < 0)
-					Canvas.SetLeft(selectRect, position.X);
-				else
-					Canvas.SetLeft(selectRect, mouseDownPos.X);
+				Canvas.SetLeft(selectRect, Math.Min(position.X, mouseDownPos.X));
 				selectRect.Width = Math.Abs(dx);
 			}
 
@@ -37,10 +34,7 @@ namespace PlotDigitizer.App
 				selectRect.Height = Image.Height - mouseDownPos.Y;
 			} else {
 				var dy = position.Y - mouseDownPos.Y;
-				if (dy < 0)
-					Canvas.SetTop(selectRect, position.Y);
-				else
-					Canvas.SetTop(selectRect, mouseDownPos.Y);
+				Canvas.SetTop(selectRect, Math.Min(position.Y, mouseDownPos.Y));
 				selectRect.Height = Math.Abs(dy);
 			}
 		}
