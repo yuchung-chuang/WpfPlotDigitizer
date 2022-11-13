@@ -48,9 +48,6 @@ namespace PlotDigitizer.App
 			typeof(Axis),
 			new PropertyMetadata(default(ImageSource), OnImageSourceChanged));
 
-		public static readonly DependencyProperty MouseButtonProperty =
-			DependencyProperty.Register(nameof(MouseButton), typeof(MouseButton), typeof(Axis), new PropertyMetadata(MouseButton.Left));
-
 		public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
 			nameof(Stroke),
 			typeof(Brush),
@@ -125,12 +122,6 @@ namespace PlotDigitizer.App
 			set => SetValue(ImageSourceProperty, value);
 		}
 
-		public MouseButton MouseButton
-		{
-			get => (MouseButton)GetValue(MouseButtonProperty);
-			set => SetValue(MouseButtonProperty, value);
-		}
-
 		public Brush Stroke
 		{
 			get => (Brush)GetValue(StrokeProperty);
@@ -161,7 +152,7 @@ namespace PlotDigitizer.App
 			UpdateCursor(State);
 
 			// Initialize Adjust
-			if (State != (AdjustType.None)) {
+			if (State != AdjustType.None) {
 				IsAdjust = true;
 				CaptureMouse();
 
