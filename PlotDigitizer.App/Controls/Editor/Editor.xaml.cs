@@ -5,6 +5,7 @@ using PlotDigitizer.Core;
 
 using PropertyChanged;
 
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,7 +24,8 @@ namespace PlotDigitizer.App
 		public static readonly DependencyProperty BlockInteractionProperty =
 			DependencyProperty.Register("BlockInteraction", typeof(bool), typeof(Editor), new PropertyMetadata(false));
 
-		public static readonly DependencyProperty DeleteKeyProperty = DependencyProperty.Register("DeleteKey", typeof(KeyGesture), typeof(Editor), new PropertyMetadata(new KeyGesture(Key.Delete)));
+		public static readonly DependencyProperty DeleteKeysProperty =
+			DependencyProperty.Register("DeleteKeys", typeof(InputGestureCollection), typeof(Editor), new PropertyMetadata(new InputGestureCollection(new List<InputGesture> { new KeyGesture(Key.Back), new KeyGesture(Key.Delete) })));
 
 		public static readonly DependencyProperty EditGestureProperty = DependencyProperty.Register(nameof(EditGesture), typeof(MouseGesture), typeof(Editor), new PropertyMetadata(new MouseGesture(MouseAction.LeftClick)));
 
@@ -55,10 +57,10 @@ namespace PlotDigitizer.App
 			set => SetValue(BlockInteractionProperty, value);
 		}
 
-		public KeyGesture DeleteKey
+		public InputGestureCollection DeleteKeys
 		{
-			get => (KeyGesture)GetValue(DeleteKeyProperty);
-			set => SetValue(DeleteKeyProperty, value);
+			get => (InputGestureCollection)GetValue(DeleteKeysProperty);
+			set => SetValue(DeleteKeysProperty, value);
 		}
 
 		public MouseGesture EditGesture
@@ -200,7 +202,7 @@ namespace PlotDigitizer.App
 
 		private void MainWindow_KeyDown(object sender, KeyEventArgs e)
 		{
-			if (!DeleteKey.Matches(sender, e)) {
+			if (!DeleteKeysMatchAny(sender, e)) {
 				return;
 			}
 
@@ -209,6 +211,16 @@ namespace PlotDigitizer.App
 
 			if (BlockInteraction) {
 				e.Handled = true;
+			}
+
+			bool DeleteKeysMatchAny(object sender, KeyEventArgs e)
+			{
+				foreach (KeyGesture key in DeleteKeys) {
+					if (key.Matches(sender, e)) {
+						return true;
+					}
+				}
+				return false;
 			}
 		}
 
