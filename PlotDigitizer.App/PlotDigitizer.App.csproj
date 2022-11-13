@@ -30,6 +30,7 @@
 	<ItemGroup>
 		<None Remove="Assets\icon_digitizer.png" />
 		<None Remove="Assets\pan.cur" />
+		<None Remove="Assets\test_image.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -46,13 +47,13 @@
 	<ItemGroup>
 		<Resource Include="Assets\icon_digitizer.png" />
 		<Resource Include="Assets\pan.cur" />
+		<Resource Include="Assets\test_image.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
 	</ItemGroup>
 
 	<ItemGroup>
 		<None Update="appsettings.json">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\test_image.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>

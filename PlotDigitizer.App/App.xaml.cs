@@ -107,7 +107,8 @@ namespace PlotDigitizer.App
 			var provider = host.Services;
 			var model = provider.GetRequiredService<Model>();
 			var setting = provider.GetRequiredService<Setting>();
-			model.InputImage = new BitmapImage(new Uri(@"pack://siteoforigin:,,,/Assets/test_image.png")).ToBitmap().ToImage<Rgba, byte>();
+			model.InputImage = new BitmapImage(new Uri(@"pack://application:,,,/Assets/test_image.png")).ToBitmap().ToImage<Rgba, byte>();
+
 			var settingTmp = new Setting
 			{
 				AxisLimit = new RectangleD(900, 0, 70, 20),
