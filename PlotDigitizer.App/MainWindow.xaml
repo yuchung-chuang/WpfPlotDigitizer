@@ -50,14 +50,17 @@
 									Height="30"
 									Background="LightGray">
 				<Button x:Name="PrevPageButton"
+						ToolTip="Previous Page"
 								Command="{Binding PageManager.PreviousPageCommand}">
 					<Path Data="M427 277v-42h-260l119 -120l-30 -30l-171 171l171 171l30 -30l-119 -120h260z" />
 				</Button>
 				<Button x:Name="NextPageButton"
+						ToolTip="Next Page"
 								Command="{Binding PageManager.NextPageCommand}">
 					<Path Data="M256 427l171 -171l-171 -171l-30 30l119 120h-260v42h260l-119 120z" />
 				</Button>
 				<ComboBox Name="NaviComboBox"
+						  ToolTip="Page List"
 									ItemsSource="{Binding PageNameList}"
 									SelectedIndex="{Binding PageManager.PageIndex, Mode=OneWay}"
 									Width="20">

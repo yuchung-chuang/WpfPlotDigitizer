@@ -33,6 +33,7 @@
 			<StackPanel DockPanel.Dock="Left"
 									Orientation="Horizontal">
 				<RadioButton x:Name="continuousButton"
+							 ToolTip="Continuous Data"
 										 IsChecked="{Binding IsContinuous, Mode=TwoWay}">
 					<Path Data="M64 0v960h-64v-1024h1024v64h-960zM576 448l-192 192-256-256v-128l256 256 192-192 448 448v128z"
 								RenderTransformOrigin="0.5,0.5">
@@ -49,6 +50,7 @@
 					</Path>
 				</RadioButton>
 				<RadioButton x:Name="discreteButton"
+							 ToolTip="Discrete Data"
 										 IsChecked="{Binding IsDiscrete, Mode=TwoWay}">
 					<Path Data="M64 0v960h-64v-1024h1024v64h-960zM320 256c0-35.346-28.654-64-64-64s-64 28.654-64 64c0 35.346 28.654 64 64 64s64-28.654 64-64zM512 576c0-35.346-28.654-64-64-64s-64 28.654-64 64c0 35.346 28.654 64 64 64s64-28.654 64-64zM896 640c0-35.346-28.654-64-64-64s-64 28.654-64 64c0 35.346 28.654 64 64 64s64-28.654 64-64zM704 320c0-35.346-28.654-64-64-64s-64 28.654-64 64c0 35.346 28.654 64 64 64s64-28.654 64-64z"
 								RenderTransformOrigin="0.5,0.5">
@@ -68,6 +70,7 @@
 			<StackPanel DockPanel.Dock="Right"
 									Orientation="Horizontal">
 				<Button x:Name="exportButton"
+						ToolTip="Export"
 								Width="{Binding ActualHeight, RelativeSource={RelativeSource self}}"
 								Margin="1"
 								Command="{Binding ExportCommand}">
