@@ -28,7 +28,7 @@ namespace PlotDigitizer.Core
 				return;
 			}
 			Value = Methods.FilterRGB(croppedImage.Value, filterMin.Value, filterMax.Value);
-			OnUpdated();
+			base.Update();
 		}
 	}
 }

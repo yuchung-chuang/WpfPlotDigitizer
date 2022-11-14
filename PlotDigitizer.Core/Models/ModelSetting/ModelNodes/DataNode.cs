@@ -30,7 +30,7 @@ namespace PlotDigitizer.Core
 			if (!previewImage.CheckUpdate() || !axisLimit.CheckUpdate() || !axisLogBase.CheckUpdate())
 				return;
 			Value = Methods.TransformData(previewImage.Points, previewImage.Value.Size, axisLimit.Value, axisLogBase.Value);
-			OnUpdated();
+			base.Update();
 		}
 	}
 }

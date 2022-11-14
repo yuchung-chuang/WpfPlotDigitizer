@@ -37,8 +37,13 @@ namespace PlotDigitizer.Core
 			return IsUpdated;
 		}
 
+		/// <summary>
+		/// The base method should be called at the end of derived method.
+		/// </summary>
 		public virtual void Update()
-		{ }
+		{
+			OnUpdated();
+		}
 
 		public void Set(TData value)
 		{

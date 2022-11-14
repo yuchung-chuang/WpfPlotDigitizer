@@ -40,7 +40,7 @@ namespace PlotDigitizer.Core
 				DataType.Continuous => Methods.GetContinuousPoints(Value),
 				_ => throw new NotImplementedException(),
 			};
-			OnUpdated();
+			base.Update();
 		}
 	}
 }
