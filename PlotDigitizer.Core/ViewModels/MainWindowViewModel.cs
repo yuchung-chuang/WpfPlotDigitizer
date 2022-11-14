@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using PropertyChanged;
+
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Windows.Input;
 using System.Xml.Serialization;
 
 namespace PlotDigitizer.Core
@@ -13,18 +16,34 @@ namespace PlotDigitizer.Core
 		private readonly IFileDialogService fileDialogService;
 		private readonly IMessageBoxService messageBoxService;
 		private readonly Setting setting;
+		private int currentTabIndex = 0;
 
 		#endregion Fields
 
 		#region Properties
+		public int CurrentTabIndex
+		{
+			get => currentTabIndex;
+			set
+			{
+				if (currentTabIndex == value)
+					return;
+				CurrentTab.Leave();
+				currentTabIndex = value;
+				PrevPageCommand.RaiseCanExecuteChanged();
+				NextPageCommand.RaiseCanExecuteChanged();
+				OnPropertyChanged(nameof(CurrentTab));
+				CurrentTab.Enter();
+			}
+		}
+
+		public PageViewModelBase CurrentTab { get; set; }
+		public RelayCommand NextPageCommand { get; }
+		public RelayCommand PrevPageCommand { get; }
 
 		public RelayCommand LoadSettingCommand { get; set; }
-		public Model Model { get; }
-		public PageManager PageManager { get; private set; } = new PageManager();
-
-		public IEnumerable<string> PageNameList => PageManager.PageList.Select(vm => vm.Name);
-
 		public RelayCommand SaveSettingCommand { get; set; }
+		public Model Model { get; }
 
 		#endregion Properties
 
@@ -34,7 +53,14 @@ namespace PlotDigitizer.Core
 		{
 			SaveSettingCommand = new RelayCommand(SaveSetting);
 			LoadSettingCommand = new RelayCommand(LoadSetting);
+			NextPageCommand = new RelayCommand(NextPage, CanNextPage);
+			PrevPageCommand = new RelayCommand(PrevPage, CanPrevPage);
 		}
+
+		private void PrevPage() => CurrentTabIndex--;
+		private bool CanPrevPage() => CurrentTabIndex > 0;
+		private void NextPage() => CurrentTabIndex++;
+		private bool CanNextPage() => CurrentTabIndex < 6 - 1;
 
 		public MainWindowViewModel(
 			Model model,

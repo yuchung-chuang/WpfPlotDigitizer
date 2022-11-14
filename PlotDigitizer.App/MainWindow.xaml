@@ -8,10 +8,11 @@
 			 xmlns:core="clr-namespace:PlotDigitizer.Core;assembly=PlotDigitizer.Core"
 			 mc:Ignorable="d"
 			 x:Name="root"
-			 Height="450"
+			 Height="600"
 			 Width="800"
 			 WindowStartupLocation="CenterScreen"
 			 d:DataContext="{d:DesignInstance Type=core:MainWindowViewModel, IsDesignTimeCreatable=True}"
+			 DataContext="{local:DI Type=core:MainWindowViewModel}"
 			 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
 			 Background="{ui:ThemeResource ApplicationBackgroundBrush}"
 			 ExtendsContentIntoTitleBar="True"
@@ -25,13 +26,13 @@
 	</Window.InputBindings>
 	<i:Interaction.Behaviors>
 		<local:RelayCommandBinding ApplicationCommand="{x:Static NavigationCommands.NextPage}"
-								   Command="{Binding PageManager.NextPageCommand}" />
+								   Command="{Binding NextPageCommand}" />
 		<local:RelayCommandBinding ApplicationCommand="{x:Static NavigationCommands.PreviousPage}"
-								   Command="{Binding PageManager.PreviousPageCommand}" />
-		<local:RelayCommandBinding ApplicationCommand="{x:Static NavigationCommands.BrowseBack}"
-								   Command="{Binding PageManager.BrowseBackCommand}" />
+								   Command="{Binding PrevPageCommand}" />
 		<local:RelayCommandBinding ApplicationCommand="{x:Static NavigationCommands.BrowseForward}"
-								   Command="{Binding PageManager.BrowseForwardCommand}" />
+								   Command="{Binding NextPageCommand}" />
+		<local:RelayCommandBinding ApplicationCommand="{x:Static NavigationCommands.BrowseBack}"
+								   Command="{Binding PrevPageCommand}" />
 	</i:Interaction.Behaviors>
 	<DockPanel>
 		<ui:TitleBar Title="PlotDigitizer"
@@ -65,26 +66,14 @@
 						Background="LightGray">
 				<Button x:Name="PrevPageButton"
 						ToolTip="Previous Page"
-						Command="{Binding PageManager.PreviousPageCommand}">
+						Command="{Binding PrevPageCommand}">
 					<Path Data="M427 277v-42h-260l119 -120l-30 -30l-171 171l171 171l30 -30l-119 -120h260z" />
 				</Button>
 				<Button x:Name="NextPageButton"
 						ToolTip="Next Page"
-						Command="{Binding PageManager.NextPageCommand}">
+						Command="{Binding NextPageCommand}">
 					<Path Data="M256 427l171 -171l-171 -171l-30 30l119 120h-260v42h260l-119 120z" />
 				</Button>
-				<ComboBox Name="NaviComboBox"
-						  ToolTip="Page List"
-						  ItemsSource="{Binding PageNameList}"
-						  SelectedIndex="{Binding PageManager.PageIndex, Mode=OneWay}"
-						  Width="20">
-					<i:Interaction.Triggers>
-						<i:EventTrigger EventName="SelectionChanged">
-							<i:InvokeCommandAction Command="{Binding PageManager.GoToCommand}"
-												   EventArgsParameterPath="Source.SelectedIndex" />
-						</i:EventTrigger>
-					</i:Interaction.Triggers>
-				</ComboBox>
 			</StackPanel>
 			<StackPanel DockPanel.Dock="Right"
 						Orientation="Horizontal"
@@ -105,29 +94,143 @@
 				</Button>
 			</StackPanel>
 		</DockPanel>
-		<Grid>
-			<Grid.Resources>
-				<DataTemplate DataType="{x:Type core:LoadPageViewModel}">
-					<local:LoadPage />
-				</DataTemplate>
-				<DataTemplate DataType="{x:Type core:AxisLimitPageViewModel}">
-					<local:AxisLimitPage />
-				</DataTemplate>
-				<DataTemplate DataType="{x:Type core:AxisPageViewModel}">
-					<local:AxisPage />
-				</DataTemplate>
-				<DataTemplate DataType="{x:Type core:FilterPageViewModel}">
-					<local:FilterPage />
-				</DataTemplate>
-				<DataTemplate DataType="{x:Type core:EditPageViewModel}">
-					<local:EditPage />
-				</DataTemplate>
-				<DataTemplate DataType="{x:Type core:PreviewPageViewModel}">
-					<local:PreviewPage />
-				</DataTemplate>
-			</Grid.Resources>
 
-			<ContentControl Content="{Binding PageManager.CurrentPage}" />
-		</Grid>
+		<TabControl SelectedIndex="{Binding CurrentTabIndex, Mode=TwoWay}"
+					SelectedItem="{Binding CurrentTab, Converter={local:PageViewModelConverter}, Mode=OneWayToSource}">
+			<TabControl.Resources>
+				<ControlTemplate TargetType="{x:Type TabItem}"
+								 x:Key="TabItemTemplate">
+					<Grid x:Name="Root">
+						<Border x:Name="Border"
+								MinHeight="36"
+								MinWidth="50"
+								Margin="0"
+								Padding="6"
+								Background="{TemplateBinding Background}"
+								BorderBrush="{TemplateBinding BorderBrush}"
+								BorderThickness="1,1,1,0"
+								CornerRadius="4,4,0,0">
+							<ContentPresenter x:Name="ContentSite"
+											  Margin="0"
+											  HorizontalAlignment="Center"
+											  VerticalAlignment="Center"
+											  ContentSource="Header"
+											  RecognizesAccessKey="True" />
+						</Border>
+
+						<VisualStateManager.VisualStateGroups>
+							<VisualStateGroup x:Name="SelectionStates">
+								<VisualState x:Name="Unselected" />
+								<VisualState x:Name="Selected">
+									<Storyboard>
+										<DoubleAnimation Storyboard.TargetName="Border"
+														 Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Opacity)"
+														 From="1"
+														 To="0.1"
+														 Duration="0:0:.16" />
+									</Storyboard>
+								</VisualState>
+							</VisualStateGroup>
+							<VisualStateGroup x:Name="CommonStates">
+								<VisualState x:Name="Normal" />
+								<VisualState x:Name="MouseOver" />
+								<VisualState x:Name="Disabled">
+									<Storyboard>
+										<DoubleAnimation Storyboard.TargetName="Border"
+														 Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Opacity)"
+														 From="0.0"
+														 To="0.5"
+														 Duration="0:0:.16" />
+									</Storyboard>
+								</VisualState>
+							</VisualStateGroup>
+						</VisualStateManager.VisualStateGroups>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsSelected"
+								 Value="True">
+							<Setter Property="Panel.ZIndex"
+									Value="100" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</TabControl.Resources>
+			<TabControl.Template>
+				<ControlTemplate TargetType="{x:Type TabControl}">
+					<Grid KeyboardNavigation.TabNavigation="Local">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="*" />
+						</Grid.RowDefinitions>
+						<UniformGrid x:Name="HeaderPanel"
+									 Rows="1"
+									 Grid.Row="0"
+									 Margin="0"
+									 Panel.ZIndex="1"
+									 Background="Transparent"
+									 IsItemsHost="True"
+									 KeyboardNavigation.TabIndex="1" />
+						<Border x:Name="Border"
+								Grid.Row="1"
+								Background="{TemplateBinding Background}"
+								BorderBrush="{TemplateBinding BorderBrush}"
+								BorderThickness="1"
+								CornerRadius="0,4,4,4"
+								KeyboardNavigation.DirectionalNavigation="Contained"
+								KeyboardNavigation.TabIndex="2"
+								KeyboardNavigation.TabNavigation="Local">
+							<ContentPresenter x:Name="PART_SelectedContentHost"
+											  Margin="0"
+											  HorizontalAlignment="Stretch"
+											  VerticalAlignment="Stretch"
+											  ContentSource="SelectedContent" />
+						</Border>
+						<VisualStateManager.VisualStateGroups>
+							<VisualStateGroup x:Name="CommonStates">
+								<VisualState x:Name="Disabled">
+									<Storyboard>
+										<ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+																	  Storyboard.TargetProperty="(Border.BorderBrush).                     (SolidColorBrush.Color)">
+											<EasingColorKeyFrame KeyTime="0"
+																 Value="#FFAAAAAA" />
+										</ColorAnimationUsingKeyFrames>
+									</Storyboard>
+								</VisualState>
+							</VisualStateGroup>
+						</VisualStateManager.VisualStateGroups>
+					</Grid>
+				</ControlTemplate>
+			</TabControl.Template>
+			<TabItem Header="Load"
+					 Template="{StaticResource TabItemTemplate}"
+					 Background="#FFC8C8C8">
+				<local:LoadPage DataContext="{local:DI Type=core:LoadPageViewModel}" />
+			</TabItem>
+			<TabItem Header="Range"
+					 Template="{StaticResource TabItemTemplate}"
+					 Background="#FFC8C8C8">
+				<local:AxisLimitPage DataContext="{local:DI Type=core:AxisLimitPageViewModel}" />
+			</TabItem>
+			<TabItem Header="Axis"
+					 Template="{StaticResource TabItemTemplate}"
+					 Background="#FFC8C8C8">
+				<local:AxisPage DataContext="{local:DI Type=core:AxisPageViewModel}" />
+			</TabItem>
+			<TabItem Header="Filter"
+					 Template="{StaticResource TabItemTemplate}"
+					 Background="#FFC8C8C8">
+				<local:FilterPage DataContext="{local:DI Type=core:FilterPageViewModel}" />
+			</TabItem>
+			<TabItem Header="Edit"
+					 Template="{StaticResource TabItemTemplate}"
+					 Background="#FFC8C8C8">
+				<local:EditPage DataContext="{local:DI Type=core:EditPageViewModel}" />
+			</TabItem>
+			<TabItem Header="Preview"
+					 Template="{StaticResource TabItemTemplate}"
+					 Background="#FFC8C8C8">
+				<local:PreviewPage DataContext="{local:DI Type=core:PreviewPageViewModel}" />
+			</TabItem>
+		</TabControl>
 	</DockPanel>
 </ui:UiWindow>

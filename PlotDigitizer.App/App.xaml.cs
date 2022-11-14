@@ -63,16 +63,14 @@ namespace PlotDigitizer.App
 
 			logger?.LogInformation($"{this} started.");
 
-			InitialiseServices();
+			// simply trigger the creation of auto-page turner, it will do it's job
+			host.Services.GetRequiredService<AutoPageTurner>();
+			DI.Resolver = type => host.Services.GetRequiredService(type);
 
-			var isRunTest = config.GetSection("AppSettings").GetValue<bool>("RunTest");
-			if (isRunTest)
+			MainWindow = new MainWindow(); //initialise mainwindow before testing, so all viewmodels are ready for testing
+			if (config.GetSection("AppSettings").GetValue<bool>("RunTest"))
 				Test();
 
-			MainWindow = new MainWindow
-			{
-				DataContext = host.Services.GetRequiredService<MainWindowViewModel>()
-			};
 			splashWindow.Close();
 			MainWindow.Show();
 			logger?.LogInformation($"{MainWindow} Loaded.");
@@ -82,24 +80,6 @@ namespace PlotDigitizer.App
 		{
 			await host.StopAsync(TimeSpan.FromSeconds(5));
 			host.Dispose();
-		}
-
-		private void InitialiseServices()
-		{
-			var services = host.Services;
-			// simply trigger the creation of auto-page turner, it will do it's job
-			services.GetRequiredService<AutoPageTurner>();
-
-			var vm = services.GetRequiredService<MainWindowViewModel>();
-			vm.PageManager.Initialise(new List<PageViewModelBase>
-			{
-				services.GetRequiredService<LoadPageViewModel       >(),
-				services.GetRequiredService<AxisLimitPageViewModel  >(),
-				services.GetRequiredService<AxisPageViewModel       >(),
-				services.GetRequiredService<FilterPageViewModel     >(),
-				services.GetRequiredService<EditPageViewModel       >(),
-				services.GetRequiredService<PreviewPageViewModel    >(),
-			});
 		}
 
 		private void Test()
@@ -120,7 +100,7 @@ namespace PlotDigitizer.App
 			setting.Load(settingTmp);
 
 			var mainWindowViewModel = provider.GetRequiredService<MainWindowViewModel>();
-			mainWindowViewModel.PageManager.GoToByTypeCommand.Execute(typeof(EditPageViewModel));
+			mainWindowViewModel.CurrentTabIndex = 4; //edit page
 		}
 
 		private void SetupExceptionHandling()

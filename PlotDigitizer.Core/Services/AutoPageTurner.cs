@@ -4,18 +4,18 @@ namespace PlotDigitizer.Core
 {
 	public class AutoPageTurner
 	{
-		private readonly PageManager pageManager;
+		private readonly MainWindowViewModel mainWindowViewModel;
 
 		public AutoPageTurner(MainWindowViewModel mainWindowViewModel, LoadPageViewModel viewModel)
 		{
-			pageManager = mainWindowViewModel.PageManager;
+			this.mainWindowViewModel = mainWindowViewModel;
 			viewModel.NextPage += LoadPage_NextPage;
 		}
 
 		private void LoadPage_NextPage(object sender, EventArgs e)
 		{
-			if (pageManager.NextPageCommand.CanExecute()) {
-				pageManager.NextPageCommand.Execute();
+			if (mainWindowViewModel.NextPageCommand.CanExecute(null)) {
+				mainWindowViewModel.NextPageCommand.Execute(null);
 			}
 		}
 	}
