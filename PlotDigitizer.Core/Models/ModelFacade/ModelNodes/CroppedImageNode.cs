@@ -23,7 +23,8 @@ namespace PlotDigitizer.Core
 			if (!inputImage.CheckUpdate() || !axisLocation.CheckUpdate())
 				return;
 			Value = Methods.CropImage(inputImage.Value, axisLocation.Value);
-			OnUpdated();
+			base.Update();
 		}
+
 	}
 }

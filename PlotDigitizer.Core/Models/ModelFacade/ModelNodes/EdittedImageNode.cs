@@ -19,7 +19,7 @@ namespace PlotDigitizer.Core
 			if (!filteredImage.CheckUpdate())
 				return;
 			Value = filteredImage.Value.Copy();
-			OnUpdated();
+			base.Update();
 		}
 	}
 }

@@ -66,6 +66,7 @@ namespace PlotDigitizer.Core
 
 			inputImage.Updated += (s, e) => RaisePropertyChanged(nameof(InputImage));
 			croppedImage.Updated += (s, e) => RaisePropertyChanged(nameof(CroppedImage));
+			// the initialisation of editmanager depends on the update of filteredImage!
 			filteredImage.Updated += (s, e) => RaisePropertyChanged(nameof(FilteredImage));
 			edittedImage.Updated += (s, e) => RaisePropertyChanged(nameof(EdittedImage));
 			previewImage.Updated += (s, e) => RaisePropertyChanged(nameof(PreviewImage));
