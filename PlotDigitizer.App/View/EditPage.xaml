@@ -1,17 +1,67 @@
 ﻿<UserControl x:Class="PlotDigitizer.App.EditPage"
-						 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-						 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-						 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-						 xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-						 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-						 xmlns:local="clr-namespace:PlotDigitizer.App"
-						 xmlns:core="clr-namespace:PlotDigitizer.Core;assembly=PlotDigitizer.Core"
-						 mc:Ignorable="d"
-						 d:DesignHeight="450"
-						 d:DesignWidth="800"
-						 x:Name="root"
-						 d:DataContext="{d:DesignInstance Type=core:EditPageViewModel, IsDesignTimeCreatable=True}">
-
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:local="clr-namespace:PlotDigitizer.App"
+			 xmlns:core="clr-namespace:PlotDigitizer.Core;assembly=PlotDigitizer.Core"
+			 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+			 mc:Ignorable="d"
+			 d:DesignHeight="450"
+			 d:DesignWidth="800"
+			 x:Name="root"
+			 d:DataContext="{d:DesignInstance Type=core:EditPageViewModel, IsDesignTimeCreatable=True}">
+	<UserControl.Resources>
+		<Path x:Key="undo" 
+			  Data="M36.3 89.925L44.75 95.69375A6.1312500000000005 6.1312500000000005 0 0 0 53.325 94.00625A6.300000000000001 6.300000000000001 0 0 0 51.6625 85.33125L31.18125 71.35A6.1312500000000005 6.1312500000000005 0 0 0 22.60625 73.0375L8.79375 93.7625A6.2937499999999975 6.2937499999999975 0 0 0 10.45625 102.44375A6.1312500000000005 6.1312500000000005 0 0 0 19.03125 100.75625L24.275 92.8875C31.875 118.6875 55.5 137.5 83.46875 137.5C117.58125 137.5 145.23125 109.51875 145.23125 75S117.58125 12.5 83.46875 12.5A6.2125 6.2125 0 0 0 77.29375 18.75C77.29375 22.2 80.0625 25 83.46875 25C110.75625 25 132.88125 47.3875 132.88125 75S110.75625 125 83.46875 125C61.31875 125 42.575 110.25 36.3 89.925z"
+			  RenderTransformOrigin="0.5,0.5">
+			<Path.RenderTransform>
+				<TransformGroup>
+					<ScaleTransform ScaleY="-1"
+									ScaleX="1" />
+					<SkewTransform AngleY="0"
+								   AngleX="0" />
+					<RotateTransform Angle="0" />
+					<TranslateTransform />
+				</TransformGroup>
+			</Path.RenderTransform>
+		</Path>
+		<Path x:Key="redo" 
+			  Data="M127.16875 92.25L132.4625 100.1625A6.15 6.15 0 0 0 141.05625 101.78125C143.90625 99.84375 144.68125 95.96875 142.7875 93.1375L129.0625 72.625A6.15 6.15 0 0 0 120.46875 71.00625L99.8125 85.04375A6.2625 6.2625 0 0 0 98.08125 93.68125A6.15 6.15 0 0 0 106.675 95.30625L115.075 89.5875C108.925 110.0875 90.125 125 67.89375 125C40.6625 125 18.58125 102.6125 18.58125 75S40.6625 25 67.89375 25C71.3 25 74.0625 22.2 74.0625 18.75S71.3 12.5 67.89375 12.5C33.85 12.5 6.25 40.48125 6.25 75S33.85 137.5 67.89375 137.5C96.04375 137.5 119.78125 118.375 127.16875 92.25z"
+			  RenderTransformOrigin="0.5,0.5">
+			<Path.RenderTransform>
+				<TransformGroup>
+					<ScaleTransform ScaleY="-1"
+									ScaleX="1" />
+					<SkewTransform AngleY="0"
+								   AngleX="0" />
+					<RotateTransform Angle="0" />
+					<TranslateTransform />
+				</TransformGroup>
+			</Path.RenderTransform>
+		</Path>
+		<Path x:Key="pen" 
+			  Data="M0 12v3h3l8-8-3-3-8 8zm3 2H1v-2h1v1h1v1zm10.3-9.3L12 6 9 3l1.3-1.3a.996.996 0 011.41 0l1.59 1.59c.39.39.39 1.02 0 1.41z" />
+		<Path x:Key="eraser" 
+			  Data="M532.693 832l-202.667-202.624-202.837-206.635c-32.683-33.237-32.469-87.125 0.512-120.107l183.424-183.424c7.979-8.064 18.816-12.544 30.165-12.544h512.043v85.333h-296.875l308.139 308.139c33.28 33.28 33.28 87.381 0 120.661l-211.243 211.2c-33.237 33.28-87.381 33.28-120.661 0zM358.955 192l-170.88 170.923 202.581 206.379 31.701 31.701 211.2-211.2-194.432-194.432c-1.067-1.067-2.048-2.219-2.944-3.371h-77.227z"
+			  RenderTransformOrigin="0.5,0.5">
+			<Path.RenderTransform>
+				<TransformGroup>
+					<ScaleTransform ScaleY="-1"
+									ScaleX="1" />
+					<SkewTransform AngleY="0"
+								   AngleX="0" />
+					<RotateTransform Angle="0" />
+					<TranslateTransform />
+				</TransformGroup>
+			</Path.RenderTransform>
+		</Path>
+		<Path x:Key="rectangle" 
+			  Data="M2,4H8V6H16V4H22V10H20V14H22V20H16V18H8V20H2V14H4V10H2V4M16,10V8H8V10H6V14H8V16H16V14H18V10H16M4,6V8H6V6H4M18,6V8H20V6H18M4,16V18H6V16H4M18,16V18H20V16H18Z" />
+		<Path x:Key="polygon" 
+			  Data="M853.333 354.773v101.077c49.536 17.707 85.333 64.597 85.333 120.149 0 70.571-57.429 128-128 128-35.2 0-67.115-14.293-90.283-37.376l-167.040 66.816c0.427 4.395 1.323 8.704 1.323 13.227 0 70.571-57.429 128-128 128s-128-57.429-128-128c0-32.512 12.587-61.909 32.64-84.523l-71.424-95.189c-14.464 5.675-30.080 9.045-46.549 9.045-70.571 0-128-57.429-128-128s57.429-128 128-128c6.784 0 13.355 0.981 19.84 2.005l82.56-110.037c-10.581-18.603-17.067-39.765-17.067-62.635 0-70.571 57.429-128 128-128 57.941 0 106.453 38.955 122.155 91.861l169.045 33.792c23.381-24.704 56.235-40.32 92.8-40.32 70.571 0 128 57.429 128 128 0 55.552-35.797 102.443-85.333 120.107zM810.667 618.667c23.552 0 42.667-19.157 42.667-42.667s-19.115-42.667-42.667-42.667-42.667 19.157-42.667 42.667 19.115 42.667 42.667 42.667zM426.667 789.333c23.552 0 42.667-19.157 42.667-42.667s-19.115-42.667-42.667-42.667-42.667 19.157-42.667 42.667 19.115 42.667 42.667 42.667zM170.667 448c0 23.509 19.115 42.667 42.667 42.667s42.667-19.157 42.667-42.667-19.115-42.667-42.667-42.667-42.667 19.157-42.667 42.667zM426.667 106.667c-23.552 0-42.667 19.115-42.667 42.667s19.115 42.667 42.667 42.667 42.667-19.115 42.667-42.667-19.115-42.667-42.667-42.667zM544.469 199.339c-19.499 45.781-64.981 77.995-117.803 77.995-16.469 0-32.085-3.371-46.549-9.088l-71.424 95.189c20.053 22.656 32.64 52.053 32.64 84.565 0 22.869-6.485 44.032-17.024 62.592l82.56 110.080c6.485-1.024 13.013-2.005 19.797-2.005 35.2 0 67.115 14.293 90.283 37.376l167.040-66.816c-0.427-4.395-1.323-8.704-1.323-13.227 0-55.552 35.797-102.443 85.333-120.107v-101.077c-49.536-17.664-85.333-64.597-85.333-120.107 0-2.603 0.64-4.992 0.768-7.552l-138.965-27.819zM810.667 192c-23.552 0-42.667 19.115-42.667 42.667s19.115 42.667 42.667 42.667 42.667-19.115 42.667-42.667-19.115-42.667-42.667-42.667z" />
+	</UserControl.Resources>
 	<i:Interaction.Behaviors>
 		<local:RelayCommandBinding ApplicationCommand="{x:Static ApplicationCommands.Undo}"
 															 Command="{Binding EditManager.UndoCommand}" />
@@ -19,19 +69,25 @@
 															 Command="{Binding EditManager.RedoCommand}" />
 	</i:Interaction.Behaviors>
 	<DockPanel IsEnabled="{Binding IsEnabled}">
-		<DockPanel DockPanel.Dock="Top"
+		<DockPanel x:Name="toolbar" DockPanel.Dock="Top"
 							 Height="30"
 							 Background="LightGray">
 			<DockPanel.Resources>
-				<Style TargetType="Button">
-					<Setter Property="Width"
-									Value="{Binding RelativeSource={RelativeSource self}, Path=ActualHeight}" />
-					<Setter Property="Margin"
-									Value="1" />
+				<Style TargetType="{x:Type ui:Button}"
+					   BasedOn="{StaticResource {x:Type ui:Button}}">
+					<Setter Property="IconFilled"
+							Value="True" />
+					<Setter Property="IconForeground"
+							Value="Black" />
+					<Setter Property="Padding"
+							Value="8,5" />
+					<Setter Property="Height"
+							Value="{Binding ElementName=toolbar, Path=ActualHeight}" />					
 				</Style>
-				<Style TargetType="ComboBox">
+				<Style TargetType="{x:Type ComboBox}"
+					   BasedOn="{StaticResource {x:Type ComboBox}}">
 					<Setter Property="Width"
-									Value="20" />
+							Value="29" />
 				</Style>
 				<Style TargetType="Path">
 					<Setter Property="Stretch"
@@ -44,22 +100,9 @@
 									Margin="0,0,10,0"
 									DockPanel.Dock="Left">
 				<Button x:Name="UndoButton"
-						ToolTip="Undo"
-								Command="{Binding EditManager.UndoCommand}">
-					<Path Data="M36.3 89.925L44.75 95.69375A6.1312500000000005 6.1312500000000005 0 0 0 53.325 94.00625A6.300000000000001 6.300000000000001 0 0 0 51.6625 85.33125L31.18125 71.35A6.1312500000000005 6.1312500000000005 0 0 0 22.60625 73.0375L8.79375 93.7625A6.2937499999999975 6.2937499999999975 0 0 0 10.45625 102.44375A6.1312500000000005 6.1312500000000005 0 0 0 19.03125 100.75625L24.275 92.8875C31.875 118.6875 55.5 137.5 83.46875 137.5C117.58125 137.5 145.23125 109.51875 145.23125 75S117.58125 12.5 83.46875 12.5A6.2125 6.2125 0 0 0 77.29375 18.75C77.29375 22.2 80.0625 25 83.46875 25C110.75625 25 132.88125 47.3875 132.88125 75S110.75625 125 83.46875 125C61.31875 125 42.575 110.25 36.3 89.925z"
-								RenderTransformOrigin="0.5,0.5">
-						<Path.RenderTransform>
-							<TransformGroup>
-								<ScaleTransform ScaleY="-1"
-																ScaleX="1" />
-								<SkewTransform AngleY="0"
-															 AngleX="0" />
-								<RotateTransform Angle="0" />
-								<TranslateTransform />
-							</TransformGroup>
-						</Path.RenderTransform>
-					</Path>
-				</Button>
+						   ToolTip="Undo"
+						   Content="{StaticResource undo}"
+						   Command="{Binding EditManager.UndoCommand}" />
 				<ComboBox Name="UndoComboBox"
 									ItemsSource="{Binding UndoList}">
 					<i:Interaction.Triggers>
@@ -70,22 +113,9 @@
 					</i:Interaction.Triggers>
 				</ComboBox>
 				<Button Name="RedoButton"
-						ToolTip="Redo"
-								Command="{Binding EditManager.RedoCommand}">
-					<Path Data="M127.16875 92.25L132.4625 100.1625A6.15 6.15 0 0 0 141.05625 101.78125C143.90625 99.84375 144.68125 95.96875 142.7875 93.1375L129.0625 72.625A6.15 6.15 0 0 0 120.46875 71.00625L99.8125 85.04375A6.2625 6.2625 0 0 0 98.08125 93.68125A6.15 6.15 0 0 0 106.675 95.30625L115.075 89.5875C108.925 110.0875 90.125 125 67.89375 125C40.6625 125 18.58125 102.6125 18.58125 75S40.6625 25 67.89375 25C71.3 25 74.0625 22.2 74.0625 18.75S71.3 12.5 67.89375 12.5C33.85 12.5 6.25 40.48125 6.25 75S33.85 137.5 67.89375 137.5C96.04375 137.5 119.78125 118.375 127.16875 92.25z"
-								RenderTransformOrigin="0.5,0.5">
-						<Path.RenderTransform>
-							<TransformGroup>
-								<ScaleTransform ScaleY="-1"
-																ScaleX="1" />
-								<SkewTransform AngleY="0"
-															 AngleX="0" />
-								<RotateTransform Angle="0" />
-								<TranslateTransform />
-							</TransformGroup>
-						</Path.RenderTransform>
-					</Path>
-				</Button>
+						   ToolTip="Redo"
+						   Content="{StaticResource redo}"
+						   Command="{Binding EditManager.RedoCommand}" />
 				<ComboBox Name="RedoComboBox"
 									ItemsSource="{Binding RedoList}">
 					<i:Interaction.Triggers>
@@ -99,42 +129,28 @@
 			<StackPanel Orientation="Horizontal"
 									HorizontalAlignment="Right">
 				<StackPanel.Resources>
-					<Style BasedOn="{StaticResource {x:Type ToggleButton}}"
-								 TargetType="RadioButton">
-						<Setter Property="Margin"
-										Value="1" />
+					<Style TargetType="RadioButton"
+						   BasedOn="{StaticResource {x:Type ToggleButton}}">
+						<Setter Property="Height"
+								Value="{Binding ElementName=toolbar, Path=ActualHeight}" />
 						<Setter Property="Width"
-										Value="{Binding RelativeSource={RelativeSource self}, Path=ActualHeight}" />
+								Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=ActualHeight}" />
+						<Setter Property="Padding"
+								Value="5" />
 					</Style>
 				</StackPanel.Resources>
 				<RadioButton x:Name="PencilButton"
-							 ToolTip="Pencil">
-					<Path Data="M0 12v3h3l8-8-3-3-8 8zm3 2H1v-2h1v1h1v1zm10.3-9.3L12 6 9 3l1.3-1.3a.996.996 0 011.41 0l1.59 1.59c.39.39.39 1.02 0 1.41z" />
-				</RadioButton>
+							 ToolTip="Pencil"
+							 Content="{StaticResource pen}" />
 				<RadioButton x:Name="EraserButton"
-							 ToolTip="Eraser">
-					<Path Data="M532.693 832l-202.667-202.624-202.837-206.635c-32.683-33.237-32.469-87.125 0.512-120.107l183.424-183.424c7.979-8.064 18.816-12.544 30.165-12.544h512.043v85.333h-296.875l308.139 308.139c33.28 33.28 33.28 87.381 0 120.661l-211.243 211.2c-33.237 33.28-87.381 33.28-120.661 0zM358.955 192l-170.88 170.923 202.581 206.379 31.701 31.701 211.2-211.2-194.432-194.432c-1.067-1.067-2.048-2.219-2.944-3.371h-77.227z"
-								RenderTransformOrigin="0.5,0.5">
-						<Path.RenderTransform>
-							<TransformGroup>
-								<ScaleTransform ScaleY="-1"
-																ScaleX="1" />
-								<SkewTransform AngleY="0"
-															 AngleX="0" />
-								<RotateTransform Angle="0" />
-								<TranslateTransform />
-							</TransformGroup>
-						</Path.RenderTransform>
-					</Path>
-				</RadioButton>
+							 ToolTip="Eraser"
+							 Content="{StaticResource eraser}" />
 				<RadioButton x:Name="RectButton"
-							 ToolTip="Rectangle Selection">
-					<Path Data="M2,4H8V6H16V4H22V10H20V14H22V20H16V18H8V20H2V14H4V10H2V4M16,10V8H8V10H6V14H8V16H16V14H18V10H16M4,6V8H6V6H4M18,6V8H20V6H18M4,16V18H6V16H4M18,16V18H20V16H18Z" />
-				</RadioButton>
+							 ToolTip="Rectangle Selection"
+							 Content="{StaticResource rectangle}" />
 				<RadioButton x:Name="PolyButton"
-							 ToolTip="Polygon Selection">
-					<Path Data="M853.333 354.773v101.077c49.536 17.707 85.333 64.597 85.333 120.149 0 70.571-57.429 128-128 128-35.2 0-67.115-14.293-90.283-37.376l-167.040 66.816c0.427 4.395 1.323 8.704 1.323 13.227 0 70.571-57.429 128-128 128s-128-57.429-128-128c0-32.512 12.587-61.909 32.64-84.523l-71.424-95.189c-14.464 5.675-30.080 9.045-46.549 9.045-70.571 0-128-57.429-128-128s57.429-128 128-128c6.784 0 13.355 0.981 19.84 2.005l82.56-110.037c-10.581-18.603-17.067-39.765-17.067-62.635 0-70.571 57.429-128 128-128 57.941 0 106.453 38.955 122.155 91.861l169.045 33.792c23.381-24.704 56.235-40.32 92.8-40.32 70.571 0 128 57.429 128 128 0 55.552-35.797 102.443-85.333 120.107zM810.667 618.667c23.552 0 42.667-19.157 42.667-42.667s-19.115-42.667-42.667-42.667-42.667 19.157-42.667 42.667 19.115 42.667 42.667 42.667zM426.667 789.333c23.552 0 42.667-19.157 42.667-42.667s-19.115-42.667-42.667-42.667-42.667 19.157-42.667 42.667 19.115 42.667 42.667 42.667zM170.667 448c0 23.509 19.115 42.667 42.667 42.667s42.667-19.157 42.667-42.667-19.115-42.667-42.667-42.667-42.667 19.157-42.667 42.667zM426.667 106.667c-23.552 0-42.667 19.115-42.667 42.667s19.115 42.667 42.667 42.667 42.667-19.115 42.667-42.667-19.115-42.667-42.667-42.667zM544.469 199.339c-19.499 45.781-64.981 77.995-117.803 77.995-16.469 0-32.085-3.371-46.549-9.088l-71.424 95.189c20.053 22.656 32.64 52.053 32.64 84.565 0 22.869-6.485 44.032-17.024 62.592l82.56 110.080c6.485-1.024 13.013-2.005 19.797-2.005 35.2 0 67.115 14.293 90.283 37.376l167.040-66.816c-0.427-4.395-1.323-8.704-1.323-13.227 0-55.552 35.797-102.443 85.333-120.107v-101.077c-49.536-17.664-85.333-64.597-85.333-120.107 0-2.603 0.64-4.992 0.768-7.552l-138.965-27.819zM810.667 192c-23.552 0-42.667 19.115-42.667 42.667s19.115 42.667 42.667 42.667 42.667-19.115 42.667-42.667-19.115-42.667-42.667-42.667z" />
-				</RadioButton>
+							 ToolTip="Polygon Selection"
+							 Content="{StaticResource polygon}" />
 			</StackPanel>
 		</DockPanel>
 
