@@ -1,9 +1,11 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 
+using Wpf.Ui.Controls;
+
 namespace PlotDigitizer.App
 {
-	public partial class MainWindow : Window
+	public partial class MainWindow : UiWindow
 	{
 		public MainWindow()
 		{
