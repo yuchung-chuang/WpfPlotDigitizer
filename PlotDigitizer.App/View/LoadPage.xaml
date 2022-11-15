@@ -1,88 +1,69 @@
 ﻿<UserControl x:Class="PlotDigitizer.App.LoadPage"
-						 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-						 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-						 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-						 xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-						 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-						 xmlns:local="clr-namespace:PlotDigitizer.App"
-						 xmlns:core="clr-namespace:PlotDigitizer.Core;assembly=PlotDigitizer.Core"
-						 xmlns:diag="clr-namespace:System.Diagnostics;assembly=mscorlib"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:local="clr-namespace:PlotDigitizer.App"
+			 xmlns:core="clr-namespace:PlotDigitizer.Core;assembly=PlotDigitizer.Core"
+			 xmlns:diag="clr-namespace:System.Diagnostics;assembly=mscorlib"
 			 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-						 mc:Ignorable="d"
-						 d:DesignHeight="450"
-						 d:DesignWidth="800"
-						 DragOver="Page_DragOver"
-						 AllowDrop="True"
-						 Background="Transparent"
-						 x:Name="root"
-						 d:DataContext="{d:DesignInstance Type=core:LoadPageViewModel, IsDesignTimeCreatable=True}">
+			 mc:Ignorable="d"
+			 d:DesignHeight="450"
+			 d:DesignWidth="800"
+			 DragOver="Page_DragOver"
+			 AllowDrop="True"
+			 Background="Transparent"
+			 x:Name="root"
+			 d:DataContext="{d:DesignInstance Type=core:LoadPageViewModel, IsDesignTimeCreatable=True}"
+			 DataContext="{local:DI Type=core:LoadPageViewModel}"
+			 FontSize="22">
 	<i:Interaction.Triggers>
 		<i:EventTrigger EventName="Drop">
 			<i:InvokeCommandAction Command="{Binding DropCommand}"
-														 EventArgsConverter="{local:DropEventArgsConverter}" />
+								   EventArgsConverter="{local:DropEventArgsConverter}" />
 		</i:EventTrigger>
 	</i:Interaction.Triggers>
 	<i:Interaction.Behaviors>
 		<local:RelayCommandBinding ApplicationCommand="{x:Static ApplicationCommands.Paste}"
-															 Command="{Binding PasteCommand}" />
+								   Command="{Binding PasteCommand}" />
 	</i:Interaction.Behaviors>
 	<Grid>
-		<Grid Name="objectGroup"
+		<StackPanel Name="objectGroup"
 					HorizontalAlignment="Center"
 					VerticalAlignment="Center">
 			<TextBlock HorizontalAlignment="Center"
-								 TextWrapping="Wrap"
-								 TextAlignment="Center"
-								 FontSize="22"
-								 Width="312"
-								 VerticalAlignment="Top">
-				<Run Text="Drag" />
-				<Run Text=" &amp; drop" />
-				<Run Text=" your image here" />
-			</TextBlock>
+					   Text="Drag &amp; drop your image here" />
 			<TextBlock HorizontalAlignment="Center"
-								 Margin="0,29,0,0"
-								 TextWrapping="Wrap"
-								 TextAlignment="Center"
-								 FontSize="22"
-								 Width="312"
-								 VerticalAlignment="Top"
-								 Text="or" />
+					   TextAlignment="Center"
+					   Text="or" />
 			<ui:Button x:Name="PasteButton"
-							Margin="0,58,0,71"
-							Padding="5"
-							FontSize="22"
-							Content="Paste from clipboard"
-							HorizontalAlignment="Center"
-							ToolTip="Shortcut: Ctrl + V"
-							d:LayoutOverrides="Height"
-							Command="{Binding PasteCommand}" />
+					   Padding="5"
+					   FontSize="22"
+					   Content="Paste from clipboard"
+					   HorizontalAlignment="Center"
+					   ToolTip="Shortcut: Ctrl + V"
+					   Command="{Binding PasteCommand}" />
 			<TextBlock HorizontalAlignment="Center"
-								 Margin="0,0,0,41"
-								 TextWrapping="Wrap"
-								 TextAlignment="Center"
-								 FontSize="22"
-								 Width="312"
-								 VerticalAlignment="Bottom"
-								 Text="or" />
+					   TextWrapping="Wrap"
+					   TextAlignment="Center"
+					   Text="or" />
 			<ui:Button x:Name="BrowseButton"
 					   Appearance="Primary"
-							Padding="5"
-							FontSize="22"
-							Content="Browse"
-							HorizontalAlignment="Center"
-							VerticalAlignment="Bottom"
-							Command="{Binding BrowseCommand}">
+					   Padding="5"
+					   FontSize="22"
+					   Content="Browse"
+					   HorizontalAlignment="Center"
+					   Command="{Binding BrowseCommand}">
 				<i:Interaction.Behaviors>
 					<local:FocusOnLoaded />
 				</i:Interaction.Behaviors>
 			</ui:Button>
-		</Grid>
+		</StackPanel>
 		<Image x:Name="imageControl"
-					 HorizontalAlignment="Left"
-					 Margin="55,66,0,222"
-					 Width="184"
-					 Visibility="{Binding Source={x:Static diag:Debugger.IsAttached}, Converter={local:VisibilityConverter}, FallbackValue={x:Static Visibility.Collapsed}}"
-					 Source="{Binding Model.InputImage, Converter={local:ImageSourceConverter}}" />
+			   HorizontalAlignment="Left"
+			   Width="184"
+			   Visibility="{Binding Source={x:Static diag:Debugger.IsAttached}, Converter={local:VisibilityConverter}, FallbackValue={x:Static Visibility.Collapsed}}"
+			   Source="{Binding Model.InputImage, Converter={local:ImageSourceConverter}}" />
 	</Grid>
 </UserControl>

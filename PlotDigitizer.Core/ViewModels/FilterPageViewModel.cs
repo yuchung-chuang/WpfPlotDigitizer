@@ -89,9 +89,12 @@ namespace PlotDigitizer.Core
 		public override void Enter()
 		{
 			base.Enter();
-			if (IsEnabled) {
-				FilterImage();
+			if (!IsEnabled) {
+				return;
 			}
+			FilterMin = setting.FilterMin;
+			FilterMax = setting.FilterMax;
+			FilterImage();
 		}
 
 		public void FilterImage()
@@ -105,10 +108,11 @@ namespace PlotDigitizer.Core
 		public override void Leave()
 		{
 			base.Leave();
-			if (IsEnabled) {
-				setting.FilterMin = FilterMin;
-				setting.FilterMax = FilterMax;
+			if (!IsEnabled) {
+				return;
 			}
+			setting.FilterMin = FilterMin;
+			setting.FilterMax = FilterMax;
 		}
 
 		private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)

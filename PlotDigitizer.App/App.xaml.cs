@@ -45,7 +45,6 @@ namespace PlotDigitizer.App
 					.AddTransient<IAwaitTaskService, AwaitTaskService>()
 					.AddTransient<IClipboardService, ClipboardService>()
 
-					.AddSingleton<AutoPageTurner>()
 					.AddModel()
 					.AddViewModels();
 				})
@@ -63,17 +62,16 @@ namespace PlotDigitizer.App
 
 			logger?.LogInformation($"{this} started.");
 
-			// simply trigger the creation of auto-page turner, it will do it's job
-			host.Services.GetRequiredService<AutoPageTurner>();
 			DI.Resolver = type => host.Services.GetRequiredService(type);
 
-			MainWindow = new MainWindow(); //initialise mainwindow before testing, so all viewmodels are ready for testing
-			if (config.GetSection("AppSettings").GetValue<bool>("RunTest"))
-				Test();
-
+			//initialise mainwindow before testing, so all viewmodels are ready for testing
+			MainWindow = new MainWindow(); //need to initialise mainwindow before closing splashWindow, otherwise the application shuts down immidiately as at one moment there is no window at all.
 			splashWindow.Close();
 			MainWindow.Show();
 			logger?.LogInformation($"{MainWindow} Loaded.");
+
+			if (config.GetSection("AppSettings").GetValue<bool>("RunTest"))
+				Test();
 		}
 
 		private async void App_Exit(object sender, ExitEventArgs e)
@@ -99,8 +97,7 @@ namespace PlotDigitizer.App
 			};
 			setting.Load(settingTmp);
 
-			var mainWindowViewModel = provider.GetRequiredService<MainWindowViewModel>();
-			mainWindowViewModel.CurrentTabIndex = 4; //edit page
+			(MainWindow as MainWindow).navigation.Navigate(typeof(EditPage));
 		}
 
 		private void SetupExceptionHandling()

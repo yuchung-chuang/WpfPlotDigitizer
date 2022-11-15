@@ -65,7 +65,15 @@ namespace PlotDigitizer.Core
 
 		#region Methods
 
-		public override void Enter() => base.Enter();
+		public override void Enter()
+		{
+			base.Enter();
+			if (!IsEnabled) {
+				return;
+			}
+			AxisLimit = setting.AxisLimit;
+			AxisLogBase = setting.AxisLogBase;
+		}
 
 		public override void Leave()
 		{

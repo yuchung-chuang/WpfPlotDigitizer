@@ -9,7 +9,8 @@
 						 d:DesignHeight="450"
 						 d:DesignWidth="800"
 						 x:Name="root"
-						 d:DataContext="{d:DesignInstance Type=core:AxisLimitPageViewModel, IsDesignTimeCreatable=True}">
+						 d:DataContext="{d:DesignInstance Type=core:AxisLimitPageViewModel, IsDesignTimeCreatable=True}"
+			 DataContext="{local:DI Type=core:AxisLimitPageViewModel}">
 
 	<UserControl.Resources>
 		<Style TargetType="StackPanel">

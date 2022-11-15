@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using PlotDigitizer.Core;
+
+using System;
+using System.Windows;
 using System.Windows.Input;
 
 using Wpf.Ui.Controls;
@@ -7,10 +10,24 @@ namespace PlotDigitizer.App
 {
 	public partial class MainWindow : UiWindow
 	{
+		private PageViewModelBase viewModelCache;
+		public RelayCommand NextPageCommand { get; }
+		public RelayCommand PrevPageCommand { get; }
+
 		public MainWindow()
 		{
+			NextPageCommand = new RelayCommand(NextPage, CanNextPage);
+			PrevPageCommand = new RelayCommand(PrevPage, CanPrevPage);
 			InitializeComponent();
 			Loaded += MainWindow_Loaded;
+			(DI.Resolver.Invoke(typeof(LoadPageViewModel)) as LoadPageViewModel).NextPage += LoadPage_NextPage;
+		}
+
+		private void LoadPage_NextPage(object sender, EventArgs e)
+		{
+			if (NextPageCommand.CanExecute()) {
+				NextPageCommand.Execute();
+			}
 		}
 
 		private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -27,6 +44,20 @@ namespace PlotDigitizer.App
 					break;
 				}
 			}
+		}
+
+		private void PrevPage() => navigation?.Navigate(navigation.SelectedPageIndex - 1);
+		private bool CanPrevPage() => navigation?.SelectedPageIndex > 0;
+		private void NextPage() => navigation?.Navigate(navigation.SelectedPageIndex + 1);
+		private bool CanNextPage() => navigation?.SelectedPageIndex < navigation?.Items.Count - 1;
+
+		private void frame_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
+		{
+			NextPageCommand.RaiseCanExecuteChanged();
+			PrevPageCommand.RaiseCanExecuteChanged();
+			viewModelCache?.Leave();
+			viewModelCache = (e.Content as FrameworkElement).DataContext as PageViewModelBase;
+			viewModelCache.Enter();
 		}
 	}
 }

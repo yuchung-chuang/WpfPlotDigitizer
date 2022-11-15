@@ -89,9 +89,10 @@ namespace PlotDigitizer.Core
 		public override void Enter()
 		{
 			base.Enter();
-			if (IsEnabled) {
-				ExtractPoints();
+			if (!IsEnabled) {
+				return;
 			}
+			ExtractPoints();
 		}
 
 		public void ExtractPoints()

@@ -71,6 +71,8 @@ namespace PlotDigitizer.Core
 				if (GetAxisCommand.CanExecute()) {
 					GetAxisCommand.Execute();
 				}
+			} else {
+				AxisLocation = setting.AxisLocation;
 			}
 		}
 
