@@ -13,22 +13,23 @@
 
 	<UserControl.Resources>
 		<Style TargetType="StackPanel">
-			<Setter Property="Height"
-							Value="30" />
 			<Setter Property="HorizontalAlignment"
 							Value="Center" />
 			<Setter Property="Orientation"
 							Value="Horizontal" />
 		</Style>
-		<Style TargetType="TextBox">
+		<Style TargetType="TextBox"
+			   BasedOn="{StaticResource {x:Type TextBox}}">
 			<Setter Property="Width"
 							Value="90" />
 			<Setter Property="VerticalContentAlignment"
 							Value="Center" />
+			<Setter Property="Margin"
+					Value="5,0,0,0" />
 		</Style>
 		<Style TargetType="Label">
 			<Setter Property="VerticalAlignment"
-							Value="Center" />
+					Value="Center" />
 		</Style>
 		<ControlTemplate x:Key="ValidationTemplate">
 			<DockPanel>
@@ -36,6 +37,7 @@
 									 Foreground="Red"
 									 Text="{Binding AdornedElement.(Validation.Errors), Converter={local:ValidationErrorMessageConverter}, ElementName=adorner}" />
 				<Border BorderBrush="Red"
+						CornerRadius="5"
 								BorderThickness="1"
 								HorizontalAlignment="Left">
 					<AdornedElementPlaceholder Name="adorner" />

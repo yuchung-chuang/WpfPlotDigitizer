@@ -47,12 +47,6 @@
 					 UseSnapLayout="True" />
 		<DockPanel DockPanel.Dock="Top">
 			<DockPanel.Resources>
-				<Style TargetType="Button">
-					<Setter Property="Width"
-							Value="{Binding RelativeSource={RelativeSource self}, Path=ActualHeight}" />
-					<Setter Property="Margin"
-							Value="1" />
-				</Style>
 				<Style TargetType="Path">
 					<Setter Property="Fill"
 							Value="Black" />

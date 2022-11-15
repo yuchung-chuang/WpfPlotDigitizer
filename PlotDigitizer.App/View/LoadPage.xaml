@@ -7,6 +7,7 @@
 						 xmlns:local="clr-namespace:PlotDigitizer.App"
 						 xmlns:core="clr-namespace:PlotDigitizer.Core;assembly=PlotDigitizer.Core"
 						 xmlns:diag="clr-namespace:System.Diagnostics;assembly=mscorlib"
+			 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
 						 mc:Ignorable="d"
 						 d:DesignHeight="450"
 						 d:DesignWidth="800"
@@ -47,7 +48,7 @@
 								 Width="312"
 								 VerticalAlignment="Top"
 								 Text="or" />
-			<Button x:Name="PasteButton"
+			<ui:Button x:Name="PasteButton"
 							Margin="0,58,0,71"
 							Padding="5"
 							FontSize="22"
@@ -64,7 +65,8 @@
 								 Width="312"
 								 VerticalAlignment="Bottom"
 								 Text="or" />
-			<Button x:Name="BrowseButton"
+			<ui:Button x:Name="BrowseButton"
+					   Appearance="Primary"
 							Padding="5"
 							FontSize="22"
 							Content="Browse"
@@ -74,7 +76,7 @@
 				<i:Interaction.Behaviors>
 					<local:FocusOnLoaded />
 				</i:Interaction.Behaviors>
-			</Button>
+			</ui:Button>
 		</Grid>
 		<Image x:Name="imageControl"
 					 HorizontalAlignment="Left"
