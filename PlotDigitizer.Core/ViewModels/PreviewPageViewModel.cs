@@ -172,7 +172,7 @@ namespace PlotDigitizer.Core
 						}
 					}
 
-					using (var fs = File.OpenWrite(fileName))
+					using (var fs = File.Open(fileName, FileMode.Create, FileAccess.Write))
 					using (var sw = new StreamWriter(fs)) {
 						sw.Write(content.ToString());
 					}
