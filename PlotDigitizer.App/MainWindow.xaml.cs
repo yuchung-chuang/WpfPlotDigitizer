@@ -11,6 +11,7 @@ namespace PlotDigitizer.App
 	public partial class MainWindow : UiWindow
 	{
 		private PageViewModelBase viewModelCache;
+
 		public RelayCommand NextPageCommand { get; }
 		public RelayCommand PrevPageCommand { get; }
 
@@ -46,18 +47,32 @@ namespace PlotDigitizer.App
 			}
 		}
 
-		private void PrevPage() => navigation?.Navigate(navigation.SelectedPageIndex - 1);
+		private void PrevPage()
+		{
+			viewModelCache?.Leave();
+			navigation?.Navigate(navigation.SelectedPageIndex - 1);
+		}
+
 		private bool CanPrevPage() => navigation?.SelectedPageIndex > 0;
-		private void NextPage() => navigation?.Navigate(navigation.SelectedPageIndex + 1);
+		private void NextPage()
+		{
+			viewModelCache?.Leave();
+			navigation?.Navigate(navigation.SelectedPageIndex + 1);
+		}
+
 		private bool CanNextPage() => navigation?.SelectedPageIndex < navigation?.Items.Count - 1;
 
 		private void frame_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
 		{
 			NextPageCommand.RaiseCanExecuteChanged();
 			PrevPageCommand.RaiseCanExecuteChanged();
+			viewModelCache = (e.Content as FrameworkElement)?.DataContext as PageViewModelBase;
+			viewModelCache?.Enter();
+		}
+
+		private void navigation_PreviewNavigate(object sender, EventArgs e)
+		{
 			viewModelCache?.Leave();
-			viewModelCache = (e.Content as FrameworkElement).DataContext as PageViewModelBase;
-			viewModelCache.Enter();
 		}
 	}
 }

@@ -22,14 +22,14 @@ namespace PlotDigitizer.Core
 			axisLimit.Outdated += (s, e) => OnOutdated();
 			axisLogBase.Updated += (s, e) => OnOutdated();
 			axisLogBase.Outdated += (s, e) => OnOutdated();
-			//dataType.Updated += (s,e) => OnOutdated();
+			dataType.Updated += (s,e) => OnOutdated();
 		}
 
 		public override void Update()
 		{
 			if (!previewImage.CheckUpdate() || !axisLimit.CheckUpdate() || !axisLogBase.CheckUpdate())
 				return;
-			Value = Methods.TransformData(previewImage.Points, previewImage.Value.Size, axisLimit.Value, axisLogBase.Value);
+			Value = previewImage.Value is null ? null : Methods.TransformData(previewImage.Points, previewImage.Value.Size, axisLimit.Value, axisLogBase.Value);
 			base.Update();
 		}
 	}

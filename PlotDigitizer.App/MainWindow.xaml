@@ -19,10 +19,10 @@
 			 WindowBackdropType="Mica"
 			 WindowCornerPreference="Round">
 	<Window.InputBindings>
-		<KeyBinding Command="{x:Static NavigationCommands.NextPage}"
-					Gesture="Right" />
-		<KeyBinding Command="{x:Static NavigationCommands.PreviousPage}"
-					Gesture="Left" />
+		<KeyBinding Gesture="Down"
+					Command="{x:Static NavigationCommands.NextPage}" />
+		<KeyBinding Gesture="Up"
+					Command="{x:Static NavigationCommands.PreviousPage}" />
 	</Window.InputBindings>
 	<i:Interaction.Behaviors>
 		<local:RelayCommandBinding ApplicationCommand="{x:Static NavigationCommands.NextPage}"
@@ -90,35 +90,57 @@
 			</StackPanel>
 		</DockPanel>
 
-		<ui:NavigationStore x:Name="navigation"
-							DockPanel.Dock="Left"
-							Frame="{Binding ElementName=frame, Mode=OneWay}"
-							Precache="False"
-							SelectedPageIndex="0"
-							TransitionDuration="200"
-							TransitionType="FadeInWithSlide">
-			<ui:NavigationStore.Items>
+		<local:NavigationStoreEx x:Name="navigation"
+								 DockPanel.Dock="Left"
+								 Frame="{Binding ElementName=frame, Mode=OneWay}"
+								 Precache="False"
+								 SelectedPageIndex="0"
+								 TransitionDuration="200"
+								 TransitionType="FadeInWithSlide"
+								 PreviewNavigate="navigation_PreviewNavigate"
+								 Style="{StaticResource {x:Type ui:NavigationStore}}">
+			<local:NavigationStoreEx.Resources>
+				<ControlTemplate x:Key="seperator"
+								 TargetType="{x:Type ui:NavigationSeparator}">
+					<Path Data="M 0,0 20,5 40,0 M 0,2 20,7 40,2"
+						  Stroke="{TemplateBinding BorderBrush}"
+						  StrokeThickness="{TemplateBinding BorderThickness}"
+						  Width="{TemplateBinding Width}"
+						  Height="{TemplateBinding Height}" />
+				</ControlTemplate>
+			</local:NavigationStoreEx.Resources>
+			<local:NavigationStoreEx.Items>
 				<ui:NavigationItem Cache="True"
 								   Content="Load"
 								   Icon="Image32"
 								   PageType="{x:Type local:LoadPage}" />
+				<ui:NavigationSeparator Template="{StaticResource seperator}"
+										HorizontalAlignment="Center" />
 				<ui:NavigationItem Content="Range"
 								   Icon="PointScan24"
 								   PageType="{x:Type local:AxisLimitPage}" />
+				<ui:NavigationSeparator Template="{StaticResource seperator}"
+										HorizontalAlignment="Center" />
 				<ui:NavigationItem Content="Axis"
 								   Icon="SlideSize24"
 								   PageType="{x:Type local:AxisPage}" />
+				<ui:NavigationSeparator Template="{StaticResource seperator}"
+										HorizontalAlignment="Center" />
 				<ui:NavigationItem Content="Filter"
 								   Icon="Filter12"
 								   PageType="{x:Type local:FilterPage}" />
+				<ui:NavigationSeparator Template="{StaticResource seperator}"
+										HorizontalAlignment="Center" />
 				<ui:NavigationItem Content="Edit"
 								   Icon="SelectObjectSkewEdit24"
 								   PageType="{x:Type local:EditPage}" />
+				<ui:NavigationSeparator Template="{StaticResource seperator}"
+										HorizontalAlignment="Center" />
 				<ui:NavigationItem Content="Data"
 								   Icon="DataScatter24"
 								   PageType="{x:Type local:PreviewPage}" />
-			</ui:NavigationStore.Items>
-		</ui:NavigationStore>
+			</local:NavigationStoreEx.Items>
+		</local:NavigationStoreEx>
 		<Border Grid.Column="1"
 				Background="{DynamicResource ControlFillColorDefaultBrush}"
 				CornerRadius="8,0,0,0">
@@ -130,9 +152,9 @@
 							   FontSize="24"
 							   Navigation="{Binding ElementName=navigation}" />
 				<Frame Name="frame"
-			   Navigated="frame_Navigated" />
+					   Navigated="frame_Navigated" />
 			</DockPanel>
 		</Border>
-		
+
 	</DockPanel>
 </ui:UiWindow>
