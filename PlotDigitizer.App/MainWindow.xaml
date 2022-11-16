@@ -45,7 +45,8 @@
 					 ShowMaximize="True"
 					 ShowMinimize="True"
 					 UseSnapLayout="True" />
-		<DockPanel DockPanel.Dock="Top">
+		<DockPanel DockPanel.Dock="Top"
+				   Visibility="Collapsed">
 			<DockPanel.Resources>
 				<Style TargetType="Path">
 					<Setter Property="Fill"
@@ -89,36 +90,49 @@
 			</StackPanel>
 		</DockPanel>
 
-
 		<ui:NavigationStore x:Name="navigation"
+							DockPanel.Dock="Left"
 							Frame="{Binding ElementName=frame, Mode=OneWay}"
 							Precache="False"
 							SelectedPageIndex="0"
 							TransitionDuration="200"
 							TransitionType="FadeInWithSlide">
 			<ui:NavigationStore.Items>
-				<ui:NavigationItem Cache="True" 
-								   Content="Load Image"
-								   Icon="Home24"
+				<ui:NavigationItem Cache="True"
+								   Content="Load"
+								   Icon="Image32"
 								   PageType="{x:Type local:LoadPage}" />
-				<ui:NavigationItem Content="Axis Limit"
-								   Icon="ArrowRoutingRectangleMultiple24"
+				<ui:NavigationItem Content="Range"
+								   Icon="PointScan24"
 								   PageType="{x:Type local:AxisLimitPage}" />
-				<ui:NavigationItem Content="Axis Location"
-								   Icon="ArrowRoutingRectangleMultiple24"
+				<ui:NavigationItem Content="Axis"
+								   Icon="SlideSize24"
 								   PageType="{x:Type local:AxisPage}" />
 				<ui:NavigationItem Content="Filter"
-								   Icon="ArrowRoutingRectangleMultiple24"
+								   Icon="Filter12"
 								   PageType="{x:Type local:FilterPage}" />
 				<ui:NavigationItem Content="Edit"
-								   Icon="ArrowRoutingRectangleMultiple24"
+								   Icon="SelectObjectSkewEdit24"
 								   PageType="{x:Type local:EditPage}" />
 				<ui:NavigationItem Content="Data"
-								   Icon="ArrowRoutingRectangleMultiple24"
+								   Icon="DataScatter24"
 								   PageType="{x:Type local:PreviewPage}" />
 			</ui:NavigationStore.Items>
 		</ui:NavigationStore>
-		<Frame Name="frame"
+		<Border Grid.Column="1"
+				Background="{DynamicResource ControlFillColorDefaultBrush}"
+				CornerRadius="8,0,0,0">
+			<DockPanel>
+				<ui:Breadcrumb DockPanel.Dock="Top"
+							   Margin="18"
+							   HorizontalAlignment="Left"
+							   VerticalAlignment="Top"
+							   FontSize="24"
+							   Navigation="{Binding ElementName=navigation}" />
+				<Frame Name="frame"
 			   Navigated="frame_Navigated" />
+			</DockPanel>
+		</Border>
+		
 	</DockPanel>
 </ui:UiWindow>

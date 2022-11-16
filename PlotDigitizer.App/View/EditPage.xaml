@@ -70,10 +70,12 @@
 															 Command="{Binding EditManager.RedoCommand}" />
 	</i:Interaction.Behaviors>
 	<DockPanel IsEnabled="{Binding IsEnabled}">
-		<DockPanel x:Name="toolbar" DockPanel.Dock="Top"
-							 Height="30"
-							 Background="LightGray">
-			<DockPanel.Resources>
+		<StackPanel x:Name="toolbar"
+						DockPanel.Dock="Top"
+						Orientation="Horizontal"
+						Height="30"
+						Margin="20,0">
+			<StackPanel.Resources>
 				<Style TargetType="{x:Type ui:Button}"
 					   BasedOn="{StaticResource {x:Type ui:Button}}">
 					<Setter Property="IconFilled"
@@ -88,7 +90,7 @@
 				<Style TargetType="{x:Type ComboBox}"
 					   BasedOn="{StaticResource {x:Type ComboBox}}">
 					<Setter Property="Width"
-							Value="29" />
+							Value="30" />
 				</Style>
 				<Style TargetType="Path">
 					<Setter Property="Stretch"
@@ -96,50 +98,46 @@
 					<Setter Property="Fill"
 									Value="Black" />
 				</Style>
-			</DockPanel.Resources>
-			<StackPanel Orientation="Horizontal"
-									Margin="0,0,10,0"
-									DockPanel.Dock="Left">
+				<Style TargetType="RadioButton"
+					   BasedOn="{StaticResource {x:Type ToggleButton}}">
+					<Setter Property="Height"
+							Value="{Binding ElementName=toolbar, Path=ActualHeight}" />
+					<Setter Property="Width"
+							Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=ActualHeight}" />
+					<Setter Property="Padding"
+							Value="5" />
+				</Style>
+			</StackPanel.Resources>
 				<Button x:Name="UndoButton"
-						   ToolTip="Undo"
-						   Content="{StaticResource undo}"
-						   Command="{Binding EditManager.UndoCommand}" />
+						ToolTip="Undo"
+						Padding="6,5"
+						Content="{StaticResource undo}"
+						Command="{Binding EditManager.UndoCommand}" />
 				<ComboBox Name="UndoComboBox"
-									ItemsSource="{Binding UndoList}">
+						  Margin="0,0,5,0"
+						  ItemsSource="{Binding UndoList}">
 					<i:Interaction.Triggers>
 						<i:EventTrigger EventName="DropDownClosed">
 							<i:InvokeCommandAction Command="{Binding UndoToCommand}"
-																		 CommandParameter="{Binding ElementName=UndoComboBox, Path=SelectedIndex}" />
+												   CommandParameter="{Binding ElementName=UndoComboBox, Path=SelectedIndex}" />
 						</i:EventTrigger>
 					</i:Interaction.Triggers>
 				</ComboBox>
 				<Button Name="RedoButton"
-						   ToolTip="Redo"
-						   Content="{StaticResource redo}"
-						   Command="{Binding EditManager.RedoCommand}" />
+						ToolTip="Redo"
+					Padding="6,5"
+					Content="{StaticResource redo}"
+						Command="{Binding EditManager.RedoCommand}" />
 				<ComboBox Name="RedoComboBox"
-									ItemsSource="{Binding RedoList}">
+						  ItemsSource="{Binding RedoList}">
 					<i:Interaction.Triggers>
 						<i:EventTrigger EventName="DropDownClosed">
 							<i:InvokeCommandAction Command="{Binding RedoToCommand}"
-																		 CommandParameter="{Binding ElementName=RedoComboBox, Path=SelectedIndex}" />
+												   CommandParameter="{Binding ElementName=RedoComboBox, Path=SelectedIndex}" />
 						</i:EventTrigger>
 					</i:Interaction.Triggers>
 				</ComboBox>
-			</StackPanel>
-			<StackPanel Orientation="Horizontal"
-									HorizontalAlignment="Right">
-				<StackPanel.Resources>
-					<Style TargetType="RadioButton"
-						   BasedOn="{StaticResource {x:Type ToggleButton}}">
-						<Setter Property="Height"
-								Value="{Binding ElementName=toolbar, Path=ActualHeight}" />
-						<Setter Property="Width"
-								Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=ActualHeight}" />
-						<Setter Property="Padding"
-								Value="5" />
-					</Style>
-				</StackPanel.Resources>
+				<Separator Margin="5,0" />
 				<RadioButton x:Name="PencilButton"
 							 ToolTip="Pencil"
 							 Content="{StaticResource pen}" />
@@ -153,10 +151,9 @@
 							 ToolTip="Polygon Selection"
 							 Content="{StaticResource polygon}" />
 			</StackPanel>
-		</DockPanel>
 
 		<local:Editor x:Name="editor"
-									Margin="20"
+									Margin="5"
 									EditGesture="Control+LeftClick"
 									SelectedGesture="Control+LeftDoubleClick"
 									BlockInteraction="True"

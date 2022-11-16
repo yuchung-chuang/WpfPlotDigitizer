@@ -57,10 +57,12 @@
 					</Path>
 	</UserControl.Resources>
 	<DockPanel IsEnabled="{Binding IsEnabled}">
-		<DockPanel DockPanel.Dock="Top"
-				   Background="LightGray"
-				   Height="30">
-			<DockPanel.Resources>
+		<StackPanel x:Name="toolbar"
+					DockPanel.Dock="Top"
+					Orientation="Horizontal"
+					Height="30"
+					Margin="20,0">
+			<StackPanel.Resources>
 				<Style TargetType="RadioButton"
 					   BasedOn="{StaticResource {x:Type ToggleButton}}">
 					<Setter Property="Padding"
@@ -72,29 +74,23 @@
 					<Setter Property="Fill"
 							Value="Black" />
 				</Style>
-			</DockPanel.Resources>
-			<StackPanel DockPanel.Dock="Left"
-						Orientation="Horizontal">
-				<RadioButton x:Name="continuousButton"
-							 ToolTip="Continuous Data"
-							 IsChecked="{Binding IsContinuous, Mode=TwoWay}"
-							 Content="{StaticResource continuous}" />
-				<RadioButton x:Name="discreteButton"
-							 ToolTip="Discrete Data"
-							 IsChecked="{Binding IsDiscrete, Mode=TwoWay}"
-							 Content="{StaticResource discrete}" />
-			</StackPanel>
-			<StackPanel DockPanel.Dock="Right"
-						Orientation="Horizontal">
-				<Button x:Name="exportButton"
-						ToolTip="Export"
-						Padding="8,5"
-						Margin="1"
-						Command="{Binding ExportCommand}"
-						Content="{StaticResource export}" />
-			</StackPanel>
-			<Grid />
-		</DockPanel>
+			</StackPanel.Resources>
+			<RadioButton x:Name="continuousButton"
+						 ToolTip="Continuous Data"
+						 IsChecked="{Binding IsContinuous, Mode=TwoWay}"
+						 Content="{StaticResource continuous}" />
+			<RadioButton x:Name="discreteButton"
+						 ToolTip="Discrete Data"
+						 IsChecked="{Binding IsDiscrete, Mode=TwoWay}"
+						 Content="{StaticResource discrete}" />
+			<Separator Margin="5,0" />
+			<Button x:Name="exportButton"
+					ToolTip="Export"
+					Padding="8,5"
+					Margin="1"
+					Command="{Binding ExportCommand}"
+					Content="{StaticResource export}" />
+		</StackPanel>
 		<Grid>
 			<local:ImageViewer ImageSource="{Binding Model.PreviewImage, Converter={local:ImageSourceConverter} }"
 							   Margin="5" />
