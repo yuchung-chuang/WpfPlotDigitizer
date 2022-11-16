@@ -1,5 +1,6 @@
 ﻿using PropertyChanged;
 
+using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -170,25 +171,23 @@ namespace PlotDigitizer.App
 				UpdateCursor(GetState(mousePos));
 				return;
 			}
-			// avoid mouse go outside the grid
-			if (!(AxisHelpers.IsIn(mousePos.X, gridMain.ActualWidth, 0) &&
-				  AxisHelpers.IsIn(mousePos.Y, gridMain.ActualHeight, 0)))
-				return;
+
 			// adjust
 			if (State.Contain(AdjustType.Left)) {
-				var delta = mousePos.X - AxisLeft;
-				AxisLeft = mousePos.X; // must be checked earlier than width
-				AxisWidth -= delta;
+				var right = AxisRight;
+				AxisLeft = Math.Min(Math.Max(mousePos.X, 0), right - 1);
+				AxisWidth = right - AxisLeft;
+			} else if (State.Contain(AdjustType.Right)) {
+				AxisWidth = Math.Min(Math.Max(mousePos.X - AxisLeft, 1), Image.Width - AxisLeft);
 			}
+
 			if (State.Contain(AdjustType.Top)) {
-				var delta = mousePos.Y - AxisTop;
-				AxisTop = mousePos.Y;
-				AxisHeight -= delta;
+				var bottom = AxisBottom;
+				AxisTop = Math.Min(Math.Max(mousePos.Y, 0), bottom - 1);
+				AxisHeight = bottom - AxisTop;
+			} else if (State.Contain(AdjustType.Bottom)) {
+				AxisHeight = Math.Min(Math.Max(mousePos.Y - AxisTop, 1), Image.Height - AxisTop);
 			}
-			if (State.Contain(AdjustType.Right))
-				AxisWidth = mousePos.X - AxisLeft;
-			if (State.Contain(AdjustType.Bottom))
-				AxisHeight = mousePos.Y - AxisTop;
 		}
 
 		protected override void OnMouseUp(MouseButtonEventArgs e)
