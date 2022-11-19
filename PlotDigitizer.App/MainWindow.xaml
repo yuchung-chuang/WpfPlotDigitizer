@@ -17,7 +17,8 @@
 			 Background="{ui:ThemeResource ApplicationBackgroundBrush}"
 			 ExtendsContentIntoTitleBar="True"
 			 WindowBackdropType="Mica"
-			 WindowCornerPreference="Round">
+			 WindowCornerPreference="Round"
+			 AutomationProperties.AutomationId="PlotDigitizer">
 	<Window.InputBindings>
 		<KeyBinding Gesture="Down"
 					Command="{x:Static NavigationCommands.NextPage}" />
@@ -112,33 +113,39 @@
 			<local:NavigationStoreEx.Items>
 				<ui:NavigationItem Cache="True"
 								   Content="Load"
-								   Icon="Image32"
-								   PageType="{x:Type local:LoadPage}" />
+								   Icon="Image32"								   
+								   PageType="{x:Type local:LoadPage}"
+								   AutomationProperties.AutomationId="LoadPageItem" />
 				<ui:NavigationSeparator Template="{StaticResource seperator}"
 										HorizontalAlignment="Center" />
 				<ui:NavigationItem Content="Range"
 								   Icon="PointScan24"
-								   PageType="{x:Type local:AxisLimitPage}" />
+								   PageType="{x:Type local:AxisLimitPage}"
+								   AutomationProperties.AutomationId="RangePageItem" />
 				<ui:NavigationSeparator Template="{StaticResource seperator}"
 										HorizontalAlignment="Center" />
 				<ui:NavigationItem Content="Axis"
 								   Icon="SlideSize24"
-								   PageType="{x:Type local:AxisPage}" />
+								   PageType="{x:Type local:AxisPage}"
+								   AutomationProperties.AutomationId="AxisPageItem" />
 				<ui:NavigationSeparator Template="{StaticResource seperator}"
 										HorizontalAlignment="Center" />
 				<ui:NavigationItem Content="Filter"
 								   Icon="Filter12"
-								   PageType="{x:Type local:FilterPage}" />
+								   PageType="{x:Type local:FilterPage}"
+								   AutomationProperties.AutomationId="FilterPageItem" />
 				<ui:NavigationSeparator Template="{StaticResource seperator}"
 										HorizontalAlignment="Center" />
 				<ui:NavigationItem Content="Edit"
 								   Icon="SelectObjectSkewEdit24"
-								   PageType="{x:Type local:EditPage}" />
+								   PageType="{x:Type local:EditPage}"
+								   AutomationProperties.AutomationId="EditPageItem" />
 				<ui:NavigationSeparator Template="{StaticResource seperator}"
 										HorizontalAlignment="Center" />
 				<ui:NavigationItem Content="Data"
 								   Icon="DataScatter24"
-								   PageType="{x:Type local:PreviewPage}" />
+								   PageType="{x:Type local:PreviewPage}"
+								   AutomationProperties.AutomationId="DataPageItem" />
 			</local:NavigationStoreEx.Items>
 		</local:NavigationStoreEx>
 		<Border Grid.Column="1"
