@@ -1,4 +1,5 @@
-﻿using Emgu.CV;
+﻿using PlotDigitizer.Core;
+using Emgu.CV;
 using Emgu.CV.Structure;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -56,18 +57,22 @@ namespace PlotDigitizer.Core.Tests
 
 		[DataTestMethod()]
 		[DataRow("Assets/data.png")]
-		[DataRow("Assets/Graph-1.jpg")]
-		[DataRow("Assets/Hysteresis-loop-of-cobalt-ferrite-samples-CF-CF300_30-and-CF600_180.png")]
-		[DataRow("Assets/Inseam-v-Height-Graph.jpg")]
-		[DataRow("Assets/rnaseqdedemo_19.png")]
-		[DataRow("Assets/scatter_and_hist_border.png")]
-		[DataRow("Assets/Screenshot 2021-06-26 230901.png")]
-		public void InvalidCropImageTest(string uriString)
+		public void CropOutOfRangeTest(string uriString)
 		{
 			var image = new BitmapImage(new Uri(@"pack://siteoforigin:,,,/" + uriString, UriKind.Absolute)).ToBitmap().ToImage<Rgba, byte>();
 			var roi = new Rectangle(int.MinValue, int.MinValue, int.MaxValue, int.MaxValue);
 			var croppedImage = Methods.CropImage(image, roi);
 			Assert.AreEqual(image.Size, croppedImage.Size);
+		}
+
+		[DataTestMethod()]
+		[DataRow("Assets/data.png")]
+		public void CropZeroRoiTest(string uriString)
+		{
+			var image = new BitmapImage(new Uri(@"pack://siteoforigin:,,,/" + uriString, UriKind.Absolute)).ToBitmap().ToImage<Rgba, byte>();
+			var roi = new Rectangle(0, 0, 0, 0);
+			var croppedImage = Methods.CropImage(image, roi);
+			Assert.IsNull(croppedImage);
 		}
 
 		[DataTestMethod()]
@@ -80,6 +85,16 @@ namespace PlotDigitizer.Core.Tests
 			var max = new Rgba(maxR, maxG, maxB, byte.MaxValue);
 			var filteredImage = Methods.FilterRGB(image, min, max);
 			Assert.AreEqual(result, filteredImage[0, 0].Alpha);
+		}
+
+		[TestMethod()]
+		[DataRow("Assets/data.png")]
+		public void EraseImageTest(string uriString)
+		{
+			var image = new BitmapImage(new Uri(@"pack://siteoforigin:,,,/" + uriString, UriKind.Absolute)).ToBitmap().ToImage<Rgba, byte>();
+			var roi = new Rectangle(-5, -5, 10, 10);
+			Methods.EraseImage(image, roi);
+			Assert.AreEqual(new Rgba(), image[0, 0]);
 		}
 	}
 }

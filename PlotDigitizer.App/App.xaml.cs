@@ -36,7 +36,6 @@ namespace PlotDigitizer.App
 			var splashWindow = new SplashWindow();
 			splashWindow.Show();
 
-			// app host
 			host = Host.CreateDefaultBuilder()
 				.ConfigureServices((context, services) =>
 				{
@@ -55,23 +54,27 @@ namespace PlotDigitizer.App
 						.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logs"));
 				})
 				.Build();
+			ConfigureStaticServices();
+			
 			await host.StartAsync();
-
 			logger = host.Services.GetService<ILogger<App>>();
-			var config = host.Services.GetRequiredService<IConfiguration>();
-
 			logger?.LogInformation($"{this} started.");
-
-			DI.Resolver = type => host.Services.GetRequiredService(type);
-
+			
 			//initialise mainwindow before testing, so all viewmodels are ready for testing
 			MainWindow = new MainWindow(); //need to initialise mainwindow before closing splashWindow, otherwise the application shuts down immidiately as at one moment there is no window at all.
 			splashWindow.Close();
 			MainWindow.Show();
 			logger?.LogInformation($"{MainWindow} Loaded.");
 
+			var config = host.Services.GetRequiredService<IConfiguration>();
 			if (config.GetSection("AppSettings").GetValue<bool>("RunTest"))
 				Test();
+		}
+
+		private void ConfigureStaticServices()
+		{
+			DI.Resolver = type => host.Services.GetRequiredService(type);
+			Methods.Logger = host.Services.GetRequiredService<ILogger<Methods>>();
 		}
 
 		private async void App_Exit(object sender, ExitEventArgs e)
@@ -97,7 +100,7 @@ namespace PlotDigitizer.App
 			};
 			setting.Load(settingTmp);
 
-			(MainWindow as MainWindow).navigation.Navigate(typeof(EditPage));
+			(MainWindow as MainWindow).navigation.Navigate(typeof(PreviewPage));
 		}
 
 		private void SetupExceptionHandling()
