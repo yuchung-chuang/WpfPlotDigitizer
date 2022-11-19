@@ -1,6 +1,10 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
 
+using Microsoft.Extensions.Logging;
+
+using PropertyChanged;
+
 using System;
 using System.Drawing;
 using System.IO;
@@ -20,6 +24,7 @@ namespace PlotDigitizer.Core
 		private readonly IClipboardService clipboard;
 		private readonly IFileDialogService fileDialogService;
 		private readonly IMessageBoxService messageBox;
+		private readonly ILogger<LoadPageViewModel> logger;
 
 		#endregion Fields
 
@@ -30,6 +35,8 @@ namespace PlotDigitizer.Core
 		#endregion Events
 
 		#region Properties
+		[OnChangedMethod(nameof(OnFilePathChanged))]
+		public string FilePath { get; set; }
 
 		public RelayCommand BrowseCommand { get; private set; }
 		public RelayCommand<DropEventArgs> DropCommand { get; private set; }
@@ -52,20 +59,22 @@ namespace PlotDigitizer.Core
 			IFileDialogService fileDialogService,
 			IAwaitTaskService awaitTaskService,
 			IClipboardService clipboard,
-			IMessageBoxService messageBox) : this()
+			IMessageBoxService messageBox,
+			ILogger<LoadPageViewModel> logger) : this()
 		{
 			Model = model;
 			this.fileDialogService = fileDialogService;
 			this.awaitTaskService = awaitTaskService;
 			this.clipboard = clipboard;
 			this.messageBox = messageBox;
+			this.logger = logger;
 		}
 
 		#endregion Constructors
 
 		#region Methods
 
-		public void SetModelImage(Image<Rgba, byte> image)
+		private void SetModelImage(Image<Rgba, byte> image)
 		{
 			Model.InputImage = image;
 			OnNextPage();
@@ -140,6 +149,16 @@ namespace PlotDigitizer.Core
 				messageBox.Show_OK("Clipboard does not contain image.", "Warning");
 				return;
 			}
+		}
+
+		public void OnFilePathChanged()
+		{
+			if (!File.Exists(FilePath)) {
+				logger.LogDebug("File path does not exist!");
+				return;
+			}
+			SetModelImage(new Image<Rgba, byte>(FilePath));
+			logger.LogInformation("Image loaded by file path.");
 		}
 
 		#endregion Methods

@@ -54,16 +54,27 @@
 					   FontSize="22"
 					   Content="Browse"
 					   HorizontalAlignment="Center"
-					   Command="{Binding BrowseCommand}">
+					   Command="{Binding BrowseCommand}"
+					   AutomationProperties.Name="BrowseButton">
 				<i:Interaction.Behaviors>
 					<local:FocusOnLoaded />
 				</i:Interaction.Behaviors>
 			</ui:Button>
 		</StackPanel>
+		
+		<!--only for testing-->
 		<Image x:Name="imageControl"
 			   HorizontalAlignment="Left"
 			   Width="184"
 			   Visibility="{Binding Source={x:Static diag:Debugger.IsAttached}, Converter={local:VisibilityConverter}, FallbackValue={x:Static Visibility.Collapsed}}"
 			   Source="{Binding Model.InputImage, Converter={local:ImageSourceConverter}}" />
+		<TextBox x:Name="filePath"
+				 IsTabStop="False"
+				 Text="{Binding FilePath, Mode=OneWayToSource}"
+				 AutomationProperties.AutomationId="filePath">
+			<TextBox.Template>
+				<ControlTemplate />
+			</TextBox.Template>
+		</TextBox>
 	</Grid>
 </UserControl>
