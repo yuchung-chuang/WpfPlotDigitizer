@@ -63,7 +63,8 @@
 								 HorizontalAlignment="Center">
 			<StackPanel>
 				<Label Content="YMax" />
-				<TextBox Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
+				<TextBox Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
+						 AutomationProperties.AutomationId="AxLimYMax">
 					<TextBox.Text>
 						<Binding Path="AxLimYMax"
 										 Converter="{local:DoubleToStringConverter}"
@@ -77,7 +78,8 @@
 			</StackPanel>
 			<StackPanel>
 				<Label Content="YLog" />
-				<TextBox Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
+				<TextBox Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
+						 AutomationProperties.AutomationId="AxLimYLog">
 					<TextBox.Text>
 						<Binding Path="AxLimYLog"
 										 Converter="{local:DoubleToStringConverter}"
@@ -91,7 +93,8 @@
 			</StackPanel>
 			<StackPanel>
 				<Label Content="YMin" />
-				<TextBox Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
+				<TextBox Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
+						 AutomationProperties.AutomationId="AxLimYMin">
 					<TextBox.Text>
 						<Binding Path="AxLimYMin"
 										 Converter="{local:DoubleToStringConverter}"
@@ -112,7 +115,8 @@
 								 VerticalAlignment="Center">
 			<StackPanel>
 				<Label Content="XMin" />
-				<TextBox Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
+				<TextBox Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
+						 AutomationProperties.AutomationId="AxLimXMin">
 					<TextBox.Text>
 						<Binding Path="AxLimXMin"
 										 Converter="{local:DoubleToStringConverter}"
@@ -126,7 +130,8 @@
 			</StackPanel>
 			<StackPanel>
 				<Label Content="XLog" />
-				<TextBox Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
+				<TextBox Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
+						 AutomationProperties.AutomationId="AxLimXLog">
 					<TextBox.Text>
 						<Binding Path="AxLimXLog"
 										 Converter="{local:DoubleToStringConverter}"
@@ -140,7 +145,8 @@
 			</StackPanel>
 			<StackPanel>
 				<Label Content="XMax" />
-				<TextBox Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
+				<TextBox Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
+						 AutomationProperties.AutomationId="AxLimXMax">
 					<TextBox.Text>
 						<Binding Path="AxLimXMax"
 										 Converter="{local:DoubleToStringConverter}"
