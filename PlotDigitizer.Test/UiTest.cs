@@ -95,7 +95,7 @@ namespace PlotDigitizer.Core.Tests
 		}
 
 		[TestMethod]
-		public void LoadByClipboardTest()
+		public void IntegrationTest()
 		{
 			while (app.GetAllTopLevelWindows(automation).Length == 0) {
 				Thread.Sleep(100);
@@ -119,6 +119,12 @@ namespace PlotDigitizer.Core.Tests
 
 			Keyboard.Type(VirtualKeyShort.DOWN);
 			Thread.Sleep(100);
+		}
+
+		[TestMethod]
+		public void AxisControlTest()
+		{
+
 		}
 	}
 }
