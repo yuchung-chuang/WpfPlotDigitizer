@@ -120,7 +120,7 @@
 										HorizontalAlignment="Center" />
 				<ui:NavigationItem Content="Range"
 								   Icon="PointScan24"
-								   PageType="{x:Type local:AxisLimitPage}"
+								   PageType="{x:Type local:RangePage}"
 								   AutomationProperties.AutomationId="RangePageItem" />
 				<ui:NavigationSeparator Template="{StaticResource seperator}"
 										HorizontalAlignment="Center" />
@@ -144,7 +144,7 @@
 										HorizontalAlignment="Center" />
 				<ui:NavigationItem Content="Data"
 								   Icon="DataScatter24"
-								   PageType="{x:Type local:PreviewPage}"
+								   PageType="{x:Type local:DataPage}"
 								   AutomationProperties.AutomationId="DataPageItem" />
 			</local:NavigationStoreEx.Items>
 		</local:NavigationStoreEx>

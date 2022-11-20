@@ -2,7 +2,7 @@
 
 namespace PlotDigitizer.Core
 {
-	public class AxisLimitPageViewModel : PageViewModelBase
+	public class RangePageViewModel : PageViewModelBase
 	{
 		#region Fields
 
@@ -48,12 +48,12 @@ namespace PlotDigitizer.Core
 
 		#region Constructors
 
-		public AxisLimitPageViewModel()
+		public RangePageViewModel()
 		{
 			Name = "AxisLimitPage";
 		}
 
-		public AxisLimitPageViewModel(Model model, Setting setting) : this()
+		public RangePageViewModel(Model model, Setting setting) : this()
 		{
 			Model = model;
 			this.setting = setting;

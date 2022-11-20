@@ -20,13 +20,13 @@ namespace PlotDigitizer.Core
 		Sucessful,
 	}
 
-	public class PreviewPageViewModel : PageViewModelBase
+	public class DataPageViewModel : PageViewModelBase
 	{
 		#region Fields
 
 		private readonly IAwaitTaskService awaitTask;
 		private readonly IFileDialogService fileDialog;
-		private readonly ILogger<PreviewPageViewModel> logger;
+		private readonly ILogger<DataPageViewModel> logger;
 		private readonly IMessageBoxService messageBox;
 		private readonly Setting setting;
 
@@ -58,19 +58,19 @@ namespace PlotDigitizer.Core
 
 		#region Constructors
 
-		public PreviewPageViewModel()
+		public DataPageViewModel()
 		{
 			Name = "PreviewPage";
 			ExportCommand = new RelayCommand(Export, CanExport);
 		}
 
-		public PreviewPageViewModel(
+		public DataPageViewModel(
 			Model model,
 			Setting setting,
 			IMessageBoxService messageBox,
 			IFileDialogService fileDialog,
 			IAwaitTaskService awaitTask,
-			ILogger<PreviewPageViewModel> logger) : this()
+			ILogger<DataPageViewModel> logger) : this()
 		{
 			Model = model;
 			this.setting = setting;
@@ -101,6 +101,7 @@ namespace PlotDigitizer.Core
 				return;
 			}
 			Model.RaisePropertyChanged(nameof(Core.Model.PreviewImage));
+			ExportCommand.RaiseCanExecuteChanged();
 			logger.LogInformation($"{GetType()}.{MethodBase.GetCurrentMethod().Name} completed.");
 		}
 

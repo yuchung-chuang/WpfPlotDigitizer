@@ -100,7 +100,7 @@ namespace PlotDigitizer.App
 			};
 			setting.Load(settingTmp);
 
-			(MainWindow as MainWindow).navigation.Navigate(typeof(PreviewPage));
+			(MainWindow as MainWindow).navigation.Navigate(typeof(DataPage));
 		}
 
 		private void SetupExceptionHandling()

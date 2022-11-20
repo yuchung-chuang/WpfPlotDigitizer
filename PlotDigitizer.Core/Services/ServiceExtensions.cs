@@ -24,11 +24,11 @@ namespace PlotDigitizer.Core
 		public static IServiceCollection AddViewModels(this IServiceCollection services) =>
 			services.AddSingleton<MainWindowViewModel>()
 					.AddSingleton<LoadPageViewModel>()
-					.AddSingleton<AxisLimitPageViewModel>()
+					.AddSingleton<RangePageViewModel>()
 					.AddSingleton<AxisPageViewModel>()
 					.AddSingleton<FilterPageViewModel>()
 					.AddSingleton<EditPageViewModel>()
-					.AddSingleton<PreviewPageViewModel>();
+					.AddSingleton<DataPageViewModel>();
 
 	}
 }
