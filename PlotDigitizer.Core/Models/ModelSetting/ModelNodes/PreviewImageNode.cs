@@ -33,7 +33,7 @@ namespace PlotDigitizer.Core
 		{
 			if (!edittedImage.CheckUpdate() || !dataType.CheckUpdate())
 				return;
-			Value = edittedImage.Value.Copy();
+			Value = edittedImage.Value?.Copy();
 			Points = dataType.Value switch
 			{
 				DataType.Discrete => Methods.GetDiscretePoints(Value),

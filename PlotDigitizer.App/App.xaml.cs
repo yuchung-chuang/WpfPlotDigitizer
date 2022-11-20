@@ -36,7 +36,6 @@ namespace PlotDigitizer.App
 			var splashWindow = new SplashWindow();
 			splashWindow.Show();
 
-			// app host
 			host = Host.CreateDefaultBuilder()
 				.ConfigureServices((context, services) =>
 				{
@@ -45,7 +44,6 @@ namespace PlotDigitizer.App
 					.AddTransient<IAwaitTaskService, AwaitTaskService>()
 					.AddTransient<IClipboardService, ClipboardService>()
 
-					.AddSingleton<AutoPageTurner>()
 					.AddModel()
 					.AddViewModels();
 				})
@@ -56,50 +54,33 @@ namespace PlotDigitizer.App
 						.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logs"));
 				})
 				.Build();
+			ConfigureStaticServices();
+			
 			await host.StartAsync();
-
 			logger = host.Services.GetService<ILogger<App>>();
-			var config = host.Services.GetRequiredService<IConfiguration>();
-
 			logger?.LogInformation($"{this} started.");
-
-			InitialiseServices();
-
-			var isRunTest = config.GetSection("AppSettings").GetValue<bool>("RunTest");
-			if (isRunTest)
-				Test();
-
-			MainWindow = new MainWindow
-			{
-				DataContext = host.Services.GetRequiredService<MainWindowViewModel>()
-			};
+			
+			//initialise mainwindow before testing, so all viewmodels are ready for testing
+			MainWindow = new MainWindow(); //need to initialise mainwindow before closing splashWindow, otherwise the application shuts down immidiately as at one moment there is no window at all.
 			splashWindow.Close();
 			MainWindow.Show();
 			logger?.LogInformation($"{MainWindow} Loaded.");
+
+			var config = host.Services.GetRequiredService<IConfiguration>();
+			if (config.GetSection("AppSettings").GetValue<bool>("RunTest"))
+				Test();
+		}
+
+		private void ConfigureStaticServices()
+		{
+			DI.Resolver = type => host.Services.GetRequiredService(type);
+			Methods.Logger = host.Services.GetRequiredService<ILogger<Methods>>();
 		}
 
 		private async void App_Exit(object sender, ExitEventArgs e)
 		{
 			await host.StopAsync(TimeSpan.FromSeconds(5));
 			host.Dispose();
-		}
-
-		private void InitialiseServices()
-		{
-			var services = host.Services;
-			// simply trigger the creation of auto-page turner, it will do it's job
-			services.GetRequiredService<AutoPageTurner>();
-
-			var vm = services.GetRequiredService<MainWindowViewModel>();
-			vm.PageManager.Initialise(new List<PageViewModelBase>
-			{
-				services.GetRequiredService<LoadPageViewModel       >(),
-				services.GetRequiredService<AxisLimitPageViewModel  >(),
-				services.GetRequiredService<AxisPageViewModel       >(),
-				services.GetRequiredService<FilterPageViewModel     >(),
-				services.GetRequiredService<EditPageViewModel       >(),
-				services.GetRequiredService<PreviewPageViewModel    >(),
-			});
 		}
 
 		private void Test()
@@ -119,8 +100,7 @@ namespace PlotDigitizer.App
 			};
 			setting.Load(settingTmp);
 
-			var mainWindowViewModel = provider.GetRequiredService<MainWindowViewModel>();
-			mainWindowViewModel.PageManager.GoToByTypeCommand.Execute(typeof(EditPageViewModel));
+			(MainWindow as MainWindow).navigation.Navigate(typeof(DataPage));
 		}
 
 		private void SetupExceptionHandling()

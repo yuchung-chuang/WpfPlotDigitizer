@@ -18,7 +18,7 @@ namespace PlotDigitizer.Core
 		{
 			if (!filteredImage.CheckUpdate())
 				return;
-			Value = filteredImage.Value.Copy();
+			Value = filteredImage.Value?.Copy();
 			base.Update();
 		}
 	}

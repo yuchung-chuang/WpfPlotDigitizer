@@ -528,9 +528,9 @@ namespace PlotDigitizer.App
 		private void InitializeVisualElementsContainer()
 		{
 			visualElementsContainer.Orientation = Orientation.Horizontal;
-			leftThumb.Width = DefaultSplittersThumbWidth;
+			//leftThumb.Width = DefaultSplittersThumbWidth;
 			leftThumb.Tag = "left";
-			rightThumb.Width = DefaultSplittersThumbWidth;
+			//rightThumb.Width = DefaultSplittersThumbWidth;
 			rightThumb.Tag = "right";
 
 			//handle the drag delta

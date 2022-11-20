@@ -1,0 +1,99 @@
+﻿<UserControl x:Class="PlotDigitizer.App.DataPage"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:local="clr-namespace:PlotDigitizer.App"
+			 xmlns:core="clr-namespace:PlotDigitizer.Core;assembly=PlotDigitizer.Core"
+			 mc:Ignorable="d"
+			 d:DesignHeight="450"
+			 d:DesignWidth="800"
+			 Name="root"
+			 d:DataContext="{d:DesignInstance Type=core:DataPageViewModel, IsDesignTimeCreatable=True}"
+			 DataContext="{local:DI Type={x:Type core:DataPageViewModel}}">
+
+	<UserControl.Resources>
+		<Path x:Key="continuous"
+			  Data="M64 0v960h-64v-1024h1024v64h-960zM576 448l-192 192-256-256v-128l256 256 192-192 448 448v128z"
+			  RenderTransformOrigin="0.5,0.5">
+			<Path.RenderTransform>
+				<TransformGroup>
+					<ScaleTransform ScaleY="-1"
+									ScaleX="1" />
+					<SkewTransform AngleY="0"
+								   AngleX="0" />
+					<RotateTransform Angle="0" />
+					<TranslateTransform />
+				</TransformGroup>
+			</Path.RenderTransform>
+		</Path>
+		<Path x:Key="discrete" 
+			  Data="M64 0v960h-64v-1024h1024v64h-960zM320 256c0-35.346-28.654-64-64-64s-64 28.654-64 64c0 35.346 28.654 64 64 64s64-28.654 64-64zM512 576c0-35.346-28.654-64-64-64s-64 28.654-64 64c0 35.346 28.654 64 64 64s64-28.654 64-64zM896 640c0-35.346-28.654-64-64-64s-64 28.654-64 64c0 35.346 28.654 64 64 64s64-28.654 64-64zM704 320c0-35.346-28.654-64-64-64s-64 28.654-64 64c0 35.346 28.654 64 64 64s64-28.654 64-64z"
+						  RenderTransformOrigin="0.5,0.5">
+						<Path.RenderTransform>
+							<TransformGroup>
+								<ScaleTransform ScaleY="-1"
+												ScaleX="1" />
+								<SkewTransform AngleY="0"
+											   AngleX="0" />
+								<RotateTransform Angle="0" />
+								<TranslateTransform />
+							</TransformGroup>
+						</Path.RenderTransform>
+					</Path>
+		<Path x:Key="export" 
+			  Data="M167 112q0 48 7 95t25.5 95t45.5 84t71.5 58.5t100.5 22.5v125q0 17 13.5 29t33.5 12q22 0 37 -15l249 -256q-168 -169 -249 -254q-14 -16 -37 -16q-20 0 -33.5 12t-13.5 29v125q-143 -3 -250 -166v20zM42 -75q-17 0 -29.5 12.5t-12.5 29.5v583q0 17 12.5 29.5t29.5 12.5 h333v-84h-292v-500h500v125q52 54 84 86v-252q0 -17 -12.5 -29.5t-29.5 -12.5h-583z"
+						  RenderTransformOrigin="0.5,0.5">
+						<Path.RenderTransform>
+							<TransformGroup>
+								<ScaleTransform ScaleY="-1"
+												ScaleX="1" />
+								<SkewTransform AngleY="0"
+											   AngleX="0" />
+								<RotateTransform Angle="0" />
+								<TranslateTransform />
+							</TransformGroup>
+						</Path.RenderTransform>
+					</Path>
+	</UserControl.Resources>
+	<DockPanel IsEnabled="{Binding IsEnabled}">
+		<StackPanel x:Name="toolbar"
+					DockPanel.Dock="Top"
+					Orientation="Horizontal"
+					Height="30"
+					Margin="20,0">
+			<StackPanel.Resources>
+				<Style TargetType="RadioButton"
+					   BasedOn="{StaticResource {x:Type ToggleButton}}">
+					<Setter Property="Padding"
+							Value="4" />
+				</Style>
+				<Style TargetType="Path">
+					<Setter Property="Stretch"
+							Value="Uniform" />
+					<Setter Property="Fill"
+							Value="Black" />
+				</Style>
+			</StackPanel.Resources>
+			<RadioButton x:Name="continuousButton"
+						 ToolTip="Continuous Data"
+						 IsChecked="{Binding IsContinuous, Mode=TwoWay}"
+						 Content="{StaticResource continuous}" />
+			<RadioButton x:Name="discreteButton"
+						 ToolTip="Discrete Data"
+						 IsChecked="{Binding IsDiscrete, Mode=TwoWay}"
+						 Content="{StaticResource discrete}" />
+			<Separator Margin="5,0" />
+			<Button x:Name="exportButton"
+					ToolTip="Export"
+					Padding="8,5"
+					Margin="1"
+					Command="{Binding ExportCommand}"
+					Content="{StaticResource export}" />
+		</StackPanel>
+		<Grid>
+			<local:ImageViewer ImageSource="{Binding Model.PreviewImage, Converter={local:ImageSourceConverter} }"
+							   Margin="5" />
+		</Grid>
+	</DockPanel>
+</UserControl>

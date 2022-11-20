@@ -3,6 +3,8 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
 
+using Microsoft.Extensions.Logging;
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,8 +13,10 @@ using System.Linq;
 
 namespace PlotDigitizer.Core
 {
-	public static class Methods
+	public class Methods
 	{
+		public static ILogger<Methods> Logger;
+
 		public static Rectangle? GetAxisLocation(Image<Rgba, byte> image)
 		{
 			if (image is null) {
@@ -49,23 +53,27 @@ namespace PlotDigitizer.Core
 
 		public static Image<Rgba, byte> CropImage(Image<Rgba, byte> image, Rectangle roi)
 		{
-			if (image is null) {
+			if (image is null 
+				|| roi.X >= image.Width || roi.Y >= image.Height 
+				|| roi.Width == 0 || roi.Height == 0) {
 				return null;
 			}
-			if (roi.X >= image.Width || roi.X < 0) {
-				roi.X = 0;
-			}
-			if (roi.Y >= image.Height || roi.Y < 0) {
-				roi.Y = 0;
-			}
-			if (roi.X + roi.Width > image.Width) {
+			roi.X = Math.Max(roi.X, 0);
+			roi.Y = Math.Max(roi.Y, 0);
+			if (roi.Right > image.Width) {
 				roi.Width = image.Width - roi.X;
 			}
-			if (roi.Y + roi.Height > image.Height) {
+			if (roi.Bottom > image.Height) {
 				roi.Height = image.Height - roi.Y;
 			}
-			Debug.Assert(roi.Right <= image.Width && roi.Bottom <= image.Height);
-			return image.Copy(roi);
+			try {
+				return image.Copy(roi);
+			}
+			catch (CvException ex) {
+				Logger?.LogError(ex.Message);
+				Logger?.LogError(ex.ErrorMessage);
+				return null;
+			}
 		}
 
 		public static Image<Rgba, byte> FilterRGB(Image<Rgba, byte> image, Rgba min, Rgba max)

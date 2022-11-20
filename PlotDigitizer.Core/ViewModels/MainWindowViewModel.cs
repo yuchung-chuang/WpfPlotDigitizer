@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using PropertyChanged;
+
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Windows.Input;
 using System.Xml.Serialization;
 
 namespace PlotDigitizer.Core
@@ -13,18 +16,12 @@ namespace PlotDigitizer.Core
 		private readonly IFileDialogService fileDialogService;
 		private readonly IMessageBoxService messageBoxService;
 		private readonly Setting setting;
-
 		#endregion Fields
 
 		#region Properties
-
 		public RelayCommand LoadSettingCommand { get; set; }
-		public Model Model { get; }
-		public PageManager PageManager { get; private set; } = new PageManager();
-
-		public IEnumerable<string> PageNameList => PageManager.PageList.Select(vm => vm.Name);
-
 		public RelayCommand SaveSettingCommand { get; set; }
+		public Model Model { get; }
 
 		#endregion Properties
 

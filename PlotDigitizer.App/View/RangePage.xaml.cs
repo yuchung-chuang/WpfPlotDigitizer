@@ -2,9 +2,9 @@
 
 namespace PlotDigitizer.App
 {
-	public partial class PreviewPage : UserControl
+	public partial class RangePage : UserControl
 	{
-		public PreviewPage()
+		public RangePage()
 		{
 			InitializeComponent();
 		}
