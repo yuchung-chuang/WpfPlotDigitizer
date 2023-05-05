@@ -73,7 +73,13 @@ namespace PlotDigitizer.Core
 			}
 			AxisLimit = setting.AxisLimit;
 			AxisLogBase = setting.AxisLogBase;
-		}
+			OnPropertyChanged(nameof(AxLimXMin));
+            OnPropertyChanged(nameof(AxLimXLog));
+            OnPropertyChanged(nameof(AxLimXMax));
+            OnPropertyChanged(nameof(AxLimYMin));
+            OnPropertyChanged(nameof(AxLimYLog));
+            OnPropertyChanged(nameof(AxLimYMax));
+        }
 
 		public override void Leave()
 		{
