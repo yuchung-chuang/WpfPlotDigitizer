@@ -47,12 +47,15 @@ namespace PlotDigitizer.App
 					.AddModel()
 					.AddViewModels();
 				})
+#if DEBUG
+
 				.ConfigureLogging((context, builder) =>
 				{
 					builder.ClearProviders() // to override the default set of logging providers added by the default host
 						.AddDebug()
 						.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logs"));
 				})
+#endif
 				.Build();
 			ConfigureStaticServices();
 			
