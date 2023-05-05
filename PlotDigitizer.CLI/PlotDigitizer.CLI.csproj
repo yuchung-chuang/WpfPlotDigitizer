@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<TargetFramework>net7.0-windows</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<AssemblyName>PlotDigitizer</AssemblyName>
 	</PropertyGroup>
@@ -12,7 +12,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Emgu.CV.runtime.windows" Version="4.5.5.4823" />
+	  <PackageReference Include="Emgu.CV.runtime.windows" Version="4.7.0.5276" />
 	  <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
 	  <PackageReference Include="system.commandline" Version="2.0.0-beta3.22114.1" />
 	</ItemGroup>
