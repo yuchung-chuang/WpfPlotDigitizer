@@ -5,7 +5,8 @@
 		<TargetFramework>net7.0-windows</TargetFramework>
 		<UseWPF>true</UseWPF>
 		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
-		<ApplicationIcon>Assets\icon_digitizer.ico</ApplicationIcon>
+		<ApplicationIcon>Assets\icon_digitizer 128x128.ico</ApplicationIcon>
+		<AssemblyName>PlotDigitizer</AssemblyName>
 	</PropertyGroup>
 
 	<ItemGroup>
