@@ -109,10 +109,10 @@ Windows XP, 7, 8 (Need .Net Framework 4.6.1 or above)
 
 WpfPlotDigitizer uses a number of open source projects:
 
-<img src="https://raw.githubusercontent.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit/master/web/images/MD4XAML64.png" alt="Material Design In Xaml Toolkit Icon" width="50"/> <img src="https://user-images.githubusercontent.com/658431/30968270-0e3a855e-a45f-11e7-862b-8d92ebd301ad.png" alt="MahApps Icon" width="50"/> <img src="https://avatars2.githubusercontent.com/u/2035816?s=460&v=4" alt="EmguCV Icon" width="50"/> <img src="https://avatars3.githubusercontent.com/u/3250496?s=200&v=4" alt="Fody Icon" width="50"/> 
+<img src="https://avatars.githubusercontent.com/u/16655083?s=200&v=4" alt="Material Design In Xaml Toolkit Icon" width="50"/> <img src="https://user-images.githubusercontent.com/658431/30968270-0e3a855e-a45f-11e7-862b-8d92ebd301ad.png" alt="MahApps Icon" width="50"/> <img src="https://avatars2.githubusercontent.com/u/2035816?s=460&v=4" alt="EmguCV Icon" width="50"/> <img src="https://avatars3.githubusercontent.com/u/3250496?s=200&v=4" alt="Fody Icon" width="50"/> 
 <img src="https://avatars3.githubusercontent.com/u/8432466?s=200&v=4" alt="OxyPlot Icon" width="50"/> 
 
-## Author : C. Y. C
+## Author : C. Y. C.
 
 <img  src="https://raw.githubusercontent.com/alex1392/WpfPlotDigitizer/master/WpfPlotDigitizer/app/resources/icon_cyc.png"  alt="cyc icon"  width="200"/>
 
