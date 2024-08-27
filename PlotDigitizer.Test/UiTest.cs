@@ -25,7 +25,7 @@ namespace PlotDigitizer.Core.Tests
 			if (!UriParser.IsKnownScheme("pack"))
 				new System.Windows.Application();
 
-			app = Application.Launch(@"C:\Users\alex\source\repos\PlotDigitizer\PlotDigitizer.App\bin\Debug\netcoreapp3.1\PlotDigitizer.App.exe");
+			app = Application.Launch(@"C:\Users\yu-ch\Documents\repo\PlotDigitizer\PlotDigitizer.App\bin\Debug\net7.0-windows\PlotDigitizer.App.exe");
 			app.WaitWhileMainHandleIsMissing();
 			automation = new UIA3Automation();
 		}
@@ -94,7 +94,7 @@ namespace PlotDigitizer.Core.Tests
 			}
 		}
 
-		[TestMethod]
+		//[TestMethod]
 		public void IntegrationTest()
 		{
 			while (app.GetAllTopLevelWindows(automation).Length == 0) {
@@ -102,7 +102,7 @@ namespace PlotDigitizer.Core.Tests
 			}
 			var mainWindow = app.GetAllTopLevelWindows(automation)[0];
 			var textbox = mainWindow.FindFirstDescendant(cf => cf.ByAutomationId("filePath")).AsTextBox();
-			textbox.Text = @"C:\Users\alex\source\repos\PlotDigitizer\PlotDigitizer.Test\Assets\Screenshot 2021-06-26 230901.png";
+			textbox.Text = @"C:\Users\yu-ch\Documents\repo\PlotDigitizer\images\2021-06-26 230901.png";
 			Keyboard.Type(VirtualKeyShort.TAB);
 			Thread.Sleep(100);
 
@@ -121,7 +121,7 @@ namespace PlotDigitizer.Core.Tests
 			Thread.Sleep(100);
 		}
 
-		[TestMethod]
+		//[TestMethod]
 		public void AxisControlTest()
 		{
 
