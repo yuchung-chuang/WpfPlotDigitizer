@@ -86,23 +86,9 @@ namespace PlotDigitizer.Core
 			return image;
 		}
 
-		public static void EraseImage(Image<Rgba, byte> image, Rectangle rect)
-		{
-			if (image is null) return;
-			CvInvoke.Rectangle(image, rect, new Rgba().MCvScalar, -1);
 		}
 
-		public static void EraseImage(Image<Rgba, byte> image, IInputArray points)
 		{
-			if (image is null) return;
-			if (points is null) return;
-			CvInvoke.FillPoly(image, points, new Rgba().MCvScalar);
-		}
-
-		public static void DrawImage(Image<Rgba, byte> image, Point centre, int radius)
-		{
-			if (image is null) return;
-			CvInvoke.Circle(image, centre, radius, new Rgba(0, 0, 0, 255).MCvScalar, -1);
 		}
 
 		public static IEnumerable<PointD> GetContinuousPoints(Image<Rgba, byte> image)
@@ -186,6 +172,32 @@ namespace PlotDigitizer.Core
 			{
 				return Math.Log(num) / Math.Log(Base);
 			}
+		}
+	}
+
+	/// <summary>
+	/// These extension methods change the internal state of the object.
+	/// </summary>
+	public static class ExtensionMethods
+	{
+
+		public static void EraseImage(this Image<Rgba, byte> image, Rectangle rect)
+		{
+			if (image is null) return;
+			CvInvoke.Rectangle(image, rect, new Rgba().MCvScalar, -1);
+		}
+
+		public static void EraseImage(this Image<Rgba, byte> image, IInputArray points)
+		{
+			if (image is null) return;
+			if (points is null) return;
+			CvInvoke.FillPoly(image, points, new Rgba().MCvScalar);
+		}
+
+		public static void DrawImage(this Image<Rgba, byte> image, Point centre, int radius)
+		{
+			if (image is null) return;
+			CvInvoke.Circle(image, centre, radius, new Rgba(0, 0, 0, 255).MCvScalar, -1);
 		}
 	}
 }

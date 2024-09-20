@@ -26,7 +26,7 @@ namespace PlotDigitizer.App
 				(int)Math.Round(centre.X),
 				(int)Math.Round(centre.Y));
 
-			Methods.DrawImage(editor.Image, centre2, (int)size.X / 2);
+			editor.Image.DrawImage(centre2, (int)size.X / 2);
 
 			// update the image by "N" frames per second
 			if (stopwatch.ElapsedMilliseconds > 1000 / fps) {

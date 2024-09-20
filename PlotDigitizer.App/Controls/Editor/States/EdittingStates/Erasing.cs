@@ -27,7 +27,7 @@ namespace PlotDigitizer.App
 				(int)Math.Round(position.Y),
 				(int)Math.Round(size.X),
 				(int)Math.Round(size.Y));
-			Methods.EraseImage(editor.Image, rect);
+			editor.Image.EraseImage(rect);
 			// update the image by "N" frames per second
 			if (stopwatch.ElapsedMilliseconds > 1000 / fps) {
 				editor.OnPropertyChanged(nameof(editor.ImageSource));

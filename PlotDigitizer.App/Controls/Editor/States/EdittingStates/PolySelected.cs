@@ -31,7 +31,7 @@ namespace PlotDigitizer.App
 			{
 				return new Point((int)Math.Round(p.X), (int)Math.Round(p.Y));
 			}).ToArray());
-			Methods.EraseImage(Image, points);
+			Image.EraseImage(points);
 			// execute edit command
 			var image = Image.Copy();
 			if (EditManager.EditCommand.CanExecute((image, "Delete polygon region"))) {

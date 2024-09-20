@@ -30,7 +30,7 @@ namespace PlotDigitizer.App
 				(int)Math.Round(top),
 				(int)Math.Round(selectRect.Width),
 				(int)Math.Round(selectRect.Height));
-			Methods.EraseImage(Image, rect);
+			Image.EraseImage(rect);
 			var image = Image.Copy();
 			if (EditManager.EditCommand.CanExecute((image, "Delete rectangle region"))) {
 				EditManager.EditCommand.Execute((image, "Delete rectangle region"));
