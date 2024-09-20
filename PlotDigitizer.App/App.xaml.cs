@@ -22,16 +22,9 @@ namespace PlotDigitizer.App
 		private ILogger<App> logger;
 		private ServiceProvider serviceProvider;
 
-		public App()
-		{
-			SetupExceptionHandling();
-		}
-
 		protected override void OnStartup(StartupEventArgs e)
 		{
 			base.OnStartup(e);
-			var splashWindow = new SplashWindow();
-			splashWindow.Show();
 
 			var services = new ServiceCollection()
 			.AddTransient<IMessageBoxService, MessageBoxService>()
@@ -40,10 +33,10 @@ namespace PlotDigitizer.App
 			.AddTransient<IClipboardService, ClipboardService>()
 			.AddSingleton<IPageService, PageService>()
 			.AddTransient<IImageService, ImageService>()
+			.AddTransient<IWindowService, WindowService>()
 			.AddViewModels()
 			.AddModel()
 			
-
 			.AddLogging(builder =>
 			{
 				builder.ClearProviders() // to override the default set of logging providers added by the default host
@@ -52,28 +45,26 @@ namespace PlotDigitizer.App
 			});
 
 			serviceProvider = services.BuildServiceProvider();
-			ConfigureStaticServices();
 
-
+			var windowService = serviceProvider.GetRequiredService<IWindowService>();
+			windowService.ShowSplashWindow();
+			
 			logger = serviceProvider.GetService<ILogger<App>>();
 			logger?.LogInformation($"{this} started.");
 
-			//initialise mainwindow before testing, so all viewmodels are ready for testing
-			MainWindow = new MainWindow(); //need to initialise mainwindow before closing splashWindow, otherwise the application shuts down immidiately as at one moment there is no window at all.
-
-			splashWindow.Close();
-			MainWindow.Show();
-			logger?.LogInformation($"{MainWindow} Loaded.");
+			// initialise mainwindow before testing, so all viewmodels are ready for testing
+			// need to initialise mainwindow before closing splashWindow, otherwise the application shuts down immidiately as at one moment there is no window at all.
+			var mainViewModel = serviceProvider.GetRequiredService<MainViewModel>();
+			windowService.ShowMainWindow(mainViewModel);
+			windowService.CloseSplashWindow();
+			logger?.LogInformation("MainWindow Loaded.");
 
 			var pageService = serviceProvider.GetRequiredService<IPageService>();
 			pageService.Initialise();
+			logger?.LogInformation("Page Loaded.");
+
+			SetupExceptionHandling();
 			//Test();
-		}
-
-
-		private void ConfigureStaticServices()
-		{
-			DI.Resolver = serviceProvider.GetRequiredService;
 		}
 
 		private void Test()

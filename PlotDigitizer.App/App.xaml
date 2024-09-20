@@ -11,6 +11,10 @@
 				<ui:ControlsDictionary />
 			</ResourceDictionary.MergedDictionaries>
 
+			<DataTemplate DataType="{x:Type core:MainViewModel}">
+				<local:MainView />
+			</DataTemplate>
+
 			<DataTemplate DataType="{x:Type core:LoadPageViewModel}">
 				<local:LoadPage />
 			</DataTemplate>

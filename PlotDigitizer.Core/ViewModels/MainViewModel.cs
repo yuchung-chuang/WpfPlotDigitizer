@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 
 namespace PlotDigitizer.Core
 {
-	public class MainWindowViewModel : ViewModelBase
+	public class MainViewModel : ViewModelBase
 	{
 		#region Fields
 		private readonly IFileDialogService fileDialogService;
@@ -26,13 +26,13 @@ namespace PlotDigitizer.Core
 
 		#region Constructors
 
-		public MainWindowViewModel()
+		public MainViewModel()
 		{
 			SaveSettingCommand = new RelayCommand(SaveSetting);
 			LoadSettingCommand = new RelayCommand(LoadSetting);
 		}
 
-		public MainWindowViewModel(
+		public MainViewModel(
 			Model model,
 			Setting setting,
 			IFileDialogService fileDialogService,
