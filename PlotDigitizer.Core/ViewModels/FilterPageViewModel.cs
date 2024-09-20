@@ -12,6 +12,7 @@ namespace PlotDigitizer.Core
 		#region Fields
 
 		private readonly Setting setting;
+		private readonly IImageService imageService;
 
 		#endregion Fields
 
@@ -74,10 +75,13 @@ namespace PlotDigitizer.Core
 			Name = "FilterPage";
 		}
 
-		public FilterPageViewModel(Model model, Setting setting) : this()
+		public FilterPageViewModel(Model model, 
+			Setting setting, 
+			IImageService imageService) : this()
 		{
 			Model = model;
 			this.setting = setting;
+			this.imageService = imageService;
 			model.PropertyChanged += Model_PropertyChanged;
 			setting.PropertyChanged += Setting_PropertyChanged;
 		}
@@ -102,7 +106,7 @@ namespace PlotDigitizer.Core
 			if (!IsEnabled) {
 				return;
 			}
-			Image = Methods.FilterRGB(CroppedImage, FilterMin, FilterMax);
+			Image = imageService.FilterRGB(CroppedImage, FilterMin, FilterMax);
 		}
 
 		public override void Leave()

@@ -14,11 +14,20 @@ using System.Threading;
 
 namespace PlotDigitizer.Core
 {
-	public class Methods
+#nullable enable
+	public class ImageService : IImageService
 	{
-		public static ILogger<Methods> Logger;
+		private readonly ILogger<ImageService>? logger;
 
-		public static RectangleD? GetAxisLocation(Image<Rgba, byte> image)
+        public ImageService()
+        {
+            
+        }
+        public ImageService(ILogger<ImageService> logger)
+        {
+			this.logger = logger;
+		}
+        public RectangleD? GetAxisLocation(Image<Rgba, byte> image)
 		{
 			if (image is null) 
 				return null;
@@ -148,7 +157,7 @@ namespace PlotDigitizer.Core
 			}
 		}
 
-		public static Image<Rgba, byte> CropImage(Image<Rgba, byte> image, RectangleD roi)
+		public Image<Rgba, byte> CropImage(Image<Rgba, byte> image, RectangleD roi)
 		{
 			return CropImage(image, new Rectangle(
 				(int)Math.Round(roi.Left),
@@ -157,7 +166,7 @@ namespace PlotDigitizer.Core
 				(int)Math.Round(roi.Height)));
 		}
 
-		public static Image<Rgba, byte> CropImage(Image<Rgba, byte> image, Rectangle roi)
+		public Image<Rgba, byte> CropImage(Image<Rgba, byte> image, Rectangle roi)
 		{
 			if (image is null 
 				|| roi.X >= image.Width || roi.Y >= image.Height 
@@ -176,13 +185,13 @@ namespace PlotDigitizer.Core
 				return image.Copy(roi);
 			}
 			catch (CvException ex) {
-				Logger?.LogError(ex.Message);
-				Logger?.LogError(ex.ErrorMessage);
+				logger?.LogError(ex.Message);
+				logger?.LogError(ex.ErrorMessage);
 				return image;
 			}
 		}
 
-		public static Image<Rgba, byte> FilterRGB(Image<Rgba, byte> image, Rgba min, Rgba max)
+		public Image<Rgba, byte> FilterRGB(Image<Rgba, byte> image, Rgba min, Rgba max)
 		{
 			if (image is null) 
 				return null;
@@ -192,7 +201,7 @@ namespace PlotDigitizer.Core
 			return output;
 		}
 
-		public static Image<Rgba, byte> ClearBorder(Image<Rgba, byte> image)
+		public Image<Rgba, byte> ClearBorder(Image<Rgba, byte> image)
 		{
 			if (image is null)
 				return null;
@@ -202,7 +211,7 @@ namespace PlotDigitizer.Core
 			return image.And(image, alpha);
 		}
 
-		public static IEnumerable<PointD> GetContinuousPoints(Image<Rgba, byte> image)
+		public IEnumerable<PointD> GetContinuousPoints(Image<Rgba, byte> image)
 		{
 			if (image is null) return null;
 			var points = new List<PointD>();
@@ -222,7 +231,7 @@ namespace PlotDigitizer.Core
 			return points;
 		}
 
-		public static IEnumerable<PointD> GetDiscretePoints(Image<Rgba, byte> image)
+		public IEnumerable<PointD> GetDiscretePoints(Image<Rgba, byte> image)
 		{
 			if (image is null) return null;
 			var points = new List<PointD>();
@@ -250,7 +259,7 @@ namespace PlotDigitizer.Core
 			}
 		}
 
-		public static IEnumerable<PointD> TransformData(IEnumerable<PointD> points, Size imageSize, RectangleD axLim, PointD axLogBase)
+		public IEnumerable<PointD> TransformData(IEnumerable<PointD> points, Size imageSize, RectangleD axLim, PointD axLogBase)
 		{
 			var dataList = points.Select(pos =>
 			{
@@ -295,7 +304,7 @@ namespace PlotDigitizer.Core
 	/// <summary>
 	/// These extension methods change the internal state of the object.
 	/// </summary>
-	public static class ExtensionMethods
+	public static class ImageExtensionMethods
 	{
 		/// <summary>
 		/// Only works on binary image. Clear all pixels with 255 that connects to the border.

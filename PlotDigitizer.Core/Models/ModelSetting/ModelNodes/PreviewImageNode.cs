@@ -10,6 +10,7 @@ namespace PlotDigitizer.Core
 	{
 		private readonly EdittedImageNode edittedImage;
 		private readonly DataTypeNode dataType;
+		private readonly IImageService imageService;
 
 		public IEnumerable<PointD> Points { get; private set; }
 
@@ -19,10 +20,13 @@ namespace PlotDigitizer.Core
 			set => base.IsUpdated = value;
 		}
 
-		public PreviewImageNode(EdittedImageNode edittedImage, DataTypeNode dataType)
+		public PreviewImageNode(EdittedImageNode edittedImage, 
+			DataTypeNode dataType,
+			IImageService imageService)
 		{
 			this.edittedImage = edittedImage;
 			this.dataType = dataType;
+			this.imageService = imageService;
 			edittedImage.Updated += (s, e) => OnOutdated();
 			edittedImage.Outdated += (s, e) => OnOutdated();
 			dataType.Updated += (s, e) => OnOutdated();
@@ -36,8 +40,8 @@ namespace PlotDigitizer.Core
 			Value = edittedImage.Value?.Copy();
 			Points = dataType.Value switch
 			{
-				DataType.Discrete => Methods.GetDiscretePoints(Value),
-				DataType.Continuous => Methods.GetContinuousPoints(Value),
+				DataType.Discrete => imageService.GetDiscretePoints(Value),
+				DataType.Continuous => imageService.GetContinuousPoints(Value),
 				_ => throw new NotImplementedException(),
 			};
 			base.Update();

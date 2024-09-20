@@ -73,7 +73,6 @@ namespace PlotDigitizer.App
 		private void ConfigureStaticServices()
 		{
 			DI.Resolver = serviceProvider.GetRequiredService;
-			Methods.Logger = serviceProvider.GetRequiredService<ILogger<Methods>>();
 		}
 
 		private void Test()

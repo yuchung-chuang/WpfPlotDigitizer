@@ -15,11 +15,14 @@ namespace PlotDigitizer.Core.Tests
 	[TestClass()]
 	public class MethodsTests
 	{
+		private ImageService imageService;
+
 		[TestInitialize]
 		public void OnTestInitialize()
 		{
 			if (!UriParser.IsKnownScheme("pack"))
 				new System.Windows.Application();
+			imageService = new ImageService();
 		}
 
 		[DataTestMethod()]
@@ -33,7 +36,7 @@ namespace PlotDigitizer.Core.Tests
 		public void GetAxisLocationTest(string uriString, int x, int y, int width, int height)
 		{
 			var image = new BitmapImage(new Uri(@"pack://siteoforigin:,,,/" + uriString, UriKind.Absolute)).ToBitmap().ToImage<Rgba, byte>();
-			var axis = Methods.GetAxisLocation(image);
+			var axis = imageService.GetAxisLocation(image);
 			Assert.AreEqual(new Rectangle(x, y, width, height), axis);
 		}
 
@@ -49,7 +52,7 @@ namespace PlotDigitizer.Core.Tests
 		{
 			var image = new BitmapImage(new Uri(@"pack://siteoforigin:,,,/" + uriString, UriKind.Absolute)).ToBitmap().ToImage<Rgba, byte>();
 			var roi = new Rectangle(x, y, width, height);
-			var croppedImage = Methods.CropImage(image, roi);
+			var croppedImage = imageService.CropImage(image, roi);
 			Assert.AreEqual(roi.Size, croppedImage.Size);
 			Assert.AreEqual(image[roi.Y, roi.X], croppedImage[0, 0]);
 			Assert.AreEqual(image[roi.Bottom - 1, roi.Right - 1], croppedImage[roi.Height - 1, roi.Width - 1]);
@@ -61,7 +64,7 @@ namespace PlotDigitizer.Core.Tests
 		{
 			var image = new BitmapImage(new Uri(@"pack://siteoforigin:,,,/" + uriString, UriKind.Absolute)).ToBitmap().ToImage<Rgba, byte>();
 			var roi = new Rectangle(int.MinValue, int.MinValue, int.MaxValue, int.MaxValue);
-			var croppedImage = Methods.CropImage(image, roi);
+			var croppedImage = imageService.CropImage(image, roi);
 			Assert.AreEqual(image.Size, croppedImage.Size);
 		}
 
@@ -71,7 +74,7 @@ namespace PlotDigitizer.Core.Tests
 		{
 			var image = new BitmapImage(new Uri(@"pack://siteoforigin:,,,/" + uriString, UriKind.Absolute)).ToBitmap().ToImage<Rgba, byte>();
 			var roi = new Rectangle(0, 0, 0, 0);
-			var croppedImage = Methods.CropImage(image, roi);
+			var croppedImage = imageService.CropImage(image, roi);
 			Assert.IsNull(croppedImage);
 		}
 
@@ -83,7 +86,7 @@ namespace PlotDigitizer.Core.Tests
 			var image = new BitmapImage(new Uri(@"pack://siteoforigin:,,,/" + uriString, UriKind.Absolute)).ToBitmap().ToImage<Rgba, byte>();
 			var min = new Rgba(minR, minG, minB, byte.MaxValue);
 			var max = new Rgba(maxR, maxG, maxB, byte.MaxValue);
-			var filteredImage = Methods.FilterRGB(image, min, max);
+			var filteredImage = imageService.FilterRGB(image, min, max);
 			Assert.AreEqual(result, filteredImage[0, 0].Alpha);
 		}
 
@@ -93,7 +96,7 @@ namespace PlotDigitizer.Core.Tests
 		{
 			var image = new BitmapImage(new Uri(@"pack://siteoforigin:,,,/" + uriString, UriKind.Absolute)).ToBitmap().ToImage<Rgba, byte>();
 			var roi = new Rectangle(-5, -5, 10, 10);
-			Methods.EraseImage(image, roi);
+			image.EraseImage(roi);
 			Assert.AreEqual(new Rgba(), image[0, 0]);
 		}
 	}
