@@ -2,7 +2,6 @@
 using Emgu.CV.Structure;
 
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 using PlotDigitizer.Core;
@@ -21,7 +20,7 @@ namespace PlotDigitizer.CLI
 {
 	internal class Program
 	{
-		private static IHost host;
+		private static ServiceProvider serviceProvider;
 		private static ILogger<Program> logger;
 
 		// $ PlotDigitizer
@@ -36,32 +35,28 @@ namespace PlotDigitizer.CLI
 		{
 			var rootCommand = ConfigureCommand();
 
-			host = Host.CreateDefaultBuilder()
-				.ConfigureServices((context, services) =>
-				{
-					services
+			var services = new ServiceCollection()
 					.AddSingleton<Model, ModelFacade>()
 					.AddSingleton<Setting, SettingFacade>()
 					.AddViewModels()
-					.AddModel();
-				})
-				.ConfigureLogging((context, builder) =>
+					.AddModel()
+				
+				.AddLogging(builder =>
 				{
 					builder.ClearProviders() // to override the default set of logging providers added by the default host
 						.AddProvider(new DebugLoggerProvider())
 						.AddProvider(new FileLoggerProvider(Path.Combine(Directory.GetCurrentDirectory(), "logs")));
-				})
-				.Build();
-			await host.StartAsync();
-			logger = host.Services.GetRequiredService<ILogger<Program>>();
+				});
+			serviceProvider = services.BuildServiceProvider();
+
+			
+			logger = serviceProvider.GetRequiredService<ILogger<Program>>();
 			logger.LogInformation("Application started.");
 
 			logger.LogInformation("Command Invoking...");
 			await rootCommand.InvokeAsync(args);
 			logger.LogInformation("Command executed.");
 
-			await host.StopAsync(TimeSpan.FromSeconds(5));
-			host.Dispose();
 			logger.LogInformation("Application terminated.");
 		}
 
@@ -104,8 +99,8 @@ namespace PlotDigitizer.CLI
 
 		private static void Run(FileInfo imageFile, FileInfo settingFile, FileInfo outputFile)
 		{
-			var model = host.Services.GetRequiredService<Model>();
-			var setting = host.Services.GetRequiredService<Setting>();
+			var model = serviceProvider.GetRequiredService<Model>();
+			var setting = serviceProvider.GetRequiredService<Setting>();
 
 			logger.LogInformation("Loading image...");
 			var image = Image.FromFile(imageFile.FullName) as Bitmap;
