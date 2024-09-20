@@ -65,8 +65,11 @@ namespace PlotDigitizer.Core
 		private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			if (e.PropertyName == nameof(Core.Model.FilteredImage)) {
+				if (Model.FilteredImage is null)
+					return;
 				OnPropertyChanged(nameof(IsEnabled));
-				EditManager.Initialise(Model.FilteredImage);
+				var image = Methods.ClearBorder(Model.FilteredImage);
+				EditManager.Initialise(image);
 			}
 		}
 
