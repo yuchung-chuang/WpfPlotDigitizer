@@ -25,14 +25,9 @@ namespace PlotDigitizer.Core
 		private readonly IFileDialogService fileDialogService;
 		private readonly IMessageBoxService messageBox;
 		private readonly ILogger<LoadPageViewModel> logger;
+		private readonly IPageService pageService;
 
 		#endregion Fields
-
-		#region Events
-
-		public event EventHandler NextPage;
-
-		#endregion Events
 
 		#region Properties
 		[OnChangedMethod(nameof(OnFilePathChanged))]
@@ -60,7 +55,8 @@ namespace PlotDigitizer.Core
 			IAwaitTaskService awaitTaskService,
 			IClipboardService clipboard,
 			IMessageBoxService messageBox,
-			ILogger<LoadPageViewModel> logger) : this()
+			ILogger<LoadPageViewModel> logger,
+			IPageService pageService) : this()
 		{
 			Model = model;
 			this.fileDialogService = fileDialogService;
@@ -68,6 +64,7 @@ namespace PlotDigitizer.Core
 			this.clipboard = clipboard;
 			this.messageBox = messageBox;
 			this.logger = logger;
+			this.pageService = pageService;
 		}
 
 		#endregion Constructors
@@ -77,7 +74,11 @@ namespace PlotDigitizer.Core
 		private void SetModelImage(Image<Rgba, byte> image)
 		{
 			Model.InputImage = image;
-			OnNextPage();
+
+			// automatically go to the next page when the image is loaded.
+			if (pageService.NextPageCommand.CanExecute()) {
+				pageService.NextPageCommand.Execute();
+			}
 		}
 
 		private void Browse()
@@ -136,8 +137,6 @@ namespace PlotDigitizer.Core
 				}
 			}
 		}
-
-		private void OnNextPage() => NextPage?.Invoke(this, null);
 
 		private void Paste()
 		{

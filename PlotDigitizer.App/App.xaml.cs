@@ -33,11 +33,12 @@ namespace PlotDigitizer.App
 			var splashWindow = new SplashWindow();
 			splashWindow.Show();
 
-			var services = new ServiceCollection();
-			services.AddTransient<IMessageBoxService, MessageBoxService>()
+			var services = new ServiceCollection()
+			.AddTransient<IMessageBoxService, MessageBoxService>()
 			.AddTransient<IFileDialogService, FileDialogService>()
 			.AddTransient<IAwaitTaskService, AwaitTaskService>()
 			.AddTransient<IClipboardService, ClipboardService>()
+			.AddSingleton<IPageService, PageService>()
 
 			.AddSingleton<Model, ModelFacade>()
 			.AddSingleton<Setting, SettingFacade>()
@@ -55,14 +56,13 @@ namespace PlotDigitizer.App
 			.AddSingleton<FilterMaxNode>()
 			.AddSingleton<DataTypeNode>()
 
-			// TODO: ViewModels shouldn't be singleton!!
-			.AddSingleton<MainWindowViewModel>()
-			.AddSingleton<LoadPageViewModel>()
-			.AddSingleton<RangePageViewModel>()
-			.AddSingleton<AxisPageViewModel>()
-			.AddSingleton<FilterPageViewModel>()
-			.AddSingleton<EditPageViewModel>()
-			.AddSingleton<DataPageViewModel>()
+			.AddTransient<MainWindowViewModel>()
+			.AddTransient<LoadPageViewModel>()
+			.AddTransient<RangePageViewModel>()
+			.AddTransient<AxisPageViewModel>()
+			.AddTransient<FilterPageViewModel>()
+			.AddTransient<EditPageViewModel>()
+			.AddTransient<DataPageViewModel>()
 
 			.AddLogging(builder =>
 			{
@@ -80,10 +80,13 @@ namespace PlotDigitizer.App
 
 			//initialise mainwindow before testing, so all viewmodels are ready for testing
 			MainWindow = new MainWindow(); //need to initialise mainwindow before closing splashWindow, otherwise the application shuts down immidiately as at one moment there is no window at all.
+
 			splashWindow.Close();
 			MainWindow.Show();
 			logger?.LogInformation($"{MainWindow} Loaded.");
 
+			var pageService = serviceProvider.GetRequiredService<IPageService>();
+			pageService.Initialise();
 			//Test();
 		}
 
@@ -110,7 +113,7 @@ namespace PlotDigitizer.App
 			};
 			setting.Load(settingTmp);
 
-			(MainWindow as MainWindow).navigation.Navigate(typeof(DataPage));
+			//(MainWindow as MainWindow).navigation.Navigate(typeof(DataPage));
 		}
 
 		private void SetupExceptionHandling()

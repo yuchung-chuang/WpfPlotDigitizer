@@ -1,10 +1,9 @@
-﻿using PropertyChanged;
-
-using System.Collections.Generic;
+﻿using Microsoft.Extensions.DependencyInjection;
+using PropertyChanged;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text.Json;
-using System.Windows.Input;
 using System.Xml.Serialization;
 
 namespace PlotDigitizer.Core
@@ -12,17 +11,17 @@ namespace PlotDigitizer.Core
 	public class MainWindowViewModel : ViewModelBase
 	{
 		#region Fields
-
 		private readonly IFileDialogService fileDialogService;
 		private readonly IMessageBoxService messageBoxService;
 		private readonly Setting setting;
-		#endregion Fields
+        #endregion Fields
 
-		#region Properties
-		public RelayCommand LoadSettingCommand { get; set; }
-		public RelayCommand SaveSettingCommand { get; set; }
+        #region Properties
+        
 		public Model Model { get; }
-
+		public IPageService PageService { get; private set; }
+		public RelayCommand LoadSettingCommand { get; private set; }
+		public RelayCommand SaveSettingCommand { get; private set; }
 		#endregion Properties
 
 		#region Constructors
@@ -37,18 +36,20 @@ namespace PlotDigitizer.Core
 			Model model,
 			Setting setting,
 			IFileDialogService fileDialogService,
-			IMessageBoxService messageBoxService) : this()
+			IMessageBoxService messageBoxService,
+			IPageService pageService) : this()
 		{
 			Model = model;
 			this.setting = setting;
 			this.fileDialogService = fileDialogService;
 			this.messageBoxService = messageBoxService;
+			PageService = pageService;
 		}
 
 		#endregion Constructors
 
 		#region Methods
-
+		
 		private void LoadSetting()
 		{
 			var filter = "JSON file (*.json) |*.json|" +

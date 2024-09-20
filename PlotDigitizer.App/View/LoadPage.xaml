@@ -16,7 +16,6 @@
 			 Background="Transparent"
 			 x:Name="root"
 			 d:DataContext="{d:DesignInstance Type=core:LoadPageViewModel, IsDesignTimeCreatable=True}"
-			 DataContext="{local:DI Type=core:LoadPageViewModel}"
 			 FontSize="22">
 	<i:Interaction.Triggers>
 		<i:EventTrigger EventName="Drop">

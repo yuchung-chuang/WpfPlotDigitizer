@@ -6,6 +6,7 @@
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:local="clr-namespace:PlotDigitizer.App"
 			 xmlns:core="clr-namespace:PlotDigitizer.Core;assembly=PlotDigitizer.Core"
+			 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
 			 mc:Ignorable="d"
 			 x:Name="root"
 			 Height="600"
@@ -13,11 +14,10 @@
 			 WindowStartupLocation="CenterScreen"
 			 d:DataContext="{d:DesignInstance Type=core:MainWindowViewModel, IsDesignTimeCreatable=True}"
 			 DataContext="{local:DI Type=core:MainWindowViewModel}"
-			 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-			 Background="{ui:ThemeResource ApplicationBackgroundBrush}"
 			 ExtendsContentIntoTitleBar="True"
 			 WindowBackdropType="Mica"
 			 WindowCornerPreference="Round"
+			 Background="{ui:ThemeResource ApplicationBackgroundBrush}"
 			 AutomationProperties.AutomationId="PlotDigitizer">
 	<Window.InputBindings>
 		<KeyBinding Gesture="Down"
@@ -27,13 +27,13 @@
 	</Window.InputBindings>
 	<i:Interaction.Behaviors>
 		<local:RelayCommandBinding ApplicationCommand="{x:Static NavigationCommands.NextPage}"
-								   Command="{Binding ElementName=root, Path=NextPageCommand}" />
+								   Command="{Binding PageService.NextPageCommand}" />
 		<local:RelayCommandBinding ApplicationCommand="{x:Static NavigationCommands.PreviousPage}"
-								   Command="{Binding ElementName=root, Path=PrevPageCommand}" />
+								   Command="{Binding PageService.PrevPageCommand}" />
 		<local:RelayCommandBinding ApplicationCommand="{x:Static NavigationCommands.BrowseForward}"
-								   Command="{Binding ElementName=root, Path=NextPageCommand}" />
+								   Command="{Binding PageService.NextPageCommand}" />
 		<local:RelayCommandBinding ApplicationCommand="{x:Static NavigationCommands.BrowseBack}"
-								   Command="{Binding ElementName=root, Path=PrevPageCommand}" />
+								   Command="{Binding PageService.PrevPageCommand}" />
 	</i:Interaction.Behaviors>
 	<DockPanel>
 		<ui:TitleBar Title="PlotDigitizer"
@@ -62,12 +62,12 @@
 						Background="LightGray">
 				<Button x:Name="PrevPageButton"
 						ToolTip="Previous Page"
-						Command="{Binding ElementName=root, Path=PrevPageCommand}">
+						Command="{Binding PageService.PrevPageCommand}">
 					<Path Data="M427 277v-42h-260l119 -120l-30 -30l-171 171l171 171l30 -30l-119 -120h260z" />
 				</Button>
 				<Button x:Name="NextPageButton"
 						ToolTip="Next Page"
-						Command="{Binding ElementName=root, Path=NextPageCommand}">
+						Command="{Binding PageService.NextPageCommand}">
 					<Path Data="M256 427l171 -171l-171 -171l-30 30l119 120h-260v42h260l-119 120z" />
 				</Button>
 			</StackPanel>
@@ -91,6 +91,7 @@
 			</StackPanel>
 		</DockPanel>
 
+		<!--TODO: Animation?-->
 		<local:NavigationStoreEx x:Name="navigation"
 								 DockPanel.Dock="Left"
 								 Frame="{Binding ElementName=frame, Mode=OneWay}"
@@ -98,7 +99,6 @@
 								 SelectedPageIndex="0"
 								 TransitionDuration="200"
 								 TransitionType="FadeInWithSlide"
-								 PreviewNavigate="navigation_PreviewNavigate"
 								 Style="{StaticResource {x:Type ui:NavigationStore}}">
 			<local:NavigationStoreEx.Resources>
 				<ControlTemplate x:Key="seperator"
@@ -113,39 +113,45 @@
 			<local:NavigationStoreEx.Items>
 				<ui:NavigationItem Cache="True"
 								   Content="Load"
-								   Icon="Image32"								   
-								   PageType="{x:Type local:LoadPage}"
-								   AutomationProperties.AutomationId="LoadPageItem" />
+								   Icon="Image32"
+								   AutomationProperties.AutomationId="LoadPageItem"
+								   Command="{Binding PageService.NavigateCommand}"
+								   CommandParameter="{x:Type core:LoadPageViewModel}"/>
 				<ui:NavigationSeparator Template="{StaticResource seperator}"
 										HorizontalAlignment="Center" />
 				<ui:NavigationItem Content="Range"
 								   Icon="PointScan24"
-								   PageType="{x:Type local:RangePage}"
-								   AutomationProperties.AutomationId="RangePageItem" />
+								   AutomationProperties.AutomationId="RangePageItem"
+								   Command="{Binding PageService.NavigateCommand}"
+								   CommandParameter="{x:Type core:RangePageViewModel}" />
 				<ui:NavigationSeparator Template="{StaticResource seperator}"
 										HorizontalAlignment="Center" />
 				<ui:NavigationItem Content="Axis"
 								   Icon="SlideSize24"
-								   PageType="{x:Type local:AxisPage}"
-								   AutomationProperties.AutomationId="AxisPageItem" />
+								   AutomationProperties.AutomationId="AxisPageItem"
+								   Command="{Binding PageService.NavigateCommand}"
+								   CommandParameter="{x:Type core:AxisPageViewModel}" />
 				<ui:NavigationSeparator Template="{StaticResource seperator}"
 										HorizontalAlignment="Center" />
 				<ui:NavigationItem Content="Filter"
 								   Icon="Filter12"
-								   PageType="{x:Type local:FilterPage}"
-								   AutomationProperties.AutomationId="FilterPageItem" />
+								   AutomationProperties.AutomationId="FilterPageItem"
+								   Command="{Binding PageService.NavigateCommand}"
+								   CommandParameter="{x:Type core:FilterPageViewModel}" />
 				<ui:NavigationSeparator Template="{StaticResource seperator}"
 										HorizontalAlignment="Center" />
 				<ui:NavigationItem Content="Edit"
 								   Icon="SelectObjectSkewEdit24"
-								   PageType="{x:Type local:EditPage}"
-								   AutomationProperties.AutomationId="EditPageItem" />
+								   AutomationProperties.AutomationId="EditPageItem"
+								   Command="{Binding PageService.NavigateCommand}"
+								   CommandParameter="{x:Type core:EditPageViewModel}" />
 				<ui:NavigationSeparator Template="{StaticResource seperator}"
 										HorizontalAlignment="Center" />
 				<ui:NavigationItem Content="Data"
 								   Icon="DataScatter24"
-								   PageType="{x:Type local:DataPage}"
-								   AutomationProperties.AutomationId="DataPageItem" />
+								   AutomationProperties.AutomationId="DataPageItem"
+								   Command="{Binding PageService.NavigateCommand}"
+								   CommandParameter="{x:Type core:DataPageViewModel}" />
 			</local:NavigationStoreEx.Items>
 		</local:NavigationStoreEx>
 		<Border Grid.Column="1"
@@ -159,8 +165,8 @@
 							   FontSize="24"
 							   Navigation="{Binding ElementName=navigation}" />
 				<Frame Name="frame"
-					   Navigated="frame_Navigated" 
-					   Margin="10"/>
+					   Margin="10"
+					   Content="{Binding PageService.CurrentPage}"/>
 			</DockPanel>
 		</Border>
 

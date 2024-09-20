@@ -10,8 +10,7 @@
 			 d:DesignHeight="450"
 			 d:DesignWidth="800"
 			 x:Name="root"
-			 d:DataContext="{d:DesignInstance Type=core:RangePageViewModel, IsDesignTimeCreatable=True}"
-			 DataContext="{local:DI Type=core:RangePageViewModel}">
+			 d:DataContext="{d:DesignInstance Type=core:RangePageViewModel, IsDesignTimeCreatable=True}">
 
 	<UserControl.Resources>
 		<Style TargetType="StackPanel">

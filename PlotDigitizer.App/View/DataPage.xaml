@@ -9,8 +9,7 @@
 			 d:DesignHeight="450"
 			 d:DesignWidth="800"
 			 Name="root"
-			 d:DataContext="{d:DesignInstance Type=core:DataPageViewModel, IsDesignTimeCreatable=True}"
-			 DataContext="{local:DI Type={x:Type core:DataPageViewModel}}">
+			 d:DataContext="{d:DesignInstance Type=core:DataPageViewModel, IsDesignTimeCreatable=True}">
 
 	<UserControl.Resources>
 		<Path x:Key="continuous"

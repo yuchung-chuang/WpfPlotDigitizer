@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Input;
+
+namespace PlotDigitizer.Core
+{
+	public interface IPageService
+	{
+		PageViewModelBase CurrentPage { get; set; }
+		int CurrentPageIndex { get; }
+		ICommand NavigateCommand { get; }
+		RelayCommand NextPageCommand { get; }
+		RelayCommand PrevPageCommand { get; }
+
+		void Initialise();
+	}
+}
