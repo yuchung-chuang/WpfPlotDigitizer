@@ -17,8 +17,8 @@ namespace PlotDigitizer.Core
 		public bool IsEnabled => Model != null && Model.FilteredImage != null;
 		public Model Model { get; private set; }
 		public IEnumerable<string> RedoList => EditManager?.TagList?.GetRange(EditManager.Index, EditManager.TagList.Count - EditManager.Index);
-		public RelayCommand<int> RedoToCommand { get; set; }
 		public IEnumerable<string> UndoList => EditManager?.TagList?.GetRange(0, EditManager.Index + 1).Reverse<string>();
+		public RelayCommand<int> RedoToCommand { get; set; }
 		public RelayCommand<int> UndoToCommand { get; set; }
 
 		#endregion Properties

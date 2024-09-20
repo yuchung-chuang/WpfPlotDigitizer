@@ -17,8 +17,6 @@ namespace PlotDigitizer.Core
 
 		public TObject CurrentObject => ObjectList[Index];
 		public string CurrentTag => TagList[Index];
-		public RelayCommand<(TObject obj, string tag)> EditCommand { get; set; }
-		public RelayCommand<int> GoToCommand { get; private set; }
 
 		[OnChangedMethod(nameof(OnIndexChanged))]
 		public int Index { get; private set; }
@@ -28,11 +26,13 @@ namespace PlotDigitizer.Core
 		[OnChangedMethod(nameof(OnObjectListChanged))]
 		public List<TObject> ObjectList { get; private set; }
 
-		public RelayCommand RedoCommand { get; private set; }
 
 		[OnChangedMethod(nameof(OnTagListChanged))]
 		public List<string> TagList { get; private set; }
 
+		public RelayCommand<(TObject obj, string tag)> EditCommand { get; set; }
+		public RelayCommand<int> GoToCommand { get; private set; }
+		public RelayCommand RedoCommand { get; private set; }
 		public RelayCommand UndoCommand { get; private set; }
 
 		#endregion Properties
