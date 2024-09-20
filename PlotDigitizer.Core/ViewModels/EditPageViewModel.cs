@@ -48,6 +48,9 @@ namespace PlotDigitizer.Core
 		public override void Leave()
 		{
 			base.Leave();
+			if (!IsEnabled) {
+				return;
+			}
 			Model.EdittedImage = Image;
 		}
 
