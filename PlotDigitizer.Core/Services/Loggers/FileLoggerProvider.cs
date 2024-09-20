@@ -3,17 +3,10 @@
 namespace PlotDigitizer.Core
 {
 	[ProviderAlias("File")]
-	public class FileLoggerProvider : ILoggerProvider
+	public class FileLoggerProvider(string path) : ILoggerProvider
 	{
-
-		private readonly string path;
-
-		public FileLoggerProvider(string path) => this.path = path;
-
 		public ILogger CreateLogger(string categoryName) => new FileLogger(path);
 
-		public void Dispose()
-		{
-		}
+		public void Dispose() { }
 	}
 }
