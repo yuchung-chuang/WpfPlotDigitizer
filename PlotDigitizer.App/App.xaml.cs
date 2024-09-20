@@ -38,6 +38,7 @@ namespace PlotDigitizer.App
 			.AddTransient<IFileDialogService, FileDialogService>()
 			.AddTransient<IAwaitTaskService, AwaitTaskService>()
 			.AddTransient<IClipboardService, ClipboardService>()
+			.AddTransient<IImageService, ImageService>()
 
 			.AddSingleton<Model, ModelFacade>()
 			.AddSingleton<Setting, SettingFacade>()
@@ -91,7 +92,6 @@ namespace PlotDigitizer.App
 		private void ConfigureStaticServices()
 		{
 			DI.Resolver = serviceProvider.GetRequiredService;
-			Methods.Logger = serviceProvider.GetRequiredService<ILogger<Methods>>();
 		}
 
 		private void Test()

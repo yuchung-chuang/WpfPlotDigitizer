@@ -9,6 +9,7 @@ namespace PlotDigitizer.Core
 		#region Fields
 
 		private readonly Setting setting;
+		private readonly IImageService imageService;
 
 		#endregion Fields
 
@@ -45,10 +46,13 @@ namespace PlotDigitizer.Core
 			GetAxisCommand = new RelayCommand(GetAxis, CanGetAxis);
 		}
 
-		public AxisPageViewModel(Model model, Setting setting) : this()
+		public AxisPageViewModel(Model model, 
+			Setting setting, 
+			IImageService imageService) : this()
 		{
 			Model = model;
 			this.setting = setting;
+			this.imageService = imageService;
 			model.PropertyChanged += Model_PropertyChanged;
 			setting.PropertyChanged += Setting_PropertyChanged;
 		}
@@ -86,7 +90,7 @@ namespace PlotDigitizer.Core
 		private void GetAxis()
 		{
 			var image = Model.InputImage;
-			AxisLocation = Methods.GetAxisLocation(image) ??
+			AxisLocation = imageService.GetAxisLocation(image) ??
 				new RectangleD(image.Width / 4, image.Height / 4, image.Width / 2, image.Height / 2);
 		}
 

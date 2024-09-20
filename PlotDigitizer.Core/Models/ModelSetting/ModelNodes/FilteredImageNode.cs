@@ -8,12 +8,17 @@ namespace PlotDigitizer.Core
 		private readonly CroppedImageNode croppedImage;
 		private readonly FilterMinNode filterMin;
 		private readonly FilterMaxNode filterMax;
+		private readonly IImageService imageService;
 
-		public FilteredImageNode(CroppedImageNode croppedImage, FilterMinNode filterMin, FilterMaxNode filterMax)
+		public FilteredImageNode(CroppedImageNode croppedImage, 
+			FilterMinNode filterMin, 
+			FilterMaxNode filterMax, 
+			IImageService imageService)
 		{
 			this.croppedImage = croppedImage;
 			this.filterMin = filterMin;
 			this.filterMax = filterMax;
+			this.imageService = imageService;
 			croppedImage.Updated += (s, e) => OnOutdated();
 			croppedImage.Outdated += (s, e) => OnOutdated();
 			filterMin.Updated += (s, e) => OnOutdated();
@@ -27,7 +32,7 @@ namespace PlotDigitizer.Core
 			if (!croppedImage.CheckUpdate() || !filterMin.CheckUpdate() || !filterMax.CheckUpdate()) {
 				return;
 			}
-			Value = Methods.FilterRGB(croppedImage.Value, filterMin.Value, filterMax.Value);
+			Value = imageService.FilterRGB(croppedImage.Value, filterMin.Value, filterMax.Value);
 			base.Update();
 		}
 	}

@@ -7,15 +7,18 @@ namespace PlotDigitizer.Core
 		private readonly PreviewImageNode previewImage;
 		private readonly AxisLimitNode axisLimit;
 		private readonly AxisLogBaseNode axisLogBase;
+		private readonly IImageService imageService;
 
 		public DataNode(PreviewImageNode previewImage,
 			AxisLimitNode axisLimit,
 			AxisLogBaseNode axisLogBase,
-			DataTypeNode dataType)
+			DataTypeNode dataType,
+			IImageService imageService)
 		{
 			this.previewImage = previewImage;
 			this.axisLimit = axisLimit;
 			this.axisLogBase = axisLogBase;
+			this.imageService = imageService;
 			previewImage.Updated += (s, e) => OnOutdated();
 			previewImage.Outdated += (s, e) => OnOutdated();
 			axisLimit.Updated += (s, e) => OnOutdated();
@@ -29,7 +32,7 @@ namespace PlotDigitizer.Core
 		{
 			if (!previewImage.CheckUpdate() || !axisLimit.CheckUpdate() || !axisLogBase.CheckUpdate())
 				return;
-			Value = previewImage.Value is null ? null : Methods.TransformData(previewImage.Points, previewImage.Value.Size, axisLimit.Value, axisLogBase.Value);
+			Value = previewImage.Value is null ? null : imageService.TransformData(previewImage.Points, previewImage.Value.Size, axisLimit.Value, axisLogBase.Value);
 			base.Update();
 		}
 	}

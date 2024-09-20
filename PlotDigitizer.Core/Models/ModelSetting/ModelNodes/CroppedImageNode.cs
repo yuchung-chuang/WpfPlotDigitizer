@@ -7,11 +7,15 @@ namespace PlotDigitizer.Core
 	{
 		private readonly InputImageNode inputImage;
 		private readonly AxisLocationNode axisLocation;
+		private readonly IImageService imageService;
 
-		public CroppedImageNode(InputImageNode inputImage, AxisLocationNode axisLocation)
+		public CroppedImageNode(InputImageNode inputImage, 
+			AxisLocationNode axisLocation,
+			IImageService imageService)
 		{
 			this.inputImage = inputImage;
 			this.axisLocation = axisLocation;
+			this.imageService = imageService;
 			inputImage.Updated += (s, e) => OnOutdated();
 			inputImage.Outdated += (s, e) => OnOutdated();
 			axisLocation.Updated += (s, e) => OnOutdated();
@@ -22,7 +26,7 @@ namespace PlotDigitizer.Core
 		{
 			if (!inputImage.CheckUpdate() || !axisLocation.CheckUpdate())
 				return;
-			Value = Methods.CropImage(inputImage.Value, axisLocation.Value);
+			Value = imageService.CropImage(inputImage.Value, axisLocation.Value);
 			base.Update();
 		}
 

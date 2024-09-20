@@ -11,6 +11,7 @@ namespace PlotDigitizer.Core
 	// TODO: Clear Border checkbox, allowing user to decide.
 	public class EditPageViewModel : PageViewModelBase
 	{
+		private readonly IImageService imageService;
 		#region Properties
 
 		public EditManager<Image<Rgba, byte>> EditManager { get; set; } = new EditManager<Image<Rgba, byte>>();
@@ -34,9 +35,10 @@ namespace PlotDigitizer.Core
 			EditManager.PropertyChanged += EditManager_PropertyChanged;
 		}
 
-		public EditPageViewModel(Model model) : this()
+		public EditPageViewModel(Model model, IImageService imageService) : this()
 		{
 			Model = model;
+			this.imageService = imageService;
 			model.PropertyChanged += Model_PropertyChanged;
 		}
 
@@ -72,7 +74,7 @@ namespace PlotDigitizer.Core
 				if (Model.FilteredImage is null)
 					return;
 				OnPropertyChanged(nameof(IsEnabled));
-				var image = Methods.ClearBorder(Model.FilteredImage);
+				var image = imageService.ClearBorder(Model.FilteredImage);
 				EditManager.Initialise(image);
 			}
 		}
