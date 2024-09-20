@@ -2,6 +2,9 @@
 
 namespace PlotDigitizer.Core
 {
+	/// <summary>
+	/// This class is implemented because the core project cannot depend on <see cref="System.Windows.Point"/>.
+	/// </summary>
 	[Serializable]
 	public struct PointD
 	{

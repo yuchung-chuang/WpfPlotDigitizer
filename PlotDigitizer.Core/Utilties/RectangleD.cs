@@ -3,6 +3,9 @@ using System.Text.Json.Serialization;
 
 namespace PlotDigitizer.Core
 {
+	/// <summary>
+	/// This class is implemented because the core project cannot depend on <see cref="System.Windows.Rectangle"/>.
+	/// </summary>
 	[Serializable]
 	public struct RectangleD
 	{
