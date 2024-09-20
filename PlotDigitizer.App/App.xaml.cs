@@ -103,7 +103,7 @@ namespace PlotDigitizer.App
 			var settingTmp = new Setting
 			{
 				AxisLimit = new RectangleD(900, 0, 70, 20),
-				AxisLocation = new Rectangle(138, 100, 632, 399),
+				AxisLocation = new RectangleD(138, 100, 632, 399),
 				FilterMin = new Rgba(0, 0, 0, byte.MaxValue),
 				FilterMax = new Rgba(126, 254, 254, byte.MaxValue),
 				DataType = DataType.Discrete

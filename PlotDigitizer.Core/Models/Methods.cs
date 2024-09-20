@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Threading;
 
 namespace PlotDigitizer.Core
 {
@@ -17,38 +18,143 @@ namespace PlotDigitizer.Core
 	{
 		public static ILogger<Methods> Logger;
 
-		public static Rectangle? GetAxisLocation(Image<Rgba, byte> image)
+		public static RectangleD? GetAxisLocation(Image<Rgba, byte> image)
 		{
-			if (image is null) {
+			if (image is null) 
 				return null;
-			}
-			var gray = new Mat();
+
+			var gray = new Image<Gray, byte>(image.Width, image.Height);
 			CvInvoke.CvtColor(image, gray, ColorConversion.Rgba2Gray);
 
-			var binary = new Mat();
-			var threshold = CvInvoke.Threshold(gray, binary, 0, 255, ThresholdType.Otsu | ThresholdType.BinaryInv);
+			var binary = new Image<Gray, byte>(image.Width, image.Height);
+			// Assumes the background is white.
+			// Otsu is the best method to find the optimised threshold at the moment.
+			var threshold = CvInvoke.Threshold(gray, binary, 0, 255, ThresholdType.BinaryInv | ThresholdType.Otsu);
+			
+			binary.ClearBorder();
 
-			var rectangles = new List<Rectangle>();
 			using var contours = new VectorOfVectorOfPoint();
 			CvInvoke.FindContours(binary, contours, null, RetrType.List,
-				ChainApproxMethod.ChainApproxSimple);
-			var count = contours.Size;
-			for (var i = 0; i < count; i++) {
+							ChainApproxMethod.ChainApproxSimple);
+			Rectangle maxRect = default;
+			var maxSize = 0;
+			for (var i = 0; i < contours.Size; i++) {
 				using var contour = contours[i];
-				using var approxContour = new VectorOfPoint();
-				CvInvoke.ApproxPolyDP(contour, approxContour, CvInvoke.ArcLength(contour, false) * 0.01, false);
-				rectangles.Add(CvInvoke.BoundingRectangle(approxContour));
+				var rectangle = CvInvoke.BoundingRectangle(contour);
+
+				if (rectangle.Width * rectangle.Height > maxSize) {
+					maxRect = rectangle;
+					maxSize = rectangle.Width * rectangle.Height;
+				}
 			}
 
-			var filtered = rectangles.Where(r =>
-				r.Width * r.Height > image.Width * image.Height * 0.25 &&
-				r.Width * r.Height < image.Width * image.Height * 0.9);
-			if (!filtered.Any()) {
-				return null;
+			var L = maxRect.Width / 2;
+			if (searchTopLeft() is PointD topLeftXY && searchBottomRight() is PointD bottomRightXY) {
+				return new RectangleD(topLeftXY.X, topLeftXY.Y, bottomRightXY.X - topLeftXY.X + 1, bottomRightXY.Y - topLeftXY.Y + 1); // Seems like the Rectangle Control in WPF does not include the bottom right most point? So an additional 1 was added.
 			}
-			var maxArea = filtered.Max(r => r.Width * r.Height);
-			var axis = filtered.First(r => r.Width * r.Height == maxArea);
-			return axis;
+			return new RectangleD(maxRect);
+
+			PointD? searchTopLeft()
+			{
+				for (var row = maxRect.Top; row < maxRect.Top + maxRect.Height - L - 1; row++) {
+					for (var col = maxRect.Left; col < maxRect.Left + maxRect.Width - L - 1; col++) {
+						if (checkRight(row, col) && checkDown(row, col)) {
+							return searchDeeper(row, col);
+						}
+					}
+				}
+				return null;
+
+				bool checkRight(int row, int col)
+				{
+					for (var i = 0; i < L; i++) {
+						if (binary.Data[row + i, col, 0] != 255) {
+							return false;
+						}
+					}
+					return true;
+				}
+				bool checkDown(int row, int col)
+				{
+					for (var i = 0; i < L; i++) {
+						if (binary.Data[row, col + i, 0] != 255) {
+							return false;
+						}
+					}
+					return true;
+				}
+				PointD searchDeeper(int row, int col)
+				{
+					List<PointD> candidates = [new PointD(col, row)];
+					for (var c = col; c < col + 10; c++) {
+						for (var r = row; r < row + 10; r++) {
+							if (c == col && r == row)
+								continue;
+							if (checkRight(r, c) && checkDown(r, c)) {
+								candidates.Add(new PointD(c, r));
+							}
+						}
+					}
+					var avgX = candidates.Average(p => p.X);
+					var avgY = candidates.Average(p => p.Y);
+					return new PointD(avgX, avgY);
+				}
+			}
+			PointD? searchBottomRight()
+			{
+				for (var row = maxRect.Bottom - 1; row > maxRect.Top + L; row--) {
+					for (var col = maxRect.Right - 1; col > maxRect.Left + L; col--) {
+						if (checkLeft(row, col) && checkUp(row, col)) {
+							return searchDeeper(row, col);
+						}
+					}
+				}
+				return null;
+
+				bool checkLeft(int row, int col)
+				{
+					for (var i = 0; i < L; i++) {
+						if (binary.Data[row - i, col, 0] != 255) {
+							return false;
+						}
+					}
+					return true;
+				}
+				bool checkUp(int row, int col)
+				{
+					for (var i = 0; i < L; i++) {
+						if (binary.Data[row, col - i, 0] != 255) {
+							return false;
+						}
+					}
+					return true;
+				}
+				PointD searchDeeper(int row, int col)
+				{
+					List<PointD> candidates = [new PointD(col, row)];
+					for (var c = col; c > col - 10; c--) {
+						for (var r = row; r > row - 10; r--) {
+							if (c == col && r == row)
+								continue;
+							if (checkLeft(r, c) && checkUp(r, c)) {
+								candidates.Add(new PointD(c, r));
+							}
+						}
+					}
+					var avgX = candidates.Average(p => p.X);
+					var avgY = candidates.Average(p => p.Y);
+					return new PointD(avgX, avgY);
+				}
+			}
+		}
+
+		public static Image<Rgba, byte> CropImage(Image<Rgba, byte> image, RectangleD roi)
+		{
+			return CropImage(image, new Rectangle(
+				(int)Math.Round(roi.Left),
+				(int)Math.Round(roi.Top),
+				(int)Math.Round(roi.Width),
+				(int)Math.Round(roi.Height)));
 		}
 
 		public static Image<Rgba, byte> CropImage(Image<Rgba, byte> image, Rectangle roi)

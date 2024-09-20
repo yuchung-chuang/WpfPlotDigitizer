@@ -17,13 +17,9 @@ namespace PlotDigitizer.Core
 		public double AxisHeight { get; set; }
 		public double AxisLeft { get; set; }
 
-		public Rectangle AxisLocation
+		public RectangleD AxisLocation
 		{
-			get => new(
-				(int)Math.Round(AxisLeft),
-				(int)Math.Round(AxisTop),
-				(int)Math.Round(AxisWidth),
-				(int)Math.Round(AxisHeight));
+			get => new(AxisLeft, AxisTop, AxisWidth, AxisHeight);
 			set
 			{
 				AxisLeft = value.Left;
@@ -91,7 +87,7 @@ namespace PlotDigitizer.Core
 		{
 			var image = Model.InputImage;
 			AxisLocation = Methods.GetAxisLocation(image) ??
-				new Rectangle(image.Width / 4, image.Height / 4, image.Width / 2, image.Height / 2);
+				new RectangleD(image.Width / 4, image.Height / 4, image.Width / 2, image.Height / 2);
 		}
 
 		private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)

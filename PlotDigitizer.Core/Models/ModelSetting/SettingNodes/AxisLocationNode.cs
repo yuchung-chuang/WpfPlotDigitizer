@@ -2,7 +2,7 @@
 
 namespace PlotDigitizer.Core
 {
-	public class AxisLocationNode : ModelNode<Rectangle>
+	public class AxisLocationNode : ModelNode<RectangleD>
 	{
 	}
 }

@@ -42,7 +42,7 @@ namespace PlotDigitizer.Core
 			set => axisLogBase.Set(value);
 		}
 
-		public override Rectangle AxisLocation
+		public override RectangleD AxisLocation
 		{
 			get => axisLocation.Get();
 			set => axisLocation.Set(value);
