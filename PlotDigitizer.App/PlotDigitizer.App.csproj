@@ -11,32 +11,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Remove="ViewModels\**" />
-		<EmbeddedResource Remove="ViewModels\**" />
-		<None Remove="ViewModels\**" />
-		<Page Remove="ViewModels\**" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Compile Remove="Controls\Editor\EditManager.cs" />
-		<Compile Remove="Services\AutoPageTurner.cs" />
-		<Compile Remove="Services\FileDialogResults.cs" />
-		<Compile Remove="Services\IAwaitTaskService.cs" />
-		<Compile Remove="Services\IFileDialogService.cs" />
-		<Compile Remove="Services\IMessageBoxService.cs" />
-		<Compile Remove="Services\ServiceExtensions.cs" />
-		<Compile Remove="Utilities\PageManager.cs" />
-		<Compile Remove="Utilities\RelayCommand.cs" />
-		<Compile Remove="Utilities\ValueConverters\SelectionChangedEventArgsConverter.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<None Remove="Assets\icon_digitizer.png" />
-		<None Remove="Assets\pan.cur" />
-		<None Remove="Assets\test_image.png" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="Emgu.CV.runtime.windows" Version="4.9.0.5494" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
 		<PackageReference Include="PropertyChanged.Fody" Version="4.1.0" PrivateAssets="All" />
