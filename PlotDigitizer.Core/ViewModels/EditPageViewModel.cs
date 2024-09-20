@@ -8,6 +8,7 @@ using System.Linq;
 
 namespace PlotDigitizer.Core
 {
+	// TODO: Clear Border checkbox, allowing user to decide.
 	public class EditPageViewModel : PageViewModelBase
 	{
 		#region Properties
@@ -63,7 +64,7 @@ namespace PlotDigitizer.Core
 		}
 
 		/// <summary>
-		/// Do NOT initialise it when loading, so long as the <see cref="Model.FilteredImage"/> is un changed, the previous editting is retained.
+		/// Do NOT initialise it when loading, so long as the <see cref="Model.FilteredImage"/> is unchanged, the previous editting is retained.
 		/// </summary>
 		private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
