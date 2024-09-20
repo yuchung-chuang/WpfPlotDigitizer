@@ -2,7 +2,7 @@
 
 using Wpf.Ui.Controls;
 
-namespace PlotDigitizer.App.Services
+namespace PlotDigitizer.App
 {
 	public class WpfUiMessageBoxService : IMessageBoxService
 	{
