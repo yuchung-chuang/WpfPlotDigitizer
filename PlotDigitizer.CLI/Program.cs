@@ -48,9 +48,8 @@ namespace PlotDigitizer.CLI
 				.ConfigureLogging((context, builder) =>
 				{
 					builder.ClearProviders() // to override the default set of logging providers added by the default host
-						.AddConsole()
-						.AddDebug()
-						.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logs"));
+						.AddProvider(new DebugLoggerProvider())
+						.AddProvider(new FileLoggerProvider(Path.Combine(Directory.GetCurrentDirectory(), "logs")));
 				})
 				.Build();
 			await host.StartAsync();

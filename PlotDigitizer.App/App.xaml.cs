@@ -39,30 +39,9 @@ namespace PlotDigitizer.App
 			.AddTransient<IAwaitTaskService, AwaitTaskService>()
 			.AddTransient<IClipboardService, ClipboardService>()
 			.AddSingleton<IPageService, PageService>()
-
-			.AddSingleton<Model, ModelFacade>()
-			.AddSingleton<Setting, SettingFacade>()
-			.AddSingleton<InputImageNode>()
-			.AddSingleton<CroppedImageNode>()
-			.AddSingleton<FilteredImageNode>()
-			.AddSingleton<EdittedImageNode>()
-			.AddSingleton<PreviewImageNode>()
-			.AddSingleton<DataNode>()
-
-			.AddSingleton<AxisLimitNode>()
-			.AddSingleton<AxisLogBaseNode>()
-			.AddSingleton<AxisLocationNode>()
-			.AddSingleton<FilterMinNode>()
-			.AddSingleton<FilterMaxNode>()
-			.AddSingleton<DataTypeNode>()
-
-			.AddTransient<MainWindowViewModel>()
-			.AddTransient<LoadPageViewModel>()
-			.AddTransient<RangePageViewModel>()
-			.AddTransient<AxisPageViewModel>()
-			.AddTransient<FilterPageViewModel>()
-			.AddTransient<EditPageViewModel>()
-			.AddTransient<DataPageViewModel>()
+			.AddViewModels()
+			.AddModel()
+			
 
 			.AddLogging(builder =>
 			{
