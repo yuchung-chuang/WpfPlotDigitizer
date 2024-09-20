@@ -159,7 +159,8 @@
 							   FontSize="24"
 							   Navigation="{Binding ElementName=navigation}" />
 				<Frame Name="frame"
-					   Navigated="frame_Navigated" />
+					   Navigated="frame_Navigated" 
+					   Margin="10"/>
 			</DockPanel>
 		</Border>
 
