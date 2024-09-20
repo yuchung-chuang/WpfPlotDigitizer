@@ -6,16 +6,10 @@ namespace PlotDigitizer.Core
 	/// This class is implemented because the core project cannot depend on <see cref="System.Windows.Point"/>.
 	/// </summary>
 	[Serializable]
-	public struct PointD
+	public struct PointD(double x, double y)
 	{
-		public double X { get; set; }
-		public double Y { get; set; }
-
-		public PointD(double x, double y)
-		{
-			X = x;
-			Y = y;
-		}
+		public double X { get; set; } = x;
+		public double Y { get; set; } = y;
 
 		public override bool Equals(object obj)
 		{

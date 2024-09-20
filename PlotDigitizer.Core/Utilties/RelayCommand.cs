@@ -28,16 +28,10 @@ namespace PlotDigitizer.Core
 		public void Execute(object parameter = null) => action?.Invoke();
 	}
 
-	public class RelayCommand<TParam> : ICommand
+	public class RelayCommand<TParam>(Action<TParam> action, Func<TParam, bool> canAction = null) : ICommand
 	{
-		private readonly Action<TParam> action;
-		private readonly Func<TParam, bool> canAction;
-
-		public RelayCommand(Action<TParam> action, Func<TParam, bool> canAction = null)
-		{
-			this.action = action;
-			this.canAction = canAction;
-		}
+		private readonly Action<TParam> action = action;
+		private readonly Func<TParam, bool> canAction = canAction;
 
 		public event EventHandler CanExecuteChanged;
 

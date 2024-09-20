@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Text.Json.Serialization;
 
 namespace PlotDigitizer.Core
@@ -7,20 +8,16 @@ namespace PlotDigitizer.Core
 	/// This class is implemented because the core project cannot depend on <see cref="System.Windows.Rectangle"/>.
 	/// </summary>
 	[Serializable]
-	public struct RectangleD
+	public struct RectangleD(double left, double top, double width, double height)
 	{
-		public RectangleD(double left, double top, double width, double height)
+		public RectangleD(Rectangle maxRect) : this(maxRect.Left, maxRect.Top, maxRect.Width, maxRect.Height)
 		{
-			Left = left;
-			Top = top;
-			Width = width;
-			Height = height;
 		}
 
-		public double Left { get; set; }
-		public double Top { get; set; }
-		public double Width { get; set; }
-		public double Height { get; set; }
+		public double Left { get; set; } = left;
+		public double Top { get; set; } = top;
+		public double Width { get; set; } = width;
+		public double Height { get; set; } = height;
 
 		[JsonIgnore]
 		public double X => Left;

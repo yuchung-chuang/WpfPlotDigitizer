@@ -1,15 +1,9 @@
 ﻿namespace PlotDigitizer.Core
 {
-	public class FileDialogResults
+	public class FileDialogResults(string fileName, bool hasFile)
 	{
-		public FileDialogResults(string fileName, bool hasFile)
-		{
-			FileName = fileName;
-			IsValid = hasFile;
-		}
+		public string FileName { get; set; } = fileName;
 
-		public string FileName { get; set; }
-
-		public bool IsValid { get; set; } = false;
+		public bool IsValid { get; set; } = hasFile;
 	}
 }
