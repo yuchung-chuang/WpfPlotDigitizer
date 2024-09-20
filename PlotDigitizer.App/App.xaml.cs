@@ -39,6 +39,7 @@ namespace PlotDigitizer.App
 			.AddTransient<IAwaitTaskService, AwaitTaskService>()
 			.AddTransient<IClipboardService, ClipboardService>()
 			.AddSingleton<IPageService, PageService>()
+			.AddTransient<IImageService, ImageService>()
 			.AddViewModels()
 			.AddModel()
 			
