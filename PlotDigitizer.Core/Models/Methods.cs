@@ -88,7 +88,14 @@ namespace PlotDigitizer.Core
 
 		}
 
+		public static Image<Rgba, byte> ClearBorder(Image<Rgba, byte> image)
 		{
+			if (image is null)
+				return null;
+			var channels = image.Split();
+			var alpha = channels[3];
+			alpha.ClearBorder();
+			return image.And(image, alpha);
 		}
 
 		public static IEnumerable<PointD> GetContinuousPoints(Image<Rgba, byte> image)
@@ -186,6 +193,37 @@ namespace PlotDigitizer.Core
 	/// </summary>
 	public static class ExtensionMethods
 	{
+		/// <summary>
+		/// Only works on binary image. Clear all pixels with 255 that connects to the border.
+		/// </summary>
+		/// <param name="image">A binary image.</param>
+		public static void ClearBorder(this Image<Gray, byte> image)
+		{
+			// Step 1: Find contours of the binary image
+			using var contours = new VectorOfVectorOfPoint();
+			CvInvoke.FindContours(image, contours, null, RetrType.List, ChainApproxMethod.ChainApproxSimple);
+
+			// Step 2: Loop through each contour and check if it touches the border
+			for (int i = 0; i < contours.Size; i++) {
+				bool touchesBorder = false;
+				using VectorOfPoint contour = contours[i];
+
+				// Check if any point of the contour touches the image border
+				for (int j = 0; j < contour.Size; j++) {
+					Point pt = contour[j];
+					if (pt.X <= 0 || pt.Y <= 0 ||
+						pt.X >= (image.Width - 1) || pt.Y >= (image.Height - 1)) {
+						touchesBorder = true;
+						break;
+					}
+				}
+
+				// Step 3: If the contour touches the border, we exclude it
+				if (touchesBorder) {
+					CvInvoke.FloodFill(image, null, contour[0], new MCvScalar(0), out var _, new MCvScalar(1), new MCvScalar(1));
+				}
+			}
+		}
 
 		public static void EraseImage(this Image<Rgba, byte> image, Rectangle rect)
 		{
