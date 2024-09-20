@@ -122,15 +122,21 @@ namespace PlotDigitizer.Core
 			var count = contours.Size;
 			for (var i = 0; i < count; i++) {
 				using var contour = contours[i];
-				var moments = CvInvoke.Moments(contour);
-				var Cx = Math.Round(moments.M10 / moments.M00);
-				var Cy = Math.Round(moments.M01 / moments.M00);
-				points.Add(new PointD(Cx, Cy));
+				var centroid = GetCentroid(contour);
+				points.Add(centroid);
 
-				CvInvoke.DrawMarker(image, new Point((int)Cx, (int)Cy), new Rgba(255, 0, 0, 255).MCvScalar, MarkerTypes.Cross, 5);
+				CvInvoke.DrawMarker(image, new Point((int)centroid.X, (int)centroid.Y), new Rgba(255, 0, 0, 255).MCvScalar, MarkerTypes.Cross, 5);
 			}
 
 			return points;
+
+			static PointD GetCentroid(VectorOfPoint contour)
+			{
+				var moments = CvInvoke.Moments(contour);
+				var Cx = Math.Round(moments.M10 / moments.M00);
+				var Cy = Math.Round(moments.M01 / moments.M00);
+				return new PointD(Cx, Cy);
+			}
 		}
 
 		public static IEnumerable<PointD> TransformData(IEnumerable<PointD> points, Size imageSize, RectangleD axLim, PointD axLogBase)
