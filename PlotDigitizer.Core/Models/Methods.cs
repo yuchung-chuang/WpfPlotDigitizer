@@ -56,7 +56,7 @@ namespace PlotDigitizer.Core
 			if (image is null 
 				|| roi.X >= image.Width || roi.Y >= image.Height 
 				|| roi.Width == 0 || roi.Height == 0) {
-				return null;
+				return image;
 			}
 			roi.X = Math.Max(roi.X, 0);
 			roi.Y = Math.Max(roi.Y, 0);
@@ -72,7 +72,7 @@ namespace PlotDigitizer.Core
 			catch (CvException ex) {
 				Logger?.LogError(ex.Message);
 				Logger?.LogError(ex.ErrorMessage);
-				return null;
+				return image;
 			}
 		}
 
@@ -81,11 +81,9 @@ namespace PlotDigitizer.Core
 			if (image is null) 
 				return null;
 			var mask = image.InRange(min, max);
-			image = image.Copy();
-			image.SetValue(new Rgba(0, 0, 0, 0), mask.Not());
-			return image;
-		}
-
+			var output = image.Copy();
+			output.SetValue(new Rgba(0, 0, 0, 0), mask.Not());
+			return output;
 		}
 
 		public static Image<Rgba, byte> ClearBorder(Image<Rgba, byte> image)
