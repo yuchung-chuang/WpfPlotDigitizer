@@ -74,15 +74,14 @@
 			</StackPanel>
 		</DockPanel>
 
-		<!--TODO: Animation?-->
 		<ui:NavigationStore x:Name="navigation"
-								 DockPanel.Dock="Left"
-								 Frame="{Binding ElementName=frame, Mode=OneWay}"
-								 Precache="False"
-								 SelectedPageIndex="0"
-								 TransitionDuration="200"
-								 TransitionType="FadeInWithSlide"
-								 Style="{StaticResource {x:Type ui:NavigationStore}}">
+							DockPanel.Dock="Left"
+							Frame="{Binding ElementName=frame, Mode=OneWay}"
+							Precache="False"
+							SelectedPageIndex="0"
+							TransitionDuration="200"
+							TransitionType="FadeInWithSlide"
+							Style="{StaticResource {x:Type ui:NavigationStore}}">
 			<ui:NavigationStore.Resources>
 				<ControlTemplate x:Key="seperator"
 								 TargetType="{x:Type ui:NavigationSeparator}">
@@ -93,6 +92,7 @@
 						  Height="{TemplateBinding Height}" />
 				</ControlTemplate>
 			</ui:NavigationStore.Resources>
+
 			<ui:NavigationStore.Items>
 				<ui:NavigationItem Cache="True"
 								   Content="Load"
@@ -141,14 +141,17 @@
 				Background="{DynamicResource ControlFillColorDefaultBrush}"
 				CornerRadius="8,0,0,0">
 			<DockPanel>
-				<ui:Breadcrumb DockPanel.Dock="Top"
-							   Margin="18"
-							   HorizontalAlignment="Left"
-							   VerticalAlignment="Top"
-							   FontSize="24"
-							   Navigation="{Binding ElementName=navigation}" />
-				<ContentControl Margin="10"
-								Content="{Binding PageService.CurrentPage}" />
+				<Label DockPanel.Dock="Top"
+					   Margin="18"
+					   HorizontalAlignment="Left"
+					   VerticalAlignment="Top"
+					   FontSize="24"
+					   FontWeight="Bold"
+					   Content="{Binding PageService.CurrentPage.Name}" />
+				<Frame Name="frame" 
+					   Margin="10" 
+					   Content="{Binding PageService.CurrentPage}"
+					   Navigating="Frame_Navigating"/>
 			</DockPanel>
 		</Border>
 
