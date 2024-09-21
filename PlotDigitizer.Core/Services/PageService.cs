@@ -8,16 +8,18 @@ namespace PlotDigitizer.Core
 {
 	public class PageService : IPageService, IDisposable, INotifyPropertyChanged
 	{
-		private readonly IServiceScope serviceScope;
 		private readonly IServiceProvider serviceProvider;
+		private readonly IServiceScopeFactory serviceScopeFactory;
 		private readonly RelayCommand nextPageCommand;
 		private readonly RelayCommand prevPageCommand;
+		private readonly Model model;
+		private IServiceScope editPageScope;
 
 		public event PropertyChangedEventHandler PropertyChanged;
 		public event EventHandler<int> Navigated;
 		public ICommand NavigateCommand { get; }
-		public ICommand NextPageCommand => nextPageCommand; 
-		public ICommand PrevPageCommand => prevPageCommand; 
+		public ICommand NextPageCommand => nextPageCommand;
+		public ICommand PrevPageCommand => prevPageCommand;
 		public static List<Type> Pages { get; private set; } = [
 				typeof(LoadPageViewModel),
 				typeof(RangePageViewModel),
@@ -26,28 +28,47 @@ namespace PlotDigitizer.Core
 				typeof(EditPageViewModel),
 				typeof(DataPageViewModel),
 			];
-        public PageViewModelBase CurrentPage { get; set; } 
-        public int CurrentPageIndex => CurrentPage is null ? -1 : Pages.FindIndex(t => t == CurrentPage.GetType());
+		public PageViewModelBase CurrentPage { get; set; }
+		public int CurrentPageIndex => CurrentPage is null ? -1 : Pages.FindIndex(t => t == CurrentPage.GetType());
 
-        public PageService(IServiceScopeFactory serviceScopeFactory)
-        {
+		public PageService(Model model,
+			IServiceProvider serviceProvider,
+			IServiceScopeFactory serviceScopeFactory)
+		{
+			this.model = model;
+			this.serviceProvider = serviceProvider;
+			this.serviceScopeFactory = serviceScopeFactory;
+
 			NavigateCommand = new RelayCommand<Type>(NavigateTo);
 			nextPageCommand = new RelayCommand(NextPage, CanNextPage);
 			prevPageCommand = new RelayCommand(PrevPage, CanPrevPage);
-
-			serviceScope = serviceScopeFactory.CreateScope();
-			serviceProvider = serviceScope.ServiceProvider;
 		}
 
 		public void Initialise()
 		{
 			CurrentPage = serviceProvider.GetRequiredService(Pages[0]) as PageViewModelBase;
+
+			editPageScope = serviceScopeFactory.CreateScope();
+
+			model.PropertyOutdated += (s, e) =>
+			{
+				if (e == nameof(Model.FilteredImage)) {
+					editPageScope?.Dispose();
+					editPageScope = serviceScopeFactory.CreateScope();
+				}
+			};
 		}
-        private void NavigateTo(Type pageType)
+		private void NavigateTo(Type pageType)
 		{
 			var PrevPage = CurrentPage;
 			PrevPage.Leave();
-			var newPage = serviceProvider.GetRequiredService(pageType) as PageViewModelBase;
+			PageViewModelBase newPage;
+			if (pageType == typeof(EditPageViewModel)) {
+				newPage = editPageScope?.ServiceProvider.GetRequiredService(pageType) as PageViewModelBase;
+			}
+			else {
+				newPage = serviceProvider.GetRequiredService(pageType) as PageViewModelBase;
+			}
 			newPage.Enter();
 			CurrentPage = newPage;
 
@@ -64,7 +85,7 @@ namespace PlotDigitizer.Core
 
 		public void Dispose()
 		{
-			serviceScope.Dispose();
+			//serviceScope.Dispose();
 			GC.SuppressFinalize(this);
 		}
 

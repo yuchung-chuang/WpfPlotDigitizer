@@ -32,28 +32,7 @@ namespace PlotDigitizer.App
 			} else {
 				editor.Initialise(editor.EditManager.CurrentObject.Copy());
 			}
-			model.PropertyChanged += Model_PropertyChanged;
 			viewModel.EditManager.PropertyChanged += EditManager_PropertyChanged;
-		}
-
-		/// <summary>
-		/// Do NOT initialise it when loading, so long as the <see cref="Model.FilteredImage"/> is un changed, the previous editting is retained.
-		/// </summary>
-		private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-			if (e.PropertyName == nameof(Core.Model.FilteredImage)) {
-				editor.Initialise(model.FilteredImage);
-			}
-		}
-
-		private void EditPage_Unloaded(object sender, RoutedEventArgs e)
-		{
-			if (!viewModel.IsEnabled) {
-				return;
-			}
-			// make sure to unsubscribe the events to avoid memory leak!!!
-			model.PropertyChanged -= Model_PropertyChanged;
-			viewModel.EditManager.PropertyChanged -= EditManager_PropertyChanged;
 		}
 
 		private void EditManager_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -63,5 +42,15 @@ namespace PlotDigitizer.App
 				RedoComboBox.SelectedIndex = 0;
 			}
 		}
+
+		private void EditPage_Unloaded(object sender, RoutedEventArgs e)
+		{
+			if (!viewModel.IsEnabled) {
+				return;
+			}
+			// make sure to unsubscribe the events to avoid memory leak!!!
+			viewModel.EditManager.PropertyChanged -= EditManager_PropertyChanged;
+		}
+
 	}
 }

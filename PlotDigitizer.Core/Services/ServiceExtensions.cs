@@ -15,7 +15,7 @@ namespace PlotDigitizer.Core
 				.AddTransient<RangePageViewModel>()
 				.AddTransient<AxisPageViewModel>()
 				.AddTransient<FilterPageViewModel>()
-				.AddSingleton<EditPageViewModel>() // TODO: this should be scoped, it's life cycle is in between every change in filtered image.
+				.AddScoped<EditPageViewModel>()
 				.AddTransient<DataPageViewModel>();
 		}
 

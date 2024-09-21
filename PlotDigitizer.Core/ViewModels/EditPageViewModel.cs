@@ -9,16 +9,14 @@ using System.Linq;
 namespace PlotDigitizer.Core
 {
 	// TODO: Clear Border checkbox, allowing user to decide.
-	// TODO: Bug! clearborder() won't work for the second time entering editpage without any change in filtered image!
 	public class EditPageViewModel : PageViewModelBase
 	{
-		private readonly IImageService imageService;
 		#region Properties
 
-		public EditManager<Image<Rgba, byte>> EditManager { get; set; } = new EditManager<Image<Rgba, byte>>();
+		public EditManager<Image<Rgba, byte>> EditManager { get; set; }
 		public Image<Rgba, byte> Image { get; set; }
-		public bool IsEnabled => Model != null && Model.FilteredImage != null;
 		public Model Model { get; private set; }
+		public bool IsEnabled => Model != null && Model.FilteredImage != null;
 		public IEnumerable<string> RedoList => EditManager?.TagList?.GetRange(EditManager.Index, EditManager.TagList.Count - EditManager.Index);
 		public IEnumerable<string> UndoList => EditManager?.TagList?.GetRange(0, EditManager.Index + 1).Reverse<string>();
 		public RelayCommand<int> RedoToCommand { get; set; }
@@ -33,14 +31,17 @@ namespace PlotDigitizer.Core
 			Name = "EditPage";
 			UndoToCommand = new RelayCommand<int>(UndoTo);
 			RedoToCommand = new RelayCommand<int>(RedoTo);
+			EditManager = new EditManager<Image<Rgba, byte>>();
 			EditManager.PropertyChanged += EditManager_PropertyChanged;
 		}
 
-		public EditPageViewModel(Model model, IImageService imageService) : this()
+		public EditPageViewModel(Model model, 
+			IImageService imageService) : this()
 		{
 			Model = model;
-			this.imageService = imageService;
-			model.PropertyChanged += Model_PropertyChanged;
+			var image = Model.FilteredImage; 
+			image = imageService.ClearBorder(image);
+			EditManager.Initialise(image);
 		}
 
 		#endregion Constructors
@@ -66,19 +67,6 @@ namespace PlotDigitizer.Core
 			}
 		}
 
-		/// <summary>
-		/// Do NOT initialise it when loading, so long as the <see cref="Model.FilteredImage"/> is unchanged, the previous editting is retained.
-		/// </summary>
-		private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-			if (e.PropertyName == nameof(Core.Model.FilteredImage)) {
-				if (Model.FilteredImage is null)
-					return;
-				OnPropertyChanged(nameof(IsEnabled));
-				var image = imageService.ClearBorder(Model.FilteredImage);
-				EditManager.Initialise(image);
-			}
-		}
 
 		private void RedoTo(int index)
 		{

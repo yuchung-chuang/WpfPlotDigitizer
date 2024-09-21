@@ -15,25 +15,22 @@ namespace PlotDigitizer.Core
 
 		#region Properties
 
-		public TObject CurrentObject => ObjectList[Index];
-		public string CurrentTag => TagList[Index];
-
 		[OnChangedMethod(nameof(OnIndexChanged))]
 		public int Index { get; private set; }
 
-		public bool IsInitialised => ObjectList != null;
-
 		[OnChangedMethod(nameof(OnObjectListChanged))]
 		public List<TObject> ObjectList { get; private set; }
-
-
+		
 		[OnChangedMethod(nameof(OnTagListChanged))]
 		public List<string> TagList { get; private set; }
-
 		public RelayCommand<(TObject obj, string tag)> EditCommand { get; set; }
 		public RelayCommand<int> GoToCommand { get; private set; }
 		public RelayCommand RedoCommand { get; private set; }
 		public RelayCommand UndoCommand { get; private set; }
+		
+		public TObject CurrentObject => ObjectList[Index];
+		public string CurrentTag => TagList[Index];
+		public bool IsInitialised => ObjectList != null;
 
 		#endregion Properties
 
@@ -58,14 +55,8 @@ namespace PlotDigitizer.Core
 
 		public void Initialise(TObject _object)
 		{
-			ObjectList = new List<TObject>
-			{
-				_object,
-			};
-			TagList = new List<string>
-			{
-				"initialise",
-			};
+			ObjectList = [ _object ];
+			TagList = [ "initialise" ];
 			Index = 0;
 		}
 
