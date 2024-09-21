@@ -3,10 +3,10 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace PlotDigitizer.App
 {
-	// TODO: refactor editor and editmanager...
 	public partial class EditPage : UserControl
 	{
 		private EditPageViewModel viewModel;
@@ -21,12 +21,25 @@ namespace PlotDigitizer.App
 
 		private void EditPage_Loaded(object sender, RoutedEventArgs e)
 		{
-			viewModel = DataContext as EditPageViewModel;
-			model = viewModel.Model;
-
-			if (!viewModel.IsEnabled) {
+			if (DataContext is not EditPageViewModel viewModel)
 				return;
-			}
+			if (!viewModel.IsEnabled) 
+				return;
+			this.viewModel = viewModel;
+			this.model = viewModel.Model;
+
+			// must attach binding to the hosting window, otherwise the key events won't be captuered if this page is not in focus.
+			new RelayCommandBinding
+			{
+				ApplicationCommand = ApplicationCommands.Undo,
+				Command = viewModel.EditManager.UndoCommand,
+			}.Attach(Window.GetWindow(this));
+			new RelayCommandBinding
+			{
+				ApplicationCommand = ApplicationCommands.Redo,
+				Command = viewModel.EditManager.RedoCommand,
+			}.Attach(Window.GetWindow(this));
+
 			if (!viewModel.EditManager.IsInitialised) {
 				editor.Initialise(model.FilteredImage);
 			} else {
