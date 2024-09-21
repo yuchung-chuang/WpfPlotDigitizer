@@ -40,6 +40,7 @@ namespace PlotDigitizer.App
 		public static readonly DependencyProperty SelectedGestureProperty = DependencyProperty.Register("SelectedGesture", typeof(MouseGesture), typeof(Editor), new PropertyMetadata(new MouseGesture(MouseAction.LeftDoubleClick)));
 
 		private EditManager<Image<Rgba, byte>> editManager;
+		private Window mainWindow;
 
 		#endregion Fields
 
@@ -145,10 +146,9 @@ namespace PlotDigitizer.App
 
 		private void Editor_Loaded(object sender, RoutedEventArgs e)
 		{
-			// TODO: does this has to depend on mainwindow?
-			var mainWindow = Application.Current.MainWindow;
+			mainWindow = Window.GetWindow(this);
 			mainWindow.PreviewKeyDown += MainWindow_KeyDown;
-
+			
 			editManager = EditManager; // keep a reference for unsubscription when unloading
 			editManager.PropertyChanged += EditManager_PropertyChanged;
 
@@ -158,11 +158,7 @@ namespace PlotDigitizer.App
 
 		private void Editor_Unloaded(object sender, RoutedEventArgs e)
 		{
-			if (!(Application.Current.MainWindow is Window mainWindow)) {
-				return;
-			}
 			mainWindow.PreviewKeyDown -= MainWindow_KeyDown;
-
 			editManager.PropertyChanged -= EditManager_PropertyChanged;
 		}
 
