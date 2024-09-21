@@ -46,22 +46,17 @@ namespace PlotDigitizer.App
 
 			serviceProvider = services.BuildServiceProvider();
 
-			var splashWindow = new SplashWindow();
-			splashWindow.Show();
-						
+			var windowService = serviceProvider.GetRequiredService<IWindowService>();
+			windowService.ShowSplashWindow();
+			
 			logger = serviceProvider.GetService<ILogger<App>>();
 			logger?.LogInformation($"{this} started.");
 
 			// initialise mainwindow before testing, so all viewmodels are ready for testing
 			// need to initialise mainwindow before closing splashWindow, otherwise the application shuts down immidiately as at one moment there is no window at all.
 			var mainViewModel = serviceProvider.GetRequiredService<MainViewModel>();
-
-			MainWindow = new MainWindow
-			{
-				DataContext = mainViewModel,
-			};
-			MainWindow.Show();
-			splashWindow.Close();
+			windowService.ShowMainWindow(mainViewModel);
+			windowService.CloseSplashWindow();
 			logger?.LogInformation("MainWindow Loaded.");
 
 			var pageService = serviceProvider.GetRequiredService<IPageService>();
