@@ -1,6 +1,6 @@
 ﻿namespace PlotDigitizer.Core
 {
-	public class DataTypeNode : ModelNode<DataType>
+	public class DataTypeNode : UpdatableNode<DataType>
 	{
 		public DataTypeNode()
 		{

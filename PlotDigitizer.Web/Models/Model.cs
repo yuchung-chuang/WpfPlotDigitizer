@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace PlotDigitizer.Web.Models
 {
-	public class Model : ModelFacade
+	public class Model : UpdatableModel
 	{
 		public double DisplayWidth { get; } = 500d;
 		public Setting Setting { get; }

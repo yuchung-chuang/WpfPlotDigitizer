@@ -2,7 +2,7 @@
 
 namespace PlotDigitizer.Core
 {
-	public class FilterMaxNode : ModelNode<Rgba>
+	public class FilterMaxNode : UpdatableNode<Rgba>
 	{
 		private readonly InputImageNode inputImage;
 

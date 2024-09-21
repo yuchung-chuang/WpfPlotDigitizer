@@ -25,8 +25,8 @@ namespace PlotDigitizer.Core.Tests
 				new System.Windows.Application();
 
 			var services = new ServiceCollection();
-			services.AddSingleton<Model, ModelFacade>()
-				.AddSingleton<Setting, SettingFacade>()
+			services.AddSingleton<Model, UpdatableModel>()
+				.AddSingleton<Setting, UpdatableSetting>()
 				.AddModel();
 
 			provider = services.BuildServiceProvider();

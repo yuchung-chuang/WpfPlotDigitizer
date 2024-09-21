@@ -2,7 +2,7 @@
 
 namespace PlotDigitizer.Core
 {
-	public abstract class ModelNode<TData>
+	public abstract class UpdatableNode<TData>
 	{
 		public virtual bool IsUpdated { get; set; } = false;
 		public TData Value { get; set; }

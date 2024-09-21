@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace PlotDigitizer.Core
 {
-	public class SettingFacade : Setting
+	public class UpdatableSetting : Setting
 	{
 		private readonly AxisLimitNode axisLimit;
 		private readonly AxisLogBaseNode axisLogBase;
@@ -13,7 +13,12 @@ namespace PlotDigitizer.Core
 		private readonly FilterMaxNode filterMax;
 		private readonly DataTypeNode dataType;
 
-		public SettingFacade(AxisLimitNode axisLimit, AxisLogBaseNode axisLogBase, AxisLocationNode axisLocation, FilterMinNode filterMin, FilterMaxNode filterMax, DataTypeNode dataType)
+		public UpdatableSetting(AxisLimitNode axisLimit, 
+			AxisLogBaseNode axisLogBase, 
+			AxisLocationNode axisLocation, 
+			FilterMinNode filterMin, 
+			FilterMaxNode filterMax, 
+			DataTypeNode dataType)
 		{
 			this.axisLimit = axisLimit;
 			this.axisLogBase = axisLogBase;
@@ -22,12 +27,19 @@ namespace PlotDigitizer.Core
 			this.filterMax = filterMax;
 			this.dataType = dataType;
 
-			axisLimit.Updated += (s, e) => RaisePropetyChanged(nameof(AxisLimit));
-			axisLogBase.Updated += (s, e) => RaisePropetyChanged(nameof(AxisLogBase));
-			axisLocation.Updated += (s, e) => RaisePropetyChanged(nameof(AxisLocation));
-			filterMin.Updated += (s, e) => RaisePropetyChanged(nameof(FilterMin));
-			filterMax.Updated += (s, e) => RaisePropetyChanged(nameof(FilterMax));
-			dataType.Updated += (s, e) => RaisePropetyChanged(nameof(DataType));
+			axisLimit.Updated += (s, e) => RaisePropertyChanged(nameof(AxisLimit));
+			axisLogBase.Updated += (s, e) => RaisePropertyChanged(nameof(AxisLogBase));
+			axisLocation.Updated += (s, e) => RaisePropertyChanged(nameof(AxisLocation));
+			filterMin.Updated += (s, e) => RaisePropertyChanged(nameof(FilterMin));
+			filterMax.Updated += (s, e) => RaisePropertyChanged(nameof(FilterMax));
+			dataType.Updated += (s, e) => RaisePropertyChanged(nameof(DataType));
+
+			axisLimit.Outdated+= (s, e) => RaisePropertyOutdated(nameof(AxisLimit));
+			axisLogBase.Outdated+= (s, e) => RaisePropertyOutdated(nameof(AxisLogBase));
+			axisLocation.Outdated+= (s, e) => RaisePropertyOutdated(nameof(AxisLocation));
+			filterMin.Outdated+= (s, e) => RaisePropertyOutdated(nameof(FilterMin));
+			filterMax.Outdated+= (s, e) => RaisePropertyOutdated(nameof(FilterMax));
+			dataType.Outdated+= (s, e) => RaisePropertyOutdated(nameof(DataType));
 		}
 
 		public override RectangleD AxisLimit

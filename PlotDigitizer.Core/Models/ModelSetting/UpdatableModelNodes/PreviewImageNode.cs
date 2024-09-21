@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace PlotDigitizer.Core
 {
-	public class PreviewImageNode : ModelNode<Image<Rgba, byte>>
+	public class PreviewImageNode : UpdatableNode<Image<Rgba, byte>>
 	{
 		private readonly EdittedImageNode edittedImage;
 		private readonly DataTypeNode dataType;

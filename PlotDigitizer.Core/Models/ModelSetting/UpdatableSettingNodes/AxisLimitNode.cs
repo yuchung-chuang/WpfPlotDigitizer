@@ -1,21 +1,19 @@
 ﻿namespace PlotDigitizer.Core
 {
-	public class AxisLogBaseNode : ModelNode<PointD>
+	public class AxisLimitNode : UpdatableNode<RectangleD>
 	{
-
 		private readonly InputImageNode inputImage;
 
-		public AxisLogBaseNode(InputImageNode inputImage)
+		public AxisLimitNode(InputImageNode inputImage)
 		{
 			this.inputImage = inputImage;
 			inputImage.Updated += (s, e) => OnOutdated();
-			IsUpdated = true;
 		}
 
 		public override void Update()
 		{
-			base.Update();
 			Value = default;
+			base.Update();
 		}
 	}
 }

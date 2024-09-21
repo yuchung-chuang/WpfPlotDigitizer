@@ -3,7 +3,7 @@ using Emgu.CV.Structure;
 
 namespace PlotDigitizer.Core
 {
-	public class CroppedImageNode : ModelNode<Image<Rgba, byte>>
+	public class CroppedImageNode : UpdatableNode<Image<Rgba, byte>>
 	{
 		private readonly InputImageNode inputImage;
 		private readonly AxisLocationNode axisLocation;

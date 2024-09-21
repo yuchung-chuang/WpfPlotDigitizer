@@ -1,21 +1,21 @@
-﻿using System.Drawing;
-
-namespace PlotDigitizer.Core
+﻿namespace PlotDigitizer.Core
 {
-	public class AxisLocationNode : ModelNode<RectangleD>
+	public class AxisLogBaseNode : UpdatableNode<PointD>
 	{
+
 		private readonly InputImageNode inputImage;
 
-		public AxisLocationNode(InputImageNode inputImage)
-        {
+		public AxisLogBaseNode(InputImageNode inputImage)
+		{
 			this.inputImage = inputImage;
 			inputImage.Updated += (s, e) => OnOutdated();
+			IsUpdated = true;
 		}
 
 		public override void Update()
 		{
-			Value = default;
 			base.Update();
+			Value = default;
 		}
 	}
 }

@@ -2,7 +2,7 @@
 
 namespace PlotDigitizer.Core
 {
-	public class DataNode : ModelNode<IEnumerable<PointD>>
+	public class DataNode : UpdatableNode<IEnumerable<PointD>>
 	{
 		private readonly PreviewImageNode previewImage;
 		private readonly AxisLimitNode axisLimit;

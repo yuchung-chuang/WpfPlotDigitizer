@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace PlotDigitizer.Core
 {
-	public class ModelFacade : Model
+	public class UpdatableModel : Model
 	{
 		private readonly InputImageNode inputImage;
 		private readonly CroppedImageNode croppedImage;
@@ -23,13 +23,13 @@ namespace PlotDigitizer.Core
 		public override Image<Rgba, byte> CroppedImage
 		{
 			get => croppedImage.Get();
-			protected set => croppedImage.Set(value);
+			set => croppedImage.Set(value);
 		}
 
 		public override Image<Rgba, byte> FilteredImage
 		{
 			get => filteredImage.Get();
-			protected set => filteredImage.Set(value);
+			set => filteredImage.Set(value);
 		}
 
 		public override Image<Rgba, byte> EdittedImage
@@ -41,16 +41,16 @@ namespace PlotDigitizer.Core
 		public override Image<Rgba, byte> PreviewImage
 		{
 			get => previewImage.Get();
-			protected set => previewImage.Set(value);
+			set => previewImage.Set(value);
 		}
 
 		public override IEnumerable<PointD> Data
 		{
 			get => data.Get();
-			protected set => data.Set(value);
+			set => data.Set(value);
 		}
 
-		public ModelFacade(InputImageNode inputImage,
+		public UpdatableModel(InputImageNode inputImage,
 			CroppedImageNode croppedImage,
 			FilteredImageNode filteredImage,
 			EdittedImageNode edittedImage,
@@ -65,12 +65,18 @@ namespace PlotDigitizer.Core
 			this.data = data;
 
 			inputImage.Updated += (s, e) => RaisePropertyChanged(nameof(InputImage));
+			inputImage.Outdated += (s, e) => RaisePropertyOutdated(nameof(InputImage));
 			croppedImage.Updated += (s, e) => RaisePropertyChanged(nameof(CroppedImage));
+			croppedImage.Outdated += (s, e) => RaisePropertyOutdated(nameof(CroppedImage));
 			// the initialisation of editmanager depends on the update of filteredImage!
 			filteredImage.Updated += (s, e) => RaisePropertyChanged(nameof(FilteredImage));
+			filteredImage.Outdated += (s, e) => RaisePropertyOutdated(nameof(FilteredImage));
 			edittedImage.Updated += (s, e) => RaisePropertyChanged(nameof(EdittedImage));
+			edittedImage.Outdated += (s, e) => RaisePropertyOutdated(nameof(EdittedImage));
 			previewImage.Updated += (s, e) => RaisePropertyChanged(nameof(PreviewImage));
+			previewImage.Outdated += (s, e) => RaisePropertyOutdated(nameof(PreviewImage));
 			data.Updated += (s, e) => RaisePropertyChanged(nameof(Data));
+			data.Outdated += (s, e) => RaisePropertyOutdated(nameof(Data));
 		}
 	}
 }

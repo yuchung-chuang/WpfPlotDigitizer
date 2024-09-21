@@ -3,7 +3,7 @@ using Emgu.CV.Structure;
 
 namespace PlotDigitizer.Core
 {
-	public class EdittedImageNode : ModelNode<Image<Rgba, byte>>
+	public class EdittedImageNode : UpdatableNode<Image<Rgba, byte>>
 	{
 		private readonly FilteredImageNode filteredImage;
 

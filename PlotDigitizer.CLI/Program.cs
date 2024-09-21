@@ -36,8 +36,8 @@ namespace PlotDigitizer.CLI
 			var rootCommand = ConfigureCommand();
 
 			var services = new ServiceCollection()
-					.AddSingleton<Model, ModelFacade>()
-					.AddSingleton<Setting, SettingFacade>()
+					.AddSingleton<Model, UpdatableModel>()
+					.AddSingleton<Setting, UpdatableSetting>()
 					.AddViewModels()
 					.AddModel()
 				

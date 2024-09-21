@@ -3,6 +3,6 @@ using Emgu.CV.Structure;
 
 namespace PlotDigitizer.Core
 {
-	public class InputImageNode : ModelNode<Image<Rgba, byte>>
+	public class InputImageNode : UpdatableNode<Image<Rgba, byte>>
 	{ }
 }

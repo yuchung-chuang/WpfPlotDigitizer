@@ -1,11 +1,13 @@
-﻿namespace PlotDigitizer.Core
+﻿using System.Drawing;
+
+namespace PlotDigitizer.Core
 {
-	public class AxisLimitNode : ModelNode<RectangleD>
+	public class AxisLocationNode : UpdatableNode<RectangleD>
 	{
 		private readonly InputImageNode inputImage;
 
-		public AxisLimitNode(InputImageNode inputImage)
-		{
+		public AxisLocationNode(InputImageNode inputImage)
+        {
 			this.inputImage = inputImage;
 			inputImage.Updated += (s, e) => OnOutdated();
 		}
