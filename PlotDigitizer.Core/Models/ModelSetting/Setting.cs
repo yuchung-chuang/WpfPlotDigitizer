@@ -17,8 +17,9 @@ namespace PlotDigitizer.Core
 		public virtual DataType DataType { get; set; }
 
 		public event PropertyChangedEventHandler PropertyChanged;
-
-		public void RaisePropetyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		public event EventHandler<string> PropertyOutdated;
+		public void RaisePropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		public void RaisePropertyOutdated(string propertyName) => PropertyOutdated?.Invoke(this, propertyName);
 
 		public Setting Copy()
 		{
