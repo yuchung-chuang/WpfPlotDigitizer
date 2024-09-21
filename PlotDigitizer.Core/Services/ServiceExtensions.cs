@@ -22,8 +22,8 @@ namespace PlotDigitizer.Core
 		public static IServiceCollection AddModel(this IServiceCollection services)
 		{
 			return services
-				.AddSingleton<Model, ModelFacade>()
-				.AddSingleton<Setting, SettingFacade>()
+				.AddSingleton<Model, UpdatableModel>()
+				.AddSingleton<Setting, UpdatableSetting>()
 				.AddSingleton<InputImageNode>()
 				.AddSingleton<CroppedImageNode>()
 				.AddSingleton<FilteredImageNode>()
