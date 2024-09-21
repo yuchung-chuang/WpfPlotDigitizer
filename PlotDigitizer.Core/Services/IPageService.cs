@@ -9,8 +9,10 @@ namespace PlotDigitizer.Core
 		PageViewModelBase CurrentPage { get; set; }
 		int CurrentPageIndex { get; }
 		ICommand NavigateCommand { get; }
-		RelayCommand NextPageCommand { get; }
-		RelayCommand PrevPageCommand { get; }
+		ICommand NextPageCommand { get; }
+		ICommand PrevPageCommand { get; }
+
+		event EventHandler<int> Navigated;
 
 		void Initialise();
 	}

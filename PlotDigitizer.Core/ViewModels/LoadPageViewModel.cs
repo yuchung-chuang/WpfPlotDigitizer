@@ -76,8 +76,8 @@ namespace PlotDigitizer.Core
 			Model.InputImage = image;
 
 			// automatically go to the next page when the image is loaded.
-			if (pageService.NextPageCommand.CanExecute()) {
-				pageService.NextPageCommand.Execute();
+			if (pageService.NextPageCommand.CanExecute(null)) {
+				pageService.NextPageCommand.Execute(null);
 			}
 		}
 

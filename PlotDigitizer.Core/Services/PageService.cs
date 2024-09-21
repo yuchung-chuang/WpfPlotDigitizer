@@ -10,12 +10,14 @@ namespace PlotDigitizer.Core
 	{
 		private readonly IServiceScope serviceScope;
 		private readonly IServiceProvider serviceProvider;
+		private readonly RelayCommand nextPageCommand;
+		private readonly RelayCommand prevPageCommand;
 
 		public event PropertyChangedEventHandler PropertyChanged;
-
-		public ICommand NavigateCommand { get; private set; }
-		public RelayCommand NextPageCommand { get; private set; }
-		public RelayCommand PrevPageCommand { get; private set; }
+		public event EventHandler<int> Navigated;
+		public ICommand NavigateCommand { get; }
+		public ICommand NextPageCommand => nextPageCommand; 
+		public ICommand PrevPageCommand => prevPageCommand; 
 		public static List<Type> Pages { get; private set; } = [
 				typeof(LoadPageViewModel),
 				typeof(RangePageViewModel),
@@ -30,8 +32,8 @@ namespace PlotDigitizer.Core
         public PageService(IServiceScopeFactory serviceScopeFactory)
         {
 			NavigateCommand = new RelayCommand<Type>(NavigateTo);
-			NextPageCommand = new RelayCommand(NextPage, CanNextPage);
-			PrevPageCommand = new RelayCommand(PrevPage, CanPrevPage);
+			nextPageCommand = new RelayCommand(NextPage, CanNextPage);
+			prevPageCommand = new RelayCommand(PrevPage, CanPrevPage);
 
 			serviceScope = serviceScopeFactory.CreateScope();
 			serviceProvider = serviceScope.ServiceProvider;
@@ -49,8 +51,9 @@ namespace PlotDigitizer.Core
 			newPage.Enter();
 			CurrentPage = newPage;
 
-			NextPageCommand.RaiseCanExecuteChanged();
-			PrevPageCommand.RaiseCanExecuteChanged();
+			nextPageCommand.RaiseCanExecuteChanged();
+			prevPageCommand.RaiseCanExecuteChanged();
+			Navigated?.Invoke(this, CurrentPageIndex);
 		}
 
 		private void NavigateTo(int index) => NavigateTo(Pages[index]);
