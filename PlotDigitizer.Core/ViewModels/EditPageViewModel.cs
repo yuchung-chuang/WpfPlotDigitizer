@@ -9,6 +9,7 @@ using System.Linq;
 namespace PlotDigitizer.Core
 {
 	// TODO: Clear Border checkbox, allowing user to decide.
+	// TODO: Bug! clearborder() won't work for the second time entering editpage without any change in filtered image!
 	public class EditPageViewModel : PageViewModelBase
 	{
 		private readonly IImageService imageService;

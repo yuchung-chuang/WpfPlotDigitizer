@@ -6,6 +6,7 @@ using System.Windows.Controls;
 
 namespace PlotDigitizer.App
 {
+	// TODO: refactor editor and editmanager...
 	public partial class EditPage : UserControl
 	{
 		private EditPageViewModel viewModel;
