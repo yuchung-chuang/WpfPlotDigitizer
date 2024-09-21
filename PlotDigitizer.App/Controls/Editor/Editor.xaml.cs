@@ -145,6 +145,7 @@ namespace PlotDigitizer.App
 
 		private void Editor_Loaded(object sender, RoutedEventArgs e)
 		{
+			// TODO: does this has to depend on mainwindow?
 			var mainWindow = Application.Current.MainWindow;
 			mainWindow.PreviewKeyDown += MainWindow_KeyDown;
 

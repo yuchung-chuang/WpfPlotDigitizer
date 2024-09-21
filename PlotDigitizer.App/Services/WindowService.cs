@@ -9,20 +9,6 @@ namespace PlotDigitizer.App
 	public class WindowService : IWindowService
     {
         private readonly Collection<Window> openedWindows = [];
-		private SplashWindow splashWindow;
-
-		public void ShowMainWindow(ViewModelBase viewModel)
-        {
-            var window = new MainWindow
-            {
-                DataContext = viewModel,
-            };
-			openedWindows.Add(window);
-			window.Closed += (sender, e) => Window_Closed(sender, viewModel);
-
-			viewModel.Enter();
-			window.Show();
-		}
 
         public void ShowWindow(ViewModelBase viewModel)
         {
@@ -79,17 +65,6 @@ namespace PlotDigitizer.App
             window.DialogResult = dialogResult;
             window.Close();
             return true;
-        }
-
-		public void ShowSplashWindow()
-		{
-			splashWindow = new SplashWindow();
-			splashWindow.Show();
-		}
-
-        public void CloseSplashWindow()
-        {
-            splashWindow?.Close();
         }
 	}
 }
