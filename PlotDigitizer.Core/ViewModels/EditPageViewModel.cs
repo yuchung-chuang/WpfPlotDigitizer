@@ -11,7 +11,6 @@ using System.Xml.Linq;
 
 namespace PlotDigitizer.Core
 {
-	// TODO: Clear Border checkbox, allowing user to decide.
 	public class EditPageViewModel : PageViewModelBase, IDisposable
 	{
 		private readonly IImageService imageService;
