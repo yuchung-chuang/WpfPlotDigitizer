@@ -59,8 +59,8 @@
 		<StackPanel x:Name="toolbar"
 					DockPanel.Dock="Top"
 					Orientation="Horizontal"
-					Height="30"
-					Margin="20,0">
+					HorizontalAlignment="Center"
+					Height="30">
 			<StackPanel.Resources>
 				<Style TargetType="RadioButton"
 					   BasedOn="{StaticResource {x:Type ToggleButton}}">

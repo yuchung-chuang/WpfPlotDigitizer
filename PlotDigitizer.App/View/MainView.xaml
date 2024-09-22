@@ -142,9 +142,10 @@
 				CornerRadius="8,0,0,0">
 			<DockPanel>
 				<Label DockPanel.Dock="Top"
-					   Margin="18"
+					   Margin="18,18,18,5"
 					   HorizontalAlignment="Left"
 					   VerticalAlignment="Top"
+					   Foreground="Black"
 					   FontSize="24"
 					   FontWeight="Bold"
 					   Content="{Binding PageService.CurrentPage.Name}" />
