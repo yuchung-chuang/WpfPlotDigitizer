@@ -279,7 +279,8 @@ namespace PlotDigitizer.Core
 
 		public IEnumerable<PointD> GetDiscretePoints(Image<Rgba, byte> image)
 		{
-			if (image is null) return null;
+			if (image is null) 
+				return null;
 			var points = new List<PointD>();
 			var binary = image.InRange(new Rgba(0, 0, 0, 1), new Rgba(255, 255, 255, 255));
 			using var contours = new VectorOfVectorOfPoint();

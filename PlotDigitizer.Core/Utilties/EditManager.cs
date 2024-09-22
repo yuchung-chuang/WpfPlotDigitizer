@@ -8,7 +8,7 @@ using System.Security.Cryptography;
 
 namespace PlotDigitizer.Core
 {
-	public class EditManager<TObject> : INotifyPropertyChanged
+	public class EditManager<TObject> : IEditService<TObject>, INotifyPropertyChanged
 	{
 		#region Events
 
