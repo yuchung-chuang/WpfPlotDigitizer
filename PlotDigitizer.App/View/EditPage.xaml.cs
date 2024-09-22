@@ -10,7 +10,8 @@ namespace PlotDigitizer.App
 	public partial class EditPage : UserControl
 	{
 		private EditPageViewModel viewModel;
-		private Model model;
+		private RelayCommandBinding undoCommandBinding;
+		private RelayCommandBinding redoCommandBinding;
 
 		public EditPage()
 		{
@@ -26,26 +27,22 @@ namespace PlotDigitizer.App
 			if (!viewModel.IsEnabled) 
 				return;
 			this.viewModel = viewModel;
-			this.model = viewModel.Model;
+			viewModel.EditManager.PropertyChanged += EditManager_PropertyChanged;
 
 			// must attach binding to the hosting window, otherwise the key events won't be captuered if this page is not in focus.
-			new RelayCommandBinding
+			undoCommandBinding = new RelayCommandBinding
 			{
 				ApplicationCommand = ApplicationCommands.Undo,
-				Command = viewModel.EditManager.UndoCommand,
-			}.Attach(Window.GetWindow(this));
-			new RelayCommandBinding
+				Command = viewModel.UndoCommand,
+			};
+			undoCommandBinding.Attach(Window.GetWindow(this));
+
+			redoCommandBinding = new RelayCommandBinding
 			{
 				ApplicationCommand = ApplicationCommands.Redo,
-				Command = viewModel.EditManager.RedoCommand,
-			}.Attach(Window.GetWindow(this));
-
-			if (!viewModel.EditManager.IsInitialised) {
-				editor.Initialise(model.FilteredImage);
-			} else {
-				editor.Initialise(editor.EditManager.CurrentObject.Copy());
-			}
-			viewModel.EditManager.PropertyChanged += EditManager_PropertyChanged;
+				Command = viewModel.RedoCommand,
+			};
+			redoCommandBinding.Attach(Window.GetWindow(this));
 		}
 
 		private void EditManager_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -58,10 +55,13 @@ namespace PlotDigitizer.App
 
 		private void EditPage_Unloaded(object sender, RoutedEventArgs e)
 		{
-			if (!viewModel.IsEnabled) {
+			// make sure to unsubscribe the events to avoid memory leak!!!
+			undoCommandBinding?.Detach();
+			redoCommandBinding?.Detach();
+			
+			if (viewModel is null || !viewModel.IsEnabled) {
 				return;
 			}
-			// make sure to unsubscribe the events to avoid memory leak!!!
 			viewModel.EditManager.PropertyChanged -= EditManager_PropertyChanged;
 		}
 

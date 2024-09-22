@@ -105,7 +105,7 @@
 						ToolTip="Undo"
 						Padding="6,5"
 						Content="{StaticResource undo}"
-						Command="{Binding EditManager.UndoCommand}" />
+						Command="{Binding UndoCommand}" />
 				<ComboBox Name="UndoComboBox"
 						  Margin="0,0,5,0"
 						  ItemsSource="{Binding UndoList}">
@@ -120,7 +120,7 @@
 						ToolTip="Redo"
 					Padding="6,5"
 					Content="{StaticResource redo}"
-						Command="{Binding EditManager.RedoCommand}" />
+						Command="{Binding RedoCommand}" />
 				<ComboBox Name="RedoComboBox"
 						  ItemsSource="{Binding RedoList}">
 					<i:Interaction.Triggers>

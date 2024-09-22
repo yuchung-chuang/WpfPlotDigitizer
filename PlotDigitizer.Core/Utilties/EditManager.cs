@@ -1,7 +1,10 @@
 ﻿using PropertyChanged;
 
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Security.Cryptography;
 
 namespace PlotDigitizer.Core
 {
@@ -15,18 +18,14 @@ namespace PlotDigitizer.Core
 
 		#region Properties
 
-		[OnChangedMethod(nameof(OnIndexChanged))]
 		public int Index { get; private set; }
 
-		[OnChangedMethod(nameof(OnObjectListChanged))]
-		public List<TObject> ObjectList { get; private set; }
+		public ObservableCollection<TObject> ObjectList { get; private set; }
 		
-		[OnChangedMethod(nameof(OnTagListChanged))]
-		public List<string> TagList { get; private set; }
-		public RelayCommand<(TObject obj, string tag)> EditCommand { get; set; }
-		public RelayCommand<int> GoToCommand { get; private set; }
-		public RelayCommand RedoCommand { get; private set; }
-		public RelayCommand UndoCommand { get; private set; }
+		/// <summary>
+		/// The tag to indicate editting command
+		/// </summary>
+		public ObservableCollection<string> TagList { get; private set; }
 		
 		public TObject CurrentObject => ObjectList[Index];
 		public string CurrentTag => TagList[Index];
@@ -35,19 +34,16 @@ namespace PlotDigitizer.Core
 		#endregion Properties
 
 		#region Constructors
+		public EditManager()
+		{
+			
+		}
 
 		public EditManager(TObject _object) : this()
 		{
 			Initialise(_object);
 		}
 
-		public EditManager()
-		{
-			UndoCommand = new RelayCommand(Undo, CanUndo);
-			RedoCommand = new RelayCommand(Redo, CanRedo);
-			GoToCommand = new RelayCommand<int>(GoTo, CanGoTo);
-			EditCommand = new RelayCommand<(TObject, string)>(Edit, CanEdit);
-		}
 
 		#endregion Constructors
 
@@ -60,45 +56,39 @@ namespace PlotDigitizer.Core
 			Index = 0;
 		}
 
-		protected virtual bool CanEdit((TObject obj, string tag) arg) => true;
+		public virtual bool CanEdit((TObject obj, string tag) arg) => IsInitialised;
 
-		protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		public bool CanGoTo(int targetIndex) => IsInitialised && targetIndex >= 0 && targetIndex < TagList.Count;
 
-		private bool CanGoTo(int targetIndex) => targetIndex >= 0 && targetIndex < TagList.Count;
+		public bool CanRedo() => IsInitialised && Index < (ObjectList?.Count ?? 0) - 1;
 
-		private bool CanRedo() => Index < (ObjectList?.Count ?? 0) - 1;
+		public bool CanUndo() => IsInitialised && Index > 0;
 
-		private bool CanUndo() => Index > 0;
-
-		private void Edit((TObject obj, string tag) edit)
+		public void Edit((TObject obj, string tag) edit)
 		{
-			ObjectList.RemoveRange(Index + 1, ObjectList.Count - Index - 1);
+			var i = Index + 1;
+			while (ObjectList.Count > i) {
+				ObjectList.RemoveAt(i);
+			}
 			ObjectList.Add(edit.obj);
-			OnPropertyChanged(nameof(ObjectList));
 
-			TagList.RemoveRange(Index + 1, TagList.Count - Index - 1);
+			while (TagList.Count > i) {
+				TagList.RemoveAt(i);
+			}
 			TagList.Add(edit.tag);
-			OnPropertyChanged(nameof(TagList));
 
 			Index++;
 		}
 
-		private void GoTo(int targetIndex) => Index = targetIndex;
-
-		private void OnIndexChanged()
+		public void GoTo(int targetIndex) => Index = targetIndex;
+		public void Redo() => Index++;
+		public void Undo()
 		{
-			UndoCommand.RaiseCanExecuteChanged();
-			RedoCommand.RaiseCanExecuteChanged();
+			Index--;
+			Debug.WriteLine($"EditManager({this.GetHashCode()}) Index={Index}");
 		}
 
-		private void OnObjectListChanged() => RedoCommand.RaiseCanExecuteChanged();
-
-		private void OnTagListChanged() => GoToCommand.RaiseCanExecuteChanged();
-
-		private void Redo() => Index++;
-
-		private void Undo() => Index--;
-
+		protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		#endregion Methods
 	}
 }

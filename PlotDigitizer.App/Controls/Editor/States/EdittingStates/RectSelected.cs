@@ -32,8 +32,8 @@ namespace PlotDigitizer.App
 				(int)Math.Round(selectRect.Height));
 			Image.EraseImage(rect);
 			var image = Image.Copy();
-			if (EditManager.EditCommand.CanExecute((image, "Delete rectangle region"))) {
-				EditManager.EditCommand.Execute((image, "Delete rectangle region"));
+			if (EditManager.CanEdit((image, "Delete rectangle region"))) {
+				EditManager.Edit((image, "Delete rectangle region"));
 			}
 			editor.EdittingState = NotEditting;
 		}

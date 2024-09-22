@@ -7,6 +7,7 @@ using PropertyChanged;
 
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -40,7 +41,7 @@ namespace PlotDigitizer.App
 		public static readonly DependencyProperty SelectedGestureProperty = DependencyProperty.Register("SelectedGesture", typeof(MouseGesture), typeof(Editor), new PropertyMetadata(new MouseGesture(MouseAction.LeftDoubleClick)));
 
 		private EditManager<Image<Rgba, byte>> editManager;
-		private Window mainWindow;
+		private Window window;
 
 		#endregion Fields
 
@@ -124,51 +125,32 @@ namespace PlotDigitizer.App
 
 		#region Methods
 
-		public void Initialise(Image<Rgba, byte> image) => Image = image.Copy();
-
-		public void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-		[SuppressPropertyChangedWarnings]
-		private static void OnEditorStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			if (!(d is Editor editor)) {
-				return;
-			}
-			editor.EditorState.Enter(editor);
-		}
-
-		private void EditManager_PropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-			if (e.PropertyName == nameof(EditManager.Index)) {
-				Image = EditManager.CurrentObject.Copy();
-			}
-		}
-
 		private void Editor_Loaded(object sender, RoutedEventArgs e)
 		{
-			mainWindow = Window.GetWindow(this);
-			mainWindow.PreviewKeyDown += MainWindow_KeyDown;
-			
-			editManager = EditManager; // keep a reference for unsubscription when unloading
-			editManager.PropertyChanged += EditManager_PropertyChanged;
+			if (!EditManager.IsInitialised) {
+				return;
+			}
+
+			editManager = EditManager;
+			Image = EditManager.CurrentObject.Copy();
+			EditManager.PropertyChanged += EditManager_PropertyChanged;
+
+			window = Window.GetWindow(this);
+			window.PreviewKeyDown += MainWindow_KeyDown;
 
 			EdittingState.PolySelecting.EditGesture = EditGesture;
 			EdittingState.PolySelecting.SelectedGesture = SelectedGesture;
 		}
 
-		private void Editor_Unloaded(object sender, RoutedEventArgs e)
+		private void EditManager_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			mainWindow.PreviewKeyDown -= MainWindow_KeyDown;
-			editManager.PropertyChanged -= EditManager_PropertyChanged;
-		}
-
-		/// <summary>
-		/// This makes sure <see cref="ImageControl.ActualWidth"/> is evaludated.
-		/// </summary>
-		private void ImageControl_SizeChanged(object sender, SizeChangedEventArgs e)
-		{
-			OnPropertyChanged(nameof(EraserSize));
-			OnPropertyChanged(nameof(PencilSize));
+			if (e.PropertyName == nameof(EditManager.CurrentObject)) {
+				Image = EditManager.CurrentObject.Copy();
+				Debug.WriteLine("CurrentObject changed.");
+			}
+			if (e.PropertyName == nameof(EditManager.Index)) {
+				Debug.WriteLine("Index changed.");
+			}
 		}
 
 		private void MainGrid_MouseDown(object sender, MouseButtonEventArgs e)
@@ -259,6 +241,33 @@ namespace PlotDigitizer.App
 					break;
 			}
 		}
+
+		/// <summary>
+		/// This makes sure <see cref="ImageControl.ActualWidth"/> is evaludated.
+		/// </summary>
+		private void ImageControl_SizeChanged(object sender, SizeChangedEventArgs e)
+		{
+			OnPropertyChanged(nameof(EraserSize));
+			OnPropertyChanged(nameof(PencilSize));
+		}
+		private void Editor_Unloaded(object sender, RoutedEventArgs e)
+		{
+			if (window is not null)
+				window.PreviewKeyDown -= MainWindow_KeyDown;
+			if (editManager is not null)
+				editManager.PropertyChanged -= EditManager_PropertyChanged;
+		}
+
+		[SuppressPropertyChangedWarnings]
+		private static void OnEditorModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			if (!(d is Editor editor)) {
+				return;
+			}
+			editor.EditorMode.Enter(editor);
+		}
+
+		public void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
 		#endregion Methods
 	}

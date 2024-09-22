@@ -34,8 +34,8 @@ namespace PlotDigitizer.App
 			Image.EraseImage(points);
 			// execute edit command
 			var image = Image.Copy();
-			if (EditManager.EditCommand.CanExecute((image, "Delete polygon region"))) {
-				EditManager.EditCommand.Execute((image, "Delete polygon region"));
+			if (EditManager.CanEdit((image, "Delete polygon region"))) {
+				EditManager.Edit((image, "Delete polygon region"));
 			}
 
 			editor.EdittingState = NotEditting;
