@@ -18,17 +18,17 @@ namespace PlotDigitizer.App
 			var index = booleans.IndexOf(true);
 			return index switch
 			{
-				0 => EditorState.PencilMode,
-				1 => EditorState.EraserMode,
-				2 => EditorState.RectMode,
-				3 => EditorState.PolyMode,
-				_ => EditorState.NoMode,
+				0 => EditorMode.PencilMode,
+				1 => EditorMode.EraserMode,
+				2 => EditorMode.RectMode,
+				3 => EditorMode.PolyMode,
+				_ => EditorMode.NoMode,
 			};
 		}
 
 		public override object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
 		{
-			if (!(value is EditorState state)) {
+			if (!(value is EditorMode state)) {
 				throw new NotImplementedException();
 			}
 			var booleans = new bool[4];

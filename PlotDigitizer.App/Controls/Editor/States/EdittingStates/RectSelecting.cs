@@ -12,7 +12,7 @@ namespace PlotDigitizer.App
 			base.MouseMove(editor, e);
 			var selectRect = editor.selectRect;
 			var Image = editor.Image;
-			var mouseDownPos = EditorState.RectMode.MouseDownPos;
+			var mouseDownPos = EditorMode.RectMode.MouseDownPos;
 			var position = e.GetPosition(editor.editCanvas);
 			if (position.X < 0) {
 				Canvas.SetLeft(selectRect, 0);

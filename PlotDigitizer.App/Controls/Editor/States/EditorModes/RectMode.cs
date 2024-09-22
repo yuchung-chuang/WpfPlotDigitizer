@@ -4,7 +4,7 @@ using System.Windows.Input;
 
 namespace PlotDigitizer.App
 {
-	public class RectMode : EditorState
+	public class RectMode : EditorMode
 	{
 		public Point MouseDownPos { get; set; }
 

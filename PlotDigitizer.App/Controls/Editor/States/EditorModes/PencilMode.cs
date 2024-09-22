@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace PlotDigitizer.App
 {
-	public class EraserMode : EditorState
+	public class PencilMode : EditorMode
 	{
 		public Stopwatch Stopwatch { get; } = new Stopwatch();
 
@@ -15,8 +15,8 @@ namespace PlotDigitizer.App
 			base.MouseDown(editor, e);
 			editor.mainGrid.CaptureMouse();
 			Stopwatch.Restart();
-			editor.EdittingState = EdittingState.Erasing;
-			EdittingState.Erasing.MouseMove(editor, e);
+			editor.EdittingState = EdittingState.Drawing;
+			EdittingState.Drawing.MouseMove(editor, e);
 		}
 	}
 }

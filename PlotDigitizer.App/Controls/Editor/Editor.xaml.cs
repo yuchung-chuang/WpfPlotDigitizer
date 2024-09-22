@@ -32,8 +32,8 @@ namespace PlotDigitizer.App
 		public static readonly DependencyProperty EditManagerProperty =
 			DependencyProperty.Register("EditManager", typeof(EditManager<Image<Rgba, byte>>), typeof(Editor), new PropertyMetadata(default));
 
-		public static readonly DependencyProperty EditorStateProperty =
-			DependencyProperty.Register("EditorState", typeof(EditorState), typeof(Editor), new PropertyMetadata(EditorState.NoMode, OnEditorStateChanged));
+		public static readonly DependencyProperty EditorModeProperty =
+			DependencyProperty.Register("EditorMode", typeof(EditorMode), typeof(Editor), new PropertyMetadata(EditorMode.NoMode, OnEditorModeChanged));
 
 		public static readonly DependencyProperty ImageProperty = DependencyProperty.Register("Image", typeof(Image<Rgba, byte>), typeof(Editor), new PropertyMetadata(default));
 
@@ -76,10 +76,10 @@ namespace PlotDigitizer.App
 			set => SetValue(EditManagerProperty, value);
 		}
 
-		public EditorState EditorState
+		public EditorMode EditorMode
 		{
-			get => (EditorState)GetValue(EditorStateProperty);
-			set => SetValue(EditorStateProperty, value);
+			get => (EditorMode)GetValue(EditorModeProperty);
+			set => SetValue(EditorModeProperty, value);
 		}
 
 		[OnChangedMethod(nameof(OnEdittingStateChanged))]
@@ -177,7 +177,7 @@ namespace PlotDigitizer.App
 				return;
 			}
 
-			EditorState.MouseDown(this, e);
+			EditorMode.MouseDown(this, e);
 			EdittingState.MouseDown(this, e);
 
 			if (BlockInteraction) {
@@ -187,13 +187,13 @@ namespace PlotDigitizer.App
 
 		private void MainGrid_MouseMove(object sender, MouseEventArgs e)
 		{
-			EditorState.MouseMove(this, e);
+			EditorMode.MouseMove(this, e);
 			EdittingState.MouseMove(this, e);
 		}
 
 		private void MainGrid_MouseUp(object sender, MouseButtonEventArgs e)
 		{
-			EditorState.MouseUp(this, e);
+			EditorMode.MouseUp(this, e);
 			EdittingState.MouseUp(this, e);
 		}
 
@@ -203,7 +203,7 @@ namespace PlotDigitizer.App
 				return;
 			}
 
-			EditorState.KeyDown(this, e);
+			EditorMode.KeyDown(this, e);
 			EdittingState.KeyDown(this, e);
 
 			if (BlockInteraction) {

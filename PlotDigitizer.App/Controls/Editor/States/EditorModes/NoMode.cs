@@ -1,6 +1,6 @@
 ﻿namespace PlotDigitizer.App
 {
-	public class NoMode : EditorState
+	public class NoMode : EditorMode
 	{
 	}
 }

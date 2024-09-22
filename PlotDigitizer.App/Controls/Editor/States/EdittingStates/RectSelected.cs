@@ -13,7 +13,7 @@ namespace PlotDigitizer.App
 		{
 			base.MouseDown(editor, e);
 			editor.EdittingState = NotEditting;
-			EditorState.RectMode.MouseDown(editor, e);
+			EditorMode.RectMode.MouseDown(editor, e);
 		}
 
 		public override void KeyDown(Editor editor, KeyEventArgs e)

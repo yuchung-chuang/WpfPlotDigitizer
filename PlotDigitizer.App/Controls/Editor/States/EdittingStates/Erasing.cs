@@ -15,7 +15,7 @@ namespace PlotDigitizer.App
 		public override void MouseMove(Editor editor, MouseEventArgs e)
 		{
 			base.MouseMove(editor, e);
-			var stopwatch = EditorState.EraserMode.Stopwatch;
+			var stopwatch = EditorMode.EraserMode.Stopwatch;
 
 			var centre = e.GetPosition(editor.editCanvas);
 			var size = new Vector(editor.eraserRect.ActualWidth, editor.eraserRect.ActualHeight);

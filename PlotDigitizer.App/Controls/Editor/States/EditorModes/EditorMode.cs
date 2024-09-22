@@ -1,6 +1,6 @@
 ﻿namespace PlotDigitizer.App
 {
-	public abstract class EditorState : State
+	public abstract class EditorMode : State
 	{
 		public static NoMode NoMode { get; } = new NoMode();
 		public static EraserMode EraserMode { get; } = new EraserMode();

@@ -3,7 +3,7 @@ using System.Windows.Media;
 
 namespace PlotDigitizer.App
 {
-	public class PolyMode : EditorState
+	public class PolyMode : EditorMode
 	{
 		public override void MouseDown(Editor editor, MouseButtonEventArgs e)
 		{
