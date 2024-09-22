@@ -10,7 +10,7 @@ namespace PlotDigitizer.Core
 	[Serializable]
 	public struct RectangleD(double left, double top, double width, double height)
 	{
-		public RectangleD(Rectangle maxRect) : this(maxRect.Left, maxRect.Top, maxRect.Width, maxRect.Height)
+		public RectangleD(Rectangle rect) : this(rect.Left, rect.Top, rect.Width, rect.Height)
 		{
 		}
 
@@ -50,7 +50,7 @@ namespace PlotDigitizer.Core
 			return hashCode;
 		}
 
-		public override string ToString() => $"RectangleD {{{Left},{Top},{Width},{Bottom}}}";
+		public override string ToString() => $"RectangleD {{{Left},{Top},{Width},{Height}}}";
 
 		public static bool operator ==(RectangleD left, RectangleD right)
 		{
