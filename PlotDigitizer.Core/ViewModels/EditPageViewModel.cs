@@ -15,8 +15,8 @@ namespace PlotDigitizer.Core
 	public class EditPageViewModel : PageViewModelBase, IDisposable
 	{
 		private readonly IImageService imageService;
-		#region Properties
 
+		#region Properties
 		public EditManager<Image<Rgba, byte>> EditManager { get; set; }
 		public Image<Rgba, byte> Image { get; set; }
 		public Model Model { get; private set; }
@@ -49,12 +49,13 @@ namespace PlotDigitizer.Core
 		public RelayCommand<int> GoToCommand { get; private set; }
 		public RelayCommand RedoCommand { get; private set; }
 		public RelayCommand UndoCommand { get; private set; }
+        public RelayCommand ClearBorderCommand { get; set; }
 
-		#endregion Properties
+        #endregion Properties
 
-		#region Constructors
+        #region Constructors
 
-		public EditPageViewModel()
+        public EditPageViewModel()
 		{
 			Name = "EditPage";
 			UndoCommand = new RelayCommand(Undo, CanUndo);
@@ -63,8 +64,11 @@ namespace PlotDigitizer.Core
 			EditCommand = new RelayCommand<(Image<Rgba, byte>, string)>(Edit, CanEdit);
 			UndoToCommand = new RelayCommand<int>(UndoTo);
 			RedoToCommand = new RelayCommand<int>(RedoTo);
+			ClearBorderCommand = new RelayCommand(ClearBorder);
+
 			EditManager = new EditManager<Image<Rgba, byte>>();
 		}
+
 
 		public EditPageViewModel(Model model,
 			IImageService imageService) : this()
@@ -83,8 +87,7 @@ namespace PlotDigitizer.Core
 				return;
 			
 			base.Enter();
-			var image = imageService.ClearBorder(Model.FilteredImage);
-			EditManager.Initialise(image);
+			EditManager.Initialise(Model.FilteredImage);
 			EditManager.PropertyChanged += EditManager_PropertyChanged;
 			EditManager.ObjectList.CollectionChanged += ObjectList_CollectionChanged;
 		}
@@ -105,7 +108,6 @@ namespace PlotDigitizer.Core
 		private void GoTo(int targetIndex) => EditManager.GoTo(targetIndex);
 		private void Redo() => EditManager.Redo();
 		private void Undo() => EditManager.Undo();
-
 		private void RedoTo(int index)
 		{
 			if (index <= 0)
@@ -114,7 +116,6 @@ namespace PlotDigitizer.Core
 			if (EditManager.CanGoTo(targetIndex))
 				EditManager.GoTo(targetIndex);
 		}
-
 		private void UndoTo(int index)
 		{
 			if (index <= 0)
@@ -122,6 +123,11 @@ namespace PlotDigitizer.Core
 			var targetIndex = EditManager.Index - index;
 			if (EditManager.CanGoTo(targetIndex))
 				EditManager.GoTo(targetIndex);
+		}
+		private void ClearBorder()
+		{
+			var image = imageService.ClearBorder(EditManager.CurrentObject);
+			Edit((image, "Clear Border"));
 		}
 
 		private void EditManager_PropertyChanged(object sender, PropertyChangedEventArgs e)
