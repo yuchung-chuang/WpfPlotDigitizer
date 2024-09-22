@@ -19,17 +19,17 @@ namespace PlotDigitizer.Core
 	{
 		private readonly ILogger<ImageService>? logger;
 
-        public ImageService()
-        {
-            
-        }
-        public ImageService(ILogger<ImageService> logger)
-        {
+		public ImageService()
+		{
+
+		}
+		public ImageService(ILogger<ImageService> logger)
+		{
 			this.logger = logger;
 		}
-        public RectangleD? GetAxisLocation(Image<Rgba, byte> image)
+		public RectangleD? GetAxisLocation(Image<Rgba, byte> image)
 		{
-			if (image is null) 
+			if (image is null)
 				return null;
 
 			var gray = new Image<Gray, byte>(image.Width, image.Height);
@@ -37,115 +37,161 @@ namespace PlotDigitizer.Core
 
 			var binary = new Image<Gray, byte>(image.Width, image.Height);
 			// Assumes the background is white.
-			// Otsu is the best method to find the optimised threshold at the moment.
-			var threshold = CvInvoke.Threshold(gray, binary, 0, 255, ThresholdType.BinaryInv | ThresholdType.Otsu);
-			
-			binary.ClearBorder();
+			var thresholdOtsu = CvInvoke.Threshold(gray, binary, 0, 255, ThresholdType.BinaryInv | ThresholdType.Otsu);
+			RectangleD axis = GetAxisLocation(binary);
 
-			using var contours = new VectorOfVectorOfPoint();
-			CvInvoke.FindContours(binary, contours, null, RetrType.List,
-							ChainApproxMethod.ChainApproxSimple);
-			Rectangle maxRect = default;
-			var maxSize = 0;
-			for (var i = 0; i < contours.Size; i++) {
-				using var contour = contours[i];
-				var rectangle = CvInvoke.BoundingRectangle(contour);
-
-				if (rectangle.Width * rectangle.Height > maxSize) {
-					maxRect = rectangle;
-					maxSize = rectangle.Width * rectangle.Height;
-				}
+			var thresholdManual = 225;
+			if ((axis.Width < 0.1 * image.Width || axis.Height < 0.1 * image.Height)
+				&& thresholdOtsu < thresholdManual) {
+				// try using higher threshold
+				CvInvoke.Threshold(gray, binary, thresholdManual, 255, ThresholdType.BinaryInv);
+				axis = GetAxisLocation(binary);
 			}
+			return axis;
 
-			var L = maxRect.Width / 2;
-			if (searchTopLeft() is PointD topLeftXY && searchBottomRight() is PointD bottomRightXY) {
-				return new RectangleD(topLeftXY.X, topLeftXY.Y, bottomRightXY.X - topLeftXY.X + 1, bottomRightXY.Y - topLeftXY.Y + 1); // Seems like the Rectangle Control in WPF does not include the bottom right most point? So an additional 1 was added.
-			}
-			return new RectangleD(maxRect);
-
-			PointD? searchTopLeft()
+			Rectangle GetMaxRect(Image<Gray, byte> binary)
 			{
-				for (var row = maxRect.Top; row < maxRect.Top + maxRect.Height - L - 1; row++) {
-					for (var col = maxRect.Left; col < maxRect.Left + maxRect.Width - L - 1; col++) {
-						if (checkRight(row, col) && checkDown(row, col)) {
-							return searchDeeper(row, col);
-						}
+				using var contours = new VectorOfVectorOfPoint();
+				CvInvoke.FindContours(binary, contours, null, RetrType.List,
+											ChainApproxMethod.ChainApproxSimple);
+
+				Rectangle maxRect = default;
+				var maxSize = 0;
+				for (var i = 0; i < contours.Size; i++) {
+					using var contour = contours[i];
+					var rectangle = CvInvoke.BoundingRectangle(contour);
+
+					if (rectangle.Width * rectangle.Height > maxSize) {
+						maxRect = rectangle;
+						maxSize = rectangle.Width * rectangle.Height;
 					}
 				}
-				return null;
+				return maxRect;
+			}
+
+			RectangleD GetAxisLocation(Image<Gray, byte> binary)
+			{
+				binary.ClearBorder();
+				var maxRect = GetMaxRect(binary);
+
+				var L = Math.Min(maxRect.Width, maxRect.Height) / 2;
+				var topLeftXY = searchTopLeft();
+				var bottomRightXY = searchBottomRight();
+				var bottomLeftXY = searchBottomLeft();
+				var topRightXY = searchTopRight();
+				var left = topLeftXY?.X ?? bottomLeftXY?.X ?? maxRect.Left;
+				var top = topLeftXY?.Y ?? topRightXY?.Y ?? maxRect.Top;
+				var width = (bottomRightXY?.X ?? topRightXY?.X ?? maxRect.Right) - left + 1;
+				var height = (bottomRightXY?.Y ?? bottomLeftXY?.Y ?? maxRect.Bottom) - top + 1;
+
+				return new RectangleD(left, top, width, height);
+
+				PointD? searchTopLeft()
+				{
+					for (var row = maxRect.Top; row < maxRect.Top + L; row++) {
+						for (var col = maxRect.Left; col < maxRect.Left + L; col++) {
+							if (checkRight(row, col) && checkDown(row, col)) {
+								return searchDeeper(row, col, checkRight, checkDown);
+							}
+						}
+					}
+					return null;
+				}
+				PointD? searchBottomRight()
+				{
+					for (var row = maxRect.Bottom - 1; row > maxRect.Bottom - 1 - L; row--) {
+						for (var col = maxRect.Right - 1; col > maxRect.Right - 1 - L; col--) {
+							if (checkLeft(row, col) && checkUp(row, col)) {
+								return searchDeeper(row - 10 + 1, col - 10 + 1, checkLeft, checkUp);
+							}
+						}
+					}
+					return null;
+				}
+				PointD? searchBottomLeft()
+				{
+					for (var row = maxRect.Bottom - 1; row > maxRect.Bottom - 1 - L; row--) {
+						for (var col = maxRect.Left; col < maxRect.Left + L; col++) {
+							if (checkRight(row, col) && checkUp(row, col)) {
+								return searchDeeper(row - 10 + 1, col, checkRight, checkUp);
+							}
+						}
+					}
+					return null;
+				}
+				PointD? searchTopRight()
+				{
+					for (var row = maxRect.Top; row < maxRect.Top + L; row++) {
+						for (var col = maxRect.Right - 1; col > maxRect.Right - 1 - L; col--) {
+							if (checkLeft(row, col) && checkDown(row, col)) {
+								return searchDeeper(row, col - 10 + 1, checkLeft, checkDown);
+							}
+						}
+					}
+					return null;
+				}
 
 				bool checkRight(int row, int col)
 				{
+					var score = L;
 					for (var i = 0; i < L; i++) {
-						if (binary.Data[row + i, col, 0] != 255) {
-							return false;
+						if (binary.Data[row, col + i, 0] != 255) {
+							score--;
+							if (score < 0.95 * L) {
+								return false;
+							}
 						}
 					}
 					return true;
 				}
 				bool checkDown(int row, int col)
 				{
+					var score = L;
 					for (var i = 0; i < L; i++) {
-						if (binary.Data[row, col + i, 0] != 255) {
-							return false;
+						if (binary.Data[row + i, col, 0] != 255) {
+							score--;
+							if (score < 0.95 * L) {
+								return false;
+							}
 						}
 					}
 					return true;
 				}
-				PointD searchDeeper(int row, int col)
-				{
-					List<PointD> candidates = [new PointD(col, row)];
-					for (var c = col; c < col + 10; c++) {
-						for (var r = row; r < row + 10; r++) {
-							if (c == col && r == row)
-								continue;
-							if (checkRight(r, c) && checkDown(r, c)) {
-								candidates.Add(new PointD(c, r));
-							}
-						}
-					}
-					var avgX = candidates.Average(p => p.X);
-					var avgY = candidates.Average(p => p.Y);
-					return new PointD(avgX, avgY);
-				}
-			}
-			PointD? searchBottomRight()
-			{
-				for (var row = maxRect.Bottom - 1; row > maxRect.Top + L; row--) {
-					for (var col = maxRect.Right - 1; col > maxRect.Left + L; col--) {
-						if (checkLeft(row, col) && checkUp(row, col)) {
-							return searchDeeper(row, col);
-						}
-					}
-				}
-				return null;
-
 				bool checkLeft(int row, int col)
 				{
+					var score = L;
 					for (var i = 0; i < L; i++) {
-						if (binary.Data[row - i, col, 0] != 255) {
-							return false;
+						if (binary.Data[row, col - i, 0] != 255) {
+							score--;
+							if (score < 0.95 * L) {
+								return false;
+							}
 						}
 					}
 					return true;
 				}
 				bool checkUp(int row, int col)
 				{
+					var score = L;
 					for (var i = 0; i < L; i++) {
-						if (binary.Data[row, col - i, 0] != 255) {
-							return false;
+						if (binary.Data[row - i, col, 0] != 255) {
+							score--;
+							if (score < 0.95 * L) {
+								return false;
+							}
 						}
 					}
 					return true;
 				}
-				PointD searchDeeper(int row, int col)
+				/// <summary>
+				/// search [row:row+9] [col:col+9]
+				/// </summary>
+				PointD searchDeeper(int row, int col, Func<int,int,bool> check1, Func<int, int, bool> check2)
 				{
-					List<PointD> candidates = [new PointD(col, row)];
-					for (var c = col; c > col - 10; c--) {
-						for (var r = row; r > row - 10; r--) {
-							if (c == col && r == row)
-								continue;
-							if (checkLeft(r, c) && checkUp(r, c)) {
+					List<PointD> candidates = [];
+					for (var c = col; c < col + 10; c++) {
+						for (var r = row; r < row + 10; r++) {
+							if (check1(r, c) && check2(r, c)) {
 								candidates.Add(new PointD(c, r));
 							}
 						}
