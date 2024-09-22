@@ -50,21 +50,17 @@ namespace PlotDigitizer.Core
 
 			editPageScope = serviceScopeFactory.CreateScope();
 
-			model.PropertyOutdated += (s, e) =>
-			{
-				if (e == nameof(Model.FilteredImage)) {
-					editPageScope?.Dispose();
-					editPageScope = serviceScopeFactory.CreateScope();
-				}
-			};
+			model.PropertyOutdated += Model_PropertyOutdated;
 		}
+
 		private void NavigateTo(Type pageType)
 		{
 			var PrevPage = CurrentPage;
 			PrevPage.Leave();
 			PageViewModelBase newPage;
 			if (pageType == typeof(EditPageViewModel)) {
-				newPage = editPageScope?.ServiceProvider.GetRequiredService(pageType) as PageViewModelBase;
+				editPageScope ??= serviceScopeFactory.CreateScope();
+				newPage = editPageScope.ServiceProvider.GetRequiredService(pageType) as PageViewModelBase;
 			}
 			else {
 				newPage = serviceProvider.GetRequiredService(pageType) as PageViewModelBase;
@@ -82,10 +78,17 @@ namespace PlotDigitizer.Core
 		private bool CanPrevPage() => CurrentPageIndex > 0;
 		private void NextPage() => NavigateTo(CurrentPageIndex + 1);
 		private bool CanNextPage() => CurrentPageIndex < Pages.Count - 1;
-
+		private void Model_PropertyOutdated(object sender, string e)
+		{
+			if (e == nameof(Model.FilteredImage)) {
+				editPageScope?.Dispose();
+				editPageScope = null;
+			}
+		}
 		public void Dispose()
 		{
-			//serviceScope.Dispose();
+			editPageScope?.Dispose();
+			model.PropertyOutdated -= Model_PropertyOutdated;
 			GC.SuppressFinalize(this);
 		}
 
