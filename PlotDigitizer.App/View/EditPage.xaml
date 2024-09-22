@@ -153,7 +153,7 @@
 									Image="{Binding Image, Mode=OneWayToSource}"
 									EditManager="{Binding EditManager}"
 									ToolTip="Ctrl + left click to draw/erase image and select region, press delete/backspace to delete a region. Left double click to complete a polygon.">
-			<local:Editor.EditorState>
+			<local:Editor.EditorMode>
 				<MultiBinding Converter="{local:EditorStateConverter}">
 					<Binding Path="IsChecked"
 							 Mode="TwoWay"
@@ -168,7 +168,7 @@
 							 Mode="TwoWay"
 							 ElementName="PolyButton" />
 				</MultiBinding>
-			</local:Editor.EditorState>
+			</local:Editor.EditorMode>
 		</local:Editor>
 	</DockPanel>
 </UserControl>
