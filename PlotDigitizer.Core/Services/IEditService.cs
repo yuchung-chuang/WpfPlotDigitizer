@@ -1,8 +1,9 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace PlotDigitizer.Core
 {
-	public interface IEditService<TObject>
+	public interface IEditService<TObject> : INotifyPropertyChanged
 	{
 		TObject CurrentObject { get; }
 		string CurrentTag { get; }

@@ -16,17 +16,17 @@ namespace PlotDigitizer.Core
 		private readonly IImageService imageService;
 
 		#region Properties
-		public EditManager<Image<Rgba, byte>> EditManager { get; set; }
+		public IEditService<Image<Rgba, byte>> EditService { get; set; }
 		public Image<Rgba, byte> Image { get; set; }
 		public Model Model { get; private set; }
 		public bool IsEnabled => Model != null && Model.FilteredImage != null;
 		public IEnumerable<string> RedoList
 		{
 			get {
-				if (!EditManager.IsInitialised)
+				if (!EditService.IsInitialised)
 					yield break;
-				for (int i = EditManager.Index; i < EditManager.TagList.Count; i++) {
-					yield return EditManager.TagList[i];
+				for (int i = EditService.Index; i < EditService.TagList.Count; i++) {
+					yield return EditService.TagList[i];
 				}
 			}
 		}
@@ -34,10 +34,10 @@ namespace PlotDigitizer.Core
 		public IEnumerable<string> UndoList
 		{
 			get {
-				if (!EditManager.IsInitialised)
+				if (!EditService.IsInitialised)
 					yield break;
-				for (var i = EditManager.Index; i >= 0; i--) {
-					yield return EditManager.TagList[i];
+				for (var i = EditService.Index; i >= 0; i--) {
+					yield return EditService.TagList[i];
 				}
 			}
 		}
@@ -64,16 +64,16 @@ namespace PlotDigitizer.Core
 			UndoToCommand = new RelayCommand<int>(UndoTo);
 			RedoToCommand = new RelayCommand<int>(RedoTo);
 			ClearBorderCommand = new RelayCommand(ClearBorder);
-
-			EditManager = new EditManager<Image<Rgba, byte>>();
 		}
 
 
 		public EditPageViewModel(Model model,
-			IImageService imageService) : this()
+			IImageService imageService,
+			IEditService<Image<Rgba, byte>> editService) : this()
 		{
 			Model = model;
 			this.imageService = imageService;
+			EditService = editService;
 		}
 		#endregion Constructors
 
@@ -82,13 +82,13 @@ namespace PlotDigitizer.Core
 		{
 			if (!IsEnabled) 
 				return;
-			if (EditManager.IsInitialised) 
+			if (EditService.IsInitialised) 
 				return;
 			
 			base.Enter();
-			EditManager.Initialise(Model.FilteredImage);
-			EditManager.PropertyChanged += EditManager_PropertyChanged;
-			EditManager.ObjectList.CollectionChanged += ObjectList_CollectionChanged;
+			EditService.Initialise(Model.FilteredImage);
+			EditService.PropertyChanged += EditService_PropertyChanged;
+			EditService.ObjectList.CollectionChanged += ObjectList_CollectionChanged;
 		}
 
 		public override void Leave()
@@ -99,39 +99,39 @@ namespace PlotDigitizer.Core
 			base.Leave();
 			Model.EdittedImage = Image;
 		}
-		private bool CanEdit((Image<Rgba, byte> obj, string tag) arg) => EditManager.CanEdit(arg);
-		private bool CanGoTo(int targetIndex) => EditManager.CanGoTo(targetIndex);
-		private bool CanRedo() => EditManager.CanRedo();
-		private bool CanUndo() => EditManager.CanUndo();
-		private void Edit((Image<Rgba, byte> obj, string tag) edit) => EditManager.Edit(edit);
-		private void GoTo(int targetIndex) => EditManager.GoTo(targetIndex);
-		private void Redo() => EditManager.Redo();
-		private void Undo() => EditManager.Undo();
+		private bool CanEdit((Image<Rgba, byte> obj, string tag) arg) => EditService.CanEdit(arg);
+		private bool CanGoTo(int targetIndex) => EditService.CanGoTo(targetIndex);
+		private bool CanRedo() => EditService.CanRedo();
+		private bool CanUndo() => EditService.CanUndo();
+		private void Edit((Image<Rgba, byte> obj, string tag) edit) => EditService.Edit(edit);
+		private void GoTo(int targetIndex) => EditService.GoTo(targetIndex);
+		private void Redo() => EditService.Redo();
+		private void Undo() => EditService.Undo();
 		private void RedoTo(int index)
 		{
 			if (index <= 0)
 				return;
-			var targetIndex = EditManager.Index + index;
-			if (EditManager.CanGoTo(targetIndex))
-				EditManager.GoTo(targetIndex);
+			var targetIndex = EditService.Index + index;
+			if (EditService.CanGoTo(targetIndex))
+				EditService.GoTo(targetIndex);
 		}
 		private void UndoTo(int index)
 		{
 			if (index <= 0)
 				return;
-			var targetIndex = EditManager.Index - index;
-			if (EditManager.CanGoTo(targetIndex))
-				EditManager.GoTo(targetIndex);
+			var targetIndex = EditService.Index - index;
+			if (EditService.CanGoTo(targetIndex))
+				EditService.GoTo(targetIndex);
 		}
 		private void ClearBorder()
 		{
-			var image = imageService.ClearBorder(EditManager.CurrentObject);
+			var image = imageService.ClearBorder(EditService.CurrentObject);
 			Edit((image, "Clear Border"));
 		}
 
-		private void EditManager_PropertyChanged(object sender, PropertyChangedEventArgs e)
+		private void EditService_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName == nameof(EditManager.Index)) {
+			if (e.PropertyName == nameof(EditService.Index)) {
 				OnPropertyChanged(nameof(UndoList));
 				OnPropertyChanged(nameof(RedoList));
 				UndoCommand.RaiseCanExecuteChanged();
@@ -146,9 +146,9 @@ namespace PlotDigitizer.Core
 
 		public void Dispose()
 		{
-			EditManager.PropertyChanged -= EditManager_PropertyChanged;
-			if (EditManager.ObjectList is not null)
-				EditManager.ObjectList.CollectionChanged -= ObjectList_CollectionChanged;
+			EditService.PropertyChanged -= EditService_PropertyChanged;
+			if (EditService.ObjectList is not null)
+				EditService.ObjectList.CollectionChanged -= ObjectList_CollectionChanged;
 			GC.SuppressFinalize(this);
 		}
 

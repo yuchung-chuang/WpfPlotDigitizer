@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Emgu.CV.Structure;
+using Emgu.CV;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,6 +17,7 @@ namespace PlotDigitizer.Core
 				.AddTransient<RangePageViewModel>()
 				.AddTransient<AxisPageViewModel>()
 				.AddTransient<FilterPageViewModel>()
+				.AddScoped<IEditService<Image<Rgba, byte>>, EditService<Image<Rgba, byte>>>()
 				.AddScoped<EditPageViewModel>()
 				.AddTransient<DataPageViewModel>();
 		}

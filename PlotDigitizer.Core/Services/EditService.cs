@@ -8,7 +8,7 @@ using System.Security.Cryptography;
 
 namespace PlotDigitizer.Core
 {
-	public class EditManager<TObject> : IEditService<TObject>, INotifyPropertyChanged
+	public class EditService<TObject> : IEditService<TObject>
 	{
 		#region Events
 
@@ -34,12 +34,12 @@ namespace PlotDigitizer.Core
 		#endregion Properties
 
 		#region Constructors
-		public EditManager()
+		public EditService()
 		{
 			
 		}
 
-		public EditManager(TObject _object) : this()
+		public EditService(TObject _object) : this()
 		{
 			Initialise(_object);
 		}
@@ -85,7 +85,7 @@ namespace PlotDigitizer.Core
 		public void Undo()
 		{
 			Index--;
-			Debug.WriteLine($"EditManager({this.GetHashCode()}) Index={Index}");
+			Debug.WriteLine($"EditService({this.GetHashCode()}) Index={Index}");
 		}
 
 		protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

@@ -68,7 +68,7 @@ namespace PlotDigitizer.Core
 			inputImage.Outdated += (s, e) => RaisePropertyOutdated(nameof(InputImage));
 			croppedImage.Updated += (s, e) => RaisePropertyChanged(nameof(CroppedImage));
 			croppedImage.Outdated += (s, e) => RaisePropertyOutdated(nameof(CroppedImage));
-			// the initialisation of editmanager depends on the update of filteredImage!
+			// the initialisation of EditService depends on the update of filteredImage!
 			filteredImage.Updated += (s, e) => RaisePropertyChanged(nameof(FilteredImage));
 			filteredImage.Outdated += (s, e) => RaisePropertyOutdated(nameof(FilteredImage));
 			edittedImage.Updated += (s, e) => RaisePropertyChanged(nameof(EdittedImage));

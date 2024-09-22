@@ -30,8 +30,8 @@ namespace PlotDigitizer.App
 
 		public static readonly DependencyProperty EditGestureProperty = DependencyProperty.Register(nameof(EditGesture), typeof(MouseGesture), typeof(Editor), new PropertyMetadata(new MouseGesture(MouseAction.LeftClick)));
 
-		public static readonly DependencyProperty EditManagerProperty =
-			DependencyProperty.Register("EditManager", typeof(EditManager<Image<Rgba, byte>>), typeof(Editor), new PropertyMetadata(default));
+		public static readonly DependencyProperty EditServiceProperty =
+			DependencyProperty.Register(nameof(EditService), typeof(IEditService<Image<Rgba, byte>>), typeof(Editor), new PropertyMetadata(default));
 
 		public static readonly DependencyProperty EditorModeProperty =
 			DependencyProperty.Register("EditorMode", typeof(EditorMode), typeof(Editor), new PropertyMetadata(EditorMode.NoMode, OnEditorModeChanged));
@@ -40,7 +40,7 @@ namespace PlotDigitizer.App
 
 		public static readonly DependencyProperty SelectedGestureProperty = DependencyProperty.Register("SelectedGesture", typeof(MouseGesture), typeof(Editor), new PropertyMetadata(new MouseGesture(MouseAction.LeftDoubleClick)));
 
-		private EditManager<Image<Rgba, byte>> editManager;
+		private IEditService<Image<Rgba, byte>> editService;
 		private Window window;
 
 		#endregion Fields
@@ -71,10 +71,10 @@ namespace PlotDigitizer.App
 			set => SetValue(EditGestureProperty, value);
 		}
 
-		public EditManager<Image<Rgba, byte>> EditManager
+		public IEditService<Image<Rgba, byte>> EditService
 		{
-			get => (EditManager<Image<Rgba, byte>>)GetValue(EditManagerProperty);
-			set => SetValue(EditManagerProperty, value);
+			get => (IEditService<Image<Rgba, byte>>)GetValue(EditServiceProperty);
+			set => SetValue(EditServiceProperty, value);
 		}
 
 		public EditorMode EditorMode
@@ -127,13 +127,13 @@ namespace PlotDigitizer.App
 
 		private void Editor_Loaded(object sender, RoutedEventArgs e)
 		{
-			if (!EditManager.IsInitialised) {
+			if (!EditService.IsInitialised) {
 				return;
 			}
 
-			editManager = EditManager;
-			Image = EditManager.CurrentObject.Copy();
-			EditManager.PropertyChanged += EditManager_PropertyChanged;
+			editService = EditService;
+			Image = EditService.CurrentObject.Copy();
+			EditService.PropertyChanged += EditService_PropertyChanged;
 
 			window = Window.GetWindow(this);
 			window.PreviewKeyDown += MainWindow_KeyDown;
@@ -142,13 +142,13 @@ namespace PlotDigitizer.App
 			EdittingState.PolySelecting.SelectedGesture = SelectedGesture;
 		}
 
-		private void EditManager_PropertyChanged(object sender, PropertyChangedEventArgs e)
+		private void EditService_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName == nameof(EditManager.CurrentObject)) {
-				Image = EditManager.CurrentObject.Copy();
+			if (e.PropertyName == nameof(EditService.CurrentObject)) {
+				Image = EditService.CurrentObject.Copy();
 				Debug.WriteLine("CurrentObject changed.");
 			}
-			if (e.PropertyName == nameof(EditManager.Index)) {
+			if (e.PropertyName == nameof(EditService.Index)) {
 				Debug.WriteLine("Index changed.");
 			}
 		}
@@ -254,8 +254,8 @@ namespace PlotDigitizer.App
 		{
 			if (window is not null)
 				window.PreviewKeyDown -= MainWindow_KeyDown;
-			if (editManager is not null)
-				editManager.PropertyChanged -= EditManager_PropertyChanged;
+			if (editService is not null)
+				editService.PropertyChanged -= EditService_PropertyChanged;
 		}
 
 		[SuppressPropertyChangedWarnings]

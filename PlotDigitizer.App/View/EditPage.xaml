@@ -167,7 +167,7 @@
 					  SelectedGesture="Control+LeftDoubleClick"
 					  BlockInteraction="True"
 					  Image="{Binding Image, Mode=OneWayToSource}"
-					  EditManager="{Binding EditManager}"
+					  EditService="{Binding EditService}"
 					  ToolTip="Ctrl + left click to draw/erase image and select region, press delete/backspace to delete a region. Left double click to complete a polygon.">
 			<local:Editor.EditorMode>
 				<MultiBinding Converter="{local:EditorStateConverter}">

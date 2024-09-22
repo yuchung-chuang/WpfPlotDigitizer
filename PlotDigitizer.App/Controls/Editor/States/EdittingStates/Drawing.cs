@@ -40,9 +40,9 @@ namespace PlotDigitizer.App
 			base.MouseUp(editor, e);
 
 			editor.mainGrid.ReleaseMouseCapture();
-			var image = editor.Image.Copy(); // save a copy to editManager
-			if (editor.EditManager.CanEdit((image, "draw image")))
-				editor.EditManager.Edit((image, "draw image"));
+			var image = editor.Image.Copy(); // save a copy to EditService
+			if (editor.EditService.CanEdit((image, "draw image")))
+				editor.EditService.Edit((image, "draw image"));
 
 			editor.EdittingState = NotEditting;
 		}

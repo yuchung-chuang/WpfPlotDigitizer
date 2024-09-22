@@ -27,7 +27,7 @@ namespace PlotDigitizer.App
 			if (!viewModel.IsEnabled) 
 				return;
 			this.viewModel = viewModel;
-			viewModel.EditManager.PropertyChanged += EditManager_PropertyChanged;
+			viewModel.EditService.PropertyChanged += EditService_PropertyChanged;
 
 			// must attach binding to the hosting window, otherwise the key events won't be captuered if this page is not in focus.
 			undoCommandBinding = new RelayCommandBinding
@@ -45,9 +45,9 @@ namespace PlotDigitizer.App
 			redoCommandBinding.Attach(Window.GetWindow(this));
 		}
 
-		private void EditManager_PropertyChanged(object sender, PropertyChangedEventArgs e)
+		private void EditService_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName == nameof(viewModel.EditManager.Index)) {
+			if (e.PropertyName == nameof(viewModel.EditService.Index)) {
 				UndoComboBox.SelectedIndex = 0;
 				RedoComboBox.SelectedIndex = 0;
 			}
@@ -62,7 +62,7 @@ namespace PlotDigitizer.App
 			if (viewModel is null || !viewModel.IsEnabled) {
 				return;
 			}
-			viewModel.EditManager.PropertyChanged -= EditManager_PropertyChanged;
+			viewModel.EditService.PropertyChanged -= EditService_PropertyChanged;
 		}
 
 	}

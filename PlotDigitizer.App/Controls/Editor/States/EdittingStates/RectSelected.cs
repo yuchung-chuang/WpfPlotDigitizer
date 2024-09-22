@@ -21,7 +21,7 @@ namespace PlotDigitizer.App
 			base.KeyDown(editor, e);
 			var selectRect = editor.selectRect;
 			var Image = editor.Image;
-			var EditManager = editor.EditManager;
+			var editService = editor.EditService;
 
 			var left = Canvas.GetLeft(selectRect);
 			var top = Canvas.GetTop(selectRect);
@@ -32,8 +32,8 @@ namespace PlotDigitizer.App
 				(int)Math.Round(selectRect.Height));
 			Image.EraseImage(rect);
 			var image = Image.Copy();
-			if (EditManager.CanEdit((image, "Delete rectangle region"))) {
-				EditManager.Edit((image, "Delete rectangle region"));
+			if (editService.CanEdit((image, "Delete rectangle region"))) {
+				editService.Edit((image, "Delete rectangle region"));
 			}
 			editor.EdittingState = NotEditting;
 		}

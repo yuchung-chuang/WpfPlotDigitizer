@@ -23,7 +23,7 @@ namespace PlotDigitizer.App
 		{
 			base.KeyDown(editor, e);
 			var Image = editor.Image;
-			var EditManager = editor.EditManager;
+			var editService = editor.EditService;
 			var selectPoly = editor.selectPoly;
 
 			// erase pixels within poly
@@ -34,8 +34,8 @@ namespace PlotDigitizer.App
 			Image.EraseImage(points);
 			// execute edit command
 			var image = Image.Copy();
-			if (EditManager.CanEdit((image, "Delete polygon region"))) {
-				EditManager.Edit((image, "Delete polygon region"));
+			if (editService.CanEdit((image, "Delete polygon region"))) {
+				editService.Edit((image, "Delete polygon region"));
 			}
 
 			editor.EdittingState = NotEditting;
