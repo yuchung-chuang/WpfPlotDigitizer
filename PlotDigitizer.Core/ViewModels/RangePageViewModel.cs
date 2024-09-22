@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using Emgu.CV;
+using Emgu.CV.Structure;
+using System.ComponentModel;
 
 namespace PlotDigitizer.Core
 {
@@ -41,8 +43,8 @@ namespace PlotDigitizer.Core
 		public double AxLimYMax { get; set; } = double.NaN;
 		public double AxLimYMin { get; set; } = double.NaN;
 		public bool IsEnabled => Model != null && Model.InputImage != null;
-
 		public Model Model { get; }
+		public Image<Rgba, byte> Image => !IsEnabled ? null : Model.InputImage;
 
 		#endregion Properties
 

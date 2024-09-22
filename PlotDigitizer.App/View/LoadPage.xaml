@@ -61,12 +61,6 @@
 			</ui:Button>
 		</StackPanel>
 		
-		<!--only for testing-->
-		<Image x:Name="imageControl"
-			   HorizontalAlignment="Left"
-			   Width="184"
-			   Visibility="{Binding Source={x:Static diag:Debugger.IsAttached}, Converter={local:VisibilityConverter}, FallbackValue={x:Static Visibility.Collapsed}}"
-			   Source="{Binding Model.InputImage, Converter={local:ImageSourceConverter}}" />
 		<TextBox x:Name="filePath"
 				 IsTabStop="False"
 				 Text="{Binding FilePath, Mode=OneWayToSource}"

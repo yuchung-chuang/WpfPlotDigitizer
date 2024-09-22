@@ -57,7 +57,7 @@
 		</Grid.RowDefinitions>
 		<local:ImageViewer Grid.Column="1"
 						   Margin="5"
-						   ImageSource="{Binding Model.InputImage, Converter={local:ImageSourceConverter}}" />
+						   ImageSource="{Binding Image, Converter={local:ImageSourceConverter}}" />
 		<UniformGrid Rows="3"
 					 Columns="1"
 					 HorizontalAlignment="Center">

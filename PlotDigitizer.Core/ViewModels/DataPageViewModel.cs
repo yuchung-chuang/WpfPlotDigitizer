@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Emgu.CV;
+using Emgu.CV.Structure;
+using Microsoft.Extensions.Logging;
 
 using PropertyChanged;
 
@@ -53,6 +55,8 @@ namespace PlotDigitizer.Core
 		public bool IsEnabled => Model != null && Model.EdittedImage != null;
 
 		public Model Model { get; }
+
+		public Image<Rgba, byte> Image => !IsEnabled ? null : Model.PreviewImage;
 
 		#endregion Properties
 
@@ -185,9 +189,12 @@ namespace PlotDigitizer.Core
 
 		private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName == nameof(Core.Model.EdittedImage)) {
-				base.OnPropertyChanged(nameof(IsEnabled));
+			if (e.PropertyName == nameof(Model.EdittedImage)) {
+				OnPropertyChanged(nameof(IsEnabled));
 				logger.LogDebug($"{GetType()}.{MethodBase.GetCurrentMethod().Name} completed.");
+			}
+			else if (e.PropertyName == nameof(Model.PreviewImage)) {
+				OnPropertyChanged(nameof(Image));
 			}
 		}
 

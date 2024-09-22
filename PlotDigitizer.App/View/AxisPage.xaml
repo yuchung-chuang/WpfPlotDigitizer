@@ -22,7 +22,7 @@
 							local:Zoom.Gesture="WheelClick">
 					<local:Axis x:Name="axisControl"
 											Gesture="LeftClick"
-											ImageSource="{Binding Model.InputImage, Converter={local:ImageSourceConverter} }"
+											ImageSource="{Binding Image, Converter={local:ImageSourceConverter} }"
 											AxisLeft="{Binding AxisLeft, Mode=TwoWay}"
 											AxisTop="{Binding AxisTop, Mode=TwoWay}"
 											AxisWidth="{Binding AxisWidth, Mode=TwoWay}"

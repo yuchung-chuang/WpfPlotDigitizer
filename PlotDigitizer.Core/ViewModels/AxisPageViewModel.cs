@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Emgu.CV;
+using Emgu.CV.Structure;
+using System;
 using System.ComponentModel;
-using System.Drawing;
 
 namespace PlotDigitizer.Core
 {
@@ -17,7 +18,8 @@ namespace PlotDigitizer.Core
 
 		public double AxisHeight { get; set; }
 		public double AxisLeft { get; set; }
-
+		public double AxisTop { get; set; }
+		public double AxisWidth { get; set; }
 		public RectangleD AxisLocation
 		{
 			get => new(AxisLeft, AxisTop, AxisWidth, AxisHeight);
@@ -29,18 +31,16 @@ namespace PlotDigitizer.Core
 				AxisHeight = value.Height;
 			}
 		}
-
-		public double AxisTop { get; set; }
-		public double AxisWidth { get; set; }
 		public RelayCommand GetAxisCommand { get; set; }
 		public bool IsEnabled => Model != null && Model.InputImage != null;
 		public Model Model { get; }
+        public Image<Rgba, byte> Image => !IsEnabled ? null : Model.InputImage;
 
-		#endregion Properties
+        #endregion Properties
 
-		#region Constructors
+        #region Constructors
 
-		public AxisPageViewModel()
+        public AxisPageViewModel()
 		{
 			Name = "AxisPage";
 			GetAxisCommand = new RelayCommand(GetAxis, CanGetAxis);

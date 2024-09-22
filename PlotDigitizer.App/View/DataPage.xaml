@@ -91,7 +91,7 @@
 					Content="{StaticResource export}" />
 		</StackPanel>
 		<Grid>
-			<local:ImageViewer ImageSource="{Binding Model.PreviewImage, Converter={local:ImageSourceConverter} }"
+			<local:ImageViewer ImageSource="{Binding Image, Converter={local:ImageSourceConverter} }"
 							   Margin="5" />
 		</Grid>
 	</DockPanel>
