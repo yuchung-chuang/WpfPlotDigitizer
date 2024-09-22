@@ -19,7 +19,7 @@
 			<UniformGrid.Resources>
 				<Style TargetType="local:RangeSlider">
 					<Setter Property="Margin"
-							Value="5" />
+							Value="50,5" />
 					<Setter Property="RangeStart"
 							Value="0" />
 					<Setter Property="RangeStop"
