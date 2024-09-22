@@ -14,8 +14,8 @@
 
 		public override void Update()
 		{
-			base.Update();
 			Value = default;
+			base.Update();
 		}
 	}
 }

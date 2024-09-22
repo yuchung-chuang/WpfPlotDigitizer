@@ -15,8 +15,8 @@ namespace PlotDigitizer.Core
 		}
 		public override void Update()
 		{
-			base.Update();
 			Value = new Rgba(0, 0, 0, byte.MaxValue);
+			base.Update();
 		}
 	}
 }
