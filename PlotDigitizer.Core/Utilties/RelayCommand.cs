@@ -35,12 +35,23 @@ namespace PlotDigitizer.Core
 
 		public event EventHandler CanExecuteChanged;
 
+		class RelayCommandEventArgs(TParam param) : EventArgs 
+		{
+			public TParam Parameter { get; set; } = param;
+		}
+
 		public void RaiseCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+
+		public void RaiseCanExecuteChanged(TParam param)
+		{
+			CanExecuteChanged?.Invoke(this, new RelayCommandEventArgs(param));
+		}
 
 		public bool CanExecute(object parameter)
 		{
 			return canAction == null ||
-				parameter is TParam TParam && canAction.Invoke(TParam);
+				parameter is TParam TParam && canAction.Invoke(TParam) ||
+				parameter is RelayCommandEventArgs args && canAction.Invoke(args.Parameter);
 		}
 
 		public void Execute(object parameter)
