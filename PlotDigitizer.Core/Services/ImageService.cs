@@ -187,7 +187,7 @@ namespace PlotDigitizer.Core
 				/// <summary>
 				/// search [row:row+9] [col:col+9]
 				/// </summary>
-				PointD searchDeeper(int row, int col, Func<int,int,bool> check1, Func<int, int, bool> check2)
+				PointD searchDeeper(int row, int col, Func<int, int, bool> check1, Func<int, int, bool> check2)
 				{
 					List<PointD> candidates = [];
 					for (var c = col; c < col + 10; c++) {
@@ -277,7 +277,7 @@ namespace PlotDigitizer.Core
 			var xMin = OCR(image, xMinTextBox, ocr);
 			var yMax = OCR(image, yMaxTextBox, ocr);
 			var yMin = OCR(image, yMinTextBox, ocr);
-			
+
 			//var tmp = image.Copy();
 			//CvInvoke.DrawContours(tmp, textContours, -1, new MCvScalar(0, 0, 255));
 			//CvInvoke.Imshow("a", tmp);
@@ -324,8 +324,8 @@ namespace PlotDigitizer.Core
 
 		public Image<Rgba, byte> CropImage(Image<Rgba, byte> image, Rectangle roi)
 		{
-			if (image is null 
-				|| roi.X >= image.Width || roi.Y >= image.Height 
+			if (image is null
+				|| roi.X >= image.Width || roi.Y >= image.Height
 				|| roi.Width == 0 || roi.Height == 0) {
 				return image;
 			}
@@ -349,7 +349,7 @@ namespace PlotDigitizer.Core
 
 		public Image<Rgba, byte> FilterRGB(Image<Rgba, byte> image, Rgba min, Rgba max)
 		{
-			if (image is null) 
+			if (image is null)
 				return null;
 			var mask = image.InRange(min, max);
 			var output = image.Copy();
@@ -369,7 +369,7 @@ namespace PlotDigitizer.Core
 
 		public IEnumerable<PointD> GetContinuousPoints(Image<Rgba, byte> image)
 		{
-			if (image is null) 
+			if (image is null)
 				return null;
 			var points = new List<PointD>();
 			var width = image.Width;
@@ -390,7 +390,7 @@ namespace PlotDigitizer.Core
 
 		public IEnumerable<PointD> GetDiscretePoints(Image<Rgba, byte> image)
 		{
-			if (image is null) 
+			if (image is null)
 				return null;
 			var points = new List<PointD>();
 			var binary = image.InRange(new Rgba(0, 0, 0, 1), new Rgba(255, 255, 255, 255));
@@ -401,6 +401,9 @@ namespace PlotDigitizer.Core
 			for (var i = 0; i < count; i++) {
 				using var contour = contours[i];
 				var centroid = GetCentroid(contour);
+				if (double.IsNaN(centroid.X) || double.IsNaN(centroid.Y)) {
+					centroid = GetCentroid2(contour);
+				}
 				points.Add(centroid);
 
 				CvInvoke.DrawMarker(image, new Point((int)centroid.X, (int)centroid.Y), new Rgba(255, 0, 0, 255).MCvScalar, MarkerTypes.Cross, 5);
@@ -408,12 +411,29 @@ namespace PlotDigitizer.Core
 
 			return points;
 
-			static PointD GetCentroid(VectorOfPoint contour)
+			PointD GetCentroid(VectorOfPoint contour)
 			{
+				if (contour.Size == 1) {
+					return new PointD(contour[0].X, contour[0].Y);
+				}
 				var moments = CvInvoke.Moments(contour);
 				var Cx = Math.Round(moments.M10 / moments.M00);
 				var Cy = Math.Round(moments.M01 / moments.M00);
 				return new PointD(Cx, Cy);
+			}
+
+			PointD GetCentroid2(VectorOfPoint contour)
+			{
+				if (contour.Size == 1) {
+					return new PointD(contour[0].X, contour[0].Y);
+				}
+				var sumX = 0d;
+				var sumY = 0d;
+				for (int i = 0; i < contour.Size; i++) {
+					sumX += contour[i].X;
+					sumY += contour[i].Y;
+				}
+				return new PointD(sumX / contour.Size, sumY / contour.Size);
 			}
 		}
 
