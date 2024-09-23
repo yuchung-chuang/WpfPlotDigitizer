@@ -1,6 +1,7 @@
 ﻿using PlotDigitizer.Core;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -45,37 +46,38 @@ namespace PlotDigitizer.App
 			(navigation.Items[pageIndex * 2] as NavigationItem).IsActive = true;
 		}
 
-		private bool _allowDirectNavigation = false;
-		private NavigatingCancelEventArgs _navArgs = null;
-		private Duration _duration = new(TimeSpan.FromSeconds(0.3));
+		private bool allowDirectNavigation = false;
+		private NavigatingCancelEventArgs navArgs = null;
+		private Duration duration = new(TimeSpan.FromSeconds(0.3));
 		private void Frame_Navigating(object sender, NavigatingCancelEventArgs e)
 		{
-			if (Content != null && !_allowDirectNavigation) {
-				e.Cancel = true;
-
-				_navArgs = e;
-
-				var animationFade = new DoubleAnimation
-				{
-					From = 1,
-					To = 0,
-					Duration = _duration
-				};
-				animationFade.Completed += AnimationFade_Completed;
-				frame.BeginAnimation(OpacityProperty, animationFade);
+			if (Content == null || allowDirectNavigation) {
+				return;
 			}
-			_allowDirectNavigation = false;
+			allowDirectNavigation = true;
+
+			e.Cancel = true;
+
+			navArgs = e;
+
+			var animationFade = new DoubleAnimation
+			{
+				From = 1,
+				To = 0,
+				Duration = duration
+			};
+			animationFade.Completed += AnimationFadeOut_Completed;
+			frame.BeginAnimation(OpacityProperty, animationFade);
 		}
 
-		private void AnimationFade_Completed(object sender, EventArgs e)
+		private void AnimationFadeOut_Completed(object sender, EventArgs e)
 		{
-			_allowDirectNavigation = true;
-			switch (_navArgs.NavigationMode) {
+			switch (navArgs.NavigationMode) {
 				case NavigationMode.New:
-					if (_navArgs.Uri == null)
-						frame.Navigate(_navArgs.Content);
+					if (navArgs.Uri == null)
+						frame.Navigate(navArgs.Content);
 					else
-						frame.Navigate(_navArgs.Uri);
+						frame.Navigate(navArgs.Uri);
 					break;
 				case NavigationMode.Back:
 					frame.GoBack();
@@ -88,16 +90,19 @@ namespace PlotDigitizer.App
 					break;
 			}
 
-			Dispatcher.InvokeAsync(() =>
+			var animationFade = new DoubleAnimation
 			{
-				var animationFade = new DoubleAnimation
-				{
-					From = 0,
-					To = 1,
-					Duration = _duration
-				};
-				frame.BeginAnimation(OpacityProperty, animationFade);
-			}, DispatcherPriority.Loaded);
+				From = 0,
+				To = 1,
+				Duration = duration
+			};
+			animationFade.Completed += AnimationFadeIn_Completed;
+			frame.BeginAnimation(OpacityProperty, animationFade);
+		}
+
+		private void AnimationFadeIn_Completed(object sender, EventArgs e)
+		{
+			allowDirectNavigation = false;
 		}
 	}
 }
