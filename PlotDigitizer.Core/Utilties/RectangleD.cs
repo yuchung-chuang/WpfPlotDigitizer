@@ -52,6 +52,15 @@ namespace PlotDigitizer.Core
 
 		public override string ToString() => $"RectangleD {{{Left},{Top},{Width},{Height}}}";
 
+		public Rectangle ToRectangle()
+		{
+			return new Rectangle(
+				(int)Math.Round(X),
+				(int)Math.Round(Y),
+				(int)Math.Round(Width),
+				(int)Math.Round(Height));
+		}
+
 		public static bool operator ==(RectangleD left, RectangleD right)
 		{
 			return left.Equals(right);
