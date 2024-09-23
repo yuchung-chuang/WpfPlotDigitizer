@@ -2,7 +2,6 @@
 {
 	public class AxisLogBaseNode : UpdatableNode<PointD>
 	{
-
 		private readonly InputImageNode inputImage;
 
 		public AxisLogBaseNode(InputImageNode inputImage)
@@ -14,6 +13,8 @@
 
 		public override void Update()
 		{
+			if (!inputImage.CheckUpdate())
+				return;
 			Value = default;
 			base.Update();
 		}
