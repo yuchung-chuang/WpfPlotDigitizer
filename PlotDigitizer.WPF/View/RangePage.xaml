@@ -1,0 +1,181 @@
+﻿<UserControl x:Class="PlotDigitizer.WPF.RangePage"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:local="clr-namespace:PlotDigitizer.WPF"
+			 xmlns:core="clr-namespace:PlotDigitizer.Core;assembly=PlotDigitizer.Core"
+			 xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+			 mc:Ignorable="d"
+			 d:DesignHeight="450"
+			 d:DesignWidth="800"
+			 x:Name="root"
+			 d:DataContext="{d:DesignInstance Type=core:RangePageViewModel, IsDesignTimeCreatable=True}">
+
+	<UserControl.Resources>
+		<Style TargetType="StackPanel">
+			<Setter Property="HorizontalAlignment"
+					Value="Center" />
+			<Setter Property="Orientation"
+					Value="Horizontal" />
+		</Style>
+		<Style TargetType="TextBox"
+			   BasedOn="{StaticResource {x:Type TextBox}}">
+			<Setter Property="Width"
+					Value="90" />
+			<Setter Property="VerticalContentAlignment"
+					Value="Center" />
+			<Setter Property="Margin"
+					Value="5,0,0,0" />
+		</Style>
+		<Style TargetType="Label">
+			<Setter Property="VerticalAlignment"
+					Value="Center" />
+		</Style>
+		<ControlTemplate x:Key="ValidationTemplate">
+			<DockPanel>
+				<TextBlock DockPanel.Dock="Bottom"
+						   Foreground="Red"
+						   Text="{Binding AdornedElement.(Validation.Errors), Converter={local:ValidationErrorMessageConverter}, ElementName=adorner}" />
+				<Border BorderBrush="Red"
+						CornerRadius="5"
+						BorderThickness="1"
+						HorizontalAlignment="Left">
+					<AdornedElementPlaceholder Name="adorner" />
+				</Border>
+			</DockPanel>
+		</ControlTemplate>
+	</UserControl.Resources>
+	<Grid IsEnabled="{Binding IsEnabled}">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="4*" />
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="5*" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+		<local:ImageViewer Grid.Column="1"
+						   Margin="5"
+						   ImageSource="{Binding Image, Converter={local:ImageSourceConverter}}" />
+		<UniformGrid Rows="3"
+					 Columns="1"
+					 HorizontalAlignment="Center">
+			<StackPanel>
+				<Label Content="YMax" />
+				<TextBox Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
+						 AutomationProperties.AutomationId="AxLimYMax">
+					<i:Interaction.Behaviors>
+						<local:SelectAllTextOnFocusBehavior />
+					</i:Interaction.Behaviors>
+					<TextBox.Text>
+						<Binding Path="AxLimYMax"
+								 Converter="{local:DoubleToStringConverter}"
+								 UpdateSourceTrigger="LostFocus">
+							<Binding.ValidationRules>
+								<local:NumberValidation />
+							</Binding.ValidationRules>
+						</Binding>
+					</TextBox.Text>
+				</TextBox>
+			</StackPanel>
+			<StackPanel>
+				<Label Content="YLog" />
+				<TextBox Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
+						 AutomationProperties.AutomationId="AxLimYLog">
+					<i:Interaction.Behaviors>
+						<local:SelectAllTextOnFocusBehavior />
+					</i:Interaction.Behaviors>
+					<TextBox.Text>
+						<Binding Path="AxLimYLog"
+								 Converter="{local:DoubleToStringConverter}"
+								 UpdateSourceTrigger="LostFocus">
+							<Binding.ValidationRules>
+								<local:NumberValidation />
+							</Binding.ValidationRules>
+						</Binding>
+					</TextBox.Text>
+				</TextBox>
+			</StackPanel>
+			<StackPanel>
+				<Label Content="YMin" />
+				<TextBox Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
+						 AutomationProperties.AutomationId="AxLimYMin">
+					<i:Interaction.Behaviors>
+						<local:SelectAllTextOnFocusBehavior />
+					</i:Interaction.Behaviors>
+					<TextBox.Text>
+						<Binding Path="AxLimYMin"
+								 Converter="{local:DoubleToStringConverter}"
+								 UpdateSourceTrigger="LostFocus">
+							<Binding.ValidationRules>
+								<local:NumberValidation />
+							</Binding.ValidationRules>
+						</Binding>
+					</TextBox.Text>
+				</TextBox>
+			</StackPanel>
+		</UniformGrid>
+		<UniformGrid Columns="3"
+					 Rows="1"
+					 Grid.Column="1"
+					 Grid.Row="1"
+					 Margin="5"
+					 VerticalAlignment="Center">
+			<StackPanel>
+				<Label Content="XMin" />
+				<TextBox Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
+						 AutomationProperties.AutomationId="AxLimXMin">
+					<i:Interaction.Behaviors>
+						<local:SelectAllTextOnFocusBehavior />
+					</i:Interaction.Behaviors>
+					<TextBox.Text>
+						<Binding Path="AxLimXMin"
+								 Converter="{local:DoubleToStringConverter}"
+								 UpdateSourceTrigger="LostFocus">
+							<Binding.ValidationRules>
+								<local:NumberValidation />
+							</Binding.ValidationRules>
+						</Binding>
+					</TextBox.Text>
+				</TextBox>
+			</StackPanel>
+			<StackPanel>
+				<Label Content="XLog" />
+				<TextBox Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
+						 AutomationProperties.AutomationId="AxLimXLog">
+					<i:Interaction.Behaviors>
+						<local:SelectAllTextOnFocusBehavior />
+					</i:Interaction.Behaviors>
+					<TextBox.Text>
+						<Binding Path="AxLimXLog"
+								 Converter="{local:DoubleToStringConverter}"
+								 UpdateSourceTrigger="LostFocus">
+							<Binding.ValidationRules>
+								<local:NumberValidation />
+							</Binding.ValidationRules>
+						</Binding>
+					</TextBox.Text>
+				</TextBox>
+			</StackPanel>
+			<StackPanel>
+				<Label Content="XMax" />
+				<TextBox Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
+						 AutomationProperties.AutomationId="AxLimXMax">
+					<i:Interaction.Behaviors>
+						<local:SelectAllTextOnFocusBehavior />
+					</i:Interaction.Behaviors>
+					<TextBox.Text>
+						<Binding Path="AxLimXMax"
+								 Converter="{local:DoubleToStringConverter}"
+								 UpdateSourceTrigger="LostFocus">
+							<Binding.ValidationRules>
+								<local:NumberValidation />
+							</Binding.ValidationRules>
+						</Binding>
+					</TextBox.Text>
+				</TextBox>
+			</StackPanel>
+		</UniformGrid>
+	</Grid>
+</UserControl>

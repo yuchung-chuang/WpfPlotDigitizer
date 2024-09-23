@@ -19,7 +19,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\PlotDigitizer.App\PlotDigitizer.App.csproj" />
+		<ProjectReference Include="..\PlotDigitizer.WPF\PlotDigitizer.WPF.csproj" />
 		<ProjectReference Include="..\PlotDigitizer.Core\PlotDigitizer.Core.csproj" />
 	</ItemGroup>
 

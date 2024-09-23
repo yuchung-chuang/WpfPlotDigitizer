@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.33627.172
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlotDigitizer.Core", "PlotDigitizer.Core\PlotDigitizer.Core.csproj", "{48AAAFF1-5F88-46F3-8D1B-9840E4562C16}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlotDigitizer.App", "PlotDigitizer.App\PlotDigitizer.App.csproj", "{5B93E319-ED7E-4474-9B72-3B3D2F701BE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlotDigitizer.WPF", "PlotDigitizer.WPF\PlotDigitizer.WPF.csproj", "{5B93E319-ED7E-4474-9B72-3B3D2F701BE9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestApp", "TestApp\TestApp.csproj", "{AB8C239C-00DD-429B-B4C4-1278827053E7}"
 EndProject

@@ -1,0 +1,33 @@
+﻿<ui:UiWindow x:Class="PlotDigitizer.WPF.MainWindow"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:local="clr-namespace:PlotDigitizer.WPF"
+			 xmlns:core="clr-namespace:PlotDigitizer.Core;assembly=PlotDigitizer.Core"
+			 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+			 mc:Ignorable="d"
+			 x:Name="root"
+			 Height="600"
+			 Width="800"
+			 WindowStartupLocation="CenterScreen"
+			 ExtendsContentIntoTitleBar="True"
+			 WindowBackdropType="Mica"
+			 WindowCornerPreference="Round"
+			 Background="{ui:ThemeResource ApplicationBackgroundBrush}"
+			 AutomationProperties.AutomationId="PlotDigitizer">
+	<DockPanel>
+		<ui:TitleBar Title="PlotDigitizer"
+					 DockPanel.Dock="Top"
+					 Icon="/Assets/icon_digitizer.png"
+					 ForceShutdown="False"
+					 MinimizeToTray="False"
+					 ShowHelp="False"
+					 ShowClose="True"
+					 ShowMaximize="True"
+					 ShowMinimize="True"
+					 UseSnapLayout="True" />
+		<ContentControl Content="{Binding }" />
+	</DockPanel>
+</ui:UiWindow>

@@ -4,7 +4,7 @@ using Emgu.CV.Structure;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using PlotDigitizer.App;
+using PlotDigitizer.WPF;
 
 using System;
 using System.Drawing;
