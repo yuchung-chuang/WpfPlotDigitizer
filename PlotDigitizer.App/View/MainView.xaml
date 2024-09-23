@@ -19,6 +19,7 @@
 					Command="{x:Static NavigationCommands.PreviousPage}" />
 	</UserControl.InputBindings>
 	<i:Interaction.Behaviors>
+		<!--Possible missing navigation commands?-->
 		<local:RelayCommandBinding ApplicationCommand="{x:Static NavigationCommands.NextPage}"
 								   Command="{Binding PageService.NextPageCommand}" />
 		<local:RelayCommandBinding ApplicationCommand="{x:Static NavigationCommands.PreviousPage}"
@@ -102,18 +103,18 @@
 								   CommandParameter="{x:Type core:LoadPageViewModel}" />
 				<ui:NavigationSeparator Template="{StaticResource seperator}"
 										HorizontalAlignment="Center" />
-				<ui:NavigationItem Content="Range"
-								   Icon="PointScan24"
-								   AutomationProperties.AutomationId="RangePageItem"
-								   Command="{Binding PageService.NavigateCommand}"
-								   CommandParameter="{x:Type core:RangePageViewModel}" />
-				<ui:NavigationSeparator Template="{StaticResource seperator}"
-										HorizontalAlignment="Center" />
 				<ui:NavigationItem Content="Axis"
 								   Icon="SlideSize24"
 								   AutomationProperties.AutomationId="AxisPageItem"
 								   Command="{Binding PageService.NavigateCommand}"
 								   CommandParameter="{x:Type core:AxisPageViewModel}" />
+				<ui:NavigationSeparator Template="{StaticResource seperator}"
+										HorizontalAlignment="Center" />
+				<ui:NavigationItem Content="Range"
+								   Icon="PointScan24"
+								   AutomationProperties.AutomationId="RangePageItem"
+								   Command="{Binding PageService.NavigateCommand}"
+								   CommandParameter="{x:Type core:RangePageViewModel}" />
 				<ui:NavigationSeparator Template="{StaticResource seperator}"
 										HorizontalAlignment="Center" />
 				<ui:NavigationItem Content="Filter"

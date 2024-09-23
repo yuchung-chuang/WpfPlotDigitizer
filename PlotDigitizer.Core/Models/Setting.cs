@@ -9,8 +9,8 @@ namespace PlotDigitizer.Core
 	[Serializable]
 	public class Setting : INotifyPropertyChanged
 	{
-		public virtual RectangleD AxisLimit { get; set; }
 		public virtual RectangleD AxisLocation { get; set; }
+		public virtual RectangleD AxisLimit { get; set; }
 		public virtual PointD AxisLogBase { get; set; }
 		public virtual Rgba FilterMax { get; set; }
 		public virtual Rgba FilterMin { get; set; }

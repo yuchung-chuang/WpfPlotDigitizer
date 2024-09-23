@@ -22,8 +22,8 @@ namespace PlotDigitizer.Core
 		public ICommand PrevPageCommand => prevPageCommand;
 		public static List<Type> Pages { get; private set; } = [
 				typeof(LoadPageViewModel),
-				typeof(RangePageViewModel),
 				typeof(AxisPageViewModel),
+				typeof(RangePageViewModel),
 				typeof(FilterPageViewModel),
 				typeof(EditPageViewModel),
 				typeof(DataPageViewModel),
