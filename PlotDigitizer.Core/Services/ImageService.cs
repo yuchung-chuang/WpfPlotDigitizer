@@ -1,5 +1,6 @@
 ﻿using Emgu.CV;
 using Emgu.CV.CvEnum;
+using Emgu.CV.OCR;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
 
@@ -203,6 +204,115 @@ namespace PlotDigitizer.Core
 			}
 		}
 
+		public RectangleD GetAxisLimit(Image<Rgba, byte> image, RectangleD axis)
+		{
+			// Preprocessing
+			Mat gray = new();
+			CvInvoke.CvtColor(image, gray, ColorConversion.Bgr2Gray);
+
+			Mat grad = new();
+			Mat kernel = CvInvoke.GetStructuringElement(ElementShape.Ellipse, new Size(3, 3), new Point(-1, -1));
+			CvInvoke.MorphologyEx(gray, grad, MorphOp.Gradient, kernel, new Point(-1, -1), 1, BorderType.Default, new MCvScalar());
+
+			Mat bw = new();
+			CvInvoke.Threshold(grad, bw, 0, 255, ThresholdType.Binary | ThresholdType.Otsu);
+
+			Mat kernel2 = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new Size(5, 1), new Point(-1, -1));
+			Mat connected = new();
+			CvInvoke.MorphologyEx(bw, connected, MorphOp.Close, kernel2, new Point(-1, -1), 1, BorderType.Default, new MCvScalar()); // Join text in close proximity
+
+			// Find contours for text regions
+			VectorOfVectorOfPoint textContours = new();
+			CvInvoke.FindContours(connected, textContours, null, RetrType.External, ChainApproxMethod.ChainApproxSimple);
+
+			// Variables to store the closest text regions
+			Rectangle xMaxTextBox = new();
+			Rectangle yMaxTextBox = new();
+			Rectangle yMinTextBox = new();
+			Rectangle xMinTextBox = new();
+			var xMaxMinDist = double.MaxValue;
+			var yMaxMinDist = double.MaxValue;
+			var yMinMinDist = double.MaxValue;
+			var xMinMinDist = double.MaxValue;
+
+			// Step 8: Iterate through the contours to find the closest text region
+			for (int i = 0; i < textContours.Size; i++) {
+				Rectangle textBoundingBox = CvInvoke.BoundingRectangle(textContours[i]);
+				PointD textCenter = new(textBoundingBox.X + textBoundingBox.Width / 2, textBoundingBox.Y + textBoundingBox.Height / 2);
+
+				// Calculate distance to top-left of the chart axis
+				var distTopLeft = Distance(textCenter, new PointD(axis.Left, axis.Top));
+				if (distTopLeft < yMaxMinDist) {
+					yMaxMinDist = distTopLeft;
+					yMaxTextBox = textBoundingBox;
+				}
+
+				// Calculate distance to bottom-right of the chart axis
+				var distBottomRight = Distance(textCenter, new PointD(axis.Right, axis.Bottom));
+				if (distBottomRight < xMaxMinDist) {
+					xMaxMinDist = distBottomRight;
+					xMaxTextBox = textBoundingBox;
+				}
+
+				// Calculate distance to bottom-left of the chart axis
+				var distBottomLeft = Distance(textCenter, new PointD(axis.Left, axis.Bottom));
+				if (distBottomLeft < xMinMinDist
+					&& textBoundingBox.Top > axis.Bottom) {
+					xMinMinDist = distBottomLeft;
+					xMinTextBox = textBoundingBox;
+				}
+				if (distBottomLeft < yMinMinDist
+					&& textBoundingBox.Left < axis.Left
+					&& textBoundingBox.Top < axis.Bottom) {
+					yMinMinDist = distBottomLeft;
+					yMinTextBox = textBoundingBox;
+				}
+			}
+
+			// OCR each textbox 
+			// Step 7: Initialize Emgu.CV.OCR.Tesseract for OCR
+			string tessdataPath = "OCR"; // Path to tessdata folder
+			Tesseract ocr = new(tessdataPath, "eng", OcrEngineMode.TesseractOnly, "E.-0123456789"); // Initialize with English language
+			var xMax = OCR(image, xMaxTextBox, ocr);
+			var xMin = OCR(image, xMinTextBox, ocr);
+			var yMax = OCR(image, yMaxTextBox, ocr);
+			var yMin = OCR(image, yMinTextBox, ocr);
+			
+			//var tmp = image.Copy();
+			//CvInvoke.DrawContours(tmp, textContours, -1, new MCvScalar(0, 0, 255));
+			//CvInvoke.Imshow("a", tmp);
+
+			//tmp = image.Copy();
+			//CvInvoke.Rectangle(tmp, axis.ToRectangle(), new MCvScalar(0, 0, 255));
+			//CvInvoke.Rectangle(tmp, xMinTextBox, new MCvScalar(0, 0, 255));
+			//CvInvoke.Rectangle(tmp, yMinTextBox, new MCvScalar(0, 0, 255));
+			//CvInvoke.Rectangle(tmp, xMaxTextBox, new MCvScalar(0, 0, 255));
+			//CvInvoke.Rectangle(tmp, yMaxTextBox, new MCvScalar(0, 0, 255));
+			//CvInvoke.Imshow("", tmp);
+
+			// combine into RectangleD
+			return new RectangleD(xMin, yMin, xMax - xMin, yMax - yMin);
+
+			static double Distance(PointD pt1, PointD pt2)
+			{
+				return Math.Sqrt(Math.Pow(pt1.X - pt2.X, 2) + Math.Pow(pt1.Y - pt2.Y, 2));
+			}
+
+			static double OCR(Image<Rgba, byte> image, Rectangle textBox, Tesseract ocrEngine)
+			{
+				if (textBox == Rectangle.Empty) {
+					return default;
+				}
+				var roi = image.Copy(textBox);
+				ocrEngine.SetImage(roi); // Set the image for OCR
+				ocrEngine.Recognize(); // Perform OCR
+				var xMaxText = ocrEngine.GetUTF8Text(); // Get the recognized text
+				double.TryParse(xMaxText, out var value);
+
+				return value;
+			}
+		}
+
 		public Image<Rgba, byte> CropImage(Image<Rgba, byte> image, RectangleD roi)
 		{
 			return CropImage(image, new Rectangle(
@@ -259,7 +369,8 @@ namespace PlotDigitizer.Core
 
 		public IEnumerable<PointD> GetContinuousPoints(Image<Rgba, byte> image)
 		{
-			if (image is null) return null;
+			if (image is null) 
+				return null;
 			var points = new List<PointD>();
 			var width = image.Width;
 			var height = image.Height;

@@ -14,6 +14,9 @@ namespace PlotDigitizer.Core
 
 		public override void Update()
 		{
+			if (!inputImage.CheckUpdate()) {
+				return;
+			}
 			Value = default;
 			base.Update();
 		}

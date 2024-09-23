@@ -9,6 +9,7 @@ namespace PlotDigitizer.Core
 		#region Fields
 
 		private readonly Setting setting;
+		private readonly IImageService imageService;
 
 		#endregion Fields
 
@@ -55,10 +56,13 @@ namespace PlotDigitizer.Core
 			Name = "AxisLimitPage";
 		}
 
-		public RangePageViewModel(Model model, Setting setting) : this()
+		public RangePageViewModel(Model model, 
+			Setting setting, 
+			IImageService imageService) : this()
 		{
 			Model = model;
 			this.setting = setting;
+			this.imageService = imageService;
 			model.PropertyChanged += Model_PropertyChanged;
 			setting.PropertyChanged += Setting_PropertyChanged;
 		}
@@ -72,6 +76,9 @@ namespace PlotDigitizer.Core
 			base.Enter();
 			if (!IsEnabled) {
 				return;
+			}
+			if (setting.AxisLimit == default) {
+				//imageService.GetAxisLimit(Image);
 			}
 			AxisLimit = setting.AxisLimit;
 			AxisLogBase = setting.AxisLogBase;
