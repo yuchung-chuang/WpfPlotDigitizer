@@ -203,6 +203,86 @@ namespace PlotDigitizer.Core
 			}
 		}
 
+		public RectangleD GetAxisLimit(Image<Rgba, byte> image, RectangleD axis)
+		{
+			var im = image.Copy();
+
+			Mat gray = new Mat();
+			CvInvoke.CvtColor(image, gray, ColorConversion.Bgr2Gray); // Converting to grayscale
+
+			// Step 6: Text detection using Emgu.CV (from previous code, slightly modified)
+			Mat grad = new Mat();
+			Mat kernel = CvInvoke.GetStructuringElement(ElementShape.Ellipse, new Size(3, 3), new Point(-1, -1));
+			CvInvoke.MorphologyEx(gray, grad, MorphOp.Gradient, kernel, new Point(-1, -1), 1, BorderType.Default, new MCvScalar());
+
+			Mat bw = new Mat();
+			CvInvoke.Threshold(grad, bw, 0, 255, ThresholdType.Binary | ThresholdType.Otsu);
+
+			Mat kernel2 = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new Size(9, 1), new Point(-1, -1));
+			Mat connected = new Mat();
+			CvInvoke.MorphologyEx(bw, connected, MorphOp.Close, kernel2, new Point(-1, -1), 1, BorderType.Default, new MCvScalar());
+
+			// Find contours for text regions
+			VectorOfVectorOfPoint textContours = new VectorOfVectorOfPoint();
+			CvInvoke.FindContours(connected, textContours, null, RetrType.External, ChainApproxMethod.ChainApproxSimple);
+
+			// Variables to store the closest text regions
+			Rectangle closestTopLeftText = new Rectangle();
+			Rectangle closestBottomRightText = new Rectangle();
+			double minDistTopLeft = double.MaxValue;
+			double minDistBottomRight = double.MaxValue;
+
+			// Step 8: Iterate through the contours to find the closest text region
+			for (int i = 0; i < textContours.Size; i++) {
+				Rectangle textBoundingBox = CvInvoke.BoundingRectangle(textContours[i]);
+				PointD textCenter = new PointD(textBoundingBox.X + textBoundingBox.Width / 2, textBoundingBox.Y + textBoundingBox.Height / 2);
+
+				// Calculate distance to top-left of the chart axis
+				double distTopLeft = Distance(textCenter, new PointD(axis.X, axis.Y));
+				if (distTopLeft < minDistTopLeft) {
+					minDistTopLeft = distTopLeft;
+					closestTopLeftText = textBoundingBox;
+				}
+
+				// Calculate distance to bottom-right of the chart axis
+				double distBottomRight = Distance(textCenter, new PointD(axis.Right, axis.Bottom));
+				if (distBottomRight < minDistBottomRight) {
+					minDistBottomRight = distBottomRight;
+					closestBottomRightText = textBoundingBox;
+				}
+			}
+
+			// Step 9: Draw the bounding boxes around the chart axis and the closest text regions
+			CvInvoke.Rectangle(im, axis.ToRectangle(), new MCvScalar(0, 0, 255), 2); // Red box for chart axis
+
+			// Draw the closest top-left text region
+			if (closestTopLeftText != Rectangle.Empty) {
+				CvInvoke.Rectangle(im, closestTopLeftText, new MCvScalar(0, 255, 0), 2); // Green box for top-left text region
+			}
+
+			// Draw the closest bottom-right text region
+			if (closestBottomRightText != Rectangle.Empty) {
+				CvInvoke.Rectangle(im, closestBottomRightText, new MCvScalar(255, 0, 0), 2); // Blue box for bottom-right text region
+			}
+
+			// Step 10: Display the result
+			CvInvoke.Imshow("Detected Text Regions", im);
+			
+			return default;
+
+			// Step 3: Helper function to get bounding box size (lambda in Python is now a method)
+			static int GetRectSize(Rectangle rect)
+			{
+				return rect.Width * rect.Height;
+			}
+
+			// Step 7: Create a function to calculate Euclidean distance
+			static double Distance(PointD pt1, PointD pt2)
+			{
+				return Math.Sqrt(Math.Pow(pt1.X - pt2.X, 2) + Math.Pow(pt1.Y - pt2.Y, 2));
+			}
+		}
+
 		public Image<Rgba, byte> CropImage(Image<Rgba, byte> image, RectangleD roi)
 		{
 			return CropImage(image, new Rectangle(
