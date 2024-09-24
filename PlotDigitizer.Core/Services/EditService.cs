@@ -20,12 +20,12 @@ namespace PlotDigitizer.Core
 
 		public int Index { get; private set; }
 
-		public ObservableCollection<TObject> ObjectList { get; private set; }
+		public IList<TObject> ObjectList { get; private set; }
 		
 		/// <summary>
 		/// The tag to indicate editting command
 		/// </summary>
-		public ObservableCollection<string> TagList { get; private set; }
+		public IList<string> TagList { get; private set; }
 		
 		public TObject CurrentObject => ObjectList[Index];
 		public string CurrentTag => TagList[Index];
@@ -82,11 +82,7 @@ namespace PlotDigitizer.Core
 
 		public void GoTo(int targetIndex) => Index = targetIndex;
 		public void Redo() => Index++;
-		public void Undo()
-		{
-			Index--;
-			Debug.WriteLine($"EditService({this.GetHashCode()}) Index={Index}");
-		}
+		public void Undo() => Index--;
 
 		protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		#endregion Methods

@@ -88,7 +88,6 @@ namespace PlotDigitizer.Core
 			base.Enter();
 			EditService.Initialise(Model.FilteredImage);
 			EditService.PropertyChanged += EditService_PropertyChanged;
-			EditService.ObjectList.CollectionChanged += ObjectList_CollectionChanged;
 		}
 
 		public override void Leave()
@@ -138,17 +137,10 @@ namespace PlotDigitizer.Core
 				RedoCommand.RaiseCanExecuteChanged();
 			}
 		}
-		private void ObjectList_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-		{
-			UndoCommand.RaiseCanExecuteChanged();
-			RedoCommand.RaiseCanExecuteChanged();
-		}
 
 		public void Dispose()
 		{
 			EditService.PropertyChanged -= EditService_PropertyChanged;
-			if (EditService.ObjectList is not null)
-				EditService.ObjectList.CollectionChanged -= ObjectList_CollectionChanged;
 			GC.SuppressFinalize(this);
 		}
 
