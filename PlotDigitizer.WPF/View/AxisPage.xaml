@@ -10,7 +10,8 @@
 						 d:DesignHeight="450"
 						 d:DesignWidth="800"
 						 x:Name="root"
-						 d:DataContext="{d:DesignInstance Type=core:AxisPageViewModel, IsDesignTimeCreatable=True}">
+			 d:Background="White"
+			 d:DataContext="{d:DesignInstance Type=core:AxisPageViewModel, IsDesignTimeCreatable=True}">
 
 	<Grid Margin="5"
 				IsEnabled="{Binding IsEnabled}">
