@@ -1,6 +1,6 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
-
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -26,23 +26,38 @@ namespace PlotDigitizer.WPF
 		{
 			base.OnStartup(e);
 
-			var services = new ServiceCollection()
-			.AddTransient<IMessageBoxService, MessageBoxService>()
-			.AddTransient<IFileDialogService, FileDialogService>()
-			.AddTransient<IAwaitTaskService, AwaitTaskService>()
-			.AddTransient<IClipboardService, ClipboardService>()
-			.AddSingleton<IPageService, PageService>()
-			.AddTransient<IImageService, ImageService>()
-			.AddTransient<IWindowService, WindowService>()
-			.AddViewModels()
-			.AddModel()
+            // Build Configuration
+            IConfiguration configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())   // Set the base path to the current directory
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true) // Load appsettings.json
+                .Build();
+
+            var services = new ServiceCollection()
+				.AddSingleton(configuration)
+				.Configure<OcrSettings>(settings =>
+				{
+                    var section = configuration.GetSection("OCR");
+					settings.DataPath = section[nameof(settings.DataPath)];
+					settings.Language = section[nameof(settings.Language)];
+					settings.WhiteList = section[nameof(settings.WhiteList)];
+                })
+				.AddTransient<IMessageBoxService, MessageBoxService>()
+				.AddTransient<IFileDialogService, FileDialogService>()
+				.AddTransient<IAwaitTaskService, AwaitTaskService>()
+				.AddTransient<IClipboardService, ClipboardService>()
+				.AddSingleton<IPageService, PageService>()
+				.AddTransient<IImageService, ImageService>()
+				.AddSingleton<IOcrService, OcrService>()
+				.AddTransient<IWindowService, WindowService>()
+				.AddViewModels()
+				.AddModel()
 			
-			.AddLogging(builder =>
-			{
-				builder.ClearProviders() // to override the default set of logging providers added by the default host
-					.AddProvider(new DebugLoggerProvider())
-					.AddProvider(new FileLoggerProvider(Path.Combine(Directory.GetCurrentDirectory(), "logs")));
-			});
+				.AddLogging(builder =>
+				{
+					builder.ClearProviders() // to override the default set of logging providers added by the default host
+						.AddProvider(new DebugLoggerProvider())
+						.AddProvider(new FileLoggerProvider(Path.Combine(Directory.GetCurrentDirectory(), "logs")));
+				});
 
 			serviceProvider = services.BuildServiceProvider();
 
@@ -69,8 +84,11 @@ namespace PlotDigitizer.WPF
 			logger?.LogInformation("Page Loaded.");
 
 			SetupExceptionHandling();
-			//Test();
-		}
+
+			if (configuration["RunTest"].ToLower() == true.ToString()) {
+                Test();
+            }
+        }
 
 		private void Test()
 		{

@@ -20,7 +20,7 @@
 			if (!inputImage.CheckUpdate() || !axisLocation.CheckUpdate()) {
 				return;
 			}
-			Value = imageService.GetAxisLimit(inputImage.Value, axisLocation.Value);
+			Value = default;
 			base.Update();
 		}
 	}
