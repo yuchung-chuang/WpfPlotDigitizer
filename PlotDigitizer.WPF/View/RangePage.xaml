@@ -56,9 +56,36 @@
 			<RowDefinition Height="5*" />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
-		<local:ImageViewer Grid.Column="1"
-						   Margin="5"
-						   ImageSource="{Binding Image, Converter={local:ImageSourceConverter}}" />
+
+		<Viewbox Grid.Column="1"
+				 Margin="5">
+			<Grid>
+				<Grid local:Pan.IsEnabled="True"
+					  local:Pan.Gesture="LeftClick"
+					  local:Zoom.IsEnabled="True"
+					  local:Zoom.Gesture="WheelClick">
+					<Grid.Background>
+						<DrawingBrush TileMode="Tile"
+									  Viewport="0, 0, 32, 32"
+									  ViewportUnits="Absolute">
+							<DrawingBrush.Drawing>
+								<GeometryDrawing Brush="LightGray"
+												 Geometry="M0,0 H16 V16 H32 V32 H16 V16 H0Z" />
+							</DrawingBrush.Drawing>
+						</DrawingBrush>
+					</Grid.Background>
+					<Image x:Name="ImageControl"
+						   Source="{Binding Image, Converter={local:ImageSourceConverter}}" />
+					<local:ImageSelectionBox ImageControl="{Binding ElementName=ImageControl}"
+											 BoxLeft="{Binding BoxLeft, Mode=TwoWay}"
+											 BoxTop="{Binding BoxTop, Mode=TwoWay}"
+											 BoxWidth="{Binding BoxWidth, Mode=TwoWay}"
+											 BoxHeight="{Binding BoxHeight, Mode=TwoWay}" />
+				</Grid>
+				<Border BorderBrush="Black"
+						BorderThickness="1" />
+			</Grid>
+		</Viewbox>
 		<UniformGrid Rows="3"
 					 Columns="1"
 					 HorizontalAlignment="Center">
