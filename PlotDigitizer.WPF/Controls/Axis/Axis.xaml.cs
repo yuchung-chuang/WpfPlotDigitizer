@@ -71,18 +71,26 @@ namespace PlotDigitizer.WPF
 
 		#region Properties
 
-		public double AxisBottom => AxisTop + AxisHeight;
-
-		public double AxisHeight
-		{
-			get => (double)GetValue(AxisHeightProperty);
-			set => SetValue(AxisHeightProperty, AxisHelpers.Clamp(value, double.MaxValue, tol));
-		}
 
 		public double AxisLeft
 		{
 			get => (double)GetValue(AxisLeftProperty);
 			set => SetValue(AxisLeftProperty, AxisHelpers.Clamp(value, AxisRight - tol, 0));
+		}
+		public double AxisTop
+		{
+			get => (double)GetValue(AxisTopProperty);
+			set => SetValue(AxisTopProperty, AxisHelpers.Clamp(value, AxisBottom - tol, 0));
+		}
+		public double AxisWidth
+		{
+			get => (double)GetValue(AxisWidthProperty);
+			set => SetValue(AxisWidthProperty, AxisHelpers.Clamp(value, double.MaxValue, tol));
+		}
+		public double AxisHeight
+		{
+			get => (double)GetValue(AxisHeightProperty);
+			set => SetValue(AxisHeightProperty, AxisHelpers.Clamp(value, double.MaxValue, tol));
 		}
 
 		public Thickness AxisMargin => new Thickness(AxisLeft, AxisTop, 0, 0);
@@ -96,18 +104,7 @@ namespace PlotDigitizer.WPF
 				AxisHeight / Image.PixelHeight);
 
 		public double AxisRight => AxisLeft + AxisWidth;
-
-		public double AxisTop
-		{
-			get => (double)GetValue(AxisTopProperty);
-			set => SetValue(AxisTopProperty, AxisHelpers.Clamp(value, AxisBottom - tol, 0));
-		}
-
-		public double AxisWidth
-		{
-			get => (double)GetValue(AxisWidthProperty);
-			set => SetValue(AxisWidthProperty, AxisHelpers.Clamp(value, double.MaxValue, tol));
-		}
+		public double AxisBottom => AxisTop + AxisHeight;
 
 		public MouseGesture Gesture
 		{
@@ -123,7 +120,7 @@ namespace PlotDigitizer.WPF
 			set => SetValue(ImageSourceProperty, value);
 		}
 
-		public Brush Stroke
+        public Brush Stroke
 		{
 			get => (Brush)GetValue(StrokeProperty);
 			set => SetValue(StrokeProperty, value);
