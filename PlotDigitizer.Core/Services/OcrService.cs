@@ -4,6 +4,7 @@ using Emgu.CV;
 using System.Drawing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using System;
 
 namespace PlotDigitizer.Core
 {
@@ -25,11 +26,10 @@ namespace PlotDigitizer.Core
 
         public double OcrDouble(Image<Rgba, byte> image, Rectangle textBox)
         {
-            if (textBox == Rectangle.Empty) {
+            if (imageService.FixROI(image, textBox) is not Rectangle textBoxFixed)
                 return default;
-            }
 
-            var roi = image.Copy(textBox);
+            var roi = image.Copy(textBoxFixed);
             ocrEngine.SetImage(roi); // Set the image for OCR
             ocrEngine.Recognize(); // Perform OCR
             var text = ocrEngine.GetUTF8Text(); // Get the recognized text

@@ -12,6 +12,7 @@ namespace PlotDigitizer.Core
 		Image<Rgba, byte> CropImage(Image<Rgba, byte> image, RectangleD roi);
 		Image<Rgba, byte> CropImage(Image<Rgba, byte> image, Rectangle roi);
 		Image<Rgba, byte> FilterRGB(Image<Rgba, byte> image, Rgba min, Rgba max);
+        Rectangle? FixROI(Image<Rgba, byte> image, Rectangle roi);
         (Rectangle xMax, Rectangle xMin, Rectangle yMax, Rectangle yMin) GetAxisLimitTextBoxes(Image<Rgba, byte> image, RectangleD axis);
         RectangleD? GetAxisLocation(Image<Rgba, byte> image);
 		IEnumerable<PointD> GetContinuousPoints(Image<Rgba, byte> image);

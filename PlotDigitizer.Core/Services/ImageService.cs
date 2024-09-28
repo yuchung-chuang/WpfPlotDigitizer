@@ -286,10 +286,25 @@ namespace PlotDigitizer.Core
 
         public Image<Rgba, byte> CropImage(Image<Rgba, byte> image, Rectangle roi)
         {
+            if (FixROI(image, roi) is not Rectangle roiFixed) {
+                return image;
+            }
+            try {
+                return image.Copy(roiFixed);
+            }
+            catch (CvException ex) {
+                logger?.LogError(ex.Message);
+                logger?.LogError(ex.ErrorMessage);
+                return image;
+            }
+        }
+
+        public Rectangle? FixROI(Image<Rgba, byte> image, Rectangle roi)
+        {
             if (image is null
                 || roi.X >= image.Width || roi.Y >= image.Height
-                || roi.Width == 0 || roi.Height == 0) {
-                return image;
+                || roi.Width <= 0 || roi.Height <= 0) {
+                return null;
             }
             roi.X = Math.Max(roi.X, 0);
             roi.Y = Math.Max(roi.Y, 0);
@@ -299,14 +314,7 @@ namespace PlotDigitizer.Core
             if (roi.Bottom > image.Height) {
                 roi.Height = image.Height - roi.Y;
             }
-            try {
-                return image.Copy(roi);
-            }
-            catch (CvException ex) {
-                logger?.LogError(ex.Message);
-                logger?.LogError(ex.ErrorMessage);
-                return image;
-            }
+            return roi;
         }
 
         public Image<Rgba, byte> FilterRGB(Image<Rgba, byte> image, Rgba min, Rgba max)
