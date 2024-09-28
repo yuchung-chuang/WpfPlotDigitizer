@@ -12,7 +12,8 @@ namespace PlotDigitizer.Core
 			IsUpdated = true;
 			this.inputImage = inputImage;
 			inputImage.Updated += (s, e) => OnOutdated();
-		}
+			inputImage.Outdated += (s, e) => OnOutdated();
+        }
 
 		public override void Update()
 		{

@@ -13,7 +13,8 @@
 			this.imageService = imageService;
 			inputImage.Updated += (s, e) => OnOutdated();
 			axisLocation.Updated += (s, e) => OnOutdated();
-		}
+			inputImage.Outdated += (s, e) => OnOutdated();
+        }
 
 		public override void Update()
 		{
