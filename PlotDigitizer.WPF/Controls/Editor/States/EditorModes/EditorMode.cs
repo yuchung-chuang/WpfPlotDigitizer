@@ -1,6 +1,6 @@
 ﻿namespace PlotDigitizer.WPF
 {
-	public abstract class EditorMode : State
+	public abstract class EditorMode : EditorState
 	{
 		public static NoMode NoMode { get; } = new NoMode();
 		public static EraserMode EraserMode { get; } = new EraserMode();

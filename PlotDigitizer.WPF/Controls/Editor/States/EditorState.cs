@@ -2,7 +2,7 @@
 
 namespace PlotDigitizer.WPF
 {
-	public abstract class State
+	public abstract class EditorState
 	{
 		public virtual void MouseDown(Editor editor, MouseButtonEventArgs e)
 		{ }
