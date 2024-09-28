@@ -1,20 +1,22 @@
 ﻿<Window x:Class="PlotDigitizer.WPF.SplashWindow"
-				xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-				xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-				xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-				xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-				xmlns:local="clr-namespace:PlotDigitizer.WPF"
-				mc:Ignorable="d"
-				Title="SplashScreen"
-				Height="450"
-				Width="800"
-				WindowStartupLocation="CenterScreen"
-				WindowStyle="None"
-				WindowState="Normal"
-				AllowsTransparency="True"
-				Background="Transparent">
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:local="clr-namespace:PlotDigitizer.WPF"
+		xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+		mc:Ignorable="d"
+		d:Background="White"
+		Title="SplashScreen"
+		Height="450"
+		Width="800"
+		WindowStartupLocation="CenterScreen"
+		WindowStyle="None"
+		WindowState="Normal"
+		AllowsTransparency="True"
+		Background="Transparent">
 	<Grid Background="Transparent">
 		<Image Source="/Assets/icon_digitizer.png"
-					 Width="300" />
+			   Width="300" />
 	</Grid>
 </Window>
