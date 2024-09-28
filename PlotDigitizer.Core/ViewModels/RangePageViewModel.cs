@@ -1,6 +1,9 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
+using PropertyChanged;
+using System;
 using System.ComponentModel;
+using System.Windows.Input;
 
 namespace PlotDigitizer.Core
 {
@@ -15,50 +18,95 @@ namespace PlotDigitizer.Core
         #endregion Fields
 
         #region Properties
-        public double BoxLeft { get; set; }
-        public double BoxTop { get; set; }
-        public double BoxWidth { get; set; }
-        public double BoxHeight { get; set; }
-
-        public RectangleD XMaxTextBox { 
-            get => new(BoxLeft, BoxTop, BoxWidth, BoxHeight); 
-            set { 
-                BoxLeft = value.Left;
-                BoxTop = value.Top;
-                BoxWidth = value.Width;
-                BoxHeight = value.Height;
-            } 
-        }
-
+        public double XMax { get; set; } = double.NaN;
+        public double XMin { get; set; } = double.NaN;
+        public double YMax { get; set; } = double.NaN;
+        public double YMin { get; set; } = double.NaN;
         public RectangleD AxisLimit
         {
-            get => new(AxLimXMin, AxLimYMin, AxLimXMax - AxLimXMin, AxLimYMax - AxLimYMin);
+            get => new(XMin, YMin, XMax - XMin, YMax - YMin);
             set {
-                AxLimXMax = value.Right;
-                AxLimXMin = value.Left;
-                AxLimYMax = value.Bottom;
-                AxLimYMin = value.Top;
+                XMax = value.Right;
+                XMin = value.Left;
+                YMax = value.Bottom;
+                YMin = value.Top;
             }
         }
-
+        public double XLog { get; set; } = double.NaN;
+        public double YLog { get; set; } = double.NaN;
         public PointD AxisLogBase
         {
-            get => new(AxLimXLog, AxLimYLog);
+            get => new(XLog, YLog);
             set {
-                AxLimXLog = value.X;
-                AxLimYLog = value.Y;
+                XLog = value.X;
+                YLog = value.Y;
+            }
+        }
+        public double XMaxBoxLeft { get; set; }
+        public double XMaxBoxTop { get; set; }
+        public double XMaxBoxWidth { get; set; }
+        public double XMaxBoxHeight { get; set; }
+        public RectangleD XMaxTextBox
+        {
+            get => new(XMaxBoxLeft, XMaxBoxTop, XMaxBoxWidth, XMaxBoxHeight);
+            set {
+                XMaxBoxLeft = value.Left;
+                XMaxBoxTop = value.Top;
+                XMaxBoxWidth = value.Width;
+                XMaxBoxHeight = value.Height;
             }
         }
 
-        public double AxLimXLog { get; set; } = double.NaN;
-        public double AxLimXMax { get; set; } = double.NaN;
-        public double AxLimXMin { get; set; } = double.NaN;
-        public double AxLimYLog { get; set; } = double.NaN;
-        public double AxLimYMax { get; set; } = double.NaN;
-        public double AxLimYMin { get; set; } = double.NaN;
+        public double XMinBoxLeft { get; set; }
+        public double XMinBoxTop { get; set; }
+        public double XMinBoxWidth { get; set; }
+        public double XMinBoxHeight { get; set; }
+        public RectangleD XMinTextBox
+        {
+            get => new(XMinBoxLeft, XMinBoxTop, XMinBoxWidth, XMinBoxHeight);
+            set {
+                XMinBoxLeft = value.Left;
+                XMinBoxTop = value.Top;
+                XMinBoxWidth = value.Width;
+                XMinBoxHeight = value.Height;
+            }
+        }
+
+        public double YMaxBoxLeft { get; set; }
+        public double YMaxBoxTop { get; set; }
+        public double YMaxBoxWidth { get; set; }
+        public double YMaxBoxHeight { get; set; }
+        public RectangleD YMaxTextBox
+        {
+            get => new(YMaxBoxLeft, YMaxBoxTop, YMaxBoxWidth, YMaxBoxHeight);
+            set {
+                YMaxBoxLeft = value.Left;
+                YMaxBoxTop = value.Top;
+                YMaxBoxWidth = value.Width;
+                YMaxBoxHeight = value.Height;
+            }
+        }
+
+        public double YMinBoxLeft { get; set; }
+        public double YMinBoxTop { get; set; }
+        public double YMinBoxWidth { get; set; }
+        public double YMinBoxHeight { get; set; }
+        public RectangleD YMinTextBox
+        {
+            get => new(YMinBoxLeft, YMinBoxTop, YMinBoxWidth, YMinBoxHeight);
+            set {
+                YMinBoxLeft = value.Left;
+                YMinBoxTop = value.Top;
+                YMinBoxWidth = value.Width;
+                YMinBoxHeight = value.Height;
+            }
+        }
+
         public bool IsEnabled => Model != null && Model.InputImage != null;
         public Model Model { get; }
         public Image<Rgba, byte> Image => !IsEnabled ? null : Model.InputImage;
+
+        public ICommand OcrCommand { get; }
 
         #endregion Properties
 
@@ -67,6 +115,7 @@ namespace PlotDigitizer.Core
         public RangePageViewModel()
         {
             Name = "Axis Range Page";
+            OcrCommand = new RelayCommand(OCR);
         }
 
         public RangePageViewModel(Model model,
@@ -78,8 +127,6 @@ namespace PlotDigitizer.Core
             this.setting = setting;
             this.imageService = imageService;
             this.ocrService = ocrService;
-            model.PropertyChanged += Model_PropertyChanged;
-            setting.PropertyChanged += Setting_PropertyChanged;
         }
 
         #endregion Constructors
@@ -92,27 +139,29 @@ namespace PlotDigitizer.Core
             if (!IsEnabled) {
                 return;
             }
-            if (setting.AxisLimit == default) {
+            if (setting.AxisLimitTextBox is null) {
                 var (xMaxTextBox, xMinTextBox, yMaxTextBox, yMinTextBox) = imageService.GetAxisLimitTextBoxes(Image, setting.AxisLocation);
                 if (xMaxTextBox != default) {
                     XMaxTextBox = new RectangleD(xMaxTextBox);
                 }
-                var xMin = ocrService.OcrDouble(Image, xMinTextBox);
-                var xMax = ocrService.OcrDouble(Image, xMaxTextBox);
-                var yMin = ocrService.OcrDouble(Image, yMinTextBox);
-                var yMax = ocrService.OcrDouble(Image, yMaxTextBox);
-                AxisLimit = new RectangleD(xMin, yMin, xMax - xMin, yMax - yMin);
-            }
-            else {
+                if (xMinTextBox != default) {
+                    XMinTextBox = new RectangleD(xMinTextBox);
+                }
+                if (yMaxTextBox != default) {
+                    YMaxTextBox = new RectangleD(yMaxTextBox);
+                }
+                if (yMinTextBox != default) {
+                    YMinTextBox = new RectangleD(yMinTextBox);
+                }
+                OCR();
+            } else { 
+                XMaxTextBox = setting.AxisLimitTextBox.XMax;
+                XMinTextBox = setting.AxisLimitTextBox.XMin;
+                YMaxTextBox = setting.AxisLimitTextBox.YMax;
+                YMinTextBox = setting.AxisLimitTextBox.YMin;
                 AxisLimit = setting.AxisLimit;
             }
             AxisLogBase = setting.AxisLogBase;
-            OnPropertyChanged(nameof(AxLimXMin));
-            OnPropertyChanged(nameof(AxLimXLog));
-            OnPropertyChanged(nameof(AxLimXMax));
-            OnPropertyChanged(nameof(AxLimYMin));
-            OnPropertyChanged(nameof(AxLimYLog));
-            OnPropertyChanged(nameof(AxLimYMax));
         }
 
         public override void Leave()
@@ -121,29 +170,25 @@ namespace PlotDigitizer.Core
             if (!IsEnabled) {
                 return;
             }
+            setting.AxisLimitTextBox = new AxisLimitTextBox
+            {
+                XMax = XMaxTextBox,
+                XMin = XMinTextBox,
+                YMax = YMaxTextBox,
+                YMin = YMinTextBox,
+            };
             setting.AxisLimit = AxisLimit;
             setting.AxisLogBase = AxisLogBase;
         }
-
-        private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        
+        private void OCR()
         {
-            if (e.PropertyName == nameof(Core.Model.InputImage)) {
-                base.OnPropertyChanged(nameof(IsEnabled));
-            }
+            XMax = ocrService.OcrDouble(Image, XMaxTextBox.ToRectangle());
+            XMin = ocrService.OcrDouble(Image, XMinTextBox.ToRectangle());
+            YMax = ocrService.OcrDouble(Image, YMaxTextBox.ToRectangle());
+            YMin = ocrService.OcrDouble(Image, YMinTextBox.ToRectangle());
         }
 
-        private void Setting_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (sender is not Setting setting) {
-                return;
-            }
-            if (e.PropertyName == nameof(Setting.AxisLimit)) {
-                AxisLimit = setting.AxisLimit;
-            }
-            if (e.PropertyName == nameof(Setting.AxisLogBase)) {
-                AxisLogBase = setting.AxisLogBase;
-            }
-        }
 
         #endregion Methods
     }
