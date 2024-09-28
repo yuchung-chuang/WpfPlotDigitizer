@@ -66,7 +66,7 @@ namespace PlotDigitizer.Core
 
         public RangePageViewModel()
         {
-            Name = "AxisLimitPage";
+            Name = "Axis Range Page";
         }
 
         public RangePageViewModel(Model model,
