@@ -72,7 +72,7 @@ namespace PlotDigitizer.Core
 
 		public FilterPageViewModel()
 		{
-			Name = "FilterPage";
+			Name = "Filter Page";
 		}
 
 		public FilterPageViewModel(Model model, 

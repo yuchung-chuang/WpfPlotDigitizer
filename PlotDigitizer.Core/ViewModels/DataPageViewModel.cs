@@ -64,7 +64,7 @@ namespace PlotDigitizer.Core
 
 		public DataPageViewModel()
 		{
-			Name = "PreviewPage";
+			Name = "Data Page";
 			ExportCommand = new RelayCommand(Export, CanExport);
 		}
 

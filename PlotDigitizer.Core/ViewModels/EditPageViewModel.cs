@@ -56,7 +56,7 @@ namespace PlotDigitizer.Core
 
         public EditPageViewModel()
 		{
-			Name = "EditPage";
+			Name = "Edit Page";
 			UndoCommand = new RelayCommand(Undo, CanUndo);
 			RedoCommand = new RelayCommand(Redo, CanRedo);
 			GoToCommand = new RelayCommand<int>(GoTo, CanGoTo);

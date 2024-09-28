@@ -42,7 +42,7 @@ namespace PlotDigitizer.Core
 
         public AxisPageViewModel()
 		{
-			Name = "AxisPage";
+			Name = "Axis Page";
 			GetAxisCommand = new RelayCommand(GetAxis, CanGetAxis);
 		}
 
