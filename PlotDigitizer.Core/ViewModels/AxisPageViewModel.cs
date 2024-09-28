@@ -31,7 +31,14 @@ namespace PlotDigitizer.Core
 				AxisHeight = value.Height;
 			}
 		}
-		public RelayCommand GetAxisCommand { get; set; }
+        public RectangleD AxisRelative =>
+			Image is null ?
+			new() :
+            new(AxisLeft / Image.Width,
+                AxisTop / Image.Height,
+                AxisWidth / Image.Width,
+                AxisHeight / Image.Height);
+        public RelayCommand GetAxisCommand { get; set; }
 		public bool IsEnabled => Model != null && Model.InputImage != null;
 		public Model Model { get; }
         public Image<Rgba, byte> Image => !IsEnabled ? null : Model.InputImage;
