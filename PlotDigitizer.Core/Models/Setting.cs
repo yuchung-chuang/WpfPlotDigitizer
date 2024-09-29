@@ -10,8 +10,9 @@ namespace PlotDigitizer.Core
 	public class Setting : INotifyPropertyChanged
 	{
 		public virtual RectangleD AxisLocation { get; set; }
-		public virtual AxisLimitTextBoxD AxisLimitTextBox { get; set; }
+		public virtual AxisLimitTextBoxD AxisTextBox { get; set; }
 		public virtual RectangleD AxisLimit { get; set; }
+		public virtual AxisTitle AxisTitle { get; set; }
 		public virtual PointD AxisLogBase { get; set; }
 		public virtual Rgba FilterMax { get; set; }
 		public virtual Rgba FilterMin { get; set; }
@@ -27,8 +28,9 @@ namespace PlotDigitizer.Core
 			return new Setting
 			{
 				AxisLocation = AxisLocation,
-				AxisLimitTextBox = AxisLimitTextBox,
+				AxisTextBox = AxisTextBox,
 				AxisLimit = AxisLimit,
+				AxisTitle = AxisTitle,
 				AxisLogBase = AxisLogBase,
 				FilterMin = FilterMin,
 				FilterMax = FilterMax,

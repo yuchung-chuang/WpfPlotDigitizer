@@ -4,11 +4,11 @@ using System.Text;
 
 namespace PlotDigitizer.Core
 {
-    public class AxisLimitTextBoxNode : UpdatableNode<AxisLimitTextBoxD>
+    public class AxisTextBoxNode : UpdatableNode<AxisLimitTextBoxD>
     {
         private readonly AxisLocationNode axisLocation;
 
-        public AxisLimitTextBoxNode(AxisLocationNode axisLocation)
+        public AxisTextBoxNode(AxisLocationNode axisLocation)
         {
             this.axisLocation = axisLocation;
             axisLocation.Updated += (s, e) => OnOutdated();
@@ -23,4 +23,5 @@ namespace PlotDigitizer.Core
             base.OnUpdated();
         }
     }
+    
 }
