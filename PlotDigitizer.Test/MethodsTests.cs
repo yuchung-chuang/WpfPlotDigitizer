@@ -15,14 +15,14 @@ namespace PlotDigitizer.Core.Tests
 	[TestClass()]
 	public class MethodsTests
 	{
-		private ImageService imageService;
+		private EmguCvService imageService;
 
 		[TestInitialize]
 		public void OnTestInitialize()
 		{
 			if (!UriParser.IsKnownScheme("pack"))
 				new System.Windows.Application();
-			imageService = new ImageService();
+			imageService = new EmguCvService();
 		}
 
 		[DataTestMethod()]
