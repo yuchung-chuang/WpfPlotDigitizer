@@ -341,3 +341,4 @@ healthchecksdb
 
 TestApp/
 *.dgml
+/WpfAppTemplate1/WpfAppTemplate1.csproj

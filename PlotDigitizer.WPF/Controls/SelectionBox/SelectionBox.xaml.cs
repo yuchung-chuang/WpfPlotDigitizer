@@ -197,23 +197,21 @@ namespace PlotDigitizer.WPF
         #region Private Methods
         private static void OnBoxRectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is SelectionBox selectionBox) {
-                var newRect = (Rect)e.NewValue;
-
-                // Update individual properties
-                selectionBox.RaisePropertyChanged(nameof(BoxLeft));
-                selectionBox.RaisePropertyChanged(nameof(BoxTop));
-                selectionBox.RaisePropertyChanged(nameof(BoxWidth));
-                selectionBox.RaisePropertyChanged(nameof(BoxHeight));
-                selectionBox.RaisePropertyChanged(nameof(BoxRight));
-                selectionBox.RaisePropertyChanged(nameof(BoxBottom));
-                selectionBox.RaisePropertyChanged(nameof(BoxMargin));
-                selectionBox.RaisePropertyChanged(nameof(BoxLocation));
-            }
+            if (d is not SelectionBox box) 
+                return;
+            box.RaisePropertyChanged(nameof(BoxLeft));
+            box.RaisePropertyChanged(nameof(BoxTop));
+            box.RaisePropertyChanged(nameof(BoxWidth));
+            box.RaisePropertyChanged(nameof(BoxHeight));
+            box.RaisePropertyChanged(nameof(BoxRight));
+            box.RaisePropertyChanged(nameof(BoxBottom));
+            box.RaisePropertyChanged(nameof(BoxMargin));
+            box.RaisePropertyChanged(nameof(BoxLocation));
         }
         private static void OnBoxMarginUpdated(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var box = d as SelectionBox;
+            if (d is not SelectionBox box)
+                return;
             box.RaisePropertyChanged(nameof(BoxMargin));
         }
 

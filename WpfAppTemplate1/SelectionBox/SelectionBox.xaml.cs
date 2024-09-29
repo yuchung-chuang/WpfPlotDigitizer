@@ -197,23 +197,21 @@ namespace PlotDigitizer.WPF
         #region Private Methods
         private static void OnBoxRectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is SelectionBox selectionBox) {
-                var newRect = (Rect)e.NewValue;
-
-                // Update individual properties
-                selectionBox.RaisePropertyChanged(nameof(BoxLeft));
-                selectionBox.RaisePropertyChanged(nameof(BoxTop));
-                selectionBox.RaisePropertyChanged(nameof(BoxWidth));
-                selectionBox.RaisePropertyChanged(nameof(BoxHeight));
-                selectionBox.RaisePropertyChanged(nameof(BoxRight));
-                selectionBox.RaisePropertyChanged(nameof(BoxBottom));
-                selectionBox.RaisePropertyChanged(nameof(BoxMargin));
-                selectionBox.RaisePropertyChanged(nameof(BoxLocation));
-            }
+            if (d is not SelectionBox selectionBox) 
+                return;
+            selectionBox.RaisePropertyChanged(nameof(BoxLeft));
+            selectionBox.RaisePropertyChanged(nameof(BoxTop));
+            selectionBox.RaisePropertyChanged(nameof(BoxWidth));
+            selectionBox.RaisePropertyChanged(nameof(BoxHeight));
+            selectionBox.RaisePropertyChanged(nameof(BoxRight));
+            selectionBox.RaisePropertyChanged(nameof(BoxBottom));
+            selectionBox.RaisePropertyChanged(nameof(BoxMargin));
+            selectionBox.RaisePropertyChanged(nameof(BoxLocation));
         }
         private static void OnBoxMarginUpdated(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var box = d as SelectionBox;
+            if (d is not SelectionBox box)
+                return;
             box.RaisePropertyChanged(nameof(BoxMargin));
         }
 
@@ -238,6 +236,7 @@ namespace PlotDigitizer.WPF
             Panel.MouseMove += Grid_MouseMove;
             Panel.MouseUp += Grid_MouseUp;
         }
+        
         private void ImageSelectionBox_Unloaded(object sender, RoutedEventArgs e)
         {
             Panel.MouseDown -= Grid_MouseDown;
