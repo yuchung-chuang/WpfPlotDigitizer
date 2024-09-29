@@ -1,0 +1,32 @@
+﻿<Window x:Class="WpfAppTemplate1.MainWindow"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:local="clr-namespace:WpfAppTemplate1"
+		xmlns:plot="clr-namespace:PlotDigitizer.WPF"
+		mc:Ignorable="d"
+		Title="MainWindow"
+		Height="450"
+		Width="800"
+		d:DataContext="{d:DesignInstance Type=local:MainViewModel, IsDesignTimeCreatable=True}">
+	<Grid Name="mainGrid">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*" />
+			<RowDefinition Height="auto" />
+		</Grid.RowDefinitions>
+		<Image Source="/Assets/data.png" 
+			   Name="image"/>
+		<plot:SelectionBox Panel="{Binding ElementName=mainGrid}"
+						   BoxRect="{Binding Rect, Mode=TwoWay}"
+						   Width="{Binding ElementName=image, Path=ActualWidth}"
+						   Height="{Binding ElementName=image, Path=ActualHeight}"/>
+		<StackPanel Grid.Row="1" 
+					Orientation="Horizontal">
+			<Label Content="{Binding Rect.Left, Converter={local:RoundingConverter}, ConverterParameter=2}" />
+			<Label Content="{Binding Rect.Top, Converter={local:RoundingConverter}, ConverterParameter=2}" />
+			<Label Content="{Binding Rect.Width, Converter={local:RoundingConverter}, ConverterParameter=2}" />
+			<Label Content="{Binding Rect.Height, Converter={local:RoundingConverter}, ConverterParameter=2}" />
+		</StackPanel>
+	</Grid>
+</Window>
