@@ -167,7 +167,10 @@ namespace PlotDigitizer.Core
 				ExportResults SaveText(string seperator, CancellationToken token)
 				{
 					var content = new StringBuilder();
-					content.AppendLine("X" + seperator + "Y");
+					var xlabel = !string.IsNullOrWhiteSpace(setting.AxisTitle.XLabel) ?
+						setting.AxisTitle.XLabel : "X";
+					var ylabel = !string.IsNullOrWhiteSpace(setting.AxisTitle.YLabel) ? setting.AxisTitle.YLabel : "Y";
+                    content.AppendLine(xlabel + seperator + ylabel);
 					foreach (var point in Model.Data) {
 						content.AppendLine(point.X.ToString() + seperator + point.Y.ToString());
 						if (token.IsCancellationRequested) {
