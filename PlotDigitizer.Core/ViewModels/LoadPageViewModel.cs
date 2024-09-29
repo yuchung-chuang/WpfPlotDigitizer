@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace PlotDigitizer.Core
 {
-	public class LoadPageViewModel : PageViewModelBase
+	public class LoadPageViewModel : ViewModelBase
 	{
 		#region Fields
 
@@ -44,7 +44,7 @@ namespace PlotDigitizer.Core
 
 		public LoadPageViewModel()
 		{
-			Name = "LoadPage";
+			Name = "Load Page";
 			BrowseCommand = new RelayCommand(Browse);
 			PasteCommand = new RelayCommand(Paste);
 			DropCommand = new RelayCommand<DropEventArgs>(Drop);

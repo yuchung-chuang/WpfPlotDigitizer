@@ -19,7 +19,7 @@ namespace PlotDigitizer.WPF
 		{
 			if (!(value is TabItem tabItem) 
 				|| !(tabItem.Content is UserControl page) 
-				|| !(page.DataContext is PageViewModelBase pageViewModel)) {
+				|| !(page.DataContext is ViewModelBase pageViewModel)) {
 				return null;
 			}
 			return pageViewModel;

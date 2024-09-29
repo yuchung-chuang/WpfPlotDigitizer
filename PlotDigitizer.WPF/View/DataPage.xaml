@@ -8,6 +8,7 @@
 			 mc:Ignorable="d"
 			 d:DesignHeight="450"
 			 d:DesignWidth="800"
+			 d:Background="White"
 			 Name="root"
 			 d:DataContext="{d:DesignInstance Type=core:DataPageViewModel, IsDesignTimeCreatable=True}">
 

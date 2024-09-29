@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace PlotDigitizer.WPF
+namespace PlotDigitizer.Core
 {
-	public static class AxisHelpers
+	public static class MathHelpers
 	{
 		public static dynamic Add(this Enum enumA, Enum enumB)
 		{
