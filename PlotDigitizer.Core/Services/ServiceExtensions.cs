@@ -35,8 +35,9 @@ namespace PlotDigitizer.Core
 				.AddSingleton<DataNode>()
 
 				.AddSingleton<AxisLocationNode>()
-				.AddSingleton<AxisLimitTextBoxNode>()
+				.AddSingleton<AxisTextBoxNode>()
 				.AddSingleton<AxisLimitNode>()
+				.AddSingleton<AxisTitleNode>()
 				.AddSingleton<AxisLogBaseNode>()
 				.AddSingleton<FilterMinNode>()
 				.AddSingleton<FilterMaxNode>()
