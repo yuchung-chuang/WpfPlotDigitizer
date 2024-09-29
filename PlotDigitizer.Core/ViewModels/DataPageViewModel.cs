@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using PropertyChanged;
 
 using System;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -14,7 +13,7 @@ using System.Threading;
 
 namespace PlotDigitizer.Core
 {
-	public enum ExportResults
+    public enum ExportResults
 	{
 		None,
 		Canceled,

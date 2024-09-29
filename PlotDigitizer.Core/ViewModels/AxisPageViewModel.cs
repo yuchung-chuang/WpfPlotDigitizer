@@ -1,7 +1,5 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
-using System;
-using System.ComponentModel;
 
 namespace PlotDigitizer.Core
 {

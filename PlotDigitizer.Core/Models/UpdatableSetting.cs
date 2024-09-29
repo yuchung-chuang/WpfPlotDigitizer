@@ -1,7 +1,5 @@
 ﻿using Emgu.CV.Structure;
 
-using System.Drawing;
-
 namespace PlotDigitizer.Core
 {
     public class UpdatableSetting : Setting

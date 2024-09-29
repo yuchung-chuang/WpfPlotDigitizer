@@ -1,14 +1,12 @@
 ﻿using PlotDigitizer.Core;
 
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 using System.Windows.Controls;
 
 namespace PlotDigitizer.WPF
 {
-	public class PageViewModelConverter : ValueConverterBase<PageViewModelConverter>
+    public class PageViewModelConverter : ValueConverterBase<PageViewModelConverter>
 	{
 		public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{

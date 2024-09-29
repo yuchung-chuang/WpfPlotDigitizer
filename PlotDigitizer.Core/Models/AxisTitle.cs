@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace PlotDigitizer.Core
+﻿namespace PlotDigitizer.Core
 {
     public struct AxisTitle(string xLabel, string yLabel) 
     {

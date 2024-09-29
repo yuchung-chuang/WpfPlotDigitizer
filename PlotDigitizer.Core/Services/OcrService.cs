@@ -1,10 +1,7 @@
 ﻿using Emgu.CV.OCR;
 using Emgu.CV.Structure;
 using Emgu.CV;
-using System.Drawing;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
-using System;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace PlotDigitizer.Core

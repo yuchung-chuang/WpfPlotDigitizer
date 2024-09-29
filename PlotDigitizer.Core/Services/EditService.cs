@@ -1,14 +1,9 @@
-﻿using PropertyChanged;
-
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Security.Cryptography;
 
 namespace PlotDigitizer.Core
 {
-	public class EditService<TObject> : IEditService<TObject>
+    public class EditService<TObject> : IEditService<TObject>
 	{
 		#region Events
 

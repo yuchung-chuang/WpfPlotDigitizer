@@ -1,12 +1,11 @@
 ﻿using Emgu.CV;
-using Emgu.CV.OCR;
 using Emgu.CV.Structure;
 using System.Collections.Generic;
 using System.Drawing;
 
 namespace PlotDigitizer.Core
 {
-	public interface IImageService
+    public interface IImageService
 	{
 		Image<Rgba, byte> ClearBorder(Image<Rgba, byte> image);
 		Image<Rgba, byte> CropImage(Image<Rgba, byte> image, RectangleD roi);

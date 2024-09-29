@@ -3,15 +3,11 @@ using Emgu.CV.Structure;
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Xml.Linq;
 
 namespace PlotDigitizer.Core
 {
-	public class EditPageViewModel : ViewModelBase, IDisposable
+    public class EditPageViewModel : ViewModelBase, IDisposable
 	{
 		private readonly IImageService imageService;
 

@@ -1,9 +1,6 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
 using Microsoft.Extensions.DependencyInjection;
-using PropertyChanged;
-using System;
-using System.ComponentModel;
 using System.Windows.Input;
 
 namespace PlotDigitizer.Core

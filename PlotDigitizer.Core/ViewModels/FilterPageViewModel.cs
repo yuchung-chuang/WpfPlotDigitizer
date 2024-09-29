@@ -3,11 +3,9 @@ using Emgu.CV.Structure;
 
 using PropertyChanged;
 
-using System.ComponentModel;
-
 namespace PlotDigitizer.Core
 {
-	public class FilterPageViewModel : ViewModelBase
+    public class FilterPageViewModel : ViewModelBase
 	{
 		#region Fields
 

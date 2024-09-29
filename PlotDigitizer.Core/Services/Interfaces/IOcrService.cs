@@ -1,11 +1,5 @@
-﻿using Emgu.CV.CvEnum;
-using Emgu.CV.Structure;
-using Emgu.CV.Util;
+﻿using Emgu.CV.Structure;
 using Emgu.CV;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
 
 namespace PlotDigitizer.Core
 {

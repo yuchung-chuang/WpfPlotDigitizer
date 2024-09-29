@@ -1,8 +1,6 @@
-﻿using PlotDigitizer.Core;
-
-namespace PlotDigitizer.Core
+﻿namespace PlotDigitizer.Core
 {
-	public interface IWindowService
+    public interface IWindowService
 	{
 		bool CloseDialog(ViewModelBase viewModel, bool dialogResult);
 		bool CloseWindow(ViewModelBase viewModel);

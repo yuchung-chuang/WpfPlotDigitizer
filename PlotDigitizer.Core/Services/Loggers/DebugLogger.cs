@@ -1,12 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
-using System.IO;
-using System.Runtime.CompilerServices;
 
 namespace PlotDigitizer.Core
 {
-	public class DebugLogger : ILogger
+    public class DebugLogger : ILogger
 	{
 		public IDisposable BeginScope<TState>(TState state) where TState : notnull => default!;
 		public bool IsEnabled(LogLevel logLevel) => true;

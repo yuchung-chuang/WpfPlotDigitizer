@@ -1,6 +1,5 @@
 ﻿using Emgu.CV;
 using Emgu.CV.CvEnum;
-using Emgu.CV.OCR;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
 
@@ -8,11 +7,8 @@ using Microsoft.Extensions.Logging;
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Threading;
 
 namespace PlotDigitizer.Core
 {

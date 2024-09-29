@@ -2,11 +2,10 @@
 
 using System;
 using System.ComponentModel;
-using System.Drawing;
 
 namespace PlotDigitizer.Core
 {
-	[Serializable]
+    [Serializable]
 	public class Setting : INotifyPropertyChanged
 	{
 		public virtual RectangleD AxisLocation { get; set; }

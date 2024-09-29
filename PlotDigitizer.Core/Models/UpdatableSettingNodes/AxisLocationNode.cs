@@ -1,8 +1,6 @@
-﻿using System.Drawing;
-
-namespace PlotDigitizer.Core
+﻿namespace PlotDigitizer.Core
 {
-	public class AxisLocationNode : UpdatableNode<RectangleD>
+    public class AxisLocationNode : UpdatableNode<RectangleD>
 	{
 		private readonly InputImageNode inputImage;
 

@@ -2,11 +2,10 @@
 using System.Linq;
 using System.Windows;
 using PlotDigitizer.Core;
-using Wpf.Ui.Controls;
 
 namespace PlotDigitizer.WPF
 {
-	public class WindowService : IWindowService
+    public class WindowService : IWindowService
     {
         private readonly Collection<Window> openedWindows = [];
 

@@ -1,15 +1,11 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using PlotDigitizer.Core;
-
-using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 
 using Wpf.Ui.Controls;
 
 namespace PlotDigitizer.WPF
 {
-	public partial class MainWindow : UiWindow
+    public partial class MainWindow : UiWindow
 	{
 		public MainWindow()
 		{

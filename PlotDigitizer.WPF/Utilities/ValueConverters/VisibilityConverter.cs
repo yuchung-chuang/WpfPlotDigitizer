@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 using System.Windows;
 
 namespace PlotDigitizer.WPF
 {
-	public class VisibilityConverter : ValueConverterBase<VisibilityConverter>
+    public class VisibilityConverter : ValueConverterBase<VisibilityConverter>
 	{
 		public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{

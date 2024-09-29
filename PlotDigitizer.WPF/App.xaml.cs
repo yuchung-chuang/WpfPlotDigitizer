@@ -4,12 +4,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Configuration;
-using Microsoft.Extensions.Options;
 using PlotDigitizer.Core;
 
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -18,7 +15,7 @@ using System.Windows.Media.Imaging;
 
 namespace PlotDigitizer.WPF
 {
-	public partial class App : Application
+    public partial class App : Application
 	{
 		private ILogger<App> logger;
 		private ServiceProvider serviceProvider;

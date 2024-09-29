@@ -1,13 +1,10 @@
 ﻿using Emgu.CV.Structure;
 using Emgu.CV;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PlotDigitizer.Core
 {
-	public static class ServiceExtensions
+    public static class ServiceExtensions
 	{
 		public static IServiceCollection AddViewModels(this IServiceCollection services)
 		{

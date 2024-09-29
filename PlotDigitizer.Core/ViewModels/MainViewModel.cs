@@ -1,14 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using PropertyChanged;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
+﻿using System.IO;
 using System.Text.Json;
 using System.Xml.Serialization;
 
 namespace PlotDigitizer.Core
 {
-	public class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase
 	{
 		#region Fields
 		private readonly IFileDialogService fileDialogService;
