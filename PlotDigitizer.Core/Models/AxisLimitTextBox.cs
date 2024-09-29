@@ -8,6 +8,8 @@ namespace PlotDigitizer.Core
         public Rectangle YMax { get; set; }
         public Rectangle XMin { get; set; }
         public Rectangle YMin { get; set; }
+        public Rectangle XLabel { get; set; }
+        public Rectangle YLabel { get; set; }
     }
 
     public class AxisLimitTextBoxD
@@ -16,5 +18,7 @@ namespace PlotDigitizer.Core
         public RectangleD YMax { get; set; }
         public RectangleD XMin { get; set; }
         public RectangleD YMin { get; set; }
+        public RectangleD XLabel { get; set; }
+        public RectangleD YLabel { get; set; }
     }
 }

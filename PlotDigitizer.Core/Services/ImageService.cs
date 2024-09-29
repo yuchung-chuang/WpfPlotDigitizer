@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
@@ -224,12 +225,23 @@ namespace PlotDigitizer.Core
             VectorOfVectorOfPoint textContours = new();
             CvInvoke.FindContours(connected, textContours, null, RetrType.External, ChainApproxMethod.ChainApproxSimple);
 
+            List<Rectangle> boundingBoxes = [];
+            for (int i = 0; i < textContours.Size; i++) {
+                boundingBoxes.Add(CvInvoke.BoundingRectangle(textContours[i]));
+            }
+
             // Variables to store the closest text regions
             var textBox = new AxisLimitTextBox();
             var xMaxMinDist = double.MaxValue;
             var yMaxMinDist = double.MaxValue;
             var yMinMinDist = double.MaxValue;
             var xMinMinDist = double.MaxValue;
+            var xMeanMinDist = double.MaxValue;
+            var yMeanMinDist = double.MaxValue;
+
+            var topLeft = new PointD(axis.Left, axis.Top);
+            var bottomRight = new PointD(axis.Right, axis.Bottom);
+            var bottomLeft = new PointD(axis.Left, axis.Bottom);
 
             // Step 8: Iterate through the contours to find the closest text region
             for (int i = 0; i < textContours.Size; i++) {
@@ -237,21 +249,21 @@ namespace PlotDigitizer.Core
                 PointD textCenter = new(textBoundingBox.X + textBoundingBox.Width / 2, textBoundingBox.Y + textBoundingBox.Height / 2);
 
                 // Calculate distance to top-left of the chart axis
-                var distTopLeft = Distance(textCenter, new PointD(axis.Left, axis.Top));
+                var distTopLeft = MathHelpers.Distance(textCenter, topLeft);
                 if (distTopLeft < yMaxMinDist) {
                     yMaxMinDist = distTopLeft;
                     textBox.YMax = textBoundingBox;
                 }
 
                 // Calculate distance to bottom-right of the chart axis
-                var distBottomRight = Distance(textCenter, new PointD(axis.Right, axis.Bottom));
+                var distBottomRight = MathHelpers.Distance(textCenter, bottomRight);
                 if (distBottomRight < xMaxMinDist) {
                     xMaxMinDist = distBottomRight;
                     textBox.XMax = textBoundingBox;
                 }
 
                 // Calculate distance to bottom-left of the chart axis
-                var distBottomLeft = Distance(textCenter, new PointD(axis.Left, axis.Bottom));
+                var distBottomLeft = MathHelpers.Distance(textCenter, bottomLeft);
                 if (distBottomLeft < xMinMinDist
                     && textBoundingBox.Top > axis.Bottom) {
                     xMinMinDist = distBottomLeft;
@@ -263,14 +275,38 @@ namespace PlotDigitizer.Core
                     yMinMinDist = distBottomLeft;
                     textBox.YMin = textBoundingBox;
                 }
+
+            }
+
+            for (int i = 0; i < textContours.Size; i++) {
+                Rectangle textBoundingBox = CvInvoke.BoundingRectangle(textContours[i]);
+                PointD textCenter = new(textBoundingBox.X + textBoundingBox.Width / 2, textBoundingBox.Y + textBoundingBox.Height / 2);
+
+                var distXMean = Math.Abs(textCenter.X - (axis.Left + axis.Width / 2));
+                if (distXMean < xMeanMinDist
+                    && textBoundingBox.Top > Math.Max(Math.Max(textBox.XMin.Bottom, textBox.XMax.Bottom), axis.Bottom)) {
+                    xMeanMinDist = distXMean;
+                    textBox.XLabel = textBoundingBox;
+                }
+
+                var distYMean = Math.Abs(textCenter.X - (axis.Top + axis.Height / 2));
+                if (distYMean < yMeanMinDist) {
+                    var left = axis.Left;
+                    if (textBox.YMin.Left != 0) {
+                        left = textBox.YMin.Left;
+                    }
+                    else if (textBox.YMax.Left != 0) {
+                        left = textBox.YMax.Left;
+                    }
+
+                    if (textBoundingBox.Right < left) {
+                        yMeanMinDist = distYMean;
+                        textBox.YLabel = textBoundingBox;
+                    }
+                }
             }
 
             return textBox;
-
-            static double Distance(PointD pt1, PointD pt2)
-            {
-                return Math.Sqrt(Math.Pow(pt1.X - pt2.X, 2) + Math.Pow(pt1.Y - pt2.Y, 2));
-            }
         }
         public Image<Rgba, byte> CropImage(Image<Rgba, byte> image, RectangleD roi)
         {

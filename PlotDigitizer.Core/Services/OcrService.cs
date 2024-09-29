@@ -13,8 +13,7 @@ namespace PlotDigitizer.Core
         private readonly Tesseract ocrEngine;
         private readonly IImageService imageService;
 
-        public OcrService(IOptions<OcrSettings> options,
-            IImageService imageService)
+        public OcrService(IOptions<OcrSettings> options, IImageService imageService)
         {
             var settings = options.Value;
             var DataPath = settings.DataPath ?? "OCR";

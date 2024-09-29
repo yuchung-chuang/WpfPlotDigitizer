@@ -48,5 +48,10 @@ namespace PlotDigitizer.Core
 		public static bool ApproxEqual(double A, double B, double tol) => IsIn(A, B + tol, B - tol);
 
 		private static (ulong a, ulong b) ConvertEnums(Enum enumA, Enum enumB) => (Convert.ToUInt64(enumA), Convert.ToUInt64(enumB));
-	}
+
+        public static double Distance(PointD pt1, PointD pt2)
+        {
+            return Math.Sqrt(Math.Pow(pt1.X - pt2.X, 2) + Math.Pow(pt1.Y - pt2.Y, 2));
+        }
+    }
 }
