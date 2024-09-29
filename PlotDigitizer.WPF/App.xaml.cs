@@ -3,7 +3,8 @@ using Emgu.CV.Structure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-
+using Microsoft.Extensions.Logging.Configuration;
+using Microsoft.Extensions.Options;
 using PlotDigitizer.Core;
 
 using System;
@@ -34,22 +35,30 @@ namespace PlotDigitizer.WPF
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true) // Load appsettings.json
                 .Build();
 
-            var services = new ServiceCollection()
+			var services = new ServiceCollection()
 				.AddSingleton(configuration)
-				.Configure<OcrSettings>(settings =>
+				.AddKeyedSingleton<IOcrService, OcrService>("Numerical")
+				.Configure<OcrSettings>("Numerical", settings =>
 				{
-                    var section = configuration.GetSection("OCR");
+                    var section = configuration.GetSection("OCR").GetSection("Numerical");
 					settings.DataPath = section[nameof(settings.DataPath)];
 					settings.Language = section[nameof(settings.Language)];
 					settings.WhiteList = section[nameof(settings.WhiteList)];
                 })
-				.AddTransient<IMessageBoxService, MessageBoxService>()
+                .AddKeyedSingleton<IOcrService, OcrService>("Text")
+                .Configure<OcrSettings>("Text", settings =>
+                {
+                    var section = configuration.GetSection("OCR").GetSection("Text");
+                    settings.DataPath = section[nameof(settings.DataPath)];
+                    settings.Language = section[nameof(settings.Language)];
+                    settings.WhiteList = section[nameof(settings.WhiteList)];
+                })
+                .AddTransient<IMessageBoxService, MessageBoxService>()
 				.AddTransient<IFileDialogService, FileDialogService>()
 				.AddTransient<IAwaitTaskService, AwaitTaskService>()
 				.AddTransient<IClipboardService, ClipboardService>()
 				.AddSingleton<IPageService, PageService>()
-				.AddTransient<IImageService, ImageService>()
-				.AddSingleton<IOcrService, OcrService>()
+				.AddTransient<IImageService, EmguCvService>()
 				.AddTransient<IWindowService, WindowService>()
 				.AddViewModels()
 				.AddModel()
@@ -110,6 +119,9 @@ namespace PlotDigitizer.WPF
 			//(MainWindow as MainWindow).navigation.Navigate(typeof(DataPage));
 		}
 
+		/// <summary>
+		/// Exception handling should be set before doing anything else, so all exception can be handled internally without crashing the application.
+		/// </summary>
 		private void SetupExceptionHandling()
 		{
 			AppDomain.CurrentDomain.UnhandledException += (s, e) =>
