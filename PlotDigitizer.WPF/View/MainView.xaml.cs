@@ -49,9 +49,15 @@ namespace PlotDigitizer.WPF
 		private bool allowDirectNavigation = false;
 		private NavigatingCancelEventArgs navArgs = null;
 		private Duration duration = new(TimeSpan.FromSeconds(0.3));
-		private void Frame_Navigating(object sender, NavigatingCancelEventArgs e)
+        private bool isDirectNavigated = false;
+
+        private void Frame_Navigating(object sender, NavigatingCancelEventArgs e)
 		{
-			if (Content == null || allowDirectNavigation) {
+			if (Content == null) {
+				return;
+			}
+			if (allowDirectNavigation) {
+				isDirectNavigated = true;
 				return;
 			}
 			allowDirectNavigation = true;
@@ -72,22 +78,24 @@ namespace PlotDigitizer.WPF
 
 		private void AnimationFadeOut_Completed(object sender, EventArgs e)
 		{
-			switch (navArgs.NavigationMode) {
-				case NavigationMode.New:
-					if (navArgs.Uri == null)
-						frame.Navigate(navArgs.Content);
-					else
-						frame.Navigate(navArgs.Uri);
-					break;
-				case NavigationMode.Back:
-					frame.GoBack();
-					break;
-				case NavigationMode.Forward:
-					frame.GoForward();
-					break;
-				case NavigationMode.Refresh:
-					frame.Refresh();
-					break;
+			if (!isDirectNavigated) {
+				switch (navArgs.NavigationMode) {
+					case NavigationMode.New:
+						if (navArgs.Uri == null)
+							frame.Navigate(navArgs.Content);
+						else
+							frame.Navigate(navArgs.Uri);
+						break;
+					case NavigationMode.Back:
+						frame.GoBack();
+						break;
+					case NavigationMode.Forward:
+						frame.GoForward();
+						break;
+					case NavigationMode.Refresh:
+						frame.Refresh();
+						break;
+				}
 			}
 
 			var animationFade = new DoubleAnimation
@@ -102,6 +110,7 @@ namespace PlotDigitizer.WPF
 
 		private void AnimationFadeIn_Completed(object sender, EventArgs e)
 		{
+			isDirectNavigated = false;
 			allowDirectNavigation = false;
 		}
 	}
