@@ -58,7 +58,8 @@ namespace PlotDigitizer.WPF
 				{
 					builder.ClearProviders() // to override the default set of logging providers added by the default host
 						.AddProvider(new DebugLoggerProvider())
-						.AddProvider(new FileLoggerProvider(Path.Combine(Directory.GetCurrentDirectory(), "logs")));
+						.AddProvider(new FileLoggerProvider(Path.Combine(Directory.GetCurrentDirectory(), "logs")))
+						.AddConfiguration(configuration.GetSection("Logging"));
 				});
 
 			serviceProvider = services.BuildServiceProvider();
