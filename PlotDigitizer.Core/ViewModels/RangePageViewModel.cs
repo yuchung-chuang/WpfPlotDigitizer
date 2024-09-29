@@ -54,93 +54,12 @@ namespace PlotDigitizer.Core
                 YLabel = value.YLabel;
             }
         }
-        public double XMaxBoxLeft { get; set; }
-        public double XMaxBoxTop { get; set; }
-        public double XMaxBoxWidth { get; set; }
-        public double XMaxBoxHeight { get; set; }
-        public RectangleD XMaxTextBox
-        {
-            get => new(XMaxBoxLeft, XMaxBoxTop, XMaxBoxWidth, XMaxBoxHeight);
-            set {
-                XMaxBoxLeft = value.Left;
-                XMaxBoxTop = value.Top;
-                XMaxBoxWidth = value.Width;
-                XMaxBoxHeight = value.Height;
-            }
-        }
-
-        public double XMinBoxLeft { get; set; }
-        public double XMinBoxTop { get; set; }
-        public double XMinBoxWidth { get; set; }
-        public double XMinBoxHeight { get; set; }
-        public RectangleD XMinTextBox
-        {
-            get => new(XMinBoxLeft, XMinBoxTop, XMinBoxWidth, XMinBoxHeight);
-            set {
-                XMinBoxLeft = value.Left;
-                XMinBoxTop = value.Top;
-                XMinBoxWidth = value.Width;
-                XMinBoxHeight = value.Height;
-            }
-        }
-
-        public double YMaxBoxLeft { get; set; }
-        public double YMaxBoxTop { get; set; }
-        public double YMaxBoxWidth { get; set; }
-        public double YMaxBoxHeight { get; set; }
-        public RectangleD YMaxTextBox
-        {
-            get => new(YMaxBoxLeft, YMaxBoxTop, YMaxBoxWidth, YMaxBoxHeight);
-            set {
-                YMaxBoxLeft = value.Left;
-                YMaxBoxTop = value.Top;
-                YMaxBoxWidth = value.Width;
-                YMaxBoxHeight = value.Height;
-            }
-        }
-
-        public double YMinBoxLeft { get; set; }
-        public double YMinBoxTop { get; set; }
-        public double YMinBoxWidth { get; set; }
-        public double YMinBoxHeight { get; set; }
-        public RectangleD YMinTextBox
-        {
-            get => new(YMinBoxLeft, YMinBoxTop, YMinBoxWidth, YMinBoxHeight);
-            set {
-                YMinBoxLeft = value.Left;
-                YMinBoxTop = value.Top;
-                YMinBoxWidth = value.Width;
-                YMinBoxHeight = value.Height;
-            }
-        }
-        public double XLabelBoxLeft { get; set; }
-        public double XLabelBoxTop { get; set; }
-        public double XLabelBoxWidth { get; set; }
-        public double XLabelBoxHeight { get; set; }
-        public RectangleD XLabelTextBox
-        {
-            get => new(XLabelBoxLeft, XLabelBoxTop, XLabelBoxWidth, XLabelBoxHeight);
-            set {
-                XLabelBoxLeft = value.Left;
-                XLabelBoxTop = value.Top;
-                XLabelBoxWidth = value.Width;
-                XLabelBoxHeight = value.Height;
-            }
-        }
-        public double YLabelBoxLeft { get; set; }
-        public double YLabelBoxTop { get; set; }
-        public double YLabelBoxWidth { get; set; }
-        public double YLabelBoxHeight { get; set; }
-        public RectangleD YLabelTextBox
-        {
-            get => new(YLabelBoxLeft, YLabelBoxTop, YLabelBoxWidth, YLabelBoxHeight);
-            set {
-                YLabelBoxLeft = value.Left;
-                YLabelBoxTop = value.Top;
-                YLabelBoxWidth = value.Width;
-                YLabelBoxHeight = value.Height;
-            }
-        }
+        public RectangleD XMaxTextBox { get; set; } 
+        public RectangleD XMinTextBox { get; set; }
+        public RectangleD YMaxTextBox { get; set; }
+        public RectangleD YMinTextBox { get; set; }
+        public RectangleD XLabelTextBox { get; set; }
+        public RectangleD YLabelTextBox { get; set; }
 
         public bool IsEnabled => Model != null && Model.InputImage != null;
         public Model Model { get; }

@@ -55,10 +55,7 @@
 								</Rectangle.Fill>
 							</Rectangle>
 							<local:SelectionBox Panel="{Binding ElementName=SelectionGrid}"
-												BoxLeft="{Binding AxisLeft, Mode=TwoWay}"
-												BoxTop="{Binding AxisTop, Mode=TwoWay}"
-												BoxWidth="{Binding AxisWidth, Mode=TwoWay}"
-												BoxHeight="{Binding AxisHeight, Mode=TwoWay}"
+												BoxRect="{Binding AxisLocation, Mode=TwoWay, Converter={local:RectConverter}}"
 												BoxThickness="10"
 												StrokeThickness="1"
 												IsMoveEnabled="False" />

@@ -23,13 +23,7 @@ namespace PlotDigitizer.WPF
         #region Public Fields
         public static readonly DependencyProperty IsMoveEnabledProperty = DependencyProperty.Register(nameof(IsMoveEnabled), typeof(bool), typeof(SelectionBox), new PropertyMetadata(true));
 
-        public static readonly DependencyProperty BoxHeightProperty = DependencyProperty.Register(nameof(BoxHeight), typeof(double), typeof(SelectionBox), new PropertyMetadata(default(double)));
-
-        public static readonly DependencyProperty BoxLeftProperty = DependencyProperty.Register(nameof(BoxLeft), typeof(double), typeof(SelectionBox), new PropertyMetadata(default(double), OnBoxMarginUpdated));
-
-        public static readonly DependencyProperty BoxTopProperty = DependencyProperty.Register(nameof(BoxTop), typeof(double), typeof(SelectionBox), new PropertyMetadata(default(double), OnBoxMarginUpdated));
-
-        public static readonly DependencyProperty BoxWidthProperty = DependencyProperty.Register(nameof(BoxWidth), typeof(double), typeof(SelectionBox), new PropertyMetadata(default(double)));
+        public static readonly DependencyProperty BoxRectProperty = DependencyProperty.Register(nameof(BoxRect), typeof(Rect), typeof(SelectionBox), new PropertyMetadata(new Rect(0, 0, 0, 0), OnBoxRectChanged));
 
         public static readonly DependencyProperty BoxThicknessProperty = DependencyProperty.Register(nameof(BoxThickness), typeof(double), typeof(SelectionBox), new PropertyMetadata(2d));
 
@@ -66,25 +60,30 @@ namespace PlotDigitizer.WPF
             get { return (bool)GetValue(IsMoveEnabledProperty); }
             set { SetValue(IsMoveEnabledProperty, value); }
         }
+        public Rect BoxRect
+        {
+            get => (Rect)GetValue(BoxRectProperty);
+            set => SetValue(BoxRectProperty, value);
+        }
         public double BoxLeft
         {
-            get => (double)GetValue(BoxLeftProperty);
-            set => SetValue(BoxLeftProperty, MathHelpers.Clamp(value, BoxRight - BoxThickness, 0));
+            get => BoxRect.Left;
+            set => BoxRect = new Rect(value, BoxRect.Top, BoxRect.Width, BoxRect.Height);
         }
         public double BoxTop
         {
-            get => (double)GetValue(BoxTopProperty);
-            set => SetValue(BoxTopProperty, MathHelpers.Clamp(value, BoxBottom - BoxThickness, 0));
+            get => BoxRect.Top;
+            set => BoxRect = new Rect(BoxRect.Left, value, BoxRect.Width, BoxRect.Height);
         }
         public double BoxWidth
         {
-            get => (double)GetValue(BoxWidthProperty);
-            set => SetValue(BoxWidthProperty, MathHelpers.Clamp(value, double.MaxValue, BoxThickness));
+            get => BoxRect.Width;
+            set => BoxRect = new Rect(BoxRect.Left, BoxRect.Top, value, BoxRect.Height);
         }
         public double BoxHeight
         {
-            get => (double)GetValue(BoxHeightProperty);
-            set => SetValue(BoxHeightProperty, MathHelpers.Clamp(value, double.MaxValue, BoxThickness));
+            get => BoxRect.Height;
+            set => BoxRect = new Rect(BoxRect.Left, BoxRect.Top, BoxRect.Width, value);
         }
         public double BoxThickness
         {
@@ -117,7 +116,7 @@ namespace PlotDigitizer.WPF
         }
         public double BoxRight => BoxLeft + BoxWidth;
         public double BoxBottom => BoxTop + BoxHeight;
-        public Point BoxLocation => new (BoxLeft, BoxTop);
+        public Point BoxLocation => new(BoxLeft, BoxTop);
         public Thickness BoxMargin => new(BoxLeft, BoxTop, 0, 0);
         public SelectionBoxState State { get; set; } = SelectionBoxStates.None;
 
@@ -184,7 +183,7 @@ namespace PlotDigitizer.WPF
                 return adjustState;
             }
 
-            if (IsMoveEnabled && 
+            if (IsMoveEnabled &&
                 mousePos.X > BoxLeft + BoxThickness && mousePos.X < BoxRight - BoxThickness &&
                 mousePos.Y > BoxTop + BoxThickness && mousePos.Y < BoxBottom - BoxThickness) {
                 return new MoveState(BoxLocation, mousePos);
@@ -196,7 +195,22 @@ namespace PlotDigitizer.WPF
 
 
         #region Private Methods
+        private static void OnBoxRectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is SelectionBox selectionBox) {
+                var newRect = (Rect)e.NewValue;
 
+                // Update individual properties
+                selectionBox.RaisePropertyChanged(nameof(BoxLeft));
+                selectionBox.RaisePropertyChanged(nameof(BoxTop));
+                selectionBox.RaisePropertyChanged(nameof(BoxWidth));
+                selectionBox.RaisePropertyChanged(nameof(BoxHeight));
+                selectionBox.RaisePropertyChanged(nameof(BoxRight));
+                selectionBox.RaisePropertyChanged(nameof(BoxBottom));
+                selectionBox.RaisePropertyChanged(nameof(BoxMargin));
+                selectionBox.RaisePropertyChanged(nameof(BoxLocation));
+            }
+        }
         private static void OnBoxMarginUpdated(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var box = d as SelectionBox;

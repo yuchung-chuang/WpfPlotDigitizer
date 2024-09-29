@@ -49,50 +49,32 @@
 						<Image x:Name="ImageControl"
 							   Source="{Binding Image, Converter={local:ImageSourceConverter}}" />
 						<local:SelectionBox Panel="{Binding ElementName=SelectionGrid}"
-											BoxLeft="{Binding XMaxBoxLeft, Mode=TwoWay}"
-											BoxTop="{Binding XMaxBoxTop, Mode=TwoWay}"
-											BoxWidth="{Binding XMaxBoxWidth, Mode=TwoWay}"
-											BoxHeight="{Binding XMaxBoxHeight, Mode=TwoWay}"
+											BoxRect="{Binding XMaxTextBox, Mode=TwoWay, Converter={local:RectConverter}}"
 											Stroke="Red"
 											BoxThickness="2"
 											StrokeThickness="2"/>
 						<local:SelectionBox Panel="{Binding ElementName=SelectionGrid}"
-											BoxLeft="{Binding XMinBoxLeft, Mode=TwoWay}"
-											BoxTop="{Binding XMinBoxTop, Mode=TwoWay}"
-											BoxWidth="{Binding XMinBoxWidth, Mode=TwoWay}"
-											BoxHeight="{Binding XMinBoxHeight, Mode=TwoWay}"
+											BoxRect="{Binding XMinTextBox, Mode=TwoWay, Converter={local:RectConverter}}"
 											Stroke="Red"
 											BoxThickness="2"
 											StrokeThickness="2" />
 						<local:SelectionBox Panel="{Binding ElementName=SelectionGrid}"
-											BoxLeft="{Binding YMaxBoxLeft, Mode=TwoWay}"
-											BoxTop="{Binding YMaxBoxTop, Mode=TwoWay}"
-											BoxWidth="{Binding YMaxBoxWidth, Mode=TwoWay}"
-											BoxHeight="{Binding YMaxBoxHeight, Mode=TwoWay}"
+											BoxRect="{Binding YMaxTextBox, Mode=TwoWay, Converter={local:RectConverter}}"
 											Stroke="Red"
 											BoxThickness="2"
 											StrokeThickness="2" />
 						<local:SelectionBox Panel="{Binding ElementName=SelectionGrid}"
-											BoxLeft="{Binding YMinBoxLeft, Mode=TwoWay}"
-											BoxTop="{Binding YMinBoxTop, Mode=TwoWay}"
-											BoxWidth="{Binding YMinBoxWidth, Mode=TwoWay}"
-											BoxHeight="{Binding YMinBoxHeight, Mode=TwoWay}"
+											BoxRect="{Binding YMinTextBox, Mode=TwoWay, Converter={local:RectConverter}}"
 											Stroke="Red"
 											BoxThickness="2"
 											StrokeThickness="2" />
 						<local:SelectionBox Panel="{Binding ElementName=SelectionGrid}"
-											BoxLeft="{Binding XLabelBoxLeft, Mode=TwoWay}"
-											BoxTop="{Binding XLabelBoxTop, Mode=TwoWay}"
-											BoxWidth="{Binding XLabelBoxWidth, Mode=TwoWay}"
-											BoxHeight="{Binding XLabelBoxHeight, Mode=TwoWay}"
+											BoxRect="{Binding XLabelTextBox, Mode=TwoWay, Converter={local:RectConverter}}"
 											Stroke="Green"
 											BoxThickness="2"
 											StrokeThickness="2" />
 						<local:SelectionBox Panel="{Binding ElementName=SelectionGrid}"
-											BoxLeft="{Binding YLabelBoxLeft, Mode=TwoWay}"
-											BoxTop="{Binding YLabelBoxTop, Mode=TwoWay}"
-											BoxWidth="{Binding YLabelBoxWidth, Mode=TwoWay}"
-											BoxHeight="{Binding YLabelBoxHeight, Mode=TwoWay}"
+											BoxRect="{Binding YLabelTextBox, Mode=TwoWay, Converter={local:RectConverter}}"
 											Stroke="Green"
 											BoxThickness="2"
 											StrokeThickness="2" />
@@ -110,7 +92,7 @@
 			<StackPanel Orientation="Vertical"
 						HorizontalAlignment="Left">
 				<Label Content="YLabel" />
-				<TextBox Text="{Binding AxisTitle.YLabel, UpdateSourceTrigger=LostFocus}"
+				<TextBox Text="{Binding YLabel, UpdateSourceTrigger=LostFocus}"
 						 Width="90"
 						 AutomationProperties.AutomationId="YLabel">
 					<i:Interaction.Behaviors>
@@ -141,7 +123,7 @@
 			<StackPanel Orientation="Vertical"
 						HorizontalAlignment="Center">
 				<Label Content="XLabel" />
-				<TextBox Text="{Binding AxisTitle.XLabel, UpdateSourceTrigger=LostFocus}" 
+				<TextBox Text="{Binding XLabel, UpdateSourceTrigger=LostFocus}" 
 						 Width="100"
 						 AutomationProperties.AutomationId="XLabel">
 					<i:Interaction.Behaviors>
