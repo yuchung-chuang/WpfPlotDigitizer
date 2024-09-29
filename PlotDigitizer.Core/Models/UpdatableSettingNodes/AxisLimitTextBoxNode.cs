@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PlotDigitizer.Core
 {
-    public class AxisLimitTextBoxNode : UpdatableNode<AxisLimitTextBox>
+    public class AxisLimitTextBoxNode : UpdatableNode<AxisLimitTextBoxD>
     {
         private readonly AxisLocationNode axisLocation;
 

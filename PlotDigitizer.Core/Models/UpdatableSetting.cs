@@ -53,7 +53,7 @@ namespace PlotDigitizer.Core
 			set => axisLocation.Set(value);
 		}
 
-        public override AxisLimitTextBox AxisLimitTextBox 
+        public override AxisLimitTextBoxD AxisLimitTextBox 
 		{ 
 			get => axisLimitTextBox.Get();
 			set => axisLimitTextBox.Set(value); 

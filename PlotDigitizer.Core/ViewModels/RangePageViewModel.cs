@@ -140,18 +140,18 @@ namespace PlotDigitizer.Core
                 return;
             }
             if (setting.AxisLimitTextBox is null) {
-                var (xMaxTextBox, xMinTextBox, yMaxTextBox, yMinTextBox) = imageService.GetAxisLimitTextBoxes(Image, setting.AxisLocation);
-                if (xMaxTextBox != default) {
-                    XMaxTextBox = new RectangleD(xMaxTextBox);
+                var textBox = imageService.GetAxisLimitTextBoxes(Image, setting.AxisLocation);
+                if (textBox.XMax != default) {
+                    XMaxTextBox = new RectangleD(textBox.XMax);
                 }
-                if (xMinTextBox != default) {
-                    XMinTextBox = new RectangleD(xMinTextBox);
+                if (textBox.XMin != default) {
+                    XMinTextBox = new RectangleD(textBox.XMin);
                 }
-                if (yMaxTextBox != default) {
-                    YMaxTextBox = new RectangleD(yMaxTextBox);
+                if (textBox.YMax != default) {
+                    YMaxTextBox = new RectangleD(textBox.YMax);
                 }
-                if (yMinTextBox != default) {
-                    YMinTextBox = new RectangleD(yMinTextBox);
+                if (textBox.YMin != default) {
+                    YMinTextBox = new RectangleD(textBox.YMin);
                 }
                 OCR();
             } else { 
@@ -170,7 +170,7 @@ namespace PlotDigitizer.Core
             if (!IsEnabled) {
                 return;
             }
-            setting.AxisLimitTextBox = new AxisLimitTextBox
+            setting.AxisLimitTextBox = new AxisLimitTextBoxD
             {
                 XMax = XMaxTextBox,
                 XMin = XMinTextBox,

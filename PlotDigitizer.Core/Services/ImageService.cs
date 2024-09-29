@@ -203,7 +203,7 @@ namespace PlotDigitizer.Core
                 }
             }
         }
-        public (Rectangle xMax, Rectangle xMin, Rectangle yMax, Rectangle yMin) GetAxisLimitTextBoxes(Image<Rgba, byte> image, RectangleD axis)
+        public AxisLimitTextBox GetAxisLimitTextBoxes(Image<Rgba, byte> image, RectangleD axis)
         {
             // Preprocessing
             Mat gray = new();
@@ -225,10 +225,7 @@ namespace PlotDigitizer.Core
             CvInvoke.FindContours(connected, textContours, null, RetrType.External, ChainApproxMethod.ChainApproxSimple);
 
             // Variables to store the closest text regions
-            Rectangle xMaxTextBox = new();
-            Rectangle yMaxTextBox = new();
-            Rectangle yMinTextBox = new();
-            Rectangle xMinTextBox = new();
+            var textBox = new AxisLimitTextBox();
             var xMaxMinDist = double.MaxValue;
             var yMaxMinDist = double.MaxValue;
             var yMinMinDist = double.MaxValue;
@@ -243,14 +240,14 @@ namespace PlotDigitizer.Core
                 var distTopLeft = Distance(textCenter, new PointD(axis.Left, axis.Top));
                 if (distTopLeft < yMaxMinDist) {
                     yMaxMinDist = distTopLeft;
-                    yMaxTextBox = textBoundingBox;
+                    textBox.YMax = textBoundingBox;
                 }
 
                 // Calculate distance to bottom-right of the chart axis
                 var distBottomRight = Distance(textCenter, new PointD(axis.Right, axis.Bottom));
                 if (distBottomRight < xMaxMinDist) {
                     xMaxMinDist = distBottomRight;
-                    xMaxTextBox = textBoundingBox;
+                    textBox.XMax = textBoundingBox;
                 }
 
                 // Calculate distance to bottom-left of the chart axis
@@ -258,17 +255,17 @@ namespace PlotDigitizer.Core
                 if (distBottomLeft < xMinMinDist
                     && textBoundingBox.Top > axis.Bottom) {
                     xMinMinDist = distBottomLeft;
-                    xMinTextBox = textBoundingBox;
+                    textBox.XMin = textBoundingBox;
                 }
                 if (distBottomLeft < yMinMinDist
                     && textBoundingBox.Left < axis.Left
                     && textBoundingBox.Top < axis.Bottom) {
                     yMinMinDist = distBottomLeft;
-                    yMinTextBox = textBoundingBox;
+                    textBox.YMin = textBoundingBox;
                 }
             }
 
-            return (xMaxTextBox, xMinTextBox, yMaxTextBox, yMinTextBox);
+            return textBox;
 
             static double Distance(PointD pt1, PointD pt2)
             {

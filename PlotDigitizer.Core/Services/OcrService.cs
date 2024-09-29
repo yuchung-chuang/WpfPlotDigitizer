@@ -40,12 +40,12 @@ namespace PlotDigitizer.Core
 
         public RectangleD GetAxisLimit(Image<Rgba, byte> image, RectangleD axis)
         {
-            var (xMaxTextBox, xMinTextBox, yMaxTextBox, yMinTextBox) = imageService.GetAxisLimitTextBoxes(image, axis);
+            var textBox = imageService.GetAxisLimitTextBoxes(image, axis);
 
-            var xMax = OcrDouble(image, xMaxTextBox);
-            var xMin = OcrDouble(image, xMinTextBox);
-            var yMax = OcrDouble(image, yMaxTextBox);
-            var yMin = OcrDouble(image, yMinTextBox);
+            var xMax = OcrDouble(image, textBox.XMax);
+            var xMin = OcrDouble(image, textBox.XMin);
+            var yMax = OcrDouble(image, textBox.YMax);
+            var yMin = OcrDouble(image, textBox.YMin);
 
             // combine into RectangleD
             return new RectangleD(xMin, yMin, xMax - xMin, yMax - yMin);
