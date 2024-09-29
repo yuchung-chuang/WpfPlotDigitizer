@@ -3,24 +3,20 @@
 	public class AxisLimitNode : UpdatableNode<RectangleD>
 	{
 		private readonly InputImageNode inputImage;
-		private readonly AxisLocationNode axisLocation;
-		private readonly IImageService imageService;
 
-		public AxisLimitNode(InputImageNode inputImage, AxisLocationNode axisLocation, IImageService imageService)
+		public AxisLimitNode(InputImageNode inputImage)
 		{
 			this.inputImage = inputImage;
-			this.axisLocation = axisLocation;
-			this.imageService = imageService;
 			inputImage.Updated += (s, e) => OnOutdated();
-			axisLocation.Updated += (s, e) => OnOutdated();
-		}
+			inputImage.Outdated += (s, e) => OnOutdated();
+        }
 
-		public override void Update()
+        public override void Update()
 		{
-			if (!inputImage.CheckUpdate() || !axisLocation.CheckUpdate()) {
+			if (!inputImage.CheckUpdate()) {
 				return;
 			}
-			Value = imageService.GetAxisLimit(inputImage.Value, axisLocation.Value);
+			Value = default;
 			base.Update();
 		}
 	}

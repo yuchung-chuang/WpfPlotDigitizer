@@ -5,7 +5,7 @@ using System.ComponentModel;
 
 namespace PlotDigitizer.Core
 {
-	public class AxisPageViewModel : PageViewModelBase
+	public class AxisPageViewModel : ViewModelBase
 	{
 		#region Fields
 
@@ -31,7 +31,14 @@ namespace PlotDigitizer.Core
 				AxisHeight = value.Height;
 			}
 		}
-		public RelayCommand GetAxisCommand { get; set; }
+        public RectangleD AxisRelative =>
+			Image is null ?
+			new() :
+            new(AxisLeft / Image.Width,
+                AxisTop / Image.Height,
+                AxisWidth / Image.Width,
+                AxisHeight / Image.Height);
+        public RelayCommand GetAxisCommand { get; set; }
 		public bool IsEnabled => Model != null && Model.InputImage != null;
 		public Model Model { get; }
         public Image<Rgba, byte> Image => !IsEnabled ? null : Model.InputImage;
@@ -42,7 +49,7 @@ namespace PlotDigitizer.Core
 
         public AxisPageViewModel()
 		{
-			Name = "AxisPage";
+			Name = "Axis Page";
 			GetAxisCommand = new RelayCommand(GetAxis, CanGetAxis);
 		}
 
@@ -53,8 +60,6 @@ namespace PlotDigitizer.Core
 			Model = model;
 			this.setting = setting;
 			this.imageService = imageService;
-			model.PropertyChanged += Model_PropertyChanged;
-			setting.PropertyChanged += Setting_PropertyChanged;
 		}
 
 		#endregion Constructors
@@ -92,21 +97,6 @@ namespace PlotDigitizer.Core
 			var image = Model.InputImage;
 			AxisLocation = imageService.GetAxisLocation(image) ??
 				new RectangleD(image.Width / 4, image.Height / 4, image.Width / 2, image.Height / 2);
-		}
-
-		private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-			if (e.PropertyName == nameof(Core.Model.InputImage)) {
-				base.OnPropertyChanged(nameof(IsEnabled));
-				GetAxisCommand.RaiseCanExecuteChanged();
-			}
-		}
-
-		private void Setting_PropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-			if (e.PropertyName == nameof(Setting.AxisLocation)) {
-				AxisLocation = setting.AxisLocation;
-			}
 		}
 
 		#endregion Methods

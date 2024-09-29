@@ -8,7 +8,8 @@
 		{
 			this.inputImage = inputImage;
 			inputImage.Updated += (s, e) => OnOutdated();
-			IsUpdated = true;
+			inputImage.Outdated += (s, e) => OnOutdated();
+            IsUpdated = true;
 		}
 
 		public override void Update()

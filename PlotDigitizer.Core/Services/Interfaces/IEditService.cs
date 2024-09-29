@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace PlotDigitizer.Core
@@ -9,8 +9,8 @@ namespace PlotDigitizer.Core
 		string CurrentTag { get; }
 		int Index { get; }
 		bool IsInitialised { get; }
-		ObservableCollection<TObject> ObjectList { get; }
-		ObservableCollection<string> TagList { get; }
+		IList<TObject> ObjectList { get; }
+		IList<string> TagList { get; }
 		void Initialise(TObject _object);
 
 		bool CanEdit((TObject obj, string tag) arg);
