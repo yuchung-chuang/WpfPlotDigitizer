@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace PlotDigitizer.Core
 {
@@ -9,7 +10,11 @@ namespace PlotDigitizer.Core
 	{
 		public IDisposable BeginScope<TState>(TState state) where TState : notnull => default!;
 		public bool IsEnabled(LogLevel logLevel) => true;
-		public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+		public void Log<TState>(LogLevel logLevel,
+            EventId eventId,
+            TState state,
+            Exception exception,
+            Func<TState, Exception, string> formatter)
 		{
 			if (!IsEnabled(logLevel)) {
 				return;
@@ -19,10 +24,14 @@ namespace PlotDigitizer.Core
 			}
 
 			var n = Environment.NewLine;
-			var exc = "";
+			var excepctionMessage = "";
 			if (exception != null)
-				exc = n + exception.GetType() + ": " + exception.Message + n + exception.StackTrace + n;
-			Debug.WriteLine(logLevel.ToString() + ": " + DateTime.Now.ToString() + " " + formatter(state, exception) + n + exc);
+				excepctionMessage = n + exception.GetType() + ": " + exception.Message + n + exception.StackTrace + n;
+
+            var message = logLevel.ToString() + ": " + DateTime.Now.ToString() + " " + formatter(state, exception) + n + excepctionMessage;
+            Debug.WriteLine(message);
 		}
+
+		
 	}
 }
