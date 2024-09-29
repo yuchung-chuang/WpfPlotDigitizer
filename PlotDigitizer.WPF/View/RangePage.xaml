@@ -13,52 +13,19 @@
 			 x:Name="root"
 			 d:Background="White"
 			 d:DataContext="{d:DesignInstance Type=core:RangePageViewModel, IsDesignTimeCreatable=True}">
-
-	<UserControl.Resources>
-		<Style TargetType="StackPanel">
-			<Setter Property="HorizontalAlignment"
-					Value="Center" />
-			<Setter Property="Orientation"
-					Value="Horizontal" />
-		</Style>
-		<Style TargetType="TextBox"
-			   BasedOn="{StaticResource {x:Type TextBox}}">
-			<Setter Property="Width"
-					Value="90" />
-			<Setter Property="VerticalContentAlignment"
-					Value="Center" />
-			<Setter Property="Margin"
-					Value="5,0,0,0" />
-		</Style>
-		<Style TargetType="Label">
-			<Setter Property="VerticalAlignment"
-					Value="Center" />
-		</Style>
-		<ControlTemplate x:Key="ValidationTemplate">
-			<DockPanel>
-				<TextBlock DockPanel.Dock="Bottom"
-						   Foreground="Red"
-						   Text="{Binding AdornedElement.(Validation.Errors), Converter={local:ValidationErrorMessageConverter}, ElementName=adorner}" />
-				<Border BorderBrush="Red"
-						CornerRadius="5"
-						BorderThickness="1"
-						HorizontalAlignment="Left">
-					<AdornedElementPlaceholder Name="adorner" />
-				</Border>
-			</DockPanel>
-		</ControlTemplate>
-	</UserControl.Resources>
+	
 	<Grid IsEnabled="{Binding IsEnabled}">
 		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="auto" />
 			<ColumnDefinition Width="*" />
-			<ColumnDefinition Width="4*" />
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="5*" />
 			<RowDefinition Height="*" />
+			<RowDefinition Height="auto" />
 		</Grid.RowDefinitions>
 
 		<Viewbox Grid.Column="1"
+				 Grid.Row="0"
 				 Margin="5">
 			<Grid Name="borderGrid">
 				<Grid Name="PanZoomGrid" 
@@ -77,7 +44,7 @@
 						</DrawingBrush>
 					</Grid.Background>
 					<Grid x:Name="SelectionGrid"
-						  ToolTip="The 'Detect Range' button automatically detect the axis range from the red boxes."
+						  ToolTip="The 'Detect' button automatically detect the axis range from the red boxes and axis labels from the green boxes."
 						  Background="Transparent">
 						<Image x:Name="ImageControl"
 							   Source="{Binding Image, Converter={local:ImageSourceConverter}}" />
@@ -85,167 +52,115 @@
 											BoxLeft="{Binding XMaxBoxLeft, Mode=TwoWay}"
 											BoxTop="{Binding XMaxBoxTop, Mode=TwoWay}"
 											BoxWidth="{Binding XMaxBoxWidth, Mode=TwoWay}"
-											BoxHeight="{Binding XMaxBoxHeight, Mode=TwoWay}" />
+											BoxHeight="{Binding XMaxBoxHeight, Mode=TwoWay}"
+											Stroke="Red"
+											BoxThickness="2"
+											StrokeThickness="2"/>
 						<local:SelectionBox Panel="{Binding ElementName=SelectionGrid}"
 											BoxLeft="{Binding XMinBoxLeft, Mode=TwoWay}"
 											BoxTop="{Binding XMinBoxTop, Mode=TwoWay}"
 											BoxWidth="{Binding XMinBoxWidth, Mode=TwoWay}"
-											BoxHeight="{Binding XMinBoxHeight, Mode=TwoWay}" />
+											BoxHeight="{Binding XMinBoxHeight, Mode=TwoWay}"
+											Stroke="Red"
+											BoxThickness="2"
+											StrokeThickness="2" />
 						<local:SelectionBox Panel="{Binding ElementName=SelectionGrid}"
 											BoxLeft="{Binding YMaxBoxLeft, Mode=TwoWay}"
 											BoxTop="{Binding YMaxBoxTop, Mode=TwoWay}"
 											BoxWidth="{Binding YMaxBoxWidth, Mode=TwoWay}"
-											BoxHeight="{Binding YMaxBoxHeight, Mode=TwoWay}" />
+											BoxHeight="{Binding YMaxBoxHeight, Mode=TwoWay}"
+											Stroke="Red"
+											BoxThickness="2"
+											StrokeThickness="2" />
 						<local:SelectionBox Panel="{Binding ElementName=SelectionGrid}"
 											BoxLeft="{Binding YMinBoxLeft, Mode=TwoWay}"
 											BoxTop="{Binding YMinBoxTop, Mode=TwoWay}"
 											BoxWidth="{Binding YMinBoxWidth, Mode=TwoWay}"
-											BoxHeight="{Binding YMinBoxHeight, Mode=TwoWay}" />
+											BoxHeight="{Binding YMinBoxHeight, Mode=TwoWay}"
+											Stroke="Red"
+											BoxThickness="2"
+											StrokeThickness="2" />
+						<local:SelectionBox Panel="{Binding ElementName=SelectionGrid}"
+											BoxLeft="{Binding XLabelBoxLeft, Mode=TwoWay}"
+											BoxTop="{Binding XLabelBoxTop, Mode=TwoWay}"
+											BoxWidth="{Binding XLabelBoxWidth, Mode=TwoWay}"
+											BoxHeight="{Binding XLabelBoxHeight, Mode=TwoWay}"
+											Stroke="Green"
+											BoxThickness="2"
+											StrokeThickness="2" />
+						<local:SelectionBox Panel="{Binding ElementName=SelectionGrid}"
+											BoxLeft="{Binding YLabelBoxLeft, Mode=TwoWay}"
+											BoxTop="{Binding YLabelBoxTop, Mode=TwoWay}"
+											BoxWidth="{Binding YLabelBoxWidth, Mode=TwoWay}"
+											BoxHeight="{Binding YLabelBoxHeight, Mode=TwoWay}"
+											Stroke="Green"
+											BoxThickness="2"
+											StrokeThickness="2" />
 					</Grid>
 				</Grid>
 				<Border BorderBrush="Black"
 						BorderThickness="1" />
 			</Grid>
 		</Viewbox>
-		<UniformGrid Rows="3"
+		<UniformGrid Grid.Row="0"
+					 Grid.Column="0"
+					 Rows="4"
 					 Columns="1"
 					 HorizontalAlignment="Center">
-			<StackPanel>
-				<Label Content="YMax" />
-				<TextBox x:Name="yMaxTextBox"
-						 Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
-						 AutomationProperties.AutomationId="YMax">
+			<StackPanel Orientation="Vertical"
+						HorizontalAlignment="Left">
+				<Label Content="YLabel" />
+				<TextBox Text="{Binding AxisTitle.YLabel, UpdateSourceTrigger=LostFocus}"
+						 Width="90"
+						 AutomationProperties.AutomationId="YLabel">
 					<i:Interaction.Behaviors>
 						<local:SelectAllTextOnFocusBehavior />
 						<local:UpdateTextOnKeyDown />
 					</i:Interaction.Behaviors>
-					<TextBox.Text>
-						<Binding Path="YMax"
-								 Converter="{local:DoubleToStringConverter}"
-								 UpdateSourceTrigger="LostFocus">
-							<Binding.ValidationRules>
-								<local:NumberValidation />
-							</Binding.ValidationRules>
-						</Binding>
-					</TextBox.Text>
 				</TextBox>
 			</StackPanel>
-			<StackPanel>
-				<Label Content="YLog" />
-				<TextBox x:Name="yLogTextBox"
-						 Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
-						 AutomationProperties.AutomationId="YLog">
-					<i:Interaction.Behaviors>
-						<local:SelectAllTextOnFocusBehavior />
-						<local:UpdateTextOnKeyDown />
-					</i:Interaction.Behaviors>
-					<TextBox.Text>
-						<Binding Path="YLog"
-								 Converter="{local:DoubleToStringConverter}"
-								 UpdateSourceTrigger="LostFocus">
-							<Binding.ValidationRules>
-								<local:NumberValidation />
-							</Binding.ValidationRules>
-						</Binding>
-					</TextBox.Text>
-				</TextBox>
-			</StackPanel>
-			<StackPanel>
-				<Label Content="YMin" />
-				<TextBox x:Name="yMinTextBox"
-						 Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
-						 AutomationProperties.AutomationId="YMin">
-					<i:Interaction.Behaviors>
-						<local:SelectAllTextOnFocusBehavior />
-						<local:UpdateTextOnKeyDown />
-					</i:Interaction.Behaviors>
-					<TextBox.Text>
-						<Binding Path="YMin"
-								 Converter="{local:DoubleToStringConverter}"
-								 UpdateSourceTrigger="LostFocus">
-							<Binding.ValidationRules>
-								<local:NumberValidation />
-							</Binding.ValidationRules>
-						</Binding>
-					</TextBox.Text>
-				</TextBox>
-			</StackPanel>
+			<local:AxLimTextBox Label="YMax"
+								Text="{Binding YMax, Converter={local:DoubleToStringConverter}}" />
+			<local:AxLimTextBox Label="YLog"
+								Text="{Binding YLog, Converter={local:DoubleToStringConverter}}" />
+			<local:AxLimTextBox Label="YMin"
+								Text="{Binding YMin, Converter={local:DoubleToStringConverter}}" />
 		</UniformGrid>
-		<UniformGrid Columns="3"
-					 Rows="1"
-					 Grid.Column="1"
+		<UniformGrid Grid.Column="1"
 					 Grid.Row="1"
+					 Columns="4"
+					 Rows="1"
 					 Margin="5"
 					 VerticalAlignment="Center">
-			<StackPanel>
-				<Label Content="XMin" />
-				<TextBox x:Name="xMinTextBox"
-						 Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
-						 AutomationProperties.AutomationId="XMin">
+			<local:AxLimTextBox Label="XMin"
+								Text="{Binding XMin, Converter={local:DoubleToStringConverter}}" />
+			<local:AxLimTextBox Label="XLog"
+								Text="{Binding XLog, Converter={local:DoubleToStringConverter}}" />
+			<local:AxLimTextBox Label="XMax"
+								Text="{Binding XMax, Converter={local:DoubleToStringConverter}}" />
+			<StackPanel Orientation="Vertical"
+						HorizontalAlignment="Center">
+				<Label Content="XLabel" />
+				<TextBox Text="{Binding AxisTitle.XLabel, UpdateSourceTrigger=LostFocus}" 
+						 Width="100"
+						 AutomationProperties.AutomationId="XLabel">
 					<i:Interaction.Behaviors>
 						<local:SelectAllTextOnFocusBehavior />
 						<local:UpdateTextOnKeyDown />
 					</i:Interaction.Behaviors>
-					<TextBox.Text>
-						<Binding Path="XMin"
-								 Converter="{local:DoubleToStringConverter}"
-								 UpdateSourceTrigger="LostFocus">
-							<Binding.ValidationRules>
-								<local:NumberValidation />
-							</Binding.ValidationRules>
-						</Binding>
-					</TextBox.Text>
-				</TextBox>
-			</StackPanel>
-			<StackPanel>
-				<Label Content="XLog" />
-				<TextBox x:Name="xLogTextBox"
-						 Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
-						 AutomationProperties.AutomationId="XLog">
-					<i:Interaction.Behaviors>
-						<local:SelectAllTextOnFocusBehavior />
-						<local:UpdateTextOnKeyDown />
-					</i:Interaction.Behaviors>
-					<TextBox.Text>
-						<Binding Path="XLog"
-								 Converter="{local:DoubleToStringConverter}"
-								 UpdateSourceTrigger="LostFocus">
-							<Binding.ValidationRules>
-								<local:NumberValidation />
-							</Binding.ValidationRules>
-						</Binding>
-					</TextBox.Text>
-				</TextBox>
-			</StackPanel>
-			<StackPanel>
-				<Label Content="XMax" />
-				<TextBox x:Name="xMaxTextBox"
-						 Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
-						 AutomationProperties.AutomationId="XMax">
-					<i:Interaction.Behaviors>
-						<local:SelectAllTextOnFocusBehavior />
-						<local:UpdateTextOnKeyDown />
-					</i:Interaction.Behaviors>
-					<TextBox.Text>
-						<Binding Path="XMax"
-								 Converter="{local:DoubleToStringConverter}"
-								 UpdateSourceTrigger="LostFocus">
-							<Binding.ValidationRules>
-								<local:NumberValidation />
-							</Binding.ValidationRules>
-						</Binding>
-					</TextBox.Text>
 				</TextBox>
 			</StackPanel>
 		</UniformGrid>
 
 		<ui:Button Grid.Column="0"
 				   Grid.Row="1"
-				   Content="Detect Range"
+				   Content="Detect"
 				   Icon="ImageSearch24"
 				   Command="{Binding OcrCommand}"
 				   HorizontalAlignment="Center"
-				   VerticalAlignment="Center"
-				   ToolTip="Detect axis range automatically" />
+				   VerticalAlignment="Bottom"
+				   ToolTip="Detect axis range automatically" 
+				   Margin="10,10"/>
+
 	</Grid>
 </UserControl>
