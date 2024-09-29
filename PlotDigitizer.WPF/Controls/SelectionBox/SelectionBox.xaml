@@ -10,14 +10,15 @@
 			 d:DesignHeight="450"
 			 d:DesignWidth="800">
 
-	<Rectangle Name="selectionBox"
-			   Fill="Transparent"
-			   Stroke="Red"
-			   StrokeThickness="1"
-			   DataContext="{Binding ElementName=root}"
-			   HorizontalAlignment="Left"
-			   VerticalAlignment="Top"
-			   Width="{Binding BoxWidth}"
-			   Height="{Binding BoxHeight}"
-			   Margin="{Binding BoxMargin}" />
+	<Grid Background="Transparent">
+		<Rectangle Name="selectionBox"
+				   Stroke="{Binding Stroke}"
+				   StrokeThickness="{Binding StrokeThickness}"
+				   DataContext="{Binding ElementName=root}"
+				   HorizontalAlignment="Left"
+				   VerticalAlignment="Top"
+				   Width="{Binding BoxWidth}"
+				   Height="{Binding BoxHeight}"
+				   Margin="{Binding BoxMargin}" />
+	</Grid>
 </UserControl>

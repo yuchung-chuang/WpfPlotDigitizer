@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -32,9 +33,13 @@ namespace PlotDigitizer.WPF
 
         public static readonly DependencyProperty BoxThicknessProperty = DependencyProperty.Register(nameof(BoxThickness), typeof(double), typeof(SelectionBox), new PropertyMetadata(2d));
 
+        public static readonly DependencyProperty PanelProperty = DependencyProperty.Register(nameof(Panel), typeof(Panel), typeof(SelectionBox), new PropertyMetadata());
+
         public static readonly DependencyProperty GestureProperty = DependencyProperty.Register(nameof(Gesture), typeof(MouseGesture), typeof(SelectionBox), new PropertyMetadata(new MouseGesture(MouseAction.LeftClick)));
 
-        public static readonly DependencyProperty PanelProperty = DependencyProperty.Register(nameof(Panel), typeof(Panel), typeof(SelectionBox), new PropertyMetadata());
+        public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register("Stroke", typeof(Brush), typeof(SelectionBox), new PropertyMetadata(new SolidColorBrush(Colors.Red)));
+
+        public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(nameof(StrokeThickness), typeof(double), typeof(SelectionBox), new PropertyMetadata(1d));
 
         #endregion Public Fields
 
@@ -86,16 +91,21 @@ namespace PlotDigitizer.WPF
             get { return (double)GetValue(BoxThicknessProperty); }
             set { SetValue(BoxThicknessProperty, value); }
         }
-        public double BoxRight => BoxLeft + BoxWidth;
-        public double BoxBottom => BoxTop + BoxHeight;
-        public Point BoxLocation => new (BoxLeft, BoxTop);
-        public Thickness BoxMargin => new(BoxLeft, BoxTop, 0, 0);
         public MouseGesture Gesture
         {
             get => (MouseGesture)GetValue(GestureProperty);
             set => SetValue(GestureProperty, value);
         }
-        public SelectionBoxState State { get; set; } = SelectionBoxStates.None;
+        public Brush Stroke
+        {
+            get { return (Brush)GetValue(StrokeProperty); }
+            set { SetValue(StrokeProperty, value); }
+        }
+        public double StrokeThickness
+        {
+            get { return (double)GetValue(StrokeThicknessProperty); }
+            set { SetValue(StrokeThicknessProperty, value); }
+        }
 
         /// <summary>
         /// The panel that captures all the mouse events for adjusting the selection box. This is typically the parent control that contains both the selection box and the target control.
@@ -105,6 +115,11 @@ namespace PlotDigitizer.WPF
             get { return (Panel)GetValue(PanelProperty); }
             set { SetValue(PanelProperty, value); }
         }
+        public double BoxRight => BoxLeft + BoxWidth;
+        public double BoxBottom => BoxTop + BoxHeight;
+        public Point BoxLocation => new (BoxLeft, BoxTop);
+        public Thickness BoxMargin => new(BoxLeft, BoxTop, 0, 0);
+        public SelectionBoxState State { get; set; } = SelectionBoxStates.None;
 
         #endregion Public Properties
 
