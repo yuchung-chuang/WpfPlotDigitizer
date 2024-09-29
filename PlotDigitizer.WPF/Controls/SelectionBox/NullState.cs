@@ -7,9 +7,6 @@ namespace PlotDigitizer.WPF
         public override void MouseDown(SelectionBox box, MouseButtonEventArgs e)
         {
             base.MouseDown(box, e);
-            if (e.ClickCount >= 2) {
-                var x = 1;
-            }
             if (!box.Gesture.Matches(box, e))
                 return;
             var mousePos = e.GetPosition(box);
