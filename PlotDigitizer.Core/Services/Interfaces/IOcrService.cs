@@ -11,7 +11,6 @@ namespace PlotDigitizer.Core
 {
     public interface IOcrService
     {
-        RectangleD GetAxisLimit(Image<Rgba, byte> image, RectangleD axis);
-        double OcrDouble(Image<Rgba, byte> image, Rectangle textBox);
+        string Ocr(Image<Rgba, byte> image);
     }
 }

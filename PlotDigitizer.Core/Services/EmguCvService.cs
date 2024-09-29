@@ -17,18 +17,20 @@ using System.Threading;
 namespace PlotDigitizer.Core
 {
 #nullable enable
-    public class ImageService : IImageService
+    public class EmguCvService : IImageService
     {
-        private readonly ILogger<ImageService>? logger;
+        private readonly ILogger<EmguCvService>? logger;
 
-        public ImageService()
+        public EmguCvService()
         {
 
         }
-        public ImageService(ILogger<ImageService> logger)
+
+        public EmguCvService(ILogger<EmguCvService> logger)
         {
             this.logger = logger;
         }
+
         public RectangleD? GetAxisLocation(Image<Rgba, byte> image)
         {
             if (image is null)
@@ -204,110 +206,260 @@ namespace PlotDigitizer.Core
                 }
             }
         }
-        public AxisLimitTextBox GetAxisLimitTextBoxes(Image<Rgba, byte> image, RectangleD axis)
+
+        public AxisTextBox GetAxisTextBox(Image<Rgba, byte> image, RectangleD axis)
         {
+            var textBox = new AxisTextBox();
+            var topLeft = new PointD(axis.Left, axis.Top);
+            var bottomRight = new PointD(axis.Right, axis.Bottom);
+            var bottomLeft = new PointD(axis.Left, axis.Bottom);
+
             // Preprocessing
             Mat gray = new();
             CvInvoke.CvtColor(image, gray, ColorConversion.Bgr2Gray);
 
             Mat grad = new();
-            Mat kernel = CvInvoke.GetStructuringElement(ElementShape.Ellipse, new Size(3, 3), new Point(-1, -1));
-            CvInvoke.MorphologyEx(gray, grad, MorphOp.Gradient, kernel, new Point(-1, -1), 1, BorderType.Default, new MCvScalar());
+            Mat gradStructElem = CvInvoke.GetStructuringElement(ElementShape.Ellipse, new Size(3, 3), new Point(-1, -1));
+            CvInvoke.MorphologyEx(gray, grad, MorphOp.Gradient, gradStructElem, new Point(-1, -1), 1, BorderType.Default, new MCvScalar());
 
             Mat bw = new();
             CvInvoke.Threshold(grad, bw, 0, 255, ThresholdType.Binary | ThresholdType.Otsu);
 
-            Mat kernel2 = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new Size(5, 1), new Point(-1, -1));
-            Mat connected = new();
-            CvInvoke.MorphologyEx(bw, connected, MorphOp.Close, kernel2, new Point(-1, -1), 1, BorderType.Default, new MCvScalar()); // Join text in close proximity
+            GetAxisLimitTextBoxes();
+            GetXLabelTextBox();
+            GetYLabelTextBox();
 
-            // Find contours for text regions
-            VectorOfVectorOfPoint textContours = new();
-            CvInvoke.FindContours(connected, textContours, null, RetrType.External, ChainApproxMethod.ChainApproxSimple);
+            return textBox;
 
-            List<Rectangle> boundingBoxes = [];
-            for (int i = 0; i < textContours.Size; i++) {
-                boundingBoxes.Add(CvInvoke.BoundingRectangle(textContours[i]));
+            // 10x slower than the for-loop version
+            [Obsolete]
+            static AxisTextBox LinqVersion(RectangleD axis, VectorOfVectorOfPoint textContours)
+            {
+                // Convert VectorOfVectorOfPoint to a list of bounding rectangles
+                List<(Rectangle box, PointD center)> boxCenters = [];
+                for (int i = 0; i < textContours.Size; i++) {
+                    Rectangle box = CvInvoke.BoundingRectangle(textContours[i]);
+                    PointD center = new(box.X + box.Width / 2, box.Y + box.Height / 2);
+                    boxCenters.Add((box, center));
+                }
+
+                // Variables to store the closest text regions
+                var textBox = new AxisTextBox();
+                var topLeft = new PointD(axis.Left, axis.Top);
+                var bottomRight = new PointD(axis.Right, axis.Bottom);
+                var bottomLeft = new PointD(axis.Left, axis.Bottom);
+
+                textBox.YMax = boxCenters
+                    .Select(boxCenter =>
+                    {
+                        var distance = MathHelpers.Distance(boxCenter.center, topLeft);
+                        return (boxCenter.box, distance);
+                    })
+                    .Aggregate((min, now) =>
+                    {
+                        return now.distance < min.distance ? now : min;
+                    }).box;
+
+                textBox.XMax = boxCenters
+                    .Select(boxCenter =>
+                    {
+                        var distance = MathHelpers.Distance(boxCenter.center, bottomRight);
+                        return (boxCenter.box, distance);
+                    })
+                    .Aggregate((min, now) =>
+                    {
+                        return now.distance < min.distance ? now : min;
+                    }).box;
+
+                textBox.XMin = boxCenters
+                    .Where(boxCenter =>
+                    {
+                        return boxCenter.box.Top > axis.Bottom;
+                    })
+                    .Select(boxCenter =>
+                    {
+                        var distance = MathHelpers.Distance(boxCenter.center, bottomLeft);
+                        return (boxCenter.box, distance);
+                    })
+                    .Aggregate((min, now) =>
+                    {
+                        return now.distance < min.distance ? now : min;
+                    }).box;
+
+                textBox.YMin = boxCenters
+                    .Where(boxCenter =>
+                    {
+                        return boxCenter.box.Right < axis.Left && boxCenter.box.Top < axis.Bottom;
+                    })
+                    .Select(boxCenter =>
+                    {
+                        var distance = MathHelpers.Distance(boxCenter.center, bottomLeft);
+                        return (boxCenter.box, distance);
+                    })
+                    .Aggregate((min, now) =>
+                    {
+                        return now.distance < min.distance ? now : min;
+                    }).box;
+
+                textBox.XLabel = boxCenters
+                    .Where(boxCenter =>
+                    {
+                        return boxCenter.box.Top > Math.Max(Math.Max(textBox.XMin.Bottom, textBox.XMax.Bottom), axis.Bottom);
+                    })
+                    .Select(boxCenter =>
+                    {
+                        var distance = Math.Abs(boxCenter.center.X - (axis.Left + axis.Width / 2));
+                        return (boxCenter.box, distance);
+                    })
+                    .Aggregate((min, now) =>
+                    {
+                        return now.distance < min.distance ? now : min;
+                    }).box;
+
+                textBox.YLabel = boxCenters
+                    .Where(boxCenter =>
+                    {
+                        var left = axis.Left;
+                        if (textBox.YMin.Left != default && textBox.YMin.Left < axis.Left) {
+                            left = textBox.YMin.Left;
+                        }
+                        else if (textBox.YMax.Left != default && textBox.YMax.Left < axis.Left) {
+                            left = textBox.YMax.Left;
+                        }
+                        return boxCenter.box.Right < left;
+                    })
+                    .Select(boxCenter =>
+                    {
+                        var distance = Math.Abs(boxCenter.center.Y - (axis.Top + axis.Height / 2));
+                        return (boxCenter.box, distance);
+                    })
+                    .Aggregate((min, now) =>
+                    {
+                        return now.distance < min.distance ? now : min;
+                    }).box;
+                return textBox;
             }
 
-            // Variables to store the closest text regions
-            var textBox = new AxisLimitTextBox();
-            var xMaxMinDist = double.MaxValue;
-            var yMaxMinDist = double.MaxValue;
-            var yMinMinDist = double.MaxValue;
-            var xMinMinDist = double.MaxValue;
-            var xMeanMinDist = double.MaxValue;
-            var yMeanMinDist = double.MaxValue;
+            void GetAxisLimitTextBoxes()
+            {
+                using Mat rectStructElem5X = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new Size(5, 1), new Point(-1, -1));
+                using Mat connected5X = new();
+                CvInvoke.MorphologyEx(bw, connected5X, MorphOp.Close, rectStructElem5X, new Point(-1, -1), 1, BorderType.Default, new MCvScalar()); // Join text in close proximity
 
-            var topLeft = new PointD(axis.Left, axis.Top);
-            var bottomRight = new PointD(axis.Right, axis.Bottom);
-            var bottomLeft = new PointD(axis.Left, axis.Bottom);
+                // Find contours for text regions
+                using VectorOfVectorOfPoint textContours5X = new();
+                CvInvoke.FindContours(connected5X, textContours5X, null, RetrType.External, ChainApproxMethod.ChainApproxSimple);
 
-            // Step 8: Iterate through the contours to find the closest text region
-            for (int i = 0; i < textContours.Size; i++) {
-                Rectangle textBoundingBox = CvInvoke.BoundingRectangle(textContours[i]);
-                PointD textCenter = new(textBoundingBox.X + textBoundingBox.Width / 2, textBoundingBox.Y + textBoundingBox.Height / 2);
+                // Variables to store the closest text regions
+                var xMaxMinDist = double.MaxValue;
+                var yMaxMinDist = double.MaxValue;
+                var yMinMinDist = double.MaxValue;
+                var xMinMinDist = double.MaxValue;
 
-                // Calculate distance to top-left of the chart axis
-                var distTopLeft = MathHelpers.Distance(textCenter, topLeft);
-                if (distTopLeft < yMaxMinDist) {
-                    yMaxMinDist = distTopLeft;
-                    textBox.YMax = textBoundingBox;
+                // Step 8: Iterate through the contours to find the closest text region
+                for (int i = 0; i < textContours5X.Size; i++) {
+                    Rectangle textBoundingBox = CvInvoke.BoundingRectangle(textContours5X[i]);
+                    PointD textCenter = new(textBoundingBox.X + textBoundingBox.Width / 2, textBoundingBox.Y + textBoundingBox.Height / 2);
+
+                    // Calculate distance to top-left of the chart axis
+                    var distTopLeft = MathHelpers.Distance(textCenter, topLeft);
+                    if (distTopLeft < yMaxMinDist) {
+                        yMaxMinDist = distTopLeft;
+                        textBox.YMax = textBoundingBox;
+                    }
+
+                    // Calculate distance to bottom-right of the chart axis
+                    var distBottomRight = MathHelpers.Distance(textCenter, bottomRight);
+                    if (distBottomRight < xMaxMinDist) {
+                        xMaxMinDist = distBottomRight;
+                        textBox.XMax = textBoundingBox;
+                    }
+
+                    // Calculate distance to bottom-left of the chart axis
+                    var distBottomLeft = MathHelpers.Distance(textCenter, bottomLeft);
+                    if (distBottomLeft < xMinMinDist
+                        && textBoundingBox.Top > axis.Bottom) {
+                        xMinMinDist = distBottomLeft;
+                        textBox.XMin = textBoundingBox;
+                    }
+                    if (distBottomLeft < yMinMinDist
+                        && textBoundingBox.Right < axis.Left
+                        && textBoundingBox.Top < axis.Bottom) {
+                        yMinMinDist = distBottomLeft;
+                        textBox.YMin = textBoundingBox;
+                    }
+
                 }
-
-                // Calculate distance to bottom-right of the chart axis
-                var distBottomRight = MathHelpers.Distance(textCenter, bottomRight);
-                if (distBottomRight < xMaxMinDist) {
-                    xMaxMinDist = distBottomRight;
-                    textBox.XMax = textBoundingBox;
-                }
-
-                // Calculate distance to bottom-left of the chart axis
-                var distBottomLeft = MathHelpers.Distance(textCenter, bottomLeft);
-                if (distBottomLeft < xMinMinDist
-                    && textBoundingBox.Top > axis.Bottom) {
-                    xMinMinDist = distBottomLeft;
-                    textBox.XMin = textBoundingBox;
-                }
-                if (distBottomLeft < yMinMinDist
-                    && textBoundingBox.Left < axis.Left
-                    && textBoundingBox.Top < axis.Bottom) {
-                    yMinMinDist = distBottomLeft;
-                    textBox.YMin = textBoundingBox;
-                }
-
             }
 
-            for (int i = 0; i < textContours.Size; i++) {
-                Rectangle textBoundingBox = CvInvoke.BoundingRectangle(textContours[i]);
-                PointD textCenter = new(textBoundingBox.X + textBoundingBox.Width / 2, textBoundingBox.Y + textBoundingBox.Height / 2);
+            void GetXLabelTextBox()
+            {
+                using Mat rectStructElemX = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new Size(11, 1), new Point(-1, -1));
+                using Mat connectedX = new();
+                CvInvoke.MorphologyEx(bw, connectedX, MorphOp.Close, rectStructElemX, new Point(-1, -1), 1, BorderType.Default, new MCvScalar()); // Join text in close proximity
 
-                var distXMean = Math.Abs(textCenter.X - (axis.Left + axis.Width / 2));
-                if (distXMean < xMeanMinDist
-                    && textBoundingBox.Top > Math.Max(Math.Max(textBox.XMin.Bottom, textBox.XMax.Bottom), axis.Bottom)) {
-                    xMeanMinDist = distXMean;
-                    textBox.XLabel = textBoundingBox;
+                // Find contours for text regions
+                using VectorOfVectorOfPoint textContoursX = new();
+                CvInvoke.FindContours(connectedX, textContoursX, null, RetrType.External, ChainApproxMethod.ChainApproxSimple);
+
+                var xMeanMinDist = double.MaxValue;
+                for (int i = 0; i < textContoursX.Size; i++) {
+                    Rectangle textBoundingBox = CvInvoke.BoundingRectangle(textContoursX[i]);
+                    PointD textCenter = new(textBoundingBox.X + textBoundingBox.Width / 2, textBoundingBox.Y + textBoundingBox.Height / 2);
+
+                    if (textBoundingBox.Top <= Math.Max(Math.Max(textBox.XMin.Bottom, textBox.XMax.Bottom), axis.Bottom)) {
+                        continue;
+                    }
+
+                    var distXMean = Math.Abs(textCenter.X - (axis.Left + axis.Width / 2));
+                    if (distXMean < xMeanMinDist) {
+                        xMeanMinDist = distXMean;
+                        textBox.XLabel = textBoundingBox;
+                    }
+                }
+            }
+
+            void GetYLabelTextBox()
+            {
+                using Mat rectStructElemY = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new Size(1, 11), new Point(-1, -1));
+                using Mat connectedY = new();
+                CvInvoke.MorphologyEx(bw, connectedY, MorphOp.Close, rectStructElemY, new Point(-1, -1), 1, BorderType.Default, new MCvScalar()); // Join text in close proximity
+                
+                // Find contours for text regions
+                using VectorOfVectorOfPoint textContoursY = new();
+                CvInvoke.FindContours(connectedY, textContoursY, null, RetrType.External, ChainApproxMethod.ChainApproxSimple);
+
+                var left = axis.Left;
+                if (textBox.YMin.Left != 0) {
+                    left = textBox.YMin.Left;
+                }
+                else if (textBox.YMax.Left != 0) {
+                    left = textBox.YMax.Left;
                 }
 
-                var distYMean = Math.Abs(textCenter.X - (axis.Top + axis.Height / 2));
-                if (distYMean < yMeanMinDist) {
-                    var left = axis.Left;
-                    if (textBox.YMin.Left != 0) {
-                        left = textBox.YMin.Left;
-                    }
-                    else if (textBox.YMax.Left != 0) {
-                        left = textBox.YMax.Left;
+                var yMeanMinDist = double.MaxValue;
+                for (int i = 0; i < textContoursY.Size; i++) {
+                    Rectangle textBoundingBox = CvInvoke.BoundingRectangle(textContoursY[i]);
+                    PointD textCenter = new(textBoundingBox.X + textBoundingBox.Width / 2, textBoundingBox.Y + textBoundingBox.Height / 2);
+
+                    if (textBoundingBox.Right >= left) {
+                        continue;
                     }
 
-                    if (textBoundingBox.Right < left) {
+                    var distYMean = Math.Abs(textCenter.Y - (axis.Top + axis.Height / 2));
+                    if (distYMean < yMeanMinDist) {
                         yMeanMinDist = distYMean;
                         textBox.YLabel = textBoundingBox;
                     }
                 }
             }
-
-            return textBox;
         }
+
+        public Image<Rgba, byte> RotateImage(Image<Rgba, byte> image, double angle)
+        {
+            return image.Rotate(angle, new Rgba(), crop: false);
+        }
+
         public Image<Rgba, byte> CropImage(Image<Rgba, byte> image, RectangleD roi)
         {
             return CropImage(image, new Rectangle(
@@ -319,7 +471,7 @@ namespace PlotDigitizer.Core
 
         public Image<Rgba, byte> CropImage(Image<Rgba, byte> image, Rectangle roi)
         {
-            if (FixROI(image, roi) is not Rectangle roiFixed) {
+            if (fixROI(image, roi) is not Rectangle roiFixed) {
                 return image;
             }
             try {
@@ -330,24 +482,24 @@ namespace PlotDigitizer.Core
                 logger?.LogError(ex.ErrorMessage);
                 return image;
             }
-        }
 
-        public Rectangle? FixROI(Image<Rgba, byte> image, Rectangle roi)
-        {
-            if (image is null
-                || roi.X >= image.Width || roi.Y >= image.Height
-                || roi.Width <= 0 || roi.Height <= 0) {
-                return null;
+            static Rectangle? fixROI(Image<Rgba, byte> image, Rectangle roi)
+            {
+                if (image is null
+                    || roi.X >= image.Width || roi.Y >= image.Height
+                    || roi.Width <= 0 || roi.Height <= 0) {
+                    return null;
+                }
+                roi.X = Math.Max(roi.X, 0);
+                roi.Y = Math.Max(roi.Y, 0);
+                if (roi.Right > image.Width) {
+                    roi.Width = image.Width - roi.X;
+                }
+                if (roi.Bottom > image.Height) {
+                    roi.Height = image.Height - roi.Y;
+                }
+                return roi;
             }
-            roi.X = Math.Max(roi.X, 0);
-            roi.Y = Math.Max(roi.Y, 0);
-            if (roi.Right > image.Width) {
-                roi.Width = image.Width - roi.X;
-            }
-            if (roi.Bottom > image.Height) {
-                roi.Height = image.Height - roi.Y;
-            }
-            return roi;
         }
 
         public Image<Rgba, byte> FilterRGB(Image<Rgba, byte> image, Rgba min, Rgba max)
