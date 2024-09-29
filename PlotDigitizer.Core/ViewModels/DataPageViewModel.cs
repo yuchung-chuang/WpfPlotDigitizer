@@ -22,7 +22,7 @@ namespace PlotDigitizer.Core
 		Sucessful,
 	}
 
-	public class DataPageViewModel : PageViewModelBase
+	public class DataPageViewModel : ViewModelBase
 	{
 		#region Fields
 
@@ -82,8 +82,6 @@ namespace PlotDigitizer.Core
 			this.fileDialog = fileDialog;
 			this.awaitTask = awaitTask;
 			this.logger = logger;
-			model.PropertyChanged += Model_PropertyChanged;
-			setting.PropertyChanged += Setting_PropertyChanged;
 		}
 
 		#endregion Constructors
@@ -187,17 +185,6 @@ namespace PlotDigitizer.Core
 			}
 		}
 
-		private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-			if (e.PropertyName == nameof(Model.EdittedImage)) {
-				OnPropertyChanged(nameof(IsEnabled));
-				logger.LogDebug($"{GetType()}.{MethodBase.GetCurrentMethod().Name} completed.");
-			}
-			else if (e.PropertyName == nameof(Model.PreviewImage)) {
-				OnPropertyChanged(nameof(Image));
-			}
-		}
-
 		private void OnIsContinuousChanged()
 		{
 			ExtractPoints();
@@ -208,18 +195,6 @@ namespace PlotDigitizer.Core
 		{
 			ExtractPoints();
 			logger.LogDebug($"{GetType()}.{MethodBase.GetCurrentMethod().Name} completed.");
-		}
-
-		private void Setting_PropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-			if (!(sender is Setting)) {
-				return;
-			}
-			if (e.PropertyName == nameof(Setting.DataType)) {
-				OnPropertyChanged(nameof(IsDiscrete));
-				OnPropertyChanged(nameof(IsContinuous));
-				logger.LogDebug($"{GetType()}.{MethodBase.GetCurrentMethod().Name} completed.");
-			}
 		}
 
 		#endregion Methods

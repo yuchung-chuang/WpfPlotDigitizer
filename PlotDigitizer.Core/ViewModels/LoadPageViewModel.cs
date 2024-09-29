@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace PlotDigitizer.Core
 {
-	public class LoadPageViewModel : PageViewModelBase
+	public class LoadPageViewModel : ViewModelBase
 	{
 		#region Fields
 

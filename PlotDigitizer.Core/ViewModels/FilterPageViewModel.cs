@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 namespace PlotDigitizer.Core
 {
-	public class FilterPageViewModel : PageViewModelBase
+	public class FilterPageViewModel : ViewModelBase
 	{
 		#region Fields
 
@@ -82,8 +82,6 @@ namespace PlotDigitizer.Core
 			Model = model;
 			this.setting = setting;
 			this.imageService = imageService;
-			model.PropertyChanged += Model_PropertyChanged;
-			setting.PropertyChanged += Setting_PropertyChanged;
 		}
 
 		#endregion Constructors
@@ -118,14 +116,6 @@ namespace PlotDigitizer.Core
 			setting.FilterMin = FilterMin;
 			setting.FilterMax = FilterMax;
 		}
-
-		private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-			if (e.PropertyName == nameof(Core.Model.CroppedImage)) {
-				base.OnPropertyChanged(nameof(IsEnabled));
-			}
-		}
-
 		private void OnMaxBChanged() => FilterImage();
 
 		private void OnMaxGChanged() => FilterImage();
@@ -137,18 +127,6 @@ namespace PlotDigitizer.Core
 		private void OnMinGChanged() => FilterImage();
 
 		private void OnMinRChanged() => FilterImage();
-
-		private void Setting_PropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-			if (sender is not Setting setting) {
-				return;
-			}
-			if (e.PropertyName == nameof(Setting.FilterMin)) {
-				FilterMin = setting.FilterMin;
-			} else if (e.PropertyName == nameof(Setting.FilterMax)) {
-				FilterMax = setting.FilterMax;
-			}
-		}
 
 		#endregion Methods
 	}

@@ -11,7 +11,7 @@ using System.Xml.Linq;
 
 namespace PlotDigitizer.Core
 {
-	public class EditPageViewModel : PageViewModelBase, IDisposable
+	public class EditPageViewModel : ViewModelBase, IDisposable
 	{
 		private readonly IImageService imageService;
 

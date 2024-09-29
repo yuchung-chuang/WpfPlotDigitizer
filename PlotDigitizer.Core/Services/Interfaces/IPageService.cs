@@ -6,7 +6,7 @@ namespace PlotDigitizer.Core
 {
 	public interface IPageService
 	{
-		PageViewModelBase CurrentPage { get; set; }
+		ViewModelBase CurrentPage { get; set; }
 		int CurrentPageIndex { get; }
 		ICommand NavigateCommand { get; }
 		ICommand NextPageCommand { get; }

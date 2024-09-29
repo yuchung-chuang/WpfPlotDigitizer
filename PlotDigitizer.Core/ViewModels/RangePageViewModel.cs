@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace PlotDigitizer.Core
 {
-    public class RangePageViewModel : PageViewModelBase
+    public class RangePageViewModel : ViewModelBase
     {
         #region Fields
 

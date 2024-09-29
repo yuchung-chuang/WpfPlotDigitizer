@@ -28,7 +28,7 @@ namespace PlotDigitizer.Core
 				typeof(EditPageViewModel),
 				typeof(DataPageViewModel),
 			];
-		public PageViewModelBase CurrentPage { get; set; }
+		public ViewModelBase CurrentPage { get; set; }
 		public int CurrentPageIndex => CurrentPage is null ? -1 : Pages.FindIndex(t => t == CurrentPage.GetType());
 
 		public PageService(Model model,
@@ -46,7 +46,7 @@ namespace PlotDigitizer.Core
 
 		public void Initialise()
 		{
-			CurrentPage = serviceProvider.GetRequiredService(Pages[0]) as PageViewModelBase;
+			CurrentPage = serviceProvider.GetRequiredService(Pages[0]) as ViewModelBase;
 
 			editPageScope = serviceScopeFactory.CreateScope();
 
@@ -57,13 +57,13 @@ namespace PlotDigitizer.Core
 		{
 			var PrevPage = CurrentPage;
 			PrevPage.Leave();
-			PageViewModelBase newPage;
+			ViewModelBase newPage;
 			if (pageType == typeof(EditPageViewModel)) {
 				editPageScope ??= serviceScopeFactory.CreateScope();
-				newPage = editPageScope.ServiceProvider.GetRequiredService(pageType) as PageViewModelBase;
+				newPage = editPageScope.ServiceProvider.GetRequiredService(pageType) as ViewModelBase;
 			}
 			else {
-				newPage = serviceProvider.GetRequiredService(pageType) as PageViewModelBase;
+				newPage = serviceProvider.GetRequiredService(pageType) as ViewModelBase;
 			}
 			newPage.Enter();
 			CurrentPage = newPage;
