@@ -28,41 +28,42 @@
 					  local:Pan.Gesture="LeftClick"
 					  local:Zoom.IsEnabled="True"
 					  local:Zoom.Gesture="WheelClick">
-					<Grid x:Name="SelectionGrid"
-						  ToolTip="Double click to automatically detect the axis"
-						  Background="Transparent">
-						<Image x:Name="ImageControl"
-							   Source="{Binding Image, Converter={local:ImageSourceConverter}}" />
-						<Grid Name="shadowGrid"
-							  Background="#4C000000"
-							  Width="{Binding ElementName=ImageControl, Path=ActualWidth}"
-							  Height="{Binding ElementName=ImageControl, Path=ActualHeight}" />
-						<Rectangle Name="Visual"
-								   Width="{Binding ElementName=ImageControl, Path=ActualWidth}"
-								   Height="{Binding ElementName=ImageControl, Path=ActualHeight}">
-							<Rectangle.Fill>
-								<VisualBrush Visual="{Binding ElementName=ImageControl}"
-											 Viewbox="{Binding AxisRelative, Converter={local:RectConverter}}"
-											 Viewport="{Binding AxisRelative, Converter={local:RectConverter}}" />
-							</Rectangle.Fill>
-						</Rectangle>
-
-						<!--An empty control to receive mouse double click event-->
-						<UserControl Background="Transparent">
-							<i:Interaction.Triggers>
-								<i:EventTrigger EventName="MouseDoubleClick">
-									<i:InvokeCommandAction Command="{Binding GetAxisCommand}" />
-								</i:EventTrigger>
-							</i:Interaction.Triggers>
-						</UserControl>
-						<local:SelectionBox Panel="{Binding ElementName=SelectionGrid}"
-											BoxLeft="{Binding AxisLeft, Mode=TwoWay}"
-											BoxTop="{Binding AxisTop, Mode=TwoWay}"
-											BoxWidth="{Binding AxisWidth, Mode=TwoWay}"
-											BoxHeight="{Binding AxisHeight, Mode=TwoWay}"
-											BoxThickness="10"
-											IsMoveEnabled="False" />
-					</Grid>
+					
+					<!--An empty control to receive mouse double click event-->
+					<ContentControl Background="Transparent">
+						<i:Interaction.Triggers>
+							<i:EventTrigger EventName="MouseDoubleClick">
+								<i:InvokeCommandAction Command="{Binding GetAxisCommand}" />
+							</i:EventTrigger>
+						</i:Interaction.Triggers>
+						<Grid x:Name="SelectionGrid"
+							  ToolTip="Double click to automatically detect the axis"
+							  Background="Transparent">
+							<Image x:Name="ImageControl"
+								   Source="{Binding Image, Converter={local:ImageSourceConverter}}" />
+							<Grid Name="shadowGrid"
+								  Background="#4C000000"
+								  Width="{Binding ElementName=ImageControl, Path=ActualWidth}"
+								  Height="{Binding ElementName=ImageControl, Path=ActualHeight}"/>
+							<Rectangle Name="Visual"
+									   Width="{Binding ElementName=ImageControl, Path=ActualWidth}"
+									   Height="{Binding ElementName=ImageControl, Path=ActualHeight}">
+								<Rectangle.Fill>
+									<VisualBrush Visual="{Binding ElementName=ImageControl}"
+												 Viewbox="{Binding AxisRelative, Converter={local:RectConverter}}"
+												 Viewport="{Binding AxisRelative, Converter={local:RectConverter}}" />
+								</Rectangle.Fill>
+							</Rectangle>
+							<local:SelectionBox Panel="{Binding ElementName=SelectionGrid}"
+												BoxLeft="{Binding AxisLeft, Mode=TwoWay}"
+												BoxTop="{Binding AxisTop, Mode=TwoWay}"
+												BoxWidth="{Binding AxisWidth, Mode=TwoWay}"
+												BoxHeight="{Binding AxisHeight, Mode=TwoWay}"
+												BoxThickness="10"
+												StrokeThickness="1"
+												IsMoveEnabled="False" />
+						</Grid>
+					</ContentControl>
 				</Grid>
 				<!--Place Border at the same level as the PanZoom Grid so Border is always visible when zoom in/out.-->
 				<Border BorderBrush="Black"
