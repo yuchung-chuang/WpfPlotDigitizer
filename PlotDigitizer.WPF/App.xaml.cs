@@ -25,6 +25,8 @@ namespace PlotDigitizer.WPF
 		protected override void OnStartup(StartupEventArgs e)
 		{
 			base.OnStartup(e);
+			
+            SetupExceptionHandling();
 
             // Build Configuration
             IConfiguration configuration = new ConfigurationBuilder()
@@ -82,8 +84,6 @@ namespace PlotDigitizer.WPF
 			var pageService = serviceProvider.GetRequiredService<IPageService>();
 			pageService.Initialise();
 			logger?.LogInformation("Page Loaded.");
-
-			SetupExceptionHandling();
 
 			if (configuration["RunTest"].ToLower() == true.ToString()) {
                 Test();
