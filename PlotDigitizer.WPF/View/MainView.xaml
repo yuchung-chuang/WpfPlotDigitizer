@@ -19,7 +19,6 @@
 					Command="{x:Static NavigationCommands.PreviousPage}" />
 	</UserControl.InputBindings>
 	<i:Interaction.Behaviors>
-		<!--Possible missing navigation commands?-->
 		<local:RelayCommandBinding ApplicationCommand="{x:Static NavigationCommands.NextPage}"
 								   Command="{Binding PageService.NextPageCommand}" />
 		<local:RelayCommandBinding ApplicationCommand="{x:Static NavigationCommands.PreviousPage}"
