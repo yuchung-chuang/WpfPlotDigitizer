@@ -71,23 +71,23 @@ namespace PlotDigitizer.Core
         private void SetModelImage(Image<Rgba, byte> image)
         {
             if (image == null) {
-                logger?.LogWarning("Attempted to set a null image to the model.");
+                logger?.LogWarning($"Attempted to set a null image to the model.");
                 return;
             }
 
             Model.InputImage = image;
-            logger?.LogInformation("Image set successfully in the model.");
+            logger?.LogInformation($"Image set successfully in the model.");
 
             // Automatically go to the next page when the image is loaded.
             if (pageService.NextPageCommand.CanExecute(null)) {
                 pageService.NextPageCommand.Execute(null);
-                logger?.LogInformation("Navigated to the next page after image load.");
+                logger?.LogInformation($"Navigated to the next page after image load.");
             }
         }
 
         private void Browse()
         {
-            logger?.LogInformation("Browse command invoked.");
+            logger?.LogInformation($"Browse command invoked.");
 
             var filter = "Images (*.jpg;*.jpeg;*.png;*.bmp;*.tif) |*.jpg;*.jpeg;*.png;*.bmp;*.tif|" +
                 "(*.jpg;*.jpeg) |*.jpg;*.jpeg|" +
@@ -98,24 +98,24 @@ namespace PlotDigitizer.Core
             var result = fileDialogService.OpenFileDialog(filter);
 
             if (!result.IsValid) {
-                logger?.LogWarning("Browse command cancelled by the user or invalid file selection.");
+                logger?.LogWarning($"Browse command cancelled by the user or invalid file selection.");
                 return;
             }
 
-            logger?.LogInformation("File selected for browsing: {FileName}", result.FileName);
+            logger?.LogInformation($"File selected for browsing: {result.FileName}");
             SetModelImage(new Image<Rgba, byte>(result.FileName));
         }
 
         private async void Drop(DropEventArgs e)
         {
-            logger?.LogInformation("Drop command invoked with drop type: {DropType}", e.Type);
+            logger?.LogInformation($"Drop command invoked with drop type: {e.Type}");
 
             if (e.Type == DropEventArgs.DropType.File) {
-                logger?.LogInformation("File dropped: {FileName}", e.FileName);
+                logger?.LogInformation($"File dropped: {e.FileName}");
                 SetModelImage(new Image<Rgba, byte>(e.FileName));
             }
             else if (e.Type == DropEventArgs.DropType.Url) {
-                logger?.LogInformation("URL dropped: {Url}", e.Url);
+                logger?.LogInformation($"URL dropped: {e.Url}");
                 var image = await awaitTaskService.RunAsync(DownloadImage).ConfigureAwait(true);
                 SetModelImage(image);
             }
@@ -124,7 +124,7 @@ namespace PlotDigitizer.Core
             {
                 var filePath = Path.GetTempFileName();
                 try {
-                    logger?.LogDebug("Starting download of image from URL: {Url}", e.Url);
+                    logger?.LogDebug($"Starting download of image from URL: {e.Url}");
 
                     using var httpClient = new HttpClient();
                     var request = new HttpRequestMessage(HttpMethod.Get, e.Url);
@@ -136,51 +136,51 @@ namespace PlotDigitizer.Core
                     response.EnsureSuccessStatusCode();
                     var stream = await response.Content.ReadAsStreamAsync();
 
-                    logger?.LogInformation("Successfully downloaded image from URL: {Url}", e.Url);
+                    logger?.LogInformation($"Successfully downloaded image from URL: {e.Url}");
                     return (Image.FromStream(stream) as Bitmap).ToImage<Rgba, byte>();
                 }
                 catch (Exception ex) {
-                    logger?.LogError(ex, "Error occurred while downloading image from URL: {Url}", e.Url);
+                    logger?.LogError(ex, "Error occurred while downloading image from URL: {e.Url}");
                     messageBox.Show_OK(ex.Message, "Warning");
                     return null;
                 }
                 finally {
                     File.Delete(filePath);
-                    logger?.LogDebug("Temporary file deleted: {TempFilePath}", filePath);
+                    logger?.LogDebug($"Temporary file deleted: {filePath}");
                 }
             }
         }
 
         private void Paste()
         {
-            logger?.LogInformation("Paste command invoked.");
+            logger?.LogInformation($"Paste command invoked.");
 
             if (clipboard.ContainsImage()) {
-                logger?.LogInformation("Image found in clipboard.");
+                logger?.LogInformation($"Image found in clipboard.");
                 SetModelImage(clipboard.GetImage());
             }
             else if (clipboard.ContainsFileDropList()) {
                 var filePath = clipboard.GetFileDropList()[0];
-                logger?.LogInformation("File found in clipboard: {FilePath}", filePath);
+                logger?.LogInformation($"File found in clipboard: {filePath}");
                 SetModelImage(new Image<Rgba, byte>(filePath));
             }
             else {
-                logger?.LogWarning("Clipboard does not contain a valid image or file.");
+                logger?.LogWarning($"Clipboard does not contain a valid image or file.");
                 messageBox.Show_OK("Clipboard does not contain image.", "Warning");
             }
         }
 
         public void OnFilePathChanged()
         {
-            logger?.LogInformation("File path changed: {FilePath}", FilePath);
+            logger?.LogInformation($"File path changed: {FilePath}");
 
             if (!File.Exists(FilePath)) {
-                logger?.LogWarning("File path does not exist: {FilePath}", FilePath);
+                logger?.LogWarning($"File path does not exist: {FilePath}");
                 return;
             }
 
             SetModelImage(new Image<Rgba, byte>(FilePath));
-            logger?.LogInformation("Image successfully loaded from file path: {FilePath}", FilePath);
+            logger?.LogInformation($"Image successfully loaded from file path: {FilePath}");
         }
 
         #endregion Methods

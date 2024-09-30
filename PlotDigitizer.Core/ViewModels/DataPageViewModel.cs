@@ -13,7 +13,6 @@ using System.Threading;
 
 namespace PlotDigitizer.Core
 {
-
     public class DataPageViewModel : ViewModelBase
     {
         enum ExportResults
@@ -96,7 +95,7 @@ namespace PlotDigitizer.Core
         public override void Enter()
         {
             base.Enter();
-            logger?.LogInformation("Entered DataPageViewModel with IsEnabled status: {IsEnabled}", IsEnabled);
+            logger?.LogInformation($"Entered DataPageViewModel with IsEnabled status: {IsEnabled}");
 
             if (!IsEnabled) {
                 logger?.LogWarning("DataPageViewModel is not enabled. Model or EdittedImage is null.");
@@ -108,7 +107,7 @@ namespace PlotDigitizer.Core
 
         private void UpdatePreviewImage()
         {
-            logger?.LogInformation("Updating preview image in {MethodName}.", MethodBase.GetCurrentMethod()?.Name);
+            logger?.LogInformation($"Updating preview image in {MethodBase.GetCurrentMethod()?.Name}.");
 
             if (!IsEnabled) {
                 logger?.LogWarning("UpdatePreviewImage skipped because DataPageViewModel is not enabled.");
@@ -139,7 +138,7 @@ namespace PlotDigitizer.Core
         private bool CanExport()
         {
             var canExport = Model?.Data?.Count() > 0;
-            logger?.LogInformation("CanExport evaluated to {CanExport}.", canExport);
+            logger?.LogInformation($"CanExport evaluated to {canExport}.");
             return canExport;
         }
 
@@ -157,18 +156,17 @@ namespace PlotDigitizer.Core
                 return;
             }
 
-            logger?.LogInformation("User selected file: {FileName}", result.FileName);
+            logger?.LogInformation($"User selected file: {result.FileName}");
 
             TrySave(result.FileName);
 
             async void TrySave(string fileName)
             {
-                logger?.LogInformation("Starting async export to {FileName}.", fileName);
+                logger?.LogInformation($"Starting async export to {fileName}.");
 
                 var exportResult = await awaitTask.RunAsync((token) =>
                 {
-                    try
-                    {
+                    try {
                         return Path.GetExtension(fileName).ToLower() switch
                         {
                             ".txt" => SaveAsTXT(token),
@@ -176,14 +174,13 @@ namespace PlotDigitizer.Core
                             _ => throw new FormatException("Output file format is not recognized. Please use either .csv or .txt as file extension."),
                         };
                     }
-                    catch (Exception ex)
-                    {
+                    catch (Exception ex) {
                         logger?.LogError(ex, "Error during file export.");
                         return ExportResults.Failed;
                     }
                 });
 
-                logger?.LogInformation("Export completed with result: {ExportResult}", exportResult);
+                logger?.LogInformation($"Export completed with result: {exportResult}");
 
                 switch (exportResult) {
                     case ExportResults.Sucessful:
@@ -209,14 +206,14 @@ namespace PlotDigitizer.Core
                     default:
                         break;
                 }
-                logger.LogInformation($"{GetType()}.{MethodBase.GetCurrentMethod().Name} completed.");
+                logger?.LogInformation($"{GetType()}.{MethodBase.GetCurrentMethod().Name} completed.");
 
                 ExportResults SaveAsCSV(CancellationToken token) => SaveText(",", token);
                 ExportResults SaveAsTXT(CancellationToken token) => SaveText("\t", token);
                 ExportResults SaveText(string separator, CancellationToken token)
                 {
                     try {
-                        logger?.LogInformation("Saving data as text using separator: {Separator}", separator);
+                        logger?.LogInformation($"Saving data as text using separator: {separator}");
 
                         var content = new StringBuilder();
                         var xlabel = !string.IsNullOrWhiteSpace(setting.AxisTitle.XLabel) ? setting.AxisTitle.XLabel : "X";
@@ -224,7 +221,7 @@ namespace PlotDigitizer.Core
                         content.AppendLine(xlabel + separator + ylabel);
 
                         foreach (var point in Model.Data) {
-                            content.AppendLine(point.X.ToString() + separator + point.Y.ToString());
+                            content.AppendLine($"{point.X}{separator}{point.Y}");
                             if (token.IsCancellationRequested) {
                                 logger?.LogInformation("Export operation canceled during text saving.");
                                 return ExportResults.Canceled;
@@ -236,11 +233,11 @@ namespace PlotDigitizer.Core
                             sw.Write(content.ToString());
                         }
 
-                        logger?.LogInformation("Data saved successfully to {FileName}.", fileName);
+                        logger?.LogInformation($"Data saved successfully to {fileName}.");
                         return ExportResults.Sucessful;
                     }
                     catch (Exception ex) {
-                        logger?.LogError(ex, "Error while saving data to file: {FileName}.", fileName);
+                        logger?.LogError(ex, $"Error while saving data to file: {fileName}.");
                         return ExportResults.Failed;
                     }
                 }
@@ -258,7 +255,6 @@ namespace PlotDigitizer.Core
             logger?.LogInformation("IsDiscrete property changed.");
             UpdatePreviewImage();
         }
-
 
         #endregion Methods
     }

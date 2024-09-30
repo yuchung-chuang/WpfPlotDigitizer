@@ -27,7 +27,7 @@ namespace PlotDigitizer.Core
                 MaxR = value.Red;
                 MaxG = value.Green;
                 MaxB = value.Blue;
-                logger?.LogInformation("FilterMax set to: R={Red}, G={Green}, B={Blue}", value.Red, value.Green, value.Blue);
+                logger?.LogInformation($"FilterMax set to: R={value.Red}, G={value.Green}, B={value.Blue}");
             }
         }
 
@@ -38,7 +38,7 @@ namespace PlotDigitizer.Core
                 MinR = value.Red;
                 MinG = value.Green;
                 MinB = value.Blue;
-                logger?.LogInformation("FilterMin set to: R={Red}, G={Green}, B={Blue}", value.Red, value.Green, value.Blue);
+                logger?.LogInformation($"FilterMin set to: R={value.Red}, G={value.Green}, B={value.Blue}");
             }
         }
 
@@ -93,7 +93,7 @@ namespace PlotDigitizer.Core
         public override void Enter()
         {
             base.Enter();
-            logger?.LogInformation("Entered FilterPageViewModel with IsEnabled status: {IsEnabled}", IsEnabled);
+            logger?.LogInformation($"Entered FilterPageViewModel with IsEnabled status: {IsEnabled}");
 
             if (!IsEnabled) {
                 logger?.LogWarning("FilterPageViewModel is not enabled because Model or CroppedImage is null.");
@@ -102,7 +102,7 @@ namespace PlotDigitizer.Core
 
             FilterMin = setting.FilterMin;
             FilterMax = setting.FilterMax;
-            logger?.LogInformation("Loaded FilterMin and FilterMax from settings: Min={FilterMin}, Max={FilterMax}", FilterMin, FilterMax);
+            logger?.LogInformation($"Loaded FilterMin and FilterMax from settings: Min={FilterMin}, Max={FilterMax}");
 
             FilterImage();
         }
@@ -127,7 +127,7 @@ namespace PlotDigitizer.Core
         public override void Leave()
         {
             base.Leave();
-            logger?.LogInformation("Leaving FilterPageViewModel with IsEnabled status: {IsEnabled}", IsEnabled);
+            logger?.LogInformation($"Leaving FilterPageViewModel with IsEnabled status: {IsEnabled}");
 
             if (!IsEnabled) {
                 logger?.LogWarning("FilterPageViewModel is not enabled because Model or CroppedImage is null.");
@@ -136,42 +136,42 @@ namespace PlotDigitizer.Core
 
             setting.FilterMin = FilterMin;
             setting.FilterMax = FilterMax;
-            logger?.LogInformation("Stored FilterMin and FilterMax to settings: Min={FilterMin}, Max={FilterMax}", FilterMin, FilterMax);
+            logger?.LogInformation($"Stored FilterMin and FilterMax to settings: Min={FilterMin}, Max={FilterMax}");
         }
 
         private void OnMaxBChanged()
         {
-            logger?.LogInformation("MaxB changed to {MaxB}", MaxB);
+            logger?.LogInformation($"MaxB changed to {MaxB}");
             FilterImage();
         }
 
         private void OnMaxGChanged()
         {
-            logger?.LogInformation("MaxG changed to {MaxG}", MaxG);
+            logger?.LogInformation($"MaxG changed to {MaxG}");
             FilterImage();
         }
 
         private void OnMaxRChanged()
         {
-            logger?.LogInformation("MaxR changed to {MaxR}", MaxR);
+            logger?.LogInformation($"MaxR changed to {MaxR}");
             FilterImage();
         }
 
         private void OnMinBChanged()
         {
-            logger?.LogInformation("MinB changed to {MinB}", MinB);
+            logger?.LogInformation($"MinB changed to {MinB}");
             FilterImage();
         }
 
         private void OnMinGChanged()
         {
-            logger?.LogInformation("MinG changed to {MinG}", MinG);
+            logger?.LogInformation($"MinG changed to {MinG}");
             FilterImage();
         }
 
         private void OnMinRChanged()
         {
-            logger?.LogInformation("MinR changed to {MinR}", MinR);
+            logger?.LogInformation($"MinR changed to {MinR}");
             FilterImage();
         }
 

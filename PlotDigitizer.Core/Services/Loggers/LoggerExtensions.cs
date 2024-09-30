@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿
+using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Runtime.CompilerServices;
@@ -42,11 +43,11 @@ namespace PlotDigitizer.Core
             logger.LogCritical("[{fileName} > {memberName}() > Line {lineNumber}]" + Environment.NewLine + "{message}", fileName, memberName, lineNumber, message);
         }
 
-        public static void LogError(this ILogger logger, string message, [CallerFilePath] string filePath = "", [CallerMemberName] string memberName = "",
+        public static void LogError(this ILogger logger, Exception exception, string message, [CallerFilePath] string filePath = "", [CallerMemberName] string memberName = "",
             [CallerLineNumber] int lineNumber = 0)
         {
             var fileName = Path.GetFileName(filePath);
-            logger.LogError("[{fileName} > {memberName}() > Line {lineNumber}]" + Environment.NewLine + "{message}", fileName, memberName, lineNumber, message);
+            logger.LogError(exception, "[{fileName} > {memberName}() > Line {lineNumber}]" + Environment.NewLine + "{message}", fileName, memberName, lineNumber, message);
         }
     }
 }

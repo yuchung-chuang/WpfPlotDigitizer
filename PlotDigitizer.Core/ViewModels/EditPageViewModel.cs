@@ -88,7 +88,7 @@ namespace PlotDigitizer.Core
         public override void Enter()
         {
             base.Enter();
-            logger?.LogInformation("Entered EditPageViewModel with IsEnabled status: {IsEnabled}", IsEnabled);
+            logger?.LogInformation($"Entered EditPageViewModel with IsEnabled status: {IsEnabled}");
 
             if (!IsEnabled) {
                 logger?.LogWarning("EditPageViewModel is not enabled. Model or FilteredImage is null.");
@@ -127,13 +127,13 @@ namespace PlotDigitizer.Core
 
         private void Edit((Image<Rgba, byte> obj, string tag) edit)
         {
-            logger?.LogInformation("Applying edit with tag: {Tag}", edit.tag);
+            logger?.LogInformation($"Applying edit with tag: {edit.tag}");
             EditService.Edit(edit);
         }
 
         private void GoTo(int targetIndex)
         {
-            logger?.LogInformation("Navigating to index: {Index}", targetIndex);
+            logger?.LogInformation($"Navigating to index: {targetIndex}");
             EditService.GoTo(targetIndex);
         }
 
@@ -155,7 +155,7 @@ namespace PlotDigitizer.Core
                 return;
 
             var targetIndex = EditService.Index + index;
-            logger?.LogInformation("Redoing to index: {Index}", targetIndex);
+            logger?.LogInformation($"Redoing to index: {targetIndex}");
 
             if (EditService.CanGoTo(targetIndex))
                 EditService.GoTo(targetIndex);
@@ -167,7 +167,7 @@ namespace PlotDigitizer.Core
                 return;
 
             var targetIndex = EditService.Index - index;
-            logger?.LogInformation("Undoing to index: {Index}", targetIndex);
+            logger?.LogInformation($"Undoing to index: {targetIndex}");
 
             if (EditService.CanGoTo(targetIndex))
                 EditService.GoTo(targetIndex);
@@ -182,7 +182,7 @@ namespace PlotDigitizer.Core
 
         private void EditService_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            logger?.LogInformation("EditService property changed: {PropertyName}", e.PropertyName);
+            logger?.LogInformation($"EditService property changed: {e.PropertyName}");
 
             if (e.PropertyName == nameof(EditService.Index)) {
                 OnPropertyChanged(nameof(UndoList));

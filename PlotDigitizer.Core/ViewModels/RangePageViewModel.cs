@@ -34,7 +34,7 @@ namespace PlotDigitizer.Core
                 XMin = value.Left;
                 YMax = value.Bottom;
                 YMin = value.Top;
-                logger?.LogInformation("AxisLimit set to: {AxisLimit}", AxisLimit);
+                logger?.LogInformation($"AxisLimit set to: {AxisLimit}");
             }
         }
 
@@ -46,7 +46,7 @@ namespace PlotDigitizer.Core
             set {
                 XLog = value.X;
                 YLog = value.Y;
-                logger?.LogInformation("AxisLogBase set to: {AxisLogBase}", AxisLogBase);
+                logger?.LogInformation($"AxisLogBase set to: {AxisLogBase}");
             }
         }
 
@@ -59,7 +59,7 @@ namespace PlotDigitizer.Core
             set {
                 XLabel = value.XLabel;
                 YLabel = value.YLabel;
-                logger?.LogInformation("AxisTitle set to: XLabel: {XLabel}, YLabel: {YLabel}", XLabel, YLabel);
+                logger?.LogInformation($"AxisTitle set to: XLabel: {XLabel}, YLabel: {YLabel}");
             }
         }
 
@@ -108,10 +108,10 @@ namespace PlotDigitizer.Core
         public override void Enter()
         {
             base.Enter();
-            logger?.LogInformation("Entered RangePageViewModel with IsEnabled status: {IsEnabled}", IsEnabled);
+            logger?.LogInformation($"Entered RangePageViewModel with IsEnabled status: {IsEnabled}");
 
             if (!IsEnabled) {
-                logger?.LogWarning("RangePageViewModel is not enabled because Model or InputImage is null.");
+                logger?.LogWarning($"RangePageViewModel is not enabled because Model or InputImage is null.");
                 return;
             }
 
@@ -127,7 +127,7 @@ namespace PlotDigitizer.Core
                 XLabelTextBox = textBox.XLabel != default ? new RectangleD(textBox.XLabel) : new RectangleD();
                 YLabelTextBox = textBox.YLabel != default ? new RectangleD(textBox.YLabel) : new RectangleD();
 
-                logger?.LogInformation("Detected axis text boxes: XMaxTextBox: {XMaxTextBox}, XMinTextBox: {XMinTextBox}, YMaxTextBox: {YMaxTextBox}, YMinTextBox: {YMinTextBox}, XLabelTextBox: {XLabelTextBox}, YLabelTextBox: {YLabelTextBox}", XMaxTextBox, XMinTextBox, YMaxTextBox, YMinTextBox, XLabelTextBox, YLabelTextBox);
+                logger?.LogInformation($"Detected axis text boxes: XMaxTextBox: {XMaxTextBox}, XMinTextBox: {XMinTextBox}, YMaxTextBox: {YMaxTextBox}, YMinTextBox: {YMinTextBox}, XLabelTextBox: {XLabelTextBox}, YLabelTextBox: {YLabelTextBox}");
 
                 Ocr();
             }
@@ -150,10 +150,10 @@ namespace PlotDigitizer.Core
         public override void Leave()
         {
             base.Leave();
-            logger?.LogInformation("Leaving RangePageViewModel with IsEnabled status: {IsEnabled}", IsEnabled);
+            logger?.LogInformation($"Leaving RangePageViewModel with IsEnabled status: {IsEnabled}");
 
             if (!IsEnabled) {
-                logger?.LogWarning("RangePageViewModel is not enabled because Model or InputImage is null.");
+                logger?.LogWarning($"RangePageViewModel is not enabled because Model or InputImage is null.");
                 return;
             }
 
@@ -183,41 +183,41 @@ namespace PlotDigitizer.Core
                 var xMaxText = numericalOcrService.Ocr(roi);
                 if (double.TryParse(xMaxText, out var xMax)) {
                     XMax = xMax;
-                    logger?.LogInformation("OCR successful: XMax = {XMax}", XMax);
+                    logger?.LogInformation($"OCR successful: XMax = {XMax}");
                 }
 
                 roi = imageService.CropImage(Image, XMinTextBox.ToRectangle());
                 var xMinText = numericalOcrService.Ocr(roi);
                 if (double.TryParse(xMinText, out var xMin)) {
                     XMin = xMin;
-                    logger?.LogInformation("OCR successful: XMin = {XMin}", XMin);
+                    logger?.LogInformation($"OCR successful: XMin = {XMin}");
                 }
 
                 roi = imageService.CropImage(Image, YMaxTextBox.ToRectangle());
                 var yMaxText = numericalOcrService.Ocr(roi);
                 if (double.TryParse(yMaxText, out var yMax)) {
                     YMax = yMax;
-                    logger?.LogInformation("OCR successful: YMax = {YMax}", YMax);
+                    logger?.LogInformation($"OCR successful: YMax = {YMax}");
                 }
 
                 roi = imageService.CropImage(Image, YMinTextBox.ToRectangle());
                 var yMinText = numericalOcrService.Ocr(roi);
                 if (double.TryParse(yMinText, out var yMin)) {
                     YMin = yMin;
-                    logger?.LogInformation("OCR successful: YMin = {YMin}", YMin);
+                    logger?.LogInformation($"OCR successful: YMin = {YMin}");
                 }
 
                 roi = imageService.CropImage(Image, XLabelTextBox.ToRectangle());
                 XLabel = textOcrService.Ocr(roi).Trim();
-                logger?.LogInformation("OCR successful: XLabel = {XLabel}", XLabel);
+                logger?.LogInformation($"OCR successful: XLabel = {XLabel}");
 
                 roi = imageService.CropImage(Image, YLabelTextBox.ToRectangle());
                 roi = imageService.RotateImage(roi, 90);
                 YLabel = textOcrService.Ocr(roi).Trim();
-                logger?.LogInformation("OCR successful: YLabel = {YLabel}", YLabel);
+                logger?.LogInformation($"OCR successful: YLabel = {YLabel}");
             }
             catch (Exception ex) {
-                logger?.LogError(ex, "An error occurred during the OCR process.");
+                logger?.LogError($"An error occurred during the OCR process: {ex.Message}");
             }
         }
 
