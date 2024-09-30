@@ -1,6 +1,8 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Windows.Input;
 
 namespace PlotDigitizer.Core
@@ -13,14 +15,17 @@ namespace PlotDigitizer.Core
         private readonly IImageService imageService;
         private readonly IOcrService numericalOcrService;
         private readonly IOcrService textOcrService;
+        private readonly ILogger<RangePageViewModel> logger;
 
         #endregion Fields
 
         #region Properties
+
         public double XMax { get; set; } = double.NaN;
         public double XMin { get; set; } = double.NaN;
         public double YMax { get; set; } = double.NaN;
         public double YMin { get; set; } = double.NaN;
+
         public RectangleD AxisLimit
         {
             get => new(XMin, YMin, XMax - XMin, YMax - YMin);
@@ -29,8 +34,10 @@ namespace PlotDigitizer.Core
                 XMin = value.Left;
                 YMax = value.Bottom;
                 YMin = value.Top;
+                logger?.LogInformation("AxisLimit set to: {AxisLimit}", AxisLimit);
             }
         }
+
         public double XLog { get; set; } = double.NaN;
         public double YLog { get; set; } = double.NaN;
         public PointD AxisLogBase
@@ -39,19 +46,24 @@ namespace PlotDigitizer.Core
             set {
                 XLog = value.X;
                 YLog = value.Y;
+                logger?.LogInformation("AxisLogBase set to: {AxisLogBase}", AxisLogBase);
             }
         }
+
         public string XLabel { get; set; }
         public string YLabel { get; set; }
+
         public AxisTitle AxisTitle
         {
             get => new(XLabel, YLabel);
             set {
                 XLabel = value.XLabel;
                 YLabel = value.YLabel;
+                logger?.LogInformation("AxisTitle set to: XLabel: {XLabel}, YLabel: {YLabel}", XLabel, YLabel);
             }
         }
-        public RectangleD XMaxTextBox { get; set; } 
+
+        public RectangleD XMaxTextBox { get; set; }
         public RectangleD XMinTextBox { get; set; }
         public RectangleD YMaxTextBox { get; set; }
         public RectangleD YMinTextBox { get; set; }
@@ -78,13 +90,15 @@ namespace PlotDigitizer.Core
             Setting setting,
             IImageService imageService,
             [FromKeyedServices("Numerical")] IOcrService numericalOcrService,
-            [FromKeyedServices("Text")] IOcrService textOcrService) : this()
+            [FromKeyedServices("Text")] IOcrService textOcrService,
+            ILogger<RangePageViewModel> logger) : this()
         {
             Model = model;
             this.setting = setting;
             this.imageService = imageService;
             this.numericalOcrService = numericalOcrService;
             this.textOcrService = textOcrService;
+            this.logger = logger;
         }
 
         #endregion Constructors
@@ -94,31 +108,28 @@ namespace PlotDigitizer.Core
         public override void Enter()
         {
             base.Enter();
+            logger?.LogInformation("Entered RangePageViewModel with IsEnabled status: {IsEnabled}", IsEnabled);
+
             if (!IsEnabled) {
+                logger?.LogWarning("RangePageViewModel is not enabled because Model or InputImage is null.");
                 return;
             }
-            if (setting.AxisTextBox == default) {
-                var textBox = imageService.GetAxisTextBox(Image, setting.AxisLocation);
-                if (textBox.XMax != default) {
-                    XMaxTextBox = new RectangleD(textBox.XMax);
-                }
-                if (textBox.XMin != default) {
-                    XMinTextBox = new RectangleD(textBox.XMin);
-                }
-                if (textBox.YMax != default) {
-                    YMaxTextBox = new RectangleD(textBox.YMax);
-                }
-                if (textBox.YMin != default) {
-                    YMinTextBox = new RectangleD(textBox.YMin);
-                }
-                if (textBox.XLabel != default) {
-                    XLabelTextBox = new RectangleD(textBox.XLabel);
-                }
-                if (textBox.YMin != default) {
-                    YLabelTextBox = new RectangleD(textBox.YLabel);
-                }
-                Ocr();
 
+            if (setting.AxisTextBox == default) {
+                logger?.LogInformation("No stored AxisTextBox found in settings. Detecting axis text boxes.");
+
+                var textBox = imageService.GetAxisTextBox(Image, setting.AxisLocation);
+
+                XMaxTextBox = textBox.XMax != default ? new RectangleD(textBox.XMax) : new RectangleD();
+                XMinTextBox = textBox.XMin != default ? new RectangleD(textBox.XMin) : new RectangleD();
+                YMaxTextBox = textBox.YMax != default ? new RectangleD(textBox.YMax) : new RectangleD();
+                YMinTextBox = textBox.YMin != default ? new RectangleD(textBox.YMin) : new RectangleD();
+                XLabelTextBox = textBox.XLabel != default ? new RectangleD(textBox.XLabel) : new RectangleD();
+                YLabelTextBox = textBox.YLabel != default ? new RectangleD(textBox.YLabel) : new RectangleD();
+
+                logger?.LogInformation("Detected axis text boxes: XMaxTextBox: {XMaxTextBox}, XMinTextBox: {XMinTextBox}, YMaxTextBox: {YMaxTextBox}, YMinTextBox: {YMinTextBox}, XLabelTextBox: {XLabelTextBox}, YLabelTextBox: {YLabelTextBox}", XMaxTextBox, XMinTextBox, YMaxTextBox, YMinTextBox, XLabelTextBox, YLabelTextBox);
+
+                Ocr();
             }
             else {
                 XMaxTextBox = setting.AxisTextBox.XMax;
@@ -129,16 +140,23 @@ namespace PlotDigitizer.Core
                 YLabelTextBox = setting.AxisTextBox.YLabel;
                 AxisLimit = setting.AxisLimit;
                 AxisTitle = setting.AxisTitle;
+
+                logger?.LogInformation("Loaded AxisTextBox and other settings from stored values.");
             }
+
             AxisLogBase = setting.AxisLogBase;
         }
 
         public override void Leave()
         {
             base.Leave();
+            logger?.LogInformation("Leaving RangePageViewModel with IsEnabled status: {IsEnabled}", IsEnabled);
+
             if (!IsEnabled) {
+                logger?.LogWarning("RangePageViewModel is not enabled because Model or InputImage is null.");
                 return;
             }
+
             setting.AxisTextBox = new AxisLimitTextBoxD
             {
                 XMax = XMaxTextBox,
@@ -146,43 +164,62 @@ namespace PlotDigitizer.Core
                 YMax = YMaxTextBox,
                 YMin = YMinTextBox,
                 XLabel = XLabelTextBox,
-                YLabel = YLabelTextBox,
+                YLabel = YLabelTextBox
             };
+
             setting.AxisTitle = AxisTitle;
             setting.AxisLimit = AxisLimit;
             setting.AxisLogBase = AxisLogBase;
+
+            logger?.LogInformation("Stored AxisTextBox, AxisTitle, AxisLimit, and AxisLogBase to settings.");
         }
 
         private void Ocr()
         {
-            var roi = imageService.CropImage(Image, XMaxTextBox.ToRectangle());
-            var xMaxText = numericalOcrService.Ocr(roi);
-            if (double.TryParse(xMaxText, out var xMax))
-                XMax = xMax;
+            logger?.LogInformation("Starting OCR on axis text boxes.");
 
-            roi = imageService.CropImage(Image, XMinTextBox.ToRectangle());
-            var xMinText = numericalOcrService.Ocr(roi);
-            if (double.TryParse(xMinText, out var xMin))
-                XMin = xMin;
+            try {
+                var roi = imageService.CropImage(Image, XMaxTextBox.ToRectangle());
+                var xMaxText = numericalOcrService.Ocr(roi);
+                if (double.TryParse(xMaxText, out var xMax)) {
+                    XMax = xMax;
+                    logger?.LogInformation("OCR successful: XMax = {XMax}", XMax);
+                }
 
-            roi = imageService.CropImage(Image, YMaxTextBox.ToRectangle());
-            var yMaxText = numericalOcrService.Ocr(roi);
-            if (double.TryParse(yMaxText, out var yMax))
-                YMax = yMax;
+                roi = imageService.CropImage(Image, XMinTextBox.ToRectangle());
+                var xMinText = numericalOcrService.Ocr(roi);
+                if (double.TryParse(xMinText, out var xMin)) {
+                    XMin = xMin;
+                    logger?.LogInformation("OCR successful: XMin = {XMin}", XMin);
+                }
 
-            roi = imageService.CropImage(Image, YMinTextBox.ToRectangle());
-            var yMinText = numericalOcrService.Ocr(roi);
-            if (double.TryParse(yMinText, out var yMin))
-                YMin = yMin;
+                roi = imageService.CropImage(Image, YMaxTextBox.ToRectangle());
+                var yMaxText = numericalOcrService.Ocr(roi);
+                if (double.TryParse(yMaxText, out var yMax)) {
+                    YMax = yMax;
+                    logger?.LogInformation("OCR successful: YMax = {YMax}", YMax);
+                }
 
-            roi = imageService.CropImage(Image, XLabelTextBox.ToRectangle());
-            XLabel = textOcrService.Ocr(roi).Trim();
+                roi = imageService.CropImage(Image, YMinTextBox.ToRectangle());
+                var yMinText = numericalOcrService.Ocr(roi);
+                if (double.TryParse(yMinText, out var yMin)) {
+                    YMin = yMin;
+                    logger?.LogInformation("OCR successful: YMin = {YMin}", YMin);
+                }
 
-            roi = imageService.CropImage(Image, YLabelTextBox.ToRectangle());
-            roi = imageService.RotateImage(roi, 90);
-            YLabel = textOcrService.Ocr(roi).Trim();
+                roi = imageService.CropImage(Image, XLabelTextBox.ToRectangle());
+                XLabel = textOcrService.Ocr(roi).Trim();
+                logger?.LogInformation("OCR successful: XLabel = {XLabel}", XLabel);
+
+                roi = imageService.CropImage(Image, YLabelTextBox.ToRectangle());
+                roi = imageService.RotateImage(roi, 90);
+                YLabel = textOcrService.Ocr(roi).Trim();
+                logger?.LogInformation("OCR successful: YLabel = {YLabel}", YLabel);
+            }
+            catch (Exception ex) {
+                logger?.LogError(ex, "An error occurred during the OCR process.");
+            }
         }
-
 
         #endregion Methods
     }

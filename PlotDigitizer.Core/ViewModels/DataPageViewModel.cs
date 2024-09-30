@@ -13,16 +13,17 @@ using System.Threading;
 
 namespace PlotDigitizer.Core
 {
-    public enum ExportResults
-    {
-        None,
-        Canceled,
-        Failed,
-        Sucessful,
-    }
 
     public class DataPageViewModel : ViewModelBase
     {
+        enum ExportResults
+        {
+            None,
+            Canceled,
+            Failed,
+            Sucessful,
+        }
+
         #region Fields
 
         private readonly IAwaitTaskService awaitTask;
@@ -84,6 +85,8 @@ namespace PlotDigitizer.Core
             this.awaitTask = awaitTask;
             this.imageService = imageService;
             this.logger = logger;
+
+            logger?.LogInformation("DataPageViewModel initialized with Model and services.");
         }
 
         #endregion Constructors
@@ -93,45 +96,79 @@ namespace PlotDigitizer.Core
         public override void Enter()
         {
             base.Enter();
-            if (!IsEnabled) 
+            logger?.LogInformation("Entered DataPageViewModel with IsEnabled status: {IsEnabled}", IsEnabled);
+
+            if (!IsEnabled) {
+                logger?.LogWarning("DataPageViewModel is not enabled. Model or EdittedImage is null.");
                 return;
+            }
+
             UpdatePreviewImage();
         }
 
         private void UpdatePreviewImage()
         {
-            if (!IsEnabled)
+            logger?.LogInformation("Updating preview image in {MethodName}.", MethodBase.GetCurrentMethod()?.Name);
+
+            if (!IsEnabled) {
+                logger?.LogWarning("UpdatePreviewImage skipped because DataPageViewModel is not enabled.");
                 return;
+            }
 
             Image = Model.EdittedImage.Copy();
-            if (IsDiscrete)
-                imageService.DrawDiscreteMarkers(Image, Model.DataPoints);
-            else if (IsContinuous)
-                imageService.DrawContinuousMarkers(Image, Model.DataPoints);
-            RaisePropertyChanged(nameof(Image));
 
+            try {
+                if (IsDiscrete) {
+                    logger?.LogInformation("Drawing discrete markers on the preview image.");
+                    imageService.DrawDiscreteMarkers(Image, Model.DataPoints);
+                }
+                else if (IsContinuous) {
+                    logger?.LogInformation("Drawing continuous markers on the preview image.");
+                    imageService.DrawContinuousMarkers(Image, Model.DataPoints);
+                }
+            }
+            catch (Exception ex) {
+                logger?.LogError(ex, "Error while drawing markers on the preview image.");
+            }
+
+            RaisePropertyChanged(nameof(Image));
             ExportCommand.RaiseCanExecuteChanged();
-            logger.LogInformation($"{GetType()}.{MethodBase.GetCurrentMethod().Name} completed.");
+            logger?.LogInformation("UpdatePreviewImage completed successfully.");
         }
 
-        private bool CanExport() => Model?.Data?.Count() > 0;
+        private bool CanExport()
+        {
+            var canExport = Model?.Data?.Count() > 0;
+            logger?.LogInformation("CanExport evaluated to {CanExport}.", canExport);
+            return canExport;
+        }
 
         private void Export()
         {
+            logger?.LogInformation("Export operation started.");
+
             var filter = "Comma-separated values file (*.csv) |*.csv|" +
-                "Text file (*.txt) |*.txt|" +
-                "Any (*.*) |*.*";
+                         "Text file (*.txt) |*.txt|" +
+                         "Any (*.*) |*.*";
             var result = fileDialog.SaveFileDialog(filter, "output");
-            if (!result.IsValid)
+
+            if (!result.IsValid) {
+                logger?.LogInformation("Export canceled by user. SaveFileDialog returned invalid result.");
                 return;
+            }
+
+            logger?.LogInformation("User selected file: {FileName}", result.FileName);
 
             TrySave(result.FileName);
 
             async void TrySave(string fileName)
             {
-                var result = await awaitTask.RunAsync((token) =>
+                logger?.LogInformation("Starting async export to {FileName}.", fileName);
+
+                var exportResult = await awaitTask.RunAsync((token) =>
                 {
-                    try {
+                    try
+                    {
                         return Path.GetExtension(fileName).ToLower() switch
                         {
                             ".txt" => SaveAsTXT(token),
@@ -139,26 +176,33 @@ namespace PlotDigitizer.Core
                             _ => throw new FormatException("Output file format is not recognized. Please use either .csv or .txt as file extension."),
                         };
                     }
-                    catch (Exception) {
+                    catch (Exception ex)
+                    {
+                        logger?.LogError(ex, "Error during file export.");
                         return ExportResults.Failed;
                     }
                 });
 
-                switch (result) {
+                logger?.LogInformation("Export completed with result: {ExportResult}", exportResult);
+
+                switch (exportResult) {
                     case ExportResults.Sucessful:
                         messageBox.Show_OK("The data has been exported successfully.", "Notification");
+                        logger?.LogInformation("Data export successful.");
                         break;
 
-                    case ExportResults.Failed: {
-                            var response = messageBox.Show_Warning_OkCancel("Something went wrong... try again?", "Error");
-                            if (response) {
-                                TrySave(fileName);
-                            }
-
-                            break;
+                    case ExportResults.Failed:
+                        logger?.LogWarning("Data export failed.");
+                        var response = messageBox.Show_Warning_OkCancel("Something went wrong... try again?", "Error");
+                        if (response) {
+                            logger?.LogInformation("User chose to retry export.");
+                            TrySave(fileName);
                         }
+                        break;
+
                     case ExportResults.Canceled:
                         messageBox.Show_OK("Export operation has been cancelled.", "Notification");
+                        logger?.LogInformation("Export operation was canceled by the user.");
                         break;
 
                     case ExportResults.None:
@@ -169,33 +213,52 @@ namespace PlotDigitizer.Core
 
                 ExportResults SaveAsCSV(CancellationToken token) => SaveText(",", token);
                 ExportResults SaveAsTXT(CancellationToken token) => SaveText("\t", token);
-                ExportResults SaveText(string seperator, CancellationToken token)
+                ExportResults SaveText(string separator, CancellationToken token)
                 {
-                    var content = new StringBuilder();
-                    var xlabel = !string.IsNullOrWhiteSpace(setting.AxisTitle.XLabel) ?
-                        setting.AxisTitle.XLabel : "X";
-                    var ylabel = !string.IsNullOrWhiteSpace(setting.AxisTitle.YLabel) ? setting.AxisTitle.YLabel : "Y";
-                    content.AppendLine(xlabel + seperator + ylabel);
-                    foreach (var point in Model.Data) {
-                        content.AppendLine(point.X.ToString() + seperator + point.Y.ToString());
-                        if (token.IsCancellationRequested) {
-                            return ExportResults.Canceled;
+                    try {
+                        logger?.LogInformation("Saving data as text using separator: {Separator}", separator);
+
+                        var content = new StringBuilder();
+                        var xlabel = !string.IsNullOrWhiteSpace(setting.AxisTitle.XLabel) ? setting.AxisTitle.XLabel : "X";
+                        var ylabel = !string.IsNullOrWhiteSpace(setting.AxisTitle.YLabel) ? setting.AxisTitle.YLabel : "Y";
+                        content.AppendLine(xlabel + separator + ylabel);
+
+                        foreach (var point in Model.Data) {
+                            content.AppendLine(point.X.ToString() + separator + point.Y.ToString());
+                            if (token.IsCancellationRequested) {
+                                logger?.LogInformation("Export operation canceled during text saving.");
+                                return ExportResults.Canceled;
+                            }
                         }
-                    }
 
-                    using (var fs = File.Open(fileName, FileMode.Create, FileAccess.Write))
-                    using (var sw = new StreamWriter(fs)) {
-                        sw.Write(content.ToString());
-                    }
+                        using (var fs = File.Open(fileName, FileMode.Create, FileAccess.Write))
+                        using (var sw = new StreamWriter(fs)) {
+                            sw.Write(content.ToString());
+                        }
 
-                    return ExportResults.Sucessful;
+                        logger?.LogInformation("Data saved successfully to {FileName}.", fileName);
+                        return ExportResults.Sucessful;
+                    }
+                    catch (Exception ex) {
+                        logger?.LogError(ex, "Error while saving data to file: {FileName}.", fileName);
+                        return ExportResults.Failed;
+                    }
                 }
             }
         }
 
-        private void OnIsContinuousChanged() => UpdatePreviewImage();
+        private void OnIsContinuousChanged()
+        {
+            logger?.LogInformation("IsContinuous property changed.");
+            UpdatePreviewImage();
+        }
 
-        private void OnIsDiscreteChanged() => UpdatePreviewImage();
+        private void OnIsDiscreteChanged()
+        {
+            logger?.LogInformation("IsDiscrete property changed.");
+            UpdatePreviewImage();
+        }
+
 
         #endregion Methods
     }
