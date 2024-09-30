@@ -11,7 +11,7 @@ namespace PlotDigitizer.Core
 		private readonly CroppedImageNode croppedImage;
 		private readonly FilteredImageNode filteredImage;
 		private readonly EdittedImageNode edittedImage;
-		private readonly PreviewImageNode previewImage;
+		private readonly DataPointsNode dataPoints;
 		private readonly DataNode data;
 
 		public override Image<Rgba, byte> InputImage
@@ -38,10 +38,10 @@ namespace PlotDigitizer.Core
 			set => edittedImage.Set(value);
 		}
 
-		public override Image<Rgba, byte> PreviewImage
+		public override IEnumerable<PointD> DataPoints
 		{
-			get => previewImage.Get();
-			set => previewImage.Set(value);
+			get => dataPoints.Get();
+			set => dataPoints.Set(value);
 		}
 
 		public override IEnumerable<PointD> Data
@@ -54,14 +54,14 @@ namespace PlotDigitizer.Core
 			CroppedImageNode croppedImage,
 			FilteredImageNode filteredImage,
 			EdittedImageNode edittedImage,
-			PreviewImageNode previewImage,
+			DataPointsNode previewImage,
 			DataNode data)
 		{
 			this.inputImage = inputImage;
 			this.croppedImage = croppedImage;
 			this.filteredImage = filteredImage;
 			this.edittedImage = edittedImage;
-			this.previewImage = previewImage;
+			this.dataPoints = previewImage;
 			this.data = data;
 
 			inputImage.Updated += (s, e) => RaisePropertyChanged(nameof(InputImage));
@@ -73,8 +73,8 @@ namespace PlotDigitizer.Core
 			filteredImage.Outdated += (s, e) => RaisePropertyOutdated(nameof(FilteredImage));
 			edittedImage.Updated += (s, e) => RaisePropertyChanged(nameof(EdittedImage));
 			edittedImage.Outdated += (s, e) => RaisePropertyOutdated(nameof(EdittedImage));
-			previewImage.Updated += (s, e) => RaisePropertyChanged(nameof(PreviewImage));
-			previewImage.Outdated += (s, e) => RaisePropertyOutdated(nameof(PreviewImage));
+			previewImage.Updated += (s, e) => RaisePropertyChanged(nameof(DataPoints));
+			previewImage.Outdated += (s, e) => RaisePropertyOutdated(nameof(DataPoints));
 			data.Updated += (s, e) => RaisePropertyChanged(nameof(Data));
 			data.Outdated += (s, e) => RaisePropertyOutdated(nameof(Data));
 		}

@@ -420,7 +420,7 @@ namespace PlotDigitizer.Core
                 using Mat rectStructElemY = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new Size(1, 11), new Point(-1, -1));
                 using Mat connectedY = new();
                 CvInvoke.MorphologyEx(bw, connectedY, MorphOp.Close, rectStructElemY, new Point(-1, -1), 1, BorderType.Default, new MCvScalar()); // Join text in close proximity
-                
+
                 // Find contours for text regions
                 using VectorOfVectorOfPoint textContoursY = new();
                 CvInvoke.FindContours(connectedY, textContoursY, null, RetrType.External, ChainApproxMethod.ChainApproxSimple);
@@ -531,8 +531,6 @@ namespace PlotDigitizer.Core
                         continue;
                     }
                     points.Add(new PointD(x, y));
-
-                    CvInvoke.DrawMarker(image, new Point(x, y), new Rgba(255, 0, 0, 255).MCvScalar, MarkerTypes.Cross, 1);
                 }
             }
 
@@ -556,8 +554,6 @@ namespace PlotDigitizer.Core
                     centroid = GetCentroid2(contour);
                 }
                 points.Add(centroid);
-
-                CvInvoke.DrawMarker(image, new Point((int)centroid.X, (int)centroid.Y), new Rgba(255, 0, 0, 255).MCvScalar, MarkerTypes.Cross, 5);
             }
 
             return points;
@@ -586,6 +582,16 @@ namespace PlotDigitizer.Core
                 }
                 return new PointD(sumX / contour.Size, sumY / contour.Size);
             }
+        }
+
+        public void DrawContinuousMarkers(Image<Rgba, byte> image, IEnumerable<PointD> points)
+        {
+            image.DrawMarker(points, new Rgba(255, 0, 0, 255).MCvScalar, MarkerTypes.Cross, 1);
+        }
+
+        public void DrawDiscreteMarkers(Image<Rgba, byte> image, IEnumerable<PointD> points)
+        {
+            image.DrawMarker(points, new Rgba(255, 0, 0, 255).MCvScalar, MarkerTypes.Cross, 5);
         }
 
         public IEnumerable<PointD> TransformData(IEnumerable<PointD> points, Size imageSize, RectangleD axLim, PointD axLogBase)
@@ -680,10 +686,19 @@ namespace PlotDigitizer.Core
             CvInvoke.FillPoly(image, points, new Rgba().MCvScalar);
         }
 
-        public static void DrawImage(this Image<Rgba, byte> image, Point centre, int radius)
+        public static void DrawCircle(this Image<Rgba, byte> image, Point centre, int radius)
         {
             if (image is null) return;
             CvInvoke.Circle(image, centre, radius, new Rgba(0, 0, 0, 255).MCvScalar, -1);
+        }
+
+        public static void DrawMarker(this Image<Rgba, byte> image, IEnumerable<PointD> points, MCvScalar color, MarkerTypes markerType, int markerSize)
+        {
+            foreach (var point in points) {
+                var x = (int)Math.Round(point.X);
+                var y = (int)Math.Round(point.Y);
+                CvInvoke.DrawMarker(image, new Point(x, y), color, markerType, markerSize);
+            }
         }
     }
 }

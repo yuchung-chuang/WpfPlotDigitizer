@@ -17,5 +17,7 @@ namespace PlotDigitizer.Core
 		IEnumerable<PointD> GetDiscretePoints(Image<Rgba, byte> image);
         Image<Rgba, byte> RotateImage(Image<Rgba, byte> image, double angle);
         IEnumerable<PointD> TransformData(IEnumerable<PointD> points, Size imageSize, RectangleD axLim, PointD axLogBase);
-	}
+        void DrawContinuousMarkers(Image<Rgba, byte> image, IEnumerable<PointD> points);
+        void DrawDiscreteMarkers(Image<Rgba, byte> image, IEnumerable<PointD> points);
+    }
 }

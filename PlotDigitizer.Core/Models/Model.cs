@@ -12,7 +12,7 @@ namespace PlotDigitizer.Core
 		public virtual Image<Rgba, byte> CroppedImage { get; set; }
 		public virtual Image<Rgba, byte> FilteredImage { get; set; }
 		public virtual Image<Rgba, byte> EdittedImage { get; set; }
-		public virtual Image<Rgba, byte> PreviewImage { get; set; }
+		public virtual IEnumerable<PointD> DataPoints { get; set; }
 		public virtual IEnumerable<PointD> Data { get; set; }
 
 		public event PropertyChangedEventHandler PropertyChanged;

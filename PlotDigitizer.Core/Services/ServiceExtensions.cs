@@ -28,7 +28,7 @@ namespace PlotDigitizer.Core
 				.AddSingleton<CroppedImageNode>()
 				.AddSingleton<FilteredImageNode>()
 				.AddSingleton<EdittedImageNode>()
-				.AddSingleton<PreviewImageNode>()
+				.AddSingleton<DataPointsNode>()
 				.AddSingleton<DataNode>()
 
 				.AddSingleton<AxisLocationNode>()
