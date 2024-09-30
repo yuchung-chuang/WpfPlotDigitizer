@@ -29,7 +29,7 @@ namespace PlotDigitizer.Core
                 if (!Directory.Exists(path)) {
                     Directory.CreateDirectory(path);
                 }
-                var fullFilePath = Path.Combine(path, DateTime.Now.ToString("yyyy-MM-dd") + "_log.txt");
+                var fullFilePath = Path.Combine(path, DateTime.Now.ToString("yyyy_MM_dd HH_mm_ss") + "_log.txt");
                 var n = Environment.NewLine;
                 var exc = "";
                 if (exception != null)
