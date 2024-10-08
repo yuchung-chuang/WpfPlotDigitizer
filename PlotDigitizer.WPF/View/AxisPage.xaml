@@ -58,7 +58,8 @@
 												BoxRect="{Binding AxisLocation, Mode=TwoWay, Converter={local:RectConverter}}"
 												BoxThickness="10"
 												StrokeThickness="1"
-												IsMoveEnabled="False" />
+												IsMoveEnabled="False"
+												Visibility="{Binding IsEnabled, Converter={local:VisibilityConverter}}"/>
 						</Grid>
 					</ContentControl>
 				</Grid>
