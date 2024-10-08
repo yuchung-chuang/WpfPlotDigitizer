@@ -40,6 +40,11 @@ namespace PlotDigitizer.Core
             var thresholdOtsu = CvInvoke.Threshold(gray, binary, 0, 255, ThresholdType.BinaryInv | ThresholdType.Otsu);
             RectangleD axis = GetAxisLocation(binary);
 
+            if (axis.Width > 0.99 * image.Width || axis.Height > 0.99 * image.Height) {
+                binary.ClearBorder();
+                axis = GetAxisLocation(binary);
+            }
+
             var thresholdManual = 225;
             if ((axis.Width < 0.1 * image.Width || axis.Height < 0.1 * image.Height)
                 && thresholdOtsu < thresholdManual) {
@@ -71,7 +76,6 @@ namespace PlotDigitizer.Core
 
             RectangleD GetAxisLocation(Image<Gray, byte> binary)
             {
-                binary.ClearBorder();
                 var maxRect = GetMaxRect(binary);
 
                 var L = Math.Min(maxRect.Width, maxRect.Height) / 2;
@@ -471,7 +475,7 @@ namespace PlotDigitizer.Core
                 throw new ArgumentNullException(nameof(image));
             if (fixROI(image, roi) is not Rectangle roiFixed)
                 throw new ArgumentException("CropImage operation is aborted because roi does not fit in the image.");
-            
+
             try {
                 return image.Copy(roiFixed);
             }

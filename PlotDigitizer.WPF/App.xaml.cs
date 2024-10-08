@@ -55,12 +55,12 @@ namespace PlotDigitizer.WPF
                     settings.Language = section[nameof(settings.Language)];
                     settings.WhiteList = section[nameof(settings.WhiteList)];
                 })
+                .AddTransient<IImageService, EmguCvService>()
                 .AddTransient<IMessageBoxService, MessageBoxService>()
                 .AddTransient<IFileDialogService, FileDialogService>()
                 .AddTransient<IAwaitTaskService, AwaitTaskService>()
                 .AddTransient<IClipboardService, ClipboardService>()
                 .AddSingleton<IPageService, PageService>()
-                .AddTransient<IImageService, EmguCvService>()
                 .AddTransient<IWindowService, WindowService>()
                 .AddViewModels()
                 .AddModel()

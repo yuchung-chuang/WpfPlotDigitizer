@@ -25,7 +25,7 @@ namespace PlotDigitizer.Core.Tests
 			if (!UriParser.IsKnownScheme("pack"))
 				new System.Windows.Application();
 
-			app = Application.Launch(@"C:\Users\yu-ch\Documents\repo\PlotDigitizer\PlotDigitizer.App\bin\Debug\net7.0-windows\PlotDigitizer.App.exe");
+			app = Application.Launch("PlotDigitizer.exe");
 			app.WaitWhileMainHandleIsMissing();
 			automation = new UIA3Automation();
 		}
@@ -49,7 +49,7 @@ namespace PlotDigitizer.Core.Tests
 		public void NavigationTest()
 		{
 			var mainWindow = app.GetMainWindow(automation);
-			var items = new List<FlaUI.Core.AutomationElements.AutomationElement>
+			var items = new List<AutomationElement>
 			{
 				mainWindow.FindFirstDescendant(cf => cf.ByAutomationId("LoadPageItem")),
 				mainWindow.FindFirstDescendant(cf => cf.ByAutomationId("RangePageItem")),
