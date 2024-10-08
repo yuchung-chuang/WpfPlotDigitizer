@@ -43,7 +43,7 @@ namespace PlotDigitizer.Web.Pages
 			if (image is null) {
 				return Page();
 			}
-			Model.Setting.AxisLocation = imageService.GetAxisLocation(image) ?? new RectangleD(image.Width / 4, image.Height / 4, image.Width / 2, image.Height / 2);
+			Model.Setting.AxisLocation = imageService.GetAxisLocation(image);
 			return Page();
 		}
 

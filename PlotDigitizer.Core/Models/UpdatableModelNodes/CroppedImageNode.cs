@@ -1,6 +1,8 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
 
+#nullable enable
+
 namespace PlotDigitizer.Core
 {
 	public class CroppedImageNode : UpdatableNode<Image<Rgba, byte>>
@@ -25,6 +27,8 @@ namespace PlotDigitizer.Core
 		public override void Update()
 		{
 			if (!inputImage.CheckUpdate() || !axisLocation.CheckUpdate())
+				return;
+			if (inputImage.Value is null)
 				return;
 			Value = imageService.CropImage(inputImage.Value, axisLocation.Value);
 			base.Update();

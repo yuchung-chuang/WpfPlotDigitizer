@@ -111,8 +111,7 @@ namespace PlotDigitizer.Core
             var image = Model.InputImage;
 
             try {
-                AxisLocation = imageService.GetAxisLocation(image) ??
-                    new RectangleD(image.Width / 4, image.Height / 4, image.Width / 2, image.Height / 2);
+                AxisLocation = imageService.GetAxisLocation(image);
 
                 logger?.LogInformation($"Axis location detected successfully: {AxisLocation}");
             }

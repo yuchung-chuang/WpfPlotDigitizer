@@ -119,11 +119,11 @@ namespace PlotDigitizer.Core
             try {
                 if (IsDiscrete) {
                     logger?.LogInformation("Drawing discrete markers on the preview image.");
-                    imageService.DrawDiscreteMarkers(Image, Model.DataPoints);
+                    Image.DrawDiscreteMarkers(Model.DataPoints);
                 }
                 else if (IsContinuous) {
                     logger?.LogInformation("Drawing continuous markers on the preview image.");
-                    imageService.DrawContinuousMarkers(Image, Model.DataPoints);
+                    Image.DrawContinuousMarkers(Model.DataPoints);
                 }
             }
             catch (Exception ex) {

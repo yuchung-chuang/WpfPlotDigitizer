@@ -27,10 +27,10 @@ namespace PlotDigitizer.Core
             this.logger = logger;
         }
 
-        public RectangleD? GetAxisLocation(Image<Rgba, byte> image)
+        public RectangleD GetAxisLocation(Image<Rgba, byte> image)
         {
             if (image is null)
-                return null;
+                throw new ArgumentNullException(nameof(image));
 
             var gray = new Image<Gray, byte>(image.Width, image.Height);
             CvInvoke.CvtColor(image, gray, ColorConversion.Rgba2Gray);
@@ -81,8 +81,8 @@ namespace PlotDigitizer.Core
                 var topRightXY = searchTopRight();
                 var left = topLeftXY?.X ?? bottomLeftXY?.X ?? maxRect.Left;
                 var top = topLeftXY?.Y ?? topRightXY?.Y ?? maxRect.Top;
-                var width = (bottomRightXY?.X ?? topRightXY?.X ?? maxRect.Right) - left + 1;
-                var height = (bottomRightXY?.Y ?? bottomLeftXY?.Y ?? maxRect.Bottom) - top + 1;
+                var width = (bottomRightXY?.X ?? topRightXY?.X ?? maxRect.Right) - left;
+                var height = (bottomRightXY?.Y ?? bottomLeftXY?.Y ?? maxRect.Bottom) - top;
 
                 return new RectangleD(left, top, width, height);
 
@@ -467,16 +467,18 @@ namespace PlotDigitizer.Core
 
         public Image<Rgba, byte> CropImage(Image<Rgba, byte> image, Rectangle roi)
         {
-            if (fixROI(image, roi) is not Rectangle roiFixed) {
-                return image;
-            }
+            if (image is null)
+                throw new ArgumentNullException(nameof(image));
+            if (fixROI(image, roi) is not Rectangle roiFixed)
+                throw new ArgumentException("CropImage operation is aborted because roi does not fit in the image.");
+            
             try {
                 return image.Copy(roiFixed);
             }
             catch (CvException ex) {
                 logger?.LogError(ex.Message);
                 logger?.LogError(ex.ErrorMessage);
-                return image;
+                throw;
             }
 
             static Rectangle? fixROI(Image<Rgba, byte> image, Rectangle roi)
@@ -501,7 +503,7 @@ namespace PlotDigitizer.Core
         public Image<Rgba, byte> FilterRGB(Image<Rgba, byte> image, Rgba min, Rgba max)
         {
             if (image is null)
-                return null;
+                throw new ArgumentNullException(nameof(image));
             var mask = image.InRange(min, max);
             var output = image.Copy();
             output.SetValue(new Rgba(0, 0, 0, 0), mask.Not());
@@ -511,7 +513,7 @@ namespace PlotDigitizer.Core
         public Image<Rgba, byte> ClearBorder(Image<Rgba, byte> image)
         {
             if (image is null)
-                return null;
+                throw new ArgumentNullException(nameof(image));
             var channels = image.Split();
             var alpha = channels[3];
             alpha.ClearBorder();
@@ -521,7 +523,7 @@ namespace PlotDigitizer.Core
         public IEnumerable<PointD> GetContinuousPoints(Image<Rgba, byte> image)
         {
             if (image is null)
-                return null;
+                throw new ArgumentNullException(nameof(image));
             var points = new List<PointD>();
             var width = image.Width;
             var height = image.Height;
@@ -540,7 +542,7 @@ namespace PlotDigitizer.Core
         public IEnumerable<PointD> GetDiscretePoints(Image<Rgba, byte> image)
         {
             if (image is null)
-                return null;
+                throw new ArgumentNullException(nameof(image));
             var points = new List<PointD>();
             var binary = image.InRange(new Rgba(0, 0, 0, 1), new Rgba(255, 255, 255, 255));
             using var contours = new VectorOfVectorOfPoint();
@@ -582,16 +584,6 @@ namespace PlotDigitizer.Core
                 }
                 return new PointD(sumX / contour.Size, sumY / contour.Size);
             }
-        }
-
-        public void DrawContinuousMarkers(Image<Rgba, byte> image, IEnumerable<PointD> points)
-        {
-            image.DrawMarker(points, new Rgba(255, 0, 0, 255).MCvScalar, MarkerTypes.Cross, 1);
-        }
-
-        public void DrawDiscreteMarkers(Image<Rgba, byte> image, IEnumerable<PointD> points)
-        {
-            image.DrawMarker(points, new Rgba(255, 0, 0, 255).MCvScalar, MarkerTypes.Cross, 5);
         }
 
         public IEnumerable<PointD> TransformData(IEnumerable<PointD> points, Size imageSize, RectangleD axLim, PointD axLogBase)
@@ -699,6 +691,16 @@ namespace PlotDigitizer.Core
                 var y = (int)Math.Round(point.Y);
                 CvInvoke.DrawMarker(image, new Point(x, y), color, markerType, markerSize);
             }
+        }
+
+        public static void DrawContinuousMarkers(this Image<Rgba, byte> image, IEnumerable<PointD> points)
+        {
+            image.DrawMarker(points, new Rgba(255, 0, 0, 255).MCvScalar, MarkerTypes.Cross, 1);
+        }
+
+        public static void DrawDiscreteMarkers(this Image<Rgba, byte> image, IEnumerable<PointD> points)
+        {
+            image.DrawMarker(points, new Rgba(255, 0, 0, 255).MCvScalar, MarkerTypes.Cross, 5);
         }
     }
 }

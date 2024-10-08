@@ -1,6 +1,7 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
 
+#nullable enable
 namespace PlotDigitizer.Core
 {
 	public class FilteredImageNode : UpdatableNode<Image<Rgba, byte>>
@@ -32,8 +33,10 @@ namespace PlotDigitizer.Core
 			if (!croppedImage.CheckUpdate() || !filterMin.CheckUpdate() || !filterMax.CheckUpdate()) {
 				return;
 			}
-			Value = imageService.FilterRGB(croppedImage.Value, filterMin.Value, filterMax.Value);
-			base.Update();
+			if (croppedImage.Value is null)
+				return;
+            Value = imageService.FilterRGB(croppedImage.Value, filterMin.Value, filterMax.Value);
+            base.Update();
 		}
 	}
 }
