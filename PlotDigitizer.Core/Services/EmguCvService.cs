@@ -550,7 +550,7 @@ namespace PlotDigitizer.Core
             var points = new List<PointD>();
             var binary = image.InRange(new Rgba(0, 0, 0, 1), new Rgba(255, 255, 255, 255));
             using var contours = new VectorOfVectorOfPoint();
-            CvInvoke.FindContours(binary, contours, null, RetrType.List,
+            CvInvoke.FindContours(binary, contours, null, RetrType.External,
                 ChainApproxMethod.ChainApproxSimple);
             var count = contours.Size;
             for (var i = 0; i < count; i++) {
