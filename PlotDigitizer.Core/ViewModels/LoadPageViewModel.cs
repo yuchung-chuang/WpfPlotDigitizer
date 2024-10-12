@@ -125,6 +125,9 @@ namespace PlotDigitizer.Core
                     .ConfigureAwait(true);
                 SetModelImage(image);
             }
+            else if (e.Type == DropEventArgs.DropType.Image) {
+                SetModelImage(e.Image.ToImage<Rgba,byte>());
+            }
         }
 
         private async void Paste()

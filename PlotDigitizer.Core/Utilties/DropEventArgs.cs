@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 
 namespace PlotDigitizer.Core
 {
@@ -7,11 +8,13 @@ namespace PlotDigitizer.Core
 		public enum DropType
 		{
 			File,
-			Url
-		}
+			Url,
+            Image
+        }
 
 		public DropType Type { get; set; }
 		public string FileName { get; set; }
 		public Uri Url { get; set; }
-	}
+        public Bitmap Image { get; set; }
+    }
 }

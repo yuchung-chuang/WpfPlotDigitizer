@@ -4,6 +4,7 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace PlotDigitizer.WPF
 {
@@ -16,15 +17,22 @@ namespace PlotDigitizer.WPF
 
 			if (e.Data.GetDataPresent(DataFormats.FileDrop)
 				&& File.Exists((e.Data.GetData(DataFormats.FileDrop) as string[])[0])) {
+
 				args.Type = DropEventArgs.DropType.File;
 				args.FileName = (e.Data.GetData(DataFormats.FileDrop) as string[])[0];
+
 			} else if (e.Data.GetDataPresent(DataFormats.Text)
-				  // check if it's valid Uri
-				  && Uri.TryCreate(e.Data.GetData(DataFormats.Text).ToString(), UriKind.Absolute, out var uri)
-				  // check if it's a web uri
-				  && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps)) {
+				&& e.Data.GetData(DataFormats.Text).ToString().ToUri() is Uri uri) {
+
 				args.Type = DropEventArgs.DropType.Url;
 				args.Url = uri;
+
+			} else if (e.Data.GetDataPresent(DataFormats.MetafilePicture)) {
+
+				args.Type = DropEventArgs.DropType.Image;
+				// TODO: lose resolution, why?
+				args.Image = (e.Data.GetData(DataFormats.Bitmap) as BitmapSource).ToBitmap();
+
 			} else {
 				return null;
 			}
