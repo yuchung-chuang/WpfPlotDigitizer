@@ -74,6 +74,7 @@
 				   Content="Detect Axis"
 				   Icon="ScreenSearch24"
 				   ToolTip="Detect axis automatically"
-				   Command="{Binding GetAxisCommand}" />
+				   Command="{Binding GetAxisCommand}"
+				   Appearance="Primary"/>
 	</Grid>
 </UserControl>

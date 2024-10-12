@@ -88,12 +88,13 @@
 					 Grid.Column="0"
 					 Rows="4"
 					 Columns="1"
-					 HorizontalAlignment="Center">
+					 HorizontalAlignment="Center"
+					 Margin="10,0,0,0">
 			<StackPanel Orientation="Vertical"
 						HorizontalAlignment="Left">
 				<Label Content="YLabel" />
 				<TextBox Text="{Binding YLabel, UpdateSourceTrigger=LostFocus}"
-						 Width="90"
+						 MaxWidth="100"
 						 AutomationProperties.AutomationId="YLabel">
 					<i:Interaction.Behaviors>
 						<local:SelectAllTextOnFocusBehavior />
@@ -102,10 +103,13 @@
 				</TextBox>
 			</StackPanel>
 			<local:AxLimTextBox Label="YMax"
+								HorizontalContentAlignment="Left"
 								Text="{Binding YMax, Converter={local:DoubleToStringConverter}}" />
 			<local:AxLimTextBox Label="YLog"
+								HorizontalContentAlignment="Left"
 								Text="{Binding YLog, Converter={local:DoubleToStringConverter}}" />
 			<local:AxLimTextBox Label="YMin"
+								HorizontalContentAlignment="Left"
 								Text="{Binding YMin, Converter={local:DoubleToStringConverter}}" />
 		</UniformGrid>
 		<UniformGrid Grid.Column="1"
@@ -115,16 +119,19 @@
 					 Margin="5"
 					 VerticalAlignment="Center">
 			<local:AxLimTextBox Label="XMin"
+								HorizontalContentAlignment="Center"
 								Text="{Binding XMin, Converter={local:DoubleToStringConverter}}" />
 			<local:AxLimTextBox Label="XLog"
+								HorizontalContentAlignment="Center"
 								Text="{Binding XLog, Converter={local:DoubleToStringConverter}}" />
 			<local:AxLimTextBox Label="XMax"
+								HorizontalContentAlignment="Center"
 								Text="{Binding XMax, Converter={local:DoubleToStringConverter}}" />
 			<StackPanel Orientation="Vertical"
 						HorizontalAlignment="Center">
 				<Label Content="XLabel" />
 				<TextBox Text="{Binding XLabel, UpdateSourceTrigger=LostFocus}" 
-						 Width="100"
+						 MaxWidth="100"
 						 AutomationProperties.AutomationId="XLabel">
 					<i:Interaction.Behaviors>
 						<local:SelectAllTextOnFocusBehavior />
@@ -142,7 +149,8 @@
 				   HorizontalAlignment="Center"
 				   VerticalAlignment="Bottom"
 				   ToolTip="Detect axis range automatically" 
-				   Margin="10,10"/>
+				   Margin="10,10"
+				   Appearance="Primary"/>
 
 	</Grid>
 </UserControl>

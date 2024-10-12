@@ -5,6 +5,7 @@
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:local="clr-namespace:PlotDigitizer.WPF"
 			 xmlns:core="clr-namespace:PlotDigitizer.Core;assembly=PlotDigitizer.Core"
+			 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
 			 mc:Ignorable="d"
 			 d:DesignHeight="450"
 			 d:DesignWidth="800"
@@ -27,34 +28,20 @@
 				</TransformGroup>
 			</Path.RenderTransform>
 		</Path>
-		<Path x:Key="discrete" 
+		<Path x:Key="discrete"
 			  Data="M64 0v960h-64v-1024h1024v64h-960zM320 256c0-35.346-28.654-64-64-64s-64 28.654-64 64c0 35.346 28.654 64 64 64s64-28.654 64-64zM512 576c0-35.346-28.654-64-64-64s-64 28.654-64 64c0 35.346 28.654 64 64 64s64-28.654 64-64zM896 640c0-35.346-28.654-64-64-64s-64 28.654-64 64c0 35.346 28.654 64 64 64s64-28.654 64-64zM704 320c0-35.346-28.654-64-64-64s-64 28.654-64 64c0 35.346 28.654 64 64 64s64-28.654 64-64z"
-						  RenderTransformOrigin="0.5,0.5">
-						<Path.RenderTransform>
-							<TransformGroup>
-								<ScaleTransform ScaleY="-1"
-												ScaleX="1" />
-								<SkewTransform AngleY="0"
-											   AngleX="0" />
-								<RotateTransform Angle="0" />
-								<TranslateTransform />
-							</TransformGroup>
-						</Path.RenderTransform>
-					</Path>
-		<Path x:Key="export" 
-			  Data="M167 112q0 48 7 95t25.5 95t45.5 84t71.5 58.5t100.5 22.5v125q0 17 13.5 29t33.5 12q22 0 37 -15l249 -256q-168 -169 -249 -254q-14 -16 -37 -16q-20 0 -33.5 12t-13.5 29v125q-143 -3 -250 -166v20zM42 -75q-17 0 -29.5 12.5t-12.5 29.5v583q0 17 12.5 29.5t29.5 12.5 h333v-84h-292v-500h500v125q52 54 84 86v-252q0 -17 -12.5 -29.5t-29.5 -12.5h-583z"
-						  RenderTransformOrigin="0.5,0.5">
-						<Path.RenderTransform>
-							<TransformGroup>
-								<ScaleTransform ScaleY="-1"
-												ScaleX="1" />
-								<SkewTransform AngleY="0"
-											   AngleX="0" />
-								<RotateTransform Angle="0" />
-								<TranslateTransform />
-							</TransformGroup>
-						</Path.RenderTransform>
-					</Path>
+			  RenderTransformOrigin="0.5,0.5">
+			<Path.RenderTransform>
+				<TransformGroup>
+					<ScaleTransform ScaleY="-1"
+									ScaleX="1" />
+					<SkewTransform AngleY="0"
+								   AngleX="0" />
+					<RotateTransform Angle="0" />
+					<TranslateTransform />
+				</TransformGroup>
+			</Path.RenderTransform>
+		</Path>
 	</UserControl.Resources>
 	<DockPanel IsEnabled="{Binding IsEnabled}">
 		<StackPanel x:Name="toolbar"
@@ -84,12 +71,26 @@
 						 IsChecked="{Binding IsDiscrete, Mode=TwoWay}"
 						 Content="{StaticResource discrete}" />
 			<Separator Margin="5,0" />
-			<Button x:Name="exportButton"
-					ToolTip="Export"
-					Padding="8,5"
-					Margin="1"
-					Command="{Binding ExportCommand}"
-					Content="{StaticResource export}" />
+			<ui:Button x:Name="exportButton"
+					   Command="{Binding ExportCommand}">
+				<StackPanel Orientation="Horizontal">
+					<Path Data="M167 112q0 48 7 95t25.5 95t45.5 84t71.5 58.5t100.5 22.5v125q0 17 13.5 29t33.5 12q22 0 37 -15l249 -256q-168 -169 -249 -254q-14 -16 -37 -16q-20 0 -33.5 12t-13.5 29v125q-143 -3 -250 -166v20zM42 -75q-17 0 -29.5 12.5t-12.5 29.5v583q0 17 12.5 29.5t29.5 12.5 h333v-84h-292v-500h500v125q52 54 84 86v-252q0 -17 -12.5 -29.5t-29.5 -12.5h-583z"
+						  RenderTransformOrigin="0.5,0.5">
+						<Path.RenderTransform>
+							<TransformGroup>
+								<ScaleTransform ScaleY="-1"
+												ScaleX="1" />
+								<SkewTransform AngleY="0"
+											   AngleX="0" />
+								<RotateTransform Angle="0" />
+								<TranslateTransform />
+							</TransformGroup>
+						</Path.RenderTransform>
+					</Path>
+					<TextBlock Text="Export"
+							   Margin="5,0,0,0" />
+				</StackPanel>
+			</ui:Button>
 		</StackPanel>
 		<Grid>
 			<local:ImageViewer ImageSource="{Binding Image, Converter={local:ImageSourceConverter} }"

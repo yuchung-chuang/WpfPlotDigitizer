@@ -25,11 +25,11 @@
 		</ControlTemplate>
 	</UserControl.Resources>
 	<StackPanel Orientation="Vertical"
-				HorizontalAlignment="Center">
+				HorizontalAlignment="{Binding ElementName=root, Path=HorizontalContentAlignment}">
 		<Label Content="{Binding ElementName=root, Path=Label}"
 			   VerticalAlignment="Center"/>
 		<TextBox x:Name="textBox"
-				 Width="60"
+				 MaxWidth="100"
 				 Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
 				 AutomationProperties.AutomationId="{Binding ElementName=root, Path=Label}">
 			<i:Interaction.Behaviors>
