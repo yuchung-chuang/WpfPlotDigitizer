@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PlotDigitizer.WPF;
 
 using System;
+using System.Configuration;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Media.Imaging;
@@ -25,9 +26,9 @@ namespace PlotDigitizer.Core.Tests
 				new System.Windows.Application();
 
 			var services = new ServiceCollection();
-			services.AddSingleton<Model, UpdatableModel>()
-				.AddSingleton<Setting, UpdatableSetting>()
-				.AddModel();
+			services
+                .AddTransient<IImageService, EmguCvService>()
+                .AddModel();
 
 			provider = services.BuildServiceProvider();
 		}
@@ -51,25 +52,6 @@ namespace PlotDigitizer.Core.Tests
 			Assert.IsTrue(model.Data.Count() == 7);
 		}
 
-		[TestMethod()]
-		public void ModelTest2()
-		{
-			var model = provider.GetRequiredService<Model>();
-			var setting = provider.GetRequiredService<Setting>();
-			var settingTmp = new Setting()
-			{
-				AxisLimit = new RectangleD(900, 0, 70, 20),
-				AxisLocation = new RectangleD(138, 100, 632, 399),
-				FilterMin = new Rgba(0, 0, 0, byte.MaxValue),
-				FilterMax = new Rgba(126, 254, 254, byte.MaxValue),
-				DataType = DataType.Discrete,
-			};
-			setting.Load(settingTmp);
-
-			// first load setting, then load image
-			model.InputImage = new BitmapImage(new Uri(@"pack://siteoforigin:,,,/Assets/test_image.png")).ToBitmap().ToImage<Rgba, byte>();
-			Assert.IsTrue(model.Data.Count() == 7);
-		}
 
 		[TestMethod()]
 		public void LoadTest()

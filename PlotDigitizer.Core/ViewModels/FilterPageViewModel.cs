@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using PropertyChanged;
 using System;
 
+#nullable enable
 namespace PlotDigitizer.Core
 {
     public class FilterPageViewModel : ViewModelBase
@@ -18,7 +19,7 @@ namespace PlotDigitizer.Core
 
         #region Properties
 
-        public Image<Rgba, byte> CroppedImage => Model?.CroppedImage;
+        public Image<Rgba, byte>? CroppedImage => Model?.CroppedImage;
 
         public Rgba FilterMax
         {
@@ -111,6 +112,11 @@ namespace PlotDigitizer.Core
         {
             if (!IsEnabled) {
                 logger?.LogWarning("FilterImage operation aborted because FilterPageViewModel is not enabled.");
+                return;
+            }
+
+            if (CroppedImage is null) {
+                logger?.LogWarning("FilterImage operation is aborted because CroppedImage is null");
                 return;
             }
 

@@ -14,8 +14,8 @@
 	<Grid>
 		<Rectangle Name="selectionBox"
 				   DataContext="{Binding ElementName=root}"
-				   Width="{Binding BoxWidth}"
-				   Height="{Binding BoxHeight}"
+				   Width="{Binding BoxWidth, Converter={StaticResource Math}, ConverterParameter=x+1}"
+				   Height="{Binding BoxHeight, Converter={StaticResource Math}, ConverterParameter=x+1}"
 				   Margin="{Binding BoxMargin}"
 				   HorizontalAlignment="Left"
 				   VerticalAlignment="Top"
