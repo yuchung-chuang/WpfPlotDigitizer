@@ -23,6 +23,7 @@ namespace PlotDigitizer.Core
         private readonly IMessageBoxService messageBox;
         private readonly ILogger<LoadPageViewModel> logger;
         private readonly IPageService pageService;
+        private readonly IDownloadService downloadService;
 
         #endregion Fields
 
@@ -53,7 +54,8 @@ namespace PlotDigitizer.Core
             IClipboardService clipboard,
             IMessageBoxService messageBox,
             ILogger<LoadPageViewModel> logger,
-            IPageService pageService) : this()
+            IPageService pageService,
+            IDownloadService downloadService) : this()
         {
             Model = model;
             this.fileDialogService = fileDialogService;
@@ -62,6 +64,7 @@ namespace PlotDigitizer.Core
             this.messageBox = messageBox;
             this.logger = logger;
             this.pageService = pageService;
+            this.downloadService = downloadService;
         }
 
         #endregion Constructors
@@ -116,58 +119,44 @@ namespace PlotDigitizer.Core
             }
             else if (e.Type == DropEventArgs.DropType.Url) {
                 logger?.LogInformation($"URL dropped: {e.Url}");
-                var image = await awaitTaskService.RunAsync(DownloadImage).ConfigureAwait(true);
+                var image = await awaitTaskService
+                    .RunAsync(token =>
+                        downloadService.DownloadImageAsync(e.Url, token))
+                    .ConfigureAwait(true);
                 SetModelImage(image);
-            }
-
-            async Task<Image<Rgba, byte>> DownloadImage(CancellationToken token)
-            {
-                var filePath = Path.GetTempFileName();
-                try {
-                    logger?.LogDebug($"Starting download of image from URL: {e.Url}");
-
-                    using var httpClient = new HttpClient();
-                    var request = new HttpRequestMessage(HttpMethod.Get, e.Url);
-                    var assembly = Assembly.GetExecutingAssembly().GetName();
-                    request.Headers.UserAgent.Add(new ProductInfoHeaderValue(assembly.Name, assembly.Version.ToString()));
-                    request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
-
-                    var response = await httpClient.SendAsync(request);
-                    response.EnsureSuccessStatusCode();
-                    var stream = await response.Content.ReadAsStreamAsync();
-
-                    logger?.LogInformation($"Successfully downloaded image from URL: {e.Url}");
-                    return (Image.FromStream(stream) as Bitmap).ToImage<Rgba, byte>();
-                }
-                catch (Exception ex) {
-                    logger?.LogError(ex, "Error occurred while downloading image from URL: {e.Url}");
-                    messageBox.Show_OK(ex.Message, "Warning");
-                    return null;
-                }
-                finally {
-                    File.Delete(filePath);
-                    logger?.LogDebug($"Temporary file deleted: {filePath}");
-                }
             }
         }
 
-        private void Paste()
+        private async void Paste()
         {
             logger?.LogInformation($"Paste command invoked.");
 
             if (clipboard.ContainsImage()) {
                 logger?.LogInformation($"Image found in clipboard.");
                 SetModelImage(clipboard.GetImage());
+                return;
             }
-            else if (clipboard.ContainsFileDropList()) {
+            
+            if (clipboard.ContainsFileDropList()) {
                 var filePath = clipboard.GetFileDropList()[0];
                 logger?.LogInformation($"File found in clipboard: {filePath}");
                 SetModelImage(new Image<Rgba, byte>(filePath));
+                return;
             }
-            else {
-                logger?.LogWarning($"Clipboard does not contain a valid image or file.");
-                messageBox.Show_OK("Clipboard does not contain image.", "Warning");
+            
+            if (clipboard.ContainsText()) {
+                var text = clipboard.GetText();
+                var uri = text.ToUri();
+                if (uri != null) {
+                    var image = await awaitTaskService.RunAsync(token =>
+                        downloadService.DownloadImageAsync(uri, token)).ConfigureAwait(true);
+                    SetModelImage(image);
+                    return;
+                }
             }
+
+            logger?.LogWarning($"Clipboard does not contain a valid image or file.");
+            messageBox.Show_OK("Clipboard does not contain image.", "Warning");
         }
 
         public void OnFilePathChanged()

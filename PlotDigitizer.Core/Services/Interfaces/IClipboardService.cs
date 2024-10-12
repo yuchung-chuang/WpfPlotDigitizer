@@ -10,9 +10,10 @@ namespace PlotDigitizer.Core
 		bool ContainsFileDropList();
 
 		bool ContainsImage();
-
-		StringCollection GetFileDropList();
+        bool ContainsText();
+        StringCollection GetFileDropList();
 
 		Image<Rgba, byte> GetImage();
-	}
+        string GetText();
+    }
 }
