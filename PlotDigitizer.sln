@@ -16,11 +16,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EA0AD2E-C847-455F-8FD2-11811D133A02}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		LICENSE = LICENSE
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "PlotDigitizer.Setup", "PlotDigitizer.Setup\PlotDigitizer.Setup.vdproj", "{53D3AD27-83E9-46A8-B9A0-0A018208C307}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfAppTemplate1", "WpfAppTemplate1\WpfAppTemplate1.csproj", "{7934597E-8734-43A8-87A7-140BA055DDF9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfAppTemplate1", "WpfAppTemplate1\WpfAppTemplate1.csproj", "{7934597E-8734-43A8-87A7-140BA055DDF9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
