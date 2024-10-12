@@ -120,6 +120,7 @@ Legacy Windows (XP, 7, 8) requires .NET 8.0 runtime installed.
 ## Tech
 
 PlotDigitizer uses a number of open source projects:
+
 <img src="https://wpfui.lepo.co/images/wpfui.png" alt="WPF-UI Icon" width="50" /> <img src="https://avatars2.githubusercontent.com/u/2035816?s=460&v=4" alt="EmguCV Icon" width="50"/> <img src="https://avatars3.githubusercontent.com/u/3250496?s=200&v=4" alt="Fody Icon" width="50"/> 
 
 ## Author : C. Y. C.
