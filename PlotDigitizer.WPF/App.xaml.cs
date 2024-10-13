@@ -24,9 +24,6 @@ namespace PlotDigitizer.WPF
         {
             base.OnStartup(e);
 
-            // Log startup event
-            logger?.LogDebug("Application OnStartup called.");
-
             SetupExceptionHandling();
 
             // Build Configuration
@@ -34,8 +31,6 @@ namespace PlotDigitizer.WPF
                 .SetBasePath(Directory.GetCurrentDirectory())   // Set the base path to the current directory
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true) // Load appsettings.json
                 .Build();
-
-            logger?.LogInformation("Configuration loaded.");
 
             var services = new ServiceCollection()
                 .AddSingleton(configuration)
@@ -134,9 +129,6 @@ namespace PlotDigitizer.WPF
 
         private void SetupExceptionHandling()
         {
-            // Log that exception handling is being set up
-            logger?.LogDebug("Setting up global exception handling.");
-
             AppDomain.CurrentDomain.UnhandledException += (s, e) =>
                 LogUnhandledException((Exception)e.ExceptionObject, "AppDomain.CurrentDomain.UnhandledException");
 
@@ -152,7 +144,6 @@ namespace PlotDigitizer.WPF
                 e.SetObserved();
             };
 
-            logger?.LogInformation("Global exception handling setup complete.");
         }
 
         private void LogUnhandledException(Exception exception, string source)
