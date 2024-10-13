@@ -44,6 +44,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
         "Release"
@@ -63,7 +71,7 @@
         "InstallerBootstrapper" = "3:2"
             "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
             {
-            "Enabled" = "11:TRUE"
+            "Enabled" = "11:FALSE"
             "PromptEnabled" = "11:TRUE"
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
@@ -165,7 +173,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:PlotDigitizer"
         "ProductCode" = "8:{DA04A499-478C-40AA-AB61-8EC44BADA262}"
-        "PackageCode" = "8:{D0AD073E-4230-416C-B730-B8A49454FC6B}"
+        "PackageCode" = "8:{D4E8CC5A-0AA9-42F4-8C65-73232B3C234D}"
         "UpgradeCode" = "8:{DBD35D14-332F-4540-9DF9-54BF6CA9A833}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
@@ -240,6 +248,62 @@
                     "Transitive" = "11:FALSE"
                         "Keys"
                         {
+                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_97DA1F42A08B42408422C0D085F325C0"
+                            {
+                            "Name" = "8:Microsoft"
+                            "Condition" = "8:"
+                            "AlwaysCreate" = "11:FALSE"
+                            "DeleteAtUninstall" = "11:FALSE"
+                            "Transitive" = "11:FALSE"
+                                "Keys"
+                                {
+                                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_1A3963CCAF5C4FE890F97640EDA89FDB"
+                                    {
+                                    "Name" = "8:Windows"
+                                    "Condition" = "8:"
+                                    "AlwaysCreate" = "11:FALSE"
+                                    "DeleteAtUninstall" = "11:FALSE"
+                                    "Transitive" = "11:FALSE"
+                                        "Keys"
+                                        {
+                                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_C1B9A9686F234B06A0E21790225E4237"
+                                            {
+                                            "Name" = "8:CurrentVersion"
+                                            "Condition" = "8:"
+                                            "AlwaysCreate" = "11:FALSE"
+                                            "DeleteAtUninstall" = "11:FALSE"
+                                            "Transitive" = "11:FALSE"
+                                                "Keys"
+                                                {
+                                                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_37B6F8FD032D4A93BFDBDA80EDA57598"
+                                                    {
+                                                    "Name" = "8:Run"
+                                                    "Condition" = "8:"
+                                                    "AlwaysCreate" = "11:FALSE"
+                                                    "DeleteAtUninstall" = "11:FALSE"
+                                                    "Transitive" = "11:FALSE"
+                                                        "Keys"
+                                                        {
+                                                        }
+                                                        "Values"
+                                                        {
+                                                        }
+                                                    }
+                                                }
+                                                "Values"
+                                                {
+                                                }
+                                            }
+                                        }
+                                        "Values"
+                                        {
+                                        }
+                                    }
+                                }
+                                "Values"
+                                {
+                                }
+                            }
                             "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_CD2FC034723742738CB17CD517204E5A"
                             {
                             "Name" = "8:[Manufacturer]"
@@ -714,7 +778,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_96D0E9CEF6A94262B3CB9BD0349EE9F5"
             {
-            "SourcePath" = "8:..\\PlotDigitizer.App\\obj\\Release\\net7.0-windows\\apphost.exe"
+            "SourcePath" = "8:..\\PlotDigitizer.WPF\\obj\\Debug\\net8.0-windows\\apphost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_13DF40612C5E412993E3BC50573BFE2C"

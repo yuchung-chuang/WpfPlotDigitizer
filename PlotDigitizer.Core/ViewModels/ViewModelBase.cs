@@ -7,7 +7,6 @@ namespace PlotDigitizer.Core
 		public event PropertyChangedEventHandler PropertyChanged;
 		public string Name { get; set; }
 
-		// TODO: revise: use On or Raise?
 		protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
 		public void RaisePropertyChanged(string propertyName) => OnPropertyChanged(propertyName);
