@@ -16,38 +16,38 @@ namespace PlotDigitizer.Core
 
 		public override Image<Rgba, byte> InputImage
 		{
-			get => inputImage.Get();
-			set => inputImage.Set(value);
+			get => inputImage.GetUpdatedData();
+			set => inputImage.Data = value;
 		}
 
 		public override Image<Rgba, byte> CroppedImage
 		{
-			get => croppedImage.Get();
-			set => croppedImage.Set(value);
+			get => croppedImage.GetUpdatedData();
+			set => croppedImage.Data = value;
 		}
 
 		public override Image<Rgba, byte> FilteredImage
 		{
-			get => filteredImage.Get();
-			set => filteredImage.Set(value);
+			get => filteredImage.GetUpdatedData();
+			set => filteredImage.Data = value;
 		}
 
 		public override Image<Rgba, byte> EdittedImage
 		{
-			get => edittedImage.Get();
-			set => edittedImage.Set(value);
+			get => edittedImage.GetUpdatedData();
+			set => edittedImage.Data = value;
 		}
 
 		public override IEnumerable<PointD> DataPoints
 		{
-			get => dataPoints.Get();
-			set => dataPoints.Set(value);
+			get => dataPoints.GetUpdatedData();
+			set => dataPoints.Data = value;
 		}
 
 		public override IEnumerable<PointD> Data
 		{
-			get => data.Get();
-			set => data.Set(value);
+			get => data.GetUpdatedData();
+			set => data.Data = value;
 		}
 
 		public UpdatableModel(InputImageNode inputImage,

@@ -30,10 +30,7 @@ namespace PlotDigitizer.Core
 		{
 			if (!IsAllDependenciesUpdated())
 				return;
-
 			Data = getPointsMethods[dataType.Data](edittedImage.Data);
-            
-			OnUpdated();
 		}
 	}
 }

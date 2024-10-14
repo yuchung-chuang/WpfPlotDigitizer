@@ -50,43 +50,43 @@ namespace PlotDigitizer.Core
 
         public override RectangleD AxisLocation
         {
-            get => axisLocation.Get();
-            set => axisLocation.Set(value);
+            get => axisLocation.GetUpdatedData();
+            set => axisLocation.Data = value;
         }
         public override AxisLimitTextBoxD AxisTextBox
         {
-            get => axisTextBox.Get();
-            set => axisTextBox.Set(value);
+            get => axisTextBox.GetUpdatedData();
+            set => axisTextBox.Data = value;
         }
         public override RectangleD AxisLimit
         {
-            get => axisLimit.Get();
-            set => axisLimit.Set(value);
+            get => axisLimit.GetUpdatedData();
+            set => axisLimit.Data = value;
         }
         public override AxisTitle AxisTitle
         {
-            get => axisTitle.Get();
-            set => axisTitle.Set(value);
+            get => axisTitle.GetUpdatedData();
+            set => axisTitle.Data = value;
         }
         public override PointD AxisLogBase
         {
-            get => axisLogBase.Get();
-            set => axisLogBase.Set(value);
+            get => axisLogBase.GetUpdatedData();
+            set => axisLogBase.Data = value;
         }
         public override Rgba FilterMin
         {
-            get => filterMin.Get();
-            set => filterMin.Set(value);
+            get => filterMin.GetUpdatedData();
+            set => filterMin.Data = value;
         }
         public override Rgba FilterMax
         {
-            get => filterMax.Get();
-            set => filterMax.Set(value);
+            get => filterMax.GetUpdatedData();
+            set => filterMax.Data = value;
         }
         public override DataType DataType
         {
-            get => dataType.Get();
-            set => dataType.Set(value);
+            get => dataType.GetUpdatedData();
+            set => dataType.Data = value;
         }
     }
 }

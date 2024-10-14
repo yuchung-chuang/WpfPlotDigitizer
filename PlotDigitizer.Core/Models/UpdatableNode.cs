@@ -54,9 +54,6 @@ namespace PlotDigitizer.Core
             Outdated?.Invoke(this, EventArgs.Empty); // broadcast the update to every dependent nodes
         }
 
-        /// <summary>
-        /// should be called at the end of every <see cref="Update"/> method.
-        /// </summary>
         protected void OnUpdated()
         {
             IsUpdated = true;
@@ -71,21 +68,27 @@ namespace PlotDigitizer.Core
     /// The node triggers the <see cref="Updated"/> event when the data is changed via the 
     /// <see cref="Set(TData)"/> method. 
     /// 
-    /// When the data is accessed through <see cref="Get()"/>, the node ensures it is updated by checking
+    /// When the data is accessed through <see cref="GetUpdatedData()"/>, the node ensures it is updated by checking
     /// whether it is updated.
     /// </summary>
     /// <typeparam name="TData">The type of the data that this node holds.</typeparam>
     public abstract class UpdatableNode<TData> : UpdatableNode
 	{
-        public TData Data { get; set; }
+        private TData data;
 
-        public void Set(TData data)
-		{
-			Data = data;
-			OnUpdated();
-		}
+        /// <summary>
+        /// Setter calls <see cref="UpdatableNode.OnUpdated"/>. Getter does not call <see cref="UpdatableNode.CheckUpdate"/>. Use <see cref="GetUpdatedData"/> to guarantee it is updated.
+        /// </summary>
+        public TData Data
+        {
+            get => data; 
+            set {
+                data = value;
+                OnUpdated();
+            }
+        }
 
-		public TData Get()
+		public TData GetUpdatedData()
 		{
 			CheckUpdate();
 			return Data;

@@ -29,7 +29,6 @@ namespace PlotDigitizer.Core
 			if (inputImage.Data is null)
 				return;
 			Data = imageService.CropImage(inputImage.Data, axisLocation.Data);
-			OnUpdated();
 		}
 
 	}

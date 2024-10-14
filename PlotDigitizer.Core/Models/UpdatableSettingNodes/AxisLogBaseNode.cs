@@ -13,7 +13,6 @@
 			if (!IsAllDependenciesUpdated())
 				return;
 			Data = default;
-			OnUpdated();
 		}
 	}
 }

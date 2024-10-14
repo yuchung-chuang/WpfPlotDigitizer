@@ -31,7 +31,6 @@ namespace PlotDigitizer.Core
 			if (!IsAllDependenciesUpdated())
 				return;
 			Data = dataPoints.Data is null ? null : imageService.TransformData(dataPoints.Data, edittedImage.Data.Size, axisLimit.Data, axisLogBase.Data);
-			OnUpdated();
 		}
 	}
 }

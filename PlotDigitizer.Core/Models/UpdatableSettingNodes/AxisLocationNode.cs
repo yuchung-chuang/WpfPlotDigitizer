@@ -13,7 +13,6 @@
 				return;
 			}
 			Data = default;
-			OnUpdated();
 		}
 	}
 }

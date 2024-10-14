@@ -12,7 +12,6 @@
 			if (!IsAllDependenciesUpdated()) 
 				return;
 			Data = DataType.Continuous;
-			OnUpdated();
 		}
 	}
 }

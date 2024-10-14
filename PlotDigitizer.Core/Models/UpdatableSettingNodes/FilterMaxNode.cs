@@ -16,7 +16,6 @@ namespace PlotDigitizer.Core
 			if (!IsAllDependenciesUpdated()) 
 				return;
 			Data = new Rgba(byte.MaxValue - 1, byte.MaxValue - 1, byte.MaxValue - 1, byte.MaxValue);
-			OnUpdated();
 		}
 	}
 }

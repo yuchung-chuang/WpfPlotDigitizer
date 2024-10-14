@@ -33,8 +33,6 @@ namespace PlotDigitizer.Core
 			if (croppedImage.Data is null)
 				return;
             Data = imageService.FilterRGB(croppedImage.Data, filterMin.Data, filterMax.Data);
-            
-			OnUpdated();
 		}
 	}
 }

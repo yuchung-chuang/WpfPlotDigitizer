@@ -18,7 +18,6 @@ namespace PlotDigitizer.Core
 			if (!IsAllDependenciesUpdated())
 				return;
 			Data = filteredImage.Data?.Copy();
-			OnUpdated();
 		}
 	}
 }
