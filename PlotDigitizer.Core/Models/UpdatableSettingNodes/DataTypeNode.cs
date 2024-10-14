@@ -2,21 +2,17 @@
 {
 	public class DataTypeNode : UpdatableNode<DataType>
 	{
-		private readonly InputImageNode inputImage;
-
 		public DataTypeNode(InputImageNode inputImage)
 		{
-			this.inputImage = inputImage;
-			inputImage.Updated += (s, e) => OnOutdated();
-			inputImage.Outdated += (s, e) => OnOutdated();
+			DependsOn(inputImage);
         }
 
-		public override void Update()
+		protected override void Update()
 		{
-			if (!inputImage.CheckUpdate()) 
+			if (!IsAllDependenciesUpdated()) 
 				return;
-			Value = DataType.Continuous;
-			base.Update();
+			Data = DataType.Continuous;
+			OnUpdated();
 		}
 	}
 }

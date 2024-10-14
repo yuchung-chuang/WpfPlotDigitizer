@@ -2,21 +2,17 @@
 {
     public class AxisTextBoxNode : UpdatableNode<AxisLimitTextBoxD>
     {
-        private readonly AxisLocationNode axisLocation;
-
         public AxisTextBoxNode(AxisLocationNode axisLocation)
         {
-            this.axisLocation = axisLocation;
-            axisLocation.Updated += (s, e) => OnOutdated();
-            axisLocation.Outdated += (s, e) => OnOutdated();
+            DependsOn(axisLocation);
         }
 
-        public override void Update()
+        protected override void Update()
         {
-            if (!axisLocation.CheckUpdate())
+            if (!IsAllDependenciesUpdated())
                 return;
-            Value = default;
-            base.OnUpdated();
+            Data = default;
+            OnUpdated();
         }
     }
     

@@ -2,22 +2,18 @@
 {
     public abstract class DependOnAxisTextBoxNode<TData> : UpdatableNode<TData>
     {
-        private readonly AxisTextBoxNode axisTextBox;
-
         public DependOnAxisTextBoxNode(AxisTextBoxNode axisTextBox)
         {
-            this.axisTextBox = axisTextBox;
-            axisTextBox.Updated += (s, e) => OnOutdated();
-            axisTextBox.Outdated += (s, e) => OnOutdated();
+            DependsOn(axisTextBox);
         }
 
-        public override void Update()
+        protected override void Update()
         {
-            if (!axisTextBox.CheckUpdate()) {
+            if (!IsAllDependenciesUpdated()) {
                 return;
             }
-            Value = default;
-            base.Update();
+            Data = default;
+            OnUpdated();
         }
     }
 }

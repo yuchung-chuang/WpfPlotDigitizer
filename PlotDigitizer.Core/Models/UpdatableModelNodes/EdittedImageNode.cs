@@ -10,16 +10,15 @@ namespace PlotDigitizer.Core
 		public EdittedImageNode(FilteredImageNode filteredImage)
 		{
 			this.filteredImage = filteredImage;
-			filteredImage.Updated += (s, e) => OnOutdated();
-			filteredImage.Outdated += (s, e) => OnOutdated();
+			DependsOn(filteredImage);
 		}
 
-		public override void Update()
+		protected override void Update()
 		{
-			if (!filteredImage.CheckUpdate())
+			if (!IsAllDependenciesUpdated())
 				return;
-			Value = filteredImage.Value?.Copy();
-			base.Update();
+			Data = filteredImage.Data?.Copy();
+			OnUpdated();
 		}
 	}
 }

@@ -54,29 +54,28 @@ namespace PlotDigitizer.Core
 			CroppedImageNode croppedImage,
 			FilteredImageNode filteredImage,
 			EdittedImageNode edittedImage,
-			DataPointsNode previewImage,
+			DataPointsNode dataPoints,
 			DataNode data)
-		{
-			this.inputImage = inputImage;
-			this.croppedImage = croppedImage;
-			this.filteredImage = filteredImage;
-			this.edittedImage = edittedImage;
-			this.dataPoints = previewImage;
-			this.data = data;
+        {
+            this.inputImage = inputImage;
+            this.croppedImage = croppedImage;
+            this.filteredImage = filteredImage;
+            this.edittedImage = edittedImage;
+            this.dataPoints = dataPoints;
+            this.data = data;
 
-			inputImage.Updated += (s, e) => RaisePropertyChanged(nameof(InputImage));
-			inputImage.Outdated += (s, e) => RaisePropertyOutdated(nameof(InputImage));
-			croppedImage.Updated += (s, e) => RaisePropertyChanged(nameof(CroppedImage));
-			croppedImage.Outdated += (s, e) => RaisePropertyOutdated(nameof(CroppedImage));
-			// the initialisation of EditService depends on the update of filteredImage!
-			filteredImage.Updated += (s, e) => RaisePropertyChanged(nameof(FilteredImage));
-			filteredImage.Outdated += (s, e) => RaisePropertyOutdated(nameof(FilteredImage));
-			edittedImage.Updated += (s, e) => RaisePropertyChanged(nameof(EdittedImage));
-			edittedImage.Outdated += (s, e) => RaisePropertyOutdated(nameof(EdittedImage));
-			previewImage.Updated += (s, e) => RaisePropertyChanged(nameof(DataPoints));
-			previewImage.Outdated += (s, e) => RaisePropertyOutdated(nameof(DataPoints));
-			data.Updated += (s, e) => RaisePropertyChanged(nameof(Data));
-			data.Outdated += (s, e) => RaisePropertyOutdated(nameof(Data));
-		}
-	}
+            RelayEvents(inputImage, nameof(InputImage));
+			RelayEvents(croppedImage, nameof(CroppedImage));
+			RelayEvents(filteredImage, nameof(FilteredImage));
+			RelayEvents(edittedImage, nameof(EdittedImage));
+			RelayEvents(dataPoints, nameof(DataPoints));
+			RelayEvents(data, nameof(Data));
+        }
+
+        private void RelayEvents(UpdatableNode node, string propertyName)
+        {
+            node.Updated += (s, e) => OnPropertyChanged(propertyName);
+            node.Outdated += (s, e) => OnPropertyOutdated(propertyName);
+        }
+    }
 }

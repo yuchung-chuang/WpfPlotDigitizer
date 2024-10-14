@@ -15,7 +15,7 @@ namespace PlotDigitizer.Core
 
         public UpdatableSetting(
             AxisLocationNode axisLocation,
-            AxisTextBoxNode axisLimitTextBox,
+            AxisTextBoxNode axisTextBox,
             AxisLimitNode axisLimit,
             AxisTitleNode axisTitle,
             AxisLogBaseNode axisLogBase,
@@ -24,7 +24,7 @@ namespace PlotDigitizer.Core
             DataTypeNode dataType)
         {
             this.axisLocation = axisLocation;
-            this.axisTextBox = axisLimitTextBox;
+            this.axisTextBox = axisTextBox;
             this.axisLimit = axisLimit;
             this.axisTitle = axisTitle;
             this.axisLogBase = axisLogBase;
@@ -32,23 +32,20 @@ namespace PlotDigitizer.Core
             this.filterMax = filterMax;
             this.dataType = dataType;
 
-            axisLocation.Updated += (s, e) => RaisePropertyChanged(nameof(AxisLocation));
-            axisLimitTextBox.Updated += (s, e) => RaisePropertyChanged(nameof(AxisTextBox));
-            axisLimit.Updated += (s, e) => RaisePropertyChanged(nameof(AxisLimit));
-            axisTitle.Updated += (s, e) => RaisePropertyChanged(nameof(AxisTitle));
-            axisLogBase.Updated += (s, e) => RaisePropertyChanged(nameof(AxisLogBase));
-            filterMin.Updated += (s, e) => RaisePropertyChanged(nameof(FilterMin));
-            filterMax.Updated += (s, e) => RaisePropertyChanged(nameof(FilterMax));
-            dataType.Updated += (s, e) => RaisePropertyChanged(nameof(DataType));
+            RelayEvents(axisLocation, nameof(AxisLocation));
+            RelayEvents(axisTextBox, nameof(AxisTextBox));
+            RelayEvents(axisLimit, nameof(AxisLimit));
+            RelayEvents(axisTitle, nameof(AxisTitle));
+            RelayEvents(axisLogBase, nameof(AxisLogBase));
+            RelayEvents(filterMin, nameof(FilterMin));
+            RelayEvents(filterMax, nameof(FilterMax));
+            RelayEvents(dataType, nameof(DataType));
+        }
 
-            axisLocation.Outdated += (s, e) => RaisePropertyOutdated(nameof(AxisLocation));
-            axisLimitTextBox.Outdated += (s, e) => RaisePropertyChanged(nameof(AxisTextBox));
-            axisLimit.Outdated += (s, e) => RaisePropertyOutdated(nameof(AxisLimit));
-            axisTitle.Outdated += (s, e) => RaisePropertyChanged(nameof(AxisTitle));
-            axisLogBase.Outdated += (s, e) => RaisePropertyOutdated(nameof(AxisLogBase));
-            filterMin.Outdated += (s, e) => RaisePropertyOutdated(nameof(FilterMin));
-            filterMax.Outdated += (s, e) => RaisePropertyOutdated(nameof(FilterMax));
-            dataType.Outdated += (s, e) => RaisePropertyOutdated(nameof(DataType));
+        private void RelayEvents(UpdatableNode node, string propertyName)
+        {
+            node.Updated += (s, e) => OnPropertyChanged(propertyName);
+            node.Outdated += (s, e) => OnPropertyOutdated(propertyName);
         }
 
         public override RectangleD AxisLocation

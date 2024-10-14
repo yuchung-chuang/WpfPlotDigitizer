@@ -18,8 +18,8 @@ namespace PlotDigitizer.Core
 		public event PropertyChangedEventHandler PropertyChanged;
 		public event EventHandler<string> PropertyOutdated;
 
-		public void RaisePropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-		public void RaisePropertyOutdated(string propertyName) => PropertyOutdated?.Invoke(this, propertyName);
+		protected virtual void OnPropertyOutdated(string propertyName) => PropertyOutdated?.Invoke(this, propertyName);
 	}
 }

@@ -2,22 +2,18 @@
 {
 	public class AxisLogBaseNode : UpdatableNode<PointD>
 	{
-		private readonly InputImageNode inputImage;
-
 		public AxisLogBaseNode(InputImageNode inputImage)
 		{
-			this.inputImage = inputImage;
-			inputImage.Updated += (s, e) => OnOutdated();
-			inputImage.Outdated += (s, e) => OnOutdated();
+			DependsOn(inputImage);
             IsUpdated = true;
-		}
+        }
 
-		public override void Update()
+		protected override void Update()
 		{
-			if (!inputImage.CheckUpdate())
+			if (!IsAllDependenciesUpdated())
 				return;
-			Value = default;
-			base.Update();
+			Data = default;
+			OnUpdated();
 		}
 	}
 }

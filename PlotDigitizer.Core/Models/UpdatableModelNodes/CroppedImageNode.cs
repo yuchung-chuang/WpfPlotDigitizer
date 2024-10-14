@@ -18,20 +18,18 @@ namespace PlotDigitizer.Core
 			this.inputImage = inputImage;
 			this.axisLocation = axisLocation;
 			this.imageService = imageService;
-			inputImage.Updated += (s, e) => OnOutdated();
-			inputImage.Outdated += (s, e) => OnOutdated();
-			axisLocation.Updated += (s, e) => OnOutdated();
-			axisLocation.Outdated += (s, e) => OnOutdated();
+			DependsOn(inputImage);
+			DependsOn(axisLocation);
 		}
 
-		public override void Update()
+		protected override void Update()
 		{
-			if (!inputImage.CheckUpdate() || !axisLocation.CheckUpdate())
+			if (!IsAllDependenciesUpdated())
 				return;
-			if (inputImage.Value is null)
+			if (inputImage.Data is null)
 				return;
-			Value = imageService.CropImage(inputImage.Value, axisLocation.Value);
-			base.Update();
+			Data = imageService.CropImage(inputImage.Data, axisLocation.Data);
+			OnUpdated();
 		}
 
 	}

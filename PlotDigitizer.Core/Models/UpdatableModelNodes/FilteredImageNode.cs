@@ -20,23 +20,21 @@ namespace PlotDigitizer.Core
 			this.filterMin = filterMin;
 			this.filterMax = filterMax;
 			this.imageService = imageService;
-			croppedImage.Updated += (s, e) => OnOutdated();
-			croppedImage.Outdated += (s, e) => OnOutdated();
-			filterMin.Updated += (s, e) => OnOutdated();
-			filterMin.Outdated += (s, e) => OnOutdated();
-			filterMax.Updated += (s, e) => OnOutdated();
-			filterMax.Outdated += (s, e) => OnOutdated();
+			DependsOn(croppedImage);
+			DependsOn(filterMin);
+			DependsOn(filterMax);
 		}
 
-		public override void Update()
+		protected override void Update()
 		{
-			if (!croppedImage.CheckUpdate() || !filterMin.CheckUpdate() || !filterMax.CheckUpdate()) {
+			if (!IsAllDependenciesUpdated()) {
 				return;
 			}
-			if (croppedImage.Value is null)
+			if (croppedImage.Data is null)
 				return;
-            Value = imageService.FilterRGB(croppedImage.Value, filterMin.Value, filterMax.Value);
-            base.Update();
+            Data = imageService.FilterRGB(croppedImage.Data, filterMin.Data, filterMax.Data);
+            
+			OnUpdated();
 		}
 	}
 }

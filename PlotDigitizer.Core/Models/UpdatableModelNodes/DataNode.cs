@@ -21,20 +21,17 @@ namespace PlotDigitizer.Core
 			this.axisLogBase = axisLogBase;
 			this.dataPoints = dataPoints;
 			this.imageService = imageService;
-			dataPoints.Updated += (s, e) => OnOutdated();
-			dataPoints.Outdated += (s, e) => OnOutdated();
-			axisLimit.Updated += (s, e) => OnOutdated();
-			axisLimit.Outdated += (s, e) => OnOutdated();
-			axisLogBase.Updated += (s, e) => OnOutdated();
-			axisLogBase.Outdated += (s, e) => OnOutdated();
+			DependsOn(dataPoints);
+			DependsOn(axisLimit);
+			DependsOn(axisLogBase);
 		}
 
-		public override void Update()
+		protected override void Update()
 		{
-			if (!dataPoints.CheckUpdate() || !axisLimit.CheckUpdate() || !axisLogBase.CheckUpdate())
+			if (!IsAllDependenciesUpdated())
 				return;
-			Value = dataPoints.Value is null ? null : imageService.TransformData(dataPoints.Value, edittedImage.Value.Size, axisLimit.Value, axisLogBase.Value);
-			base.Update();
+			Data = dataPoints.Data is null ? null : imageService.TransformData(dataPoints.Data, edittedImage.Data.Size, axisLimit.Data, axisLogBase.Data);
+			OnUpdated();
 		}
 	}
 }

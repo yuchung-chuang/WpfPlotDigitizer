@@ -2,22 +2,18 @@
 {
     public class AxisLocationNode : UpdatableNode<RectangleD>
 	{
-		private readonly InputImageNode inputImage;
-
 		public AxisLocationNode(InputImageNode inputImage)
         {
-			this.inputImage = inputImage;
-			inputImage.Updated += (s, e) => OnOutdated();
-			inputImage.Outdated += (s, e) => OnOutdated();
+			DependsOn(inputImage);
         }
 
-		public override void Update()
+		protected override void Update()
 		{
-			if (!inputImage.CheckUpdate()) {
+			if (!IsAllDependenciesUpdated()) {
 				return;
 			}
-			Value = default;
-			base.Update();
+			Data = default;
+			OnUpdated();
 		}
 	}
 }

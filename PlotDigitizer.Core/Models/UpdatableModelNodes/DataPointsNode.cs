@@ -18,24 +18,22 @@ namespace PlotDigitizer.Core
 		{
 			this.edittedImage = edittedImage;
 			this.dataType = dataType;
-			edittedImage.Updated += (s, e) => OnOutdated();
-			edittedImage.Outdated += (s, e) => OnOutdated();
-			dataType.Updated += (s, e) => OnOutdated();
-			dataType.Outdated += (s, e) => OnOutdated();
+			DependsOn(edittedImage);
+			DependsOn(dataType);
 
 			getPointsMethods = [];
 			getPointsMethods.Add(DataType.Discrete, imageService.GetDiscretePoints);
 			getPointsMethods.Add(DataType.Continuous, imageService.GetContinuousPoints);
 		}
 
-		public override void Update()
+		protected override void Update()
 		{
-			if (!edittedImage.CheckUpdate() || !dataType.CheckUpdate())
+			if (!IsAllDependenciesUpdated())
 				return;
 
-			Value = getPointsMethods[dataType.Value](edittedImage.Value);
+			Data = getPointsMethods[dataType.Data](edittedImage.Data);
             
-			base.Update();
+			OnUpdated();
 		}
 	}
 }
