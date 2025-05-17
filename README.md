@@ -17,22 +17,6 @@ A simple, powerful application that helps you digitize data from images.
 
 ## Features
 
-* **Load images with ease**
-
-	Support multiple image loading methods, including:
-	* Browse 
-	* Copy & paste 
-	* Drag & drop
-
-	Support multiple image sources, including:
-	* local image file
-	* image metadata (from clipboard or microsoft office) 
-	* online image (download from the image's Url address)
-
-	<p align="center"> 
-	<img src="https://github.com/yuchung-chuang/WpfPlotDigitizer/blob/v2/demoResources/load%20page.png?raw=true" alt="Load Image" width="400" />
-	</p>
-
 * **Auto detect chart axes**
 
 	The program is able to detect the chart axes from the image automatically.
@@ -93,11 +77,7 @@ A simple, powerful application that helps you digitize data from images.
 	<img src="https://github.com/yuchung-chuang/WpfPlotDigitizer/blob/v2/demoResources/discrete%20data.png?raw=true" alt="Adjust Data" width="400"/>
 	</p>
 
-*  **Multiple export types**
-
-	Supports export to a .csv or .txt file. The .csv file can be converted to .xlsx file by Excel.
-  
-* **Good UX design**
+* **Modern UX design**
 
 	* Modern user interface
 
@@ -105,7 +85,26 @@ A simple, powerful application that helps you digitize data from images.
 
 	* Simple work flow
 
-  
+* **Load images with ease**
+
+	Support multiple image loading methods, including:
+	* Browse 
+	* Copy & paste 
+	* Drag & drop
+
+	Support multiple image sources, including:
+	* local image file
+	* image metadata (from clipboard or microsoft office) 
+	* online image (download from the image's Url address)
+
+	<p align="center"> 
+	<img src="https://github.com/yuchung-chuang/WpfPlotDigitizer/blob/v2/demoResources/load%20page.png?raw=true" alt="Load Image" width="400" />
+	</p>
+
+*  **Multiple export types**
+
+	Supports export to a .csv or .txt file. The .csv file can be converted to .xlsx file by Excel.
+    
 ## Install
 
 Windows installer can be found in [releases page](https://github.com/alex1392/WpfPlotDigitizer/releases).
