@@ -1,5 +1,9 @@
 # PlotDigitizer 
 
+<p align="center"> 
+  <img src="https://raw.githubusercontent.com/alex1392/WpfPlotDigitizer/master/WpfPlotDigitizer/app/resources/icon_digitizer.ico" alt="icon" width="200"/> 
+</p>
+
 A simple, powerful application that helps you digitize data from images.
 
 ![releases](https://img.shields.io/badge/release-v2.0-blue) 
@@ -11,9 +15,19 @@ A simple, powerful application that helps you digitize data from images.
 
 ![license](https://img.shields.io/badge/license-MIT-blue)
 
+## Install
+
+Windows installers and portable versions (single .exe file) can be found in [releases page](https://github.com/alex1392/WpfPlotDigitizer/releases). Legacy Windows (XP, 7, 8) requires .NET 8.0 runtime installed.
+
+Web version is under development.
+
+## Use cases
+
 <p align="center"> 
-  <img src="https://raw.githubusercontent.com/alex1392/WpfPlotDigitizer/master/WpfPlotDigitizer/app/resources/icon_digitizer.ico" alt="icon" width="200"/> 
+<img src="https://github.com/yuchung-chuang/PlotDigitizer/blob/v2/demoResources/schematics.png?raw=true" alt="Plot Digitizer Schematics" width="800" />
 </p>
+
+The data in journal articles or conference papers are usually published in the form of images, which creates a barrier for people who want to perform further statistical analysis. This application, Plot Digitizer, helps you extract data from any chart with ease, and includes advanced features such as OCR, editing, and filtering.
 
 ## Features
 
@@ -105,17 +119,6 @@ A simple, powerful application that helps you digitize data from images.
 
 	Supports export to a .csv or .txt file. The .csv file can be converted to .xlsx file by Excel.
     
-## Install
-
-Windows installer can be found in [releases page](https://github.com/alex1392/WpfPlotDigitizer/releases).
-Portable version (no need to install, just an .exe file) is also provided.
-
-## Supported Environments
-
-Windows 10, 11
-
-Legacy Windows (XP, 7, 8) requires .NET 8.0 runtime installed.
-
 ## Tech
 
 PlotDigitizer uses a number of open source projects:
