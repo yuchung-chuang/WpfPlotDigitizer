@@ -17,7 +17,7 @@ using System.Threading;
 namespace PlotDigitizer.Core.Tests
 {
     [TestClass()]
-    public class MethodsTests
+    public class ImageServiceTests
     {
         private EmguCvService imageService;
         private Application app;
@@ -43,8 +43,8 @@ namespace PlotDigitizer.Core.Tests
             var image = new BitmapImage(new Uri(@"pack://siteoforigin:,,,/" + uriString, UriKind.Absolute)).ToBitmap().ToImage<Rgba, byte>();
             var axis = imageService.GetAxisLocation(image);
             image.Draw(axis.ToRectangle(), new Rgba(0, 0, 255, 255));
-            CvInvoke.Imshow("", image);
-            CvInvoke.WaitKey();
+            //CvInvoke.Imshow("", image);
+            //CvInvoke.WaitKey();
             Assert.AreEqual(new RectangleD(x, y, width, height), axis);
         }
 
