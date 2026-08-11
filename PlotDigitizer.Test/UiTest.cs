@@ -11,7 +11,7 @@ using FlaUI.Core.WindowsAPI;
 using System.Diagnostics;
 using FlaUI.Core.AutomationElements;
 
-namespace PlotDigitizer.Core.Tests
+namespace PlotDigitizer.Core.UItests
 {
 	[TestClass()]
 	public class UiTest

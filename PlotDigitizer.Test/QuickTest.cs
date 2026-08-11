@@ -2,7 +2,7 @@
 
 using System.IO;
 
-namespace PlotDigitizer.Core.Test
+namespace PlotDigitizer.Core.Tests
 {
 	[TestClass()]
 	public class QuickTest
