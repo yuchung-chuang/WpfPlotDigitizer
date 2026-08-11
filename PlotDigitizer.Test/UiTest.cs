@@ -14,6 +14,7 @@ using FlaUI.Core.AutomationElements;
 namespace PlotDigitizer.Core.UItests
 {
 	[TestClass()]
+	[TestCategory("UI")]
 	public class UiTest
 	{
 		private Application app;
