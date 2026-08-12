@@ -36,10 +36,8 @@ namespace PlotDigitizer.CLI
 			var rootCommand = ConfigureCommand();
 
 			var services = new ServiceCollection()
-					.AddSingleton<Model, UpdatableModel>()
-					.AddSingleton<Setting, UpdatableSetting>()
-					.AddViewModels()
-					.AddModel()
+				.AddTransient<IImageService, ImageService>()
+				.AddModel()
 				
 				.AddLogging(builder =>
 				{
@@ -49,7 +47,6 @@ namespace PlotDigitizer.CLI
 				});
 			serviceProvider = services.BuildServiceProvider();
 
-			
 			logger = serviceProvider.GetRequiredService<ILogger<Program>>();
 			logger.LogInformation("Application started.");
 

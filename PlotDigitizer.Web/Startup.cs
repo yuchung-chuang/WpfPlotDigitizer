@@ -26,7 +26,9 @@ namespace PlotDigitizer.Web
 			services.AddRazorPages().AddRazorRuntimeCompilation();
 
 			services.AddModel()
-				.AddSingleton<Models.Model>();
+				.AddSingleton<Models.Model>()
+				.AddSingleton<IPageService, PageService>()
+				.AddTransient<IImageService, ImageService>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
