@@ -339,6 +339,4 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 
-TestApp/
 *.dgml
-/WpfAppTemplate1/WpfAppTemplate1.csproj
