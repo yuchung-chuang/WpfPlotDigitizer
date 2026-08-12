@@ -1,33 +1,66 @@
 ﻿@page "{handler?}"
 @model PlotDigitizer.Web.Pages.LoadPageModel
 @{
-	ViewData["Title"] = "LoadPage";
+	ViewData["Title"] = "Load";
 }
-@*@section scripts{
-	<script>
-		$(() => {
-			$('#submit').on('click', (evt) => {
-				evt.preventDefault();
-				$.ajax({
-					url: '',
-					data: new FormData(document.forms[0]),
-					contentType: false,
-					processData: false,
-					type: 'post',
-					success: () => {
-						$('#image').load('/LoadPage/Image');
-					}
-				});
-			});
-		});
-	</script>
-}*@
-<h1>LoadPage</h1>
+@section Scripts {
+	<script src="~/js/loadPage.js" asp-append-version="true"></script>
+}
 
-<div id="image"></div>
+<h1 class="h3">Load an image</h1>
+<p class="text-muted">
+	Upload a file, paste an image from the clipboard with Ctrl+V, drop one onto the box below, or
+	give the address of an image.
+</p>
 
-<form method="post" enctype="multipart/form-data">
-	<input type="file" asp-for="UploadedFile" />
-	<input type="submit" id="submit" />
-</form>
+<div asp-validation-summary="All" class="alert alert-warning" role="alert"
+	 hidden="@(Model.ErrorMessage is null)"></div>
 
+<div class="row g-4">
+	<div class="col-lg-6">
+		<form method="post" asp-page-handler="Upload" enctype="multipart/form-data" id="upload-form">
+			<div id="drop-zone" class="drop-zone mb-3">
+				<p class="mb-1">Drop an image here, or paste with Ctrl+V</p>
+				<p class="small mb-0">PNG, JPEG, BMP, GIF or TIFF</p>
+			</div>
+			<div class="mb-3">
+				<label class="form-label" asp-for="UploadedFile"></label>
+				<input class="form-control" type="file" accept="image/*" asp-for="UploadedFile" />
+			</div>
+			<button class="btn btn-primary" type="submit">Upload</button>
+		</form>
+
+		<form method="post" asp-page-handler="Paste" id="paste-form" class="d-none">
+			<input type="hidden" asp-for="PastedImage" id="pasted-image" />
+		</form>
+
+		<hr />
+
+		<form method="post" asp-page-handler="Address">
+			<div class="mb-3">
+				<label class="form-label" asp-for="ImageAddress"></label>
+				<input class="form-control" type="url" asp-for="ImageAddress"
+					   placeholder="https://example.com/plot.png" />
+				<div class="form-text">Must point directly at the image, not at a page containing it.</div>
+			</div>
+			<button class="btn btn-outline-primary" type="submit">Fetch</button>
+		</form>
+	</div>
+
+	<div class="col-lg-6">
+		<h2 class="h5">Current image</h2>
+		<div id="view">
+			<partial name="_LoadPageView" model="Model.Model" />
+		</div>
+
+		@if (Model.Model.InputImage is not null)
+		{
+			<div class="d-flex gap-2 mt-3">
+				<a class="btn btn-primary" asp-page="@Model.NextStep.PageName">Next: @Model.NextStep.Title</a>
+				<form method="post" asp-page-handler="Reset">
+					<button class="btn btn-outline-secondary" type="submit">Start over</button>
+				</form>
+			</div>
+		}
+	</div>
+</div>

@@ -1,13 +1,49 @@
 ﻿@page "{handler?}"
 @model PlotDigitizer.Web.Pages.EditPageModel
 @{
-	ViewData["Title"] = "EditPage";
+	ViewData["Title"] = "Edit";
 }
-@section scripts{ 
-	<script>
-		$('#view').load('/EditPage/View');
-	</script>
+@section Scripts {
+	<script src="~/js/editPage.js" asp-append-version="true"></script>
 }
 
-<h1>@ViewData["Title"]</h1>
-<div id="view"></div>
+<h1 class="h3">Clean up the series</h1>
+<p class="text-muted">
+	Erase gridlines, legends and anything else the colour filter could not remove. Draw with the
+	pencil to reconnect a broken curve. With a selection tool, drag a region and press
+	<kbd>Delete</kbd> to erase it; double click to close a polygon.
+</p>
+
+<div class="btn-toolbar editor-toolbar flex-wrap gap-2 mb-3" role="toolbar">
+	<div class="btn-group" role="group" aria-label="Editing tool">
+		<input type="radio" class="btn-check" name="editor-tool" id="tool-none" value="none" checked />
+		<label class="btn btn-outline-secondary btn-sm" for="tool-none">Pan</label>
+
+		<input type="radio" class="btn-check" name="editor-tool" id="tool-pencil" value="pencil" />
+		<label class="btn btn-outline-secondary btn-sm" for="tool-pencil">Pencil</label>
+
+		<input type="radio" class="btn-check" name="editor-tool" id="tool-eraser" value="eraser" />
+		<label class="btn btn-outline-secondary btn-sm" for="tool-eraser">Eraser</label>
+
+		<input type="radio" class="btn-check" name="editor-tool" id="tool-rect" value="rect" />
+		<label class="btn btn-outline-secondary btn-sm" for="tool-rect">Rectangle</label>
+
+		<input type="radio" class="btn-check" name="editor-tool" id="tool-poly" value="poly" />
+		<label class="btn btn-outline-secondary btn-sm" for="tool-poly">Polygon</label>
+	</div>
+
+	<button class="btn btn-outline-secondary btn-sm" type="button" data-editor-action="ClearBorder">
+		Clear border
+	</button>
+
+	<span class="editor-status align-self-center" id="editor-message"></span>
+</div>
+
+<div id="view">
+	<partial name="_EditPageView" model="Model" />
+</div>
+
+<form method="post" class="d-flex gap-2 mt-3">
+	<a class="btn btn-outline-secondary" asp-page="@Model.PreviousStep.PageName">Back</a>
+	<button class="btn btn-primary" type="submit">Next: @Model.NextStep.Title</button>
+</form>

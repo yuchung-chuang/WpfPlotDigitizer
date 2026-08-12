@@ -1,0 +1,61 @@
+﻿@model PlotDigitizer.Web.Pages.DataPageModel
+@{
+	var image = Model.Model.EdittedImage;
+	var token = System.DateTime.UtcNow.Ticks;
+	var preview = Model.Data.Take(200).ToList();
+	string N(double value) => double.IsNaN(value)
+		? "NaN"
+		: value.ToString("G6", System.Globalization.CultureInfo.InvariantCulture);
+}
+
+<div class="row g-4">
+	<div class="col-xl-7">
+		@if (image is null)
+		{
+			<p class="text-muted">Nothing to preview yet.</p>
+		}
+		else
+		{
+			<div class="image-canvas" style="width: @(Model.Model.DisplayWidth)px;">
+				<img src="/image/preview?v=@token" alt="Extracted points" />
+			</div>
+		}
+	</div>
+
+	<div class="col-xl-5">
+		<p class="mb-2"><strong>@Model.Data.Count</strong> points extracted.</p>
+
+		@if (Model.Data.Count == 0)
+		{
+			<p class="text-muted">
+				No points were found. Go back and widen the colour filter, or switch the data type.
+			</p>
+		}
+		else
+		{
+			<div class="data-table-wrapper border rounded">
+				<table class="table table-sm table-striped mb-0">
+					<thead class="sticky-top bg-white">
+						<tr>
+							<th scope="col">@(string.IsNullOrWhiteSpace(Model.Setting.AxisTitle.XLabel) ? "X" : Model.Setting.AxisTitle.XLabel)</th>
+							<th scope="col">@(string.IsNullOrWhiteSpace(Model.Setting.AxisTitle.YLabel) ? "Y" : Model.Setting.AxisTitle.YLabel)</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var point in preview)
+						{
+							<tr>
+								<td>@N(point.X)</td>
+								<td>@N(point.Y)</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
+			@if (Model.Data.Count > preview.Count)
+			{
+				<p class="editor-status mt-1">Showing the first @preview.Count points; the export contains all @Model.Data.Count.</p>
+			}
+		}
+	</div>
+</div>

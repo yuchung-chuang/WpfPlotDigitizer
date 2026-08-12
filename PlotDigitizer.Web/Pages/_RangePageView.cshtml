@@ -1,0 +1,34 @@
+﻿@model PlotDigitizer.Web.Pages.RangePageModel
+@{
+	var image = Model.Model.InputImage;
+	var boxes = new[]
+	{
+		(Name: "XMinBox", Caption: "X min", Box: Model.XMinBox, IsLabel: false),
+		(Name: "XMaxBox", Caption: "X max", Box: Model.XMaxBox, IsLabel: false),
+		(Name: "YMinBox", Caption: "Y min", Box: Model.YMinBox, IsLabel: false),
+		(Name: "YMaxBox", Caption: "Y max", Box: Model.YMaxBox, IsLabel: false),
+		(Name: "XLabelBox", Caption: "X label", Box: Model.XLabelBox, IsLabel: true),
+		(Name: "YLabelBox", Caption: "Y label", Box: Model.YLabelBox, IsLabel: true),
+	};
+	string N(double value) => value.ToString(System.Globalization.CultureInfo.InvariantCulture);
+}
+<div class="image-canvas" id="range-canvas"
+	 style="width: @(Model.Model.DisplayWidth)px;"
+	 data-image-width="@image.Width"
+	 data-image-height="@image.Height">
+	<img src="@Model.Model.InputImageUrl" alt="Plot" />
+	@foreach (var box in boxes)
+	{
+		var rect = box.Box ?? new PlotDigitizer.Web.Models.RectangleInput();
+		var width = rect.Width < 1 ? image.Width / 10d : rect.Width;
+		var height = rect.Height < 1 ? image.Height / 20d : rect.Height;
+		<div class="selection-box @(box.IsLabel ? "selection-box-label" : null)"
+			 data-target="@box.Name"
+			 data-x="@N(rect.X)"
+			 data-y="@N(rect.Y)"
+			 data-width="@N(width)"
+			 data-height="@N(height)">
+			<span class="selection-caption">@box.Caption</span>
+		</div>
+	}
+</div>

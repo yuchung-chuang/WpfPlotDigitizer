@@ -3,44 +3,35 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>@ViewData["Title"] - PlotDigitizer.Web</title>
+	<title>@ViewData["Title"] - PlotDigitizer</title>
 	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-	<link rel="stylesheet" href="~/css/site.css" />
 	<link rel="stylesheet" href="~/nouislider/nouislider.min.css" />
-	@RenderSection("Styles", false)
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	@await RenderSectionAsync("Styles", false)
 </head>
 <body>
 	<header>
-		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+		<nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
 			<div class="container">
-				<a class="navbar-brand" asp-area="" asp-page="/Index">PlotDigitizer.Web</a>
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-						aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-				<div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-					<ul class="navbar-nav flex-grow-1">
-						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-page="LoadPage">Load Page</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-page="AxisLimitPage">AxisLimitPage</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-page="AxisPage">AxisPage</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-page="FilterPage">FilterPage</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-page="EditPage">EditPage</a>
-						</li>
-					</ul>
+				<a class="navbar-brand" asp-area="" asp-page="/Index">
+					<img src="~/assets/icon_digitizer.png" alt="" width="24" height="24" class="align-text-bottom" />
+					PlotDigitizer
+				</a>
+				<div class="ms-auto">
+					<a class="nav-link text-dark d-inline-block" asp-area="" asp-page="/LoadPage">Start digitizing</a>
 				</div>
 			</div>
 		</nav>
 	</header>
-	<div class="container">
+
+	<div class="container page-content">
+		<partial name="_StepNavigation" />
+
+		@if (TempData["StepBlocked"] is string blocked)
+		{
+			<div class="alert alert-warning" role="alert">@blocked</div>
+		}
+
 		<main role="main" class="pb-3">
 			@RenderBody()
 		</main>
@@ -48,14 +39,16 @@
 
 	<footer class="border-top footer text-muted">
 		<div class="container">
-			&copy; 2022 - PlotDigitizer.Web - <a asp-area="" asp-page="/Privacy">Privacy</a>
+			&copy; @DateTime.Now.Year - PlotDigitizer - <a asp-area="" asp-page="/Privacy">Privacy</a>
 		</div>
 	</footer>
+
+	@Html.AntiForgeryToken()
 
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="~/js/site.js" asp-append-version="true"></script>
 
-	@RenderSection("Scripts", required: false)
+	@await RenderSectionAsync("Scripts", false)
 </body>
 </html>

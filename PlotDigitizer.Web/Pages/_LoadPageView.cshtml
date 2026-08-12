@@ -1,4 +1,19 @@
-﻿@model string
+﻿@model PlotDigitizer.Web.Models.Model
 @{
-	<img src="@Model" width="200" height="200" />
+	var imageUrl = Model.InputImageUrl;
+}
+@if (imageUrl is null)
+{
+	<p class="text-muted mb-0">No image loaded yet.</p>
+}
+else
+{
+	<figure class="mb-0">
+		<div class="image-canvas" style="width: @(Model.DisplayWidth)px;">
+			<img src="@imageUrl" alt="Loaded plot" />
+		</div>
+		<figcaption class="text-muted small mt-1">
+			@Model.InputImage.Width &times; @Model.InputImage.Height pixels
+		</figcaption>
+	</figure>
 }
