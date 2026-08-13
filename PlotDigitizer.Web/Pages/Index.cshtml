@@ -1,44 +1,31 @@
-﻿@page  "{handler?}"
+﻿@page
 @model IndexModel
 @{
-	ViewData["Title"] = "Home page";
-}
-@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
-@functions{
-	public string GetAntiXsrfRequestToken()
-	{
-		return Xsrf.GetAndStoreTokens(Model.HttpContext).RequestToken;
-	}
-}
-@section scripts{
-	<script>
-		$(() => {
-			$('#test').on('click', (evt) => {
-				evt.preventDefault();
-				$.post({
-					url: '',
-					headers:
-					{
-						"RequestVerificationToken": '@GetAntiXsrfRequestToken()'
-					}
-				});
-			});
-		});
-	</script>
+	ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-	<h1 id="title">@Model.Message</h1>
-	@*<form method="post">
-			<input type="submit" value="Click to post" />
-		</form>
-		<form method="post" asp-page-handler="type1">
-			<input type="submit" value="Click to post - type1" />
-		</form>
-		<form method="post" asp-page-handler="type2">
-			<input type="submit" value="Click to post - type2" />
-		</form>
-		<a asp-page="LoadPage">To Load Page</a>*@
-	<button id="test" value="value">content</button>
-	@Html.AntiForgeryToken()
+<div class="px-4 py-5 text-center">
+	<img src="~/assets/icon_digitizer.png" alt="" width="72" height="72" class="mb-3" />
+	<h1 class="display-6">Digitize a plot</h1>
+	<p class="lead col-lg-8 mx-auto">
+		Recover the numbers behind a published chart. Upload a plot image, mark the axes and their
+		range, isolate the data series by colour, clean up the result, then export the points as
+		CSV.
+	</p>
+	<a class="btn btn-primary btn-lg" asp-page="/LoadPage">Get started</a>
+</div>
+
+<div class="row g-4 col-lg-10 mx-auto">
+	<div class="col-md-4">
+		<h2 class="h5">1. Load and frame</h2>
+		<p>Upload, paste or link an image, then drag a box around the plotting area.</p>
+	</div>
+	<div class="col-md-4">
+		<h2 class="h5">2. Calibrate</h2>
+		<p>Enter the axis range, or let the built in OCR read the tick labels for you.</p>
+	</div>
+	<div class="col-md-4">
+		<h2 class="h5">3. Extract</h2>
+		<p>Filter the series by colour, erase artefacts, and export the digitized points.</p>
+	</div>
 </div>

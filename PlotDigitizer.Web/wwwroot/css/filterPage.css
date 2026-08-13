@@ -1,21 +1,17 @@
-#filterR,
+﻿#filterR,
 #filterG,
 #filterB {
-	margin: 50px;
+	margin: 2.5rem 1rem 1rem;
 }
 
 #filterR .noUi-connect {
-	background: red;
+	background: #dc3545;
 }
 
 #filterG .noUi-connect {
-	background: green;
+	background: #198754;
 }
 
 #filterB .noUi-connect {
-	background: blue;
-}
-
-.checker {
-	fill: #eee;
+	background: #0d6efd;
 }

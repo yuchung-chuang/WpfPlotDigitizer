@@ -1,38 +1,36 @@
 ﻿@page "{handler?}"
 @model PlotDigitizer.Web.Pages.AxisPageModel
 @{
-	ViewData["Title"] = "AxisPage";
-	var rescale = Model.Model.InputImage.Width / Model.Model.DisplayWidth;
+	ViewData["Title"] = "Axis";
 }
-@section scripts{
-	<script src="https://unpkg.com/interactjs/dist/interact.min.js"></script>
-	<script>
-		$('#view').load('/AxisPage/View');
-		$('#submit').click(() => {
-			var svg = document.getElementById('svg'),
-				axis = document.getElementById('axis'),
-				rectSvg = svg.getBoundingClientRect(),
-				rectAxis = axis.getBoundingClientRect(),
-				x = parseInt((rectAxis.left - rectSvg.left) * @rescale ?? 0),
-				y = parseInt((rectAxis.top - rectSvg.top  ) * @rescale ?? 0),
-				width = parseInt(rectAxis.width * @rescale ?? 0),
-				height = parseInt(rectAxis.height * @rescale ?? 0);
-			$('#x').val(x);
-			$('#y').val(y);
-			$('#width').val(width);
-			$('#height').val(height);
-		});
-	</script>
+@section Scripts {
+	<script src="~/lib/interactjs/interact.min.js"></script>
+	<script src="~/js/selectionBox.js" asp-append-version="true"></script>
+	<script src="~/js/axisPage.js" asp-append-version="true"></script>
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1 class="h3">Mark the plot area</h1>
+<p class="text-muted">
+	Drag and resize the red box so it covers exactly the area bounded by the axes. Everything
+	outside it is discarded.
+</p>
 
-<div id="view"></div>
+<div asp-validation-summary="ModelOnly" class="alert alert-warning" role="alert"></div>
 
-<form method="post" novalidate>
-	<input id="x" name="x" type="number" class="d-none" />
-	<input id="y" name="y" type="number" class="d-none" />
-	<input id="width" name="width" type="number" class="d-none" />
-	<input id="height" name="height" type="number" class="d-none" />
-	<input id="submit" type="submit" />
+<div id="view">
+	<partial name="_AxisPageView" model="Model.Model" />
+</div>
+
+<form method="post" class="mt-3" id="axis-form">
+	<input type="hidden" name="x" id="axis-x" />
+	<input type="hidden" name="y" id="axis-y" />
+	<input type="hidden" name="width" id="axis-width" />
+	<input type="hidden" name="height" id="axis-height" />
+
+	<div class="d-flex gap-2 align-items-center">
+		<a class="btn btn-outline-secondary" asp-page="@Model.PreviousStep.PageName">Back</a>
+		<button class="btn btn-outline-primary" type="button" id="detect-axis">Detect automatically</button>
+		<button class="btn btn-primary" type="submit">Next: @Model.NextStep.Title</button>
+		<span class="editor-status ms-2" id="axis-readout"></span>
+	</div>
 </form>

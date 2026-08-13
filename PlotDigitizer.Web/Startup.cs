@@ -1,51 +1,98 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-using PlotDigitizer.Core;
-using PlotDigitizer.Web.Models;
+using PlotDigitizer.Web.Services;
 
-using Westwind.AspNetCore.LiveReload;
+using System;
 
 namespace PlotDigitizer.Web
 {
 	public class Startup
 	{
-		public Startup(IConfiguration configuration)
+		/// <summary>
+		/// Written on every request so that the session cookie, and therefore the session id used
+		/// to key digitization state, is stable for the caller.
+		/// </summary>
+		private const string SessionMarkerKey = "plotdigitizer";
+
+		private readonly IWebHostEnvironment environment;
+
+		public Startup(IConfiguration configuration, IWebHostEnvironment environment)
 		{
 			Configuration = configuration;
+			this.environment = environment;
 		}
 
 		public IConfiguration Configuration { get; }
 
-		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddRazorPages().AddRazorRuntimeCompilation();
+			var sessionSection = Configuration.GetSection(DigitizerSessionOptions.SectionName);
+			services.Configure<DigitizerSessionOptions>(sessionSection);
 
-			services.AddModel()
-				.AddSingleton<Models.Model>()
-				.AddSingleton<IPageService, PageService>()
-				.AddTransient<IImageService, ImageService>();
+			var sessionOptions = new DigitizerSessionOptions();
+			sessionSection.Bind(sessionOptions);
+
+			var razorPages = services.AddRazorPages();
+			if (environment.IsDevelopment()) {
+				// Development convenience only; it must not ship in the production path.
+				razorPages.AddRazorRuntimeCompilation();
+			}
+
+			services.Configure<FormOptions>(options =>
+			{
+				options.MultipartBodyLengthLimit = sessionOptions.MaxUploadBytes;
+			});
+
+			services.AddHttpContextAccessor();
+			services.AddDistributedMemoryCache();
+			services.AddSession(options =>
+			{
+				options.IdleTimeout = sessionOptions.IdleTimeout;
+				options.Cookie.Name = ".PlotDigitizer.Session";
+				options.Cookie.HttpOnly = true;
+				options.Cookie.IsEssential = true;
+				options.Cookie.SameSite = SameSiteMode.Lax;
+			});
+
+			services
+				.AddDigitizerServices(Configuration)
+				.AddSessionScopedModel()
+				.AddSingleton<DigitizerStateManager>()
+				.AddScoped<IDigitizerStateAccessor, DigitizerStateAccessor>()
+				.AddSingleton<WorkflowService>()
+				.AddScoped<ImageSourceService>()
+				.AddScoped<AxisOcrReader>();
 		}
 
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
-
 			if (env.IsDevelopment()) {
 				app.UseDeveloperExceptionPage();
-			} else {
+			}
+			else {
 				app.UseExceptionHandler("/Error");
-				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 				app.UseHsts();
 			}
 
 			app.UseHttpsRedirection()
 				.UseStaticFiles()
 				.UseRouting()
+				.UseSession()
+				.Use(async (context, next) =>
+				{
+					// Touch the session so a cookie is issued. Without a write ASP.NET Core never
+					// sends one, and every request would look like a brand new user.
+					if (string.IsNullOrEmpty(context.Session.GetString(SessionMarkerKey))) {
+						context.Session.SetString(SessionMarkerKey, DateTimeOffset.UtcNow.ToString("O"));
+					}
+					await next();
+				})
 				.UseAuthorization()
 				.UseEndpoints(endpoints =>
 				{

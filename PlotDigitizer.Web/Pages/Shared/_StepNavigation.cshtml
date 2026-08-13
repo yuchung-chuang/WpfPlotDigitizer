@@ -1,0 +1,22 @@
+﻿@using PlotDigitizer.Web.Services
+@{
+	var currentStep = ViewData["CurrentStep"] as WorkflowStep?;
+}
+@if (currentStep.HasValue)
+{
+	<nav aria-label="Digitization steps" class="mb-4">
+		<ol class="step-list">
+			@foreach (var step in WorkflowService.Steps)
+			{
+				var isCurrent = step.Step == currentStep.Value;
+				var isDone = (int)step.Step < (int)currentStep.Value;
+				<li class="step-item @(isCurrent ? "step-current" : null) @(isDone ? "step-done" : null)">
+					<a asp-page="@step.PageName" aria-current="@(isCurrent ? "step" : null)">
+						<span class="step-index">@((int)step.Step + 1)</span>
+						<span class="step-title">@step.Title</span>
+					</a>
+				</li>
+			}
+		</ol>
+	</nav>
+}

@@ -1,4 +1,55 @@
-﻿@model PlotDigitizer.Web.Models.Model
+﻿@model PlotDigitizer.Web.Pages.EditPageModel
 @{
-	<img src="@Model.EdittedImageSource" width="500" height="500" />
+	var editService = Model.EditService;
+	var image = editService.IsInitialised ? editService.CurrentObject : null;
+	// The editor image changes with every undo, redo and edit, so the url must too.
+	var token = $"{editService.Index}-{System.DateTime.UtcNow.Ticks}";
+}
+
+@if (Model.ErrorMessage is not null)
+{
+	<div class="alert alert-warning" role="alert">@Model.ErrorMessage</div>
+}
+
+@if (image is null)
+{
+	<p class="text-muted">Nothing to edit yet.</p>
+}
+else
+{
+	<div class="d-flex flex-wrap align-items-center gap-2 mb-2 editor-history">
+		<button class="btn btn-outline-secondary btn-sm" type="button" data-editor-action="Undo"
+				@(editService.CanUndo() ? null : "disabled")>Undo</button>
+		<select class="form-select form-select-sm w-auto" data-editor-history="UndoTo"
+				title="Undo history" @(Model.UndoList.Count > 1 ? null : "disabled")>
+			@for (var i = 0; i < Model.UndoList.Count; i++)
+			{
+				<option value="@i">@Model.UndoList[i]</option>
+			}
+		</select>
+
+		<button class="btn btn-outline-secondary btn-sm" type="button" data-editor-action="Redo"
+				@(editService.CanRedo() ? null : "disabled")>Redo</button>
+		<select class="form-select form-select-sm w-auto" data-editor-history="RedoTo"
+				title="Redo history" @(Model.RedoList.Count > 1 ? null : "disabled")>
+			@for (var i = 0; i < Model.RedoList.Count; i++)
+			{
+				<option value="@i">@Model.RedoList[i]</option>
+			}
+		</select>
+
+		<span class="editor-status ms-2">
+			Step @(editService.Index + 1) of @editService.TagList.Count &mdash; @editService.CurrentTag
+		</span>
+	</div>
+
+	<div id="editor"
+		 data-image-url="/image/editor?v=@token"
+		 data-image-width="@image.Width"
+		 data-image-height="@image.Height">
+		<div class="editor-canvas-stack image-canvas" style="width: @(Model.Model.DisplayWidth)px;">
+			<canvas id="editor-base" width="@image.Width" height="@image.Height"></canvas>
+			<canvas id="editor-overlay" class="editor-overlay" width="@image.Width" height="@image.Height"></canvas>
+		</div>
+	</div>
 }

@@ -1,82 +1,49 @@
 ﻿@page "{handler?}"
 @model PlotDigitizer.Web.Pages.FilterPageModel
 @{
-	ViewData["Title"] = "FilterPage";
+	ViewData["Title"] = "Filter";
+	var min = Model.Setting.FilterMin;
+	var max = Model.Setting.FilterMax;
 }
-@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
-@functions{
-	public string GetAntiXsrfRequestToken() => Xsrf.GetAndStoreTokens(Model.HttpContext).RequestToken;
+@section Styles {
+	<link rel="stylesheet" href="~/css/filterPage.css" asp-append-version="true" />
 }
-@section styles{
-	<link rel="stylesheet" href="~/css/filterPage.css" />
-}
-@section scripts{
+@section Scripts {
 	<script src="~/nouislider/nouislider.min.js"></script>
-	<script>
-		$('#view').load('/FilterPage/View');
-		var filterR = document.getElementById('filterR');
-		var filterG = document.getElementById('filterG');
-		var filterB = document.getElementById('filterB');
-		var setting = {
-			step: 1,
-			connect: true,
-			tooltips: true,
-			behaviour: 'tap-drag',
-			range: {
-				'min': 0,
-				'max': 255,
-			},
-			format: {
-				// 'to' the formatted value. Receives a number.
-				to: value => Math.round(value).toString(),
-				// 'from' the formatted value.
-				// Receives a string, should return a number.
-				from: value => parseInt(value),
-			}
-		};
-		var callback = () => {
-			var valuesR = filterR.noUiSlider.get();
-			var valuesG = filterG.noUiSlider.get();
-			var valuesB = filterB.noUiSlider.get();
-			var data = {
-				minR: parseInt(valuesR[0]),
-				maxR: parseInt(valuesR[1]),
-				minG: parseInt(valuesG[0]),
-				maxG: parseInt(valuesG[1]),
-				minB: parseInt(valuesB[0]),
-				maxB: parseInt(valuesB[1]),
-			};
-			$.post({
-				type: 'post',
-				url: '',
-				headers: {
-					"RequestVerificationToken": '@GetAntiXsrfRequestToken()'
-				},
-				data: data,
-				success: () => {
-					$('#view').load('/FilterPage/View');
-				}
-			});
-		};
-		setting.start = [@Model.Model.Setting.FilterMin.Red, @Model.Model.Setting.FilterMax.Red];
-		noUiSlider.create(filterR, setting);
-		setting.start = [@Model.Model.Setting.FilterMin.Green, @Model.Model.Setting.FilterMax.Green];
-		noUiSlider.create(filterG, setting);
-		setting.start = [@Model.Model.Setting.FilterMin.Blue, @Model.Model.Setting.FilterMax.Blue];
-		noUiSlider.create(filterB, setting);
-		filterR.noUiSlider.on('update', callback);
-		filterG.noUiSlider.on('update', callback);
-		filterB.noUiSlider.on('update', callback);
-	</script>
+	<script src="~/js/filterPage.js" asp-append-version="true"></script>
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1 class="h3">Isolate the data series</h1>
+<p class="text-muted">
+	Narrow each colour channel until only the curve or the markers remain. The checkerboard shows
+	the pixels that have been removed.
+</p>
 
-<div id="view"></div>
+<div class="row g-4">
+	<div class="col-xl-7">
+		<div id="view">
+			<partial name="_FilterPageView" model="Model.Model" />
+		</div>
+	</div>
 
-<div id="filterR"></div>
-<div id="filterG"></div>
-<div id="filterB"></div>
-@Html.AntiForgeryToken()
+	<div class="col-xl-5">
+		<div class="mb-4">
+			<label class="form-label" for="filterR">Red</label>
+			<div id="filterR" data-min="@min.Red" data-max="@max.Red"></div>
+		</div>
+		<div class="mb-4">
+			<label class="form-label" for="filterG">Green</label>
+			<div id="filterG" data-min="@min.Green" data-max="@max.Green"></div>
+		</div>
+		<div class="mb-4">
+			<label class="form-label" for="filterB">Blue</label>
+			<div id="filterB" data-min="@min.Blue" data-max="@max.Blue"></div>
+		</div>
+		<p class="editor-status" id="filter-status"></p>
+	</div>
+</div>
 
-<a asp-page="EditPage">submit</a>
+<form method="post" class="d-flex gap-2 mt-3">
+	<a class="btn btn-outline-secondary" asp-page="@Model.PreviousStep.PageName">Back</a>
+	<button class="btn btn-primary" type="submit">Next: @Model.NextStep.Title</button>
+</form>

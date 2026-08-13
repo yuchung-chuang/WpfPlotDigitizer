@@ -1,0 +1,92 @@
+﻿@page
+@model PlotDigitizer.Web.Pages.RangePageModel
+@{
+	ViewData["Title"] = "Range";
+}
+@section Scripts {
+	<script src="~/lib/interactjs/interact.min.js"></script>
+	<script src="~/js/selectionBox.js" asp-append-version="true"></script>
+	<script src="~/js/rangePage.js" asp-append-version="true"></script>
+}
+
+<h1 class="h3">Calibrate the axes</h1>
+<p class="text-muted">
+	Position the red boxes over the smallest and largest tick labels and the green boxes over the
+	axis titles, then read them with <em>Detect</em>. You can always type the values in yourself.
+	Leave a log base empty for a linear axis.
+</p>
+
+@if (Model.DetectionMessage is not null)
+{
+	<div class="alert alert-info" role="alert">@Model.DetectionMessage</div>
+}
+<div asp-validation-summary="All" class="alert alert-warning" role="alert"
+	 hidden="@ViewData.ModelState.IsValid"></div>
+
+<form method="post" id="range-form">
+	@foreach (var name in new[] { "XMinBox", "XMaxBox", "YMinBox", "YMaxBox", "XLabelBox", "YLabelBox" })
+	{
+		<input type="hidden" name="@(name).X" data-box="@name" data-field="X" />
+		<input type="hidden" name="@(name).Y" data-box="@name" data-field="Y" />
+		<input type="hidden" name="@(name).Width" data-box="@name" data-field="Width" />
+		<input type="hidden" name="@(name).Height" data-box="@name" data-field="Height" />
+	}
+
+	<div class="row g-4">
+		<div class="col-xl-8">
+			<partial name="_RangePageView" model="Model" />
+		</div>
+
+		<div class="col-xl-4">
+			<div class="row g-3">
+				<div class="col-6">
+					<label class="form-label" asp-for="XMin"></label>
+					<input class="form-control" type="number" step="any" asp-for="XMin" />
+					<span class="text-danger small" asp-validation-for="XMin"></span>
+				</div>
+				<div class="col-6">
+					<label class="form-label" asp-for="XMax"></label>
+					<input class="form-control" type="number" step="any" asp-for="XMax" />
+					<span class="text-danger small" asp-validation-for="XMax"></span>
+				</div>
+				<div class="col-6">
+					<label class="form-label" asp-for="XLog"></label>
+					<input class="form-control" type="number" step="any" asp-for="XLog" placeholder="linear" />
+				</div>
+				<div class="col-6">
+					<label class="form-label" asp-for="XLabel"></label>
+					<input class="form-control" asp-for="XLabel" />
+				</div>
+
+				<div class="col-6">
+					<label class="form-label" asp-for="YMin"></label>
+					<input class="form-control" type="number" step="any" asp-for="YMin" />
+					<span class="text-danger small" asp-validation-for="YMin"></span>
+				</div>
+				<div class="col-6">
+					<label class="form-label" asp-for="YMax"></label>
+					<input class="form-control" type="number" step="any" asp-for="YMax" />
+					<span class="text-danger small" asp-validation-for="YMax"></span>
+				</div>
+				<div class="col-6">
+					<label class="form-label" asp-for="YLog"></label>
+					<input class="form-control" type="number" step="any" asp-for="YLog" placeholder="linear" />
+				</div>
+				<div class="col-6">
+					<label class="form-label" asp-for="YLabel"></label>
+					<input class="form-control" asp-for="YLabel" />
+				</div>
+			</div>
+
+			<div class="d-flex flex-wrap gap-2 mt-4">
+				<button class="btn btn-outline-primary" type="submit" asp-page-handler="Detect">Detect</button>
+				<button class="btn btn-outline-secondary" type="submit" asp-page-handler="AutoDetect">Reposition boxes</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="d-flex gap-2 mt-4">
+		<a class="btn btn-outline-secondary" asp-page="@Model.PreviousStep.PageName">Back</a>
+		<button class="btn btn-primary" type="submit">Next: @Model.NextStep.Title</button>
+	</div>
+</form>

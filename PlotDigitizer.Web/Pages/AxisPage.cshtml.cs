@@ -1,56 +1,92 @@
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Threading.Tasks;
-
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 using PlotDigitizer.Core;
-using PlotDigitizer.Web.Models;
+using PlotDigitizer.Web.Services;
 
-using Model = PlotDigitizer.Web.Models.Model;
+using System;
 
 namespace PlotDigitizer.Web.Pages
 {
-	public class AxisPageModel : PageModel
+	/// <summary>
+	/// Web counterpart of <c>AxisPageViewModel</c>: choose the rectangle that bounds the plotting
+	/// area, either by dragging it or by letting Core detect it.
+	/// </summary>
+	public class AxisPageModel : WorkflowPageModel
 	{
 		private readonly IImageService imageService;
+		private readonly ILogger<AxisPageModel> logger;
 
-		public AxisPageModel(Model model, IImageService imageService)
+		public AxisPageModel(IDigitizerStateAccessor stateAccessor,
+			WorkflowService workflow,
+			IImageService imageService,
+			ILogger<AxisPageModel> logger)
+			: base(stateAccessor, workflow)
 		{
-			Model = model;
 			this.imageService = imageService;
+			this.logger = logger;
 		}
 
-		public Model Model { get; }
+		public override WorkflowStep Step => WorkflowStep.Axis;
 
 		public void OnGet()
 		{
-			if (Model.Setting.AxisLocation == default) {
-				OnGetAxisLocation();
+			if (!WorkflowService.HasAxisLocation(Setting)) {
+				Setting.AxisLocation = DetectAxisLocation();
 			}
 		}
 
-		public IActionResult OnGetView()
+		/// <summary>Re-runs automatic detection and returns the refreshed panel.</summary>
+		public IActionResult OnGetDetect()
 		{
+			Setting.AxisLocation = DetectAxisLocation();
 			return Partial("_AxisPageView", Model);
 		}
-		public IActionResult OnGetAxisLocation()
+
+		public IActionResult OnPost(double x, double y, double width, double height)
+		{
+			var image = Model.InputImage;
+			var clamped = Clamp(new RectangleD(x, y, width, height), image.Width, image.Height);
+
+			if (clamped.Width < 1 || clamped.Height < 1) {
+				ModelState.AddModelError(string.Empty, "Draw a box around the plotting area before continuing.");
+				return Page();
+			}
+
+			Setting.AxisLocation = clamped;
+			return RedirectToNextStep();
+		}
+
+		private RectangleD DetectAxisLocation()
 		{
 			var image = Model.InputImage;
 			if (image is null) {
-				return Page();
+				return default;
 			}
-			Model.Setting.AxisLocation = imageService.GetAxisLocation(image);
-			return Page();
+
+			try {
+				var detected = imageService.GetAxisLocation(image);
+				var clamped = Clamp(detected, image.Width, image.Height);
+				if (clamped.Width >= 1 && clamped.Height >= 1) {
+					return clamped;
+				}
+				logger?.LogWarning("Axis detection returned an unusable rectangle {Rectangle}.", detected);
+			}
+			catch (Exception ex) {
+				logger?.LogError(ex, "Failed to detect the axis location.");
+			}
+
+			// Same fallback as the desktop app: the middle half of the image.
+			return new RectangleD(image.Width / 4d, image.Height / 4d, image.Width / 2d, image.Height / 2d);
 		}
 
-		public IActionResult OnPost(int x, int y, int width, int height)
+		private static RectangleD Clamp(RectangleD rect, double imageWidth, double imageHeight)
 		{
-			Model.Setting.AxisLocation = new RectangleD(x, y, width, height);
-			return RedirectToPage("FilterPage");
+			var left = Math.Clamp(rect.Left, 0, imageWidth);
+			var top = Math.Clamp(rect.Top, 0, imageHeight);
+			var width = Math.Clamp(rect.Width, 0, imageWidth - left);
+			var height = Math.Clamp(rect.Height, 0, imageHeight - top);
+			return new RectangleD(left, top, width, height);
 		}
 	}
 }

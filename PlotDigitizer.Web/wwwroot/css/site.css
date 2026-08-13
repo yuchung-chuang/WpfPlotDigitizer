@@ -1,13 +1,9 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand {
+﻿a.navbar-brand {
 	white-space: normal;
 	text-align: center;
 	word-break: break-all;
 }
 
-/* Provide sufficient contrast against white background */
 a {
 	color: #0366d6;
 }
@@ -18,14 +14,6 @@ a {
 	border-color: #1861ac;
 }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-	color: #fff;
-	background-color: #1b6ec2;
-	border-color: #1861ac;
-}
-
-/* Sticky footer styles
--------------------------------------------------- */
 html {
 	font-size: 14px;
 }
@@ -48,27 +36,187 @@ html {
 	box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
-button.accept-policy {
-	font-size: 1rem;
-	line-height: inherit;
-}
-
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-	position: relative;
-	min-height: 100%;
-}
-
+/* Flexbox sticky footer. The template's absolutely positioned footer overlays the page
+   whenever the content is taller than the viewport, which swallows clicks on the buttons
+   at the bottom of the workflow pages. */
 body {
-	/* Margin bottom by footer height */
-	margin-bottom: 60px;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	margin-bottom: 0;
+}
+
+.page-content {
+	flex: 1 0 auto;
 }
 
 .footer {
-	position: absolute;
-	bottom: 0;
+	flex-shrink: 0;
 	width: 100%;
 	white-space: nowrap;
-	line-height: 60px; /* Vertically center the text there */
+	line-height: 60px;
 }
+
+/* Workflow step indicator
+-------------------------------------------------- */
+.step-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: .25rem;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.step-item a {
+	display: flex;
+	align-items: center;
+	gap: .4rem;
+	padding: .35rem .75rem;
+	border: 1px solid #dee2e6;
+	border-radius: 2rem;
+	color: #495057;
+	text-decoration: none;
+	font-size: .9rem;
+}
+
+.step-item a:hover {
+	background-color: #f1f3f5;
+}
+
+.step-item .step-index {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 1.4rem;
+	height: 1.4rem;
+	border-radius: 50%;
+	background-color: #dee2e6;
+	font-size: .75rem;
+}
+
+.step-item.step-done a {
+	color: #1b6ec2;
+	border-color: #b8daff;
+}
+
+.step-item.step-done .step-index {
+	background-color: #b8daff;
+}
+
+.step-item.step-current a {
+	background-color: #1b6ec2;
+	border-color: #1861ac;
+	color: #fff;
+}
+
+.step-item.step-current .step-index {
+	background-color: rgba(255, 255, 255, .3);
+	color: #fff;
+}
+
+/* Image canvas and selection boxes
+-------------------------------------------------- */
+.image-canvas {
+	position: relative;
+	display: inline-block;
+	max-width: 100%;
+	border: 1px solid #212529;
+	background-color: #fff;
+	background-image: linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%),
+		linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%);
+	background-size: 20px 20px;
+	background-position: 0 0, 10px 10px;
+	touch-action: none;
+}
+
+.image-canvas > img {
+	display: block;
+	width: 100%;
+	height: auto;
+	user-select: none;
+	-webkit-user-drag: none;
+}
+
+.selection-box {
+	position: absolute;
+	box-sizing: border-box;
+	border: 2px solid #dc3545;
+	background-color: rgba(220, 53, 69, .12);
+	touch-action: none;
+	cursor: move;
+}
+
+.selection-box.selection-box-label {
+	border-color: #198754;
+	background-color: rgba(25, 135, 84, .12);
+}
+
+.selection-box .selection-caption {
+	position: absolute;
+	top: -1.3rem;
+	left: 0;
+	font-size: .7rem;
+	line-height: 1;
+	padding: .1rem .25rem;
+	background-color: rgba(255, 255, 255, .85);
+	border-radius: .2rem;
+	pointer-events: none;
+	white-space: nowrap;
+}
+
+/* Editor
+-------------------------------------------------- */
+.editor-canvas-stack {
+	position: relative;
+	display: inline-block;
+	line-height: 0;
+}
+
+.editor-canvas-stack canvas {
+	display: block;
+	max-width: 100%;
+	height: auto;
+	touch-action: none;
+}
+
+.editor-canvas-stack canvas.editor-overlay {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.editor-toolbar .btn-check:checked + .btn {
+	background-color: #1b6ec2;
+	border-color: #1861ac;
+	color: #fff;
+}
+
+.editor-status {
+	font-size: .85rem;
+	color: #6c757d;
+}
+
+/* Drop zone
+-------------------------------------------------- */
+.drop-zone {
+	border: 2px dashed #adb5bd;
+	border-radius: .5rem;
+	padding: 2.5rem 1rem;
+	text-align: center;
+	color: #6c757d;
+	transition: background-color .15s ease-in-out, border-color .15s ease-in-out;
+}
+
+.drop-zone.drop-zone-active {
+	border-color: #1b6ec2;
+	background-color: #e7f1ff;
+	color: #1b6ec2;
+}
+
+.data-table-wrapper {
+	max-height: 24rem;
+	overflow-y: auto;
+}
+

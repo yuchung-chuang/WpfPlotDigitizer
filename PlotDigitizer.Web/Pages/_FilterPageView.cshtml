@@ -1,17 +1,18 @@
 ﻿@model PlotDigitizer.Web.Models.Model
 @{
-	<svg id="svg" width="500" height="@(500 * Model.InputImage.Height / Model.InputImage.Width)">
-		<!-- The width and height should be double the size of a single checker -->
-		<pattern id="pattern-checkers" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-			<!-- Two instances of the same checker, only positioned apart on the `x` and `y` axis -->
-			<!-- We will define the `fill` in the CSS for flexible use -->
-			<rect class="checker" x="0" y="0" width="10" height="10"></rect>
-			<rect class="checker" x="10" y="10" width="10" height="10"></rect>
-		</pattern>
-		<!-- Define the shape that will contain our pattern as the fill -->
-		<rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-checkers)"></rect>
-
-		<image id="input-image" href="@Model.FilteredImageSource" width="100%" height="100%" />
-		<rect id="border" width="100%" height="100%" stroke="black" stroke-width="1" fill-opacity="0" />
-	</svg>
+	var image = Model.FilteredImage;
+	var url = Model.FilteredImageUrl;
+}
+@if (image is null || url is null)
+{
+	<p class="text-muted">Nothing to preview yet.</p>
+}
+else
+{
+	<div class="image-canvas"
+		 style="width: @(Model.DisplayWidth)px;"
+		 data-image-width="@image.Width"
+		 data-image-height="@image.Height">
+		<img src="@url" alt="Filtered plot area" />
+	</div>
 }
