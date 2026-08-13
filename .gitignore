@@ -342,3 +342,5 @@ healthchecksdb
 *.dgml
 
 .vscode/
+
+images/*
