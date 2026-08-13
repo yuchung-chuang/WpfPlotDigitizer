@@ -7,10 +7,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Remove="Models\ModelTests.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="FlaUI.UIA3" Version="4.0.0" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
 		<PackageReference Include="MSTest.TestAdapter" Version="2.1.0" />
