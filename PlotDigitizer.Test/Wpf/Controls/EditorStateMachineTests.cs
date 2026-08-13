@@ -11,7 +11,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 
-namespace PlotDigitizer.Core.Tests.Wpf.Controls
+namespace PlotDigitizer.WPF.Tests.Controls
 {
 	/// <summary>
 	/// Drives the editor state machine through its public state objects. Every transition the

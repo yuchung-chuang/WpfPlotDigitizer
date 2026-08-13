@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using PlotDigitizer.WPF;
+using PlotDigitizer.Core;
 
 using System;
 using System.Globalization;
@@ -8,7 +8,7 @@ using System.Windows;
 
 using RectConverter = PlotDigitizer.WPF.RectConverter;
 
-namespace PlotDigitizer.Core.Tests.Wpf.Utilities.ValueConverters
+namespace PlotDigitizer.WPF.Tests.Utilities.ValueConverters
 {
 	[TestClass]
 	public class RectConverterTests

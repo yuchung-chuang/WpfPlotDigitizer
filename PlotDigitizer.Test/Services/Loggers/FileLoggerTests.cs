@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using System.Linq;
 
-namespace PlotDigitizer.Core.Tests
+namespace PlotDigitizer.Core.Tests.Models
 {
     [TestClass]
     public class FileLoggerTests

@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using PlotDigitizer.Core.Tests.Fakes;
 
-namespace PlotDigitizer.Core.Tests
+namespace PlotDigitizer.Core.Tests.Models
 {
     [TestClass]
     public class DataPointsNodeTests

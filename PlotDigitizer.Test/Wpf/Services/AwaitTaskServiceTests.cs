@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace PlotDigitizer.Core.Tests.Wpf.Services
+namespace PlotDigitizer.WPF.Tests.Services
 {
 	/// <summary>
 	/// Runs a long digitization step off the UI thread while showing a cancellable progress

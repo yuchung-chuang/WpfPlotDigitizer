@@ -7,7 +7,7 @@ using PlotDigitizer.WPF;
 
 using System.Drawing;
 
-namespace PlotDigitizer.Core.Tests.Wpf.Utilities
+namespace PlotDigitizer.WPF.Tests.Utilities
 {
 	/// <summary>
 	/// The bridge between the Emgu CV images the pipeline works on and the WPF image sources the

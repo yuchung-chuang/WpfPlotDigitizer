@@ -7,7 +7,7 @@ using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
-namespace PlotDigitizer.Core.Tests.Wpf.Controls
+namespace PlotDigitizer.WPF.Tests.Controls
 {
 	/// <summary>
 	/// The modal progress window shown by <see cref="AwaitTaskService"/>. Its contract is the

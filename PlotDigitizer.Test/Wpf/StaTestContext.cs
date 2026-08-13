@@ -9,7 +9,7 @@ using System.Windows.Threading;
 
 using WpfApp = PlotDigitizer.WPF.App;
 
-namespace PlotDigitizer.Core.Tests.Wpf
+namespace PlotDigitizer.WPF.Tests
 {
 	/// <summary>
 	/// Starts the WPF test thread before any test runs. Only one

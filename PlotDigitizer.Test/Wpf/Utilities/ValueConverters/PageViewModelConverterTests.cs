@@ -1,12 +1,13 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using PlotDigitizer.WPF;
+using PlotDigitizer.Core;
+using PlotDigitizer.Core.Tests;
 
 using System;
 using System.Globalization;
 using System.Windows.Controls;
 
-namespace PlotDigitizer.Core.Tests.Wpf.Utilities.ValueConverters
+namespace PlotDigitizer.WPF.Tests.Utilities.ValueConverters
 {
 	/// <summary>
 	/// The navigation binds the selected <see cref="TabItem"/> back to the page view model, so

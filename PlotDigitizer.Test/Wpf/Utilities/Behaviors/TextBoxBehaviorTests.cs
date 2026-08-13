@@ -9,7 +9,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interop;
 
-namespace PlotDigitizer.Core.Tests.Wpf.Utilities.Behaviors
+namespace PlotDigitizer.WPF.Tests.Utilities.Behaviors
 {
 	/// <summary>
 	/// The two behaviours attached to the axis-limit text boxes: Enter commits the edit, and

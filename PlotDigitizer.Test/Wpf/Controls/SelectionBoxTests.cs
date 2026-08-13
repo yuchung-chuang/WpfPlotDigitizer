@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 
-namespace PlotDigitizer.Core.Tests.Wpf.Controls
+namespace PlotDigitizer.WPF.Tests.Controls
 {
 	/// <summary>
 	/// The selection box overlays the plot image, so the hit test that turns a mouse position

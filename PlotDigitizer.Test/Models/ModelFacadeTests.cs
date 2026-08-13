@@ -12,7 +12,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Media.Imaging;
 
-namespace PlotDigitizer.Core.Tests
+namespace PlotDigitizer.Core.Tests.Models
 {
 	[TestClass()]
 	public class ModelFacadeTests

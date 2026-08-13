@@ -1,11 +1,11 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using PlotDigitizer.WPF;
+using PlotDigitizer.Core;
 
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace PlotDigitizer.Core.Tests.Wpf.Utilities.Behaviors
+namespace PlotDigitizer.WPF.Tests.Utilities.Behaviors
 {
 	/// <summary>
 	/// Routes an application command (Undo/Redo) on a control to a plain view-model

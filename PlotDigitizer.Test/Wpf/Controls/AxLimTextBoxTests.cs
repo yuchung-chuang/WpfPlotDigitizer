@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
 
-namespace PlotDigitizer.Core.Tests.Wpf.Controls
+namespace PlotDigitizer.WPF.Tests.Controls
 {
 	/// <summary>
 	/// The axis-limit input used on the range page. Its label doubles as the automation id the

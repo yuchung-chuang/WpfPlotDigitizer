@@ -1,12 +1,11 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using PlotDigitizer.WPF;
 
 using System;
 using System.Globalization;
 using System.Linq;
 
-namespace PlotDigitizer.Core.Tests.Wpf.Utilities.ValueConverters
+namespace PlotDigitizer.WPF.Tests.Utilities.ValueConverters
 {
 	/// <summary>
 	/// The editor toolbar binds one toggle button per mode through this converter, so it has to

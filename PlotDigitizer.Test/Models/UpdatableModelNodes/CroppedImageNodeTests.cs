@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using PlotDigitizer.Core.Tests.Fakes;
 
-namespace PlotDigitizer.Core.Tests
+namespace PlotDigitizer.Core.Tests.Models
 {
     /// <summary>
     /// Covers <see cref="CroppedImageNode"/>, the first derived node in the digitization

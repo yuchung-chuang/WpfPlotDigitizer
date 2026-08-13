@@ -10,7 +10,7 @@ using System.Linq;
 
 using Application = FlaUI.Core.Application;
 
-namespace PlotDigitizer.Core.UItests
+namespace PlotDigitizer.WPF.Tests.UI
 {
 	/// <summary>
 	/// Drives the real desktop client through UI automation. Elements are addressed by the

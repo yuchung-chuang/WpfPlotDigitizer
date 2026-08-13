@@ -1,10 +1,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using PlotDigitizer.WPF;
+using PlotDigitizer.Core.Tests;
 
 using System;
 
-namespace PlotDigitizer.Core.Tests.Wpf.Services
+namespace PlotDigitizer.WPF.Tests.Services
 {
 	/// <summary>
 	/// Owns the windows that host a view model. <c>ShowDialog</c> is not covered because it

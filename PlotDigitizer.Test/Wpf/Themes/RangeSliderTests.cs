@@ -5,7 +5,7 @@ using PlotDigitizer.WPF;
 using System;
 using System.Collections.Generic;
 
-namespace PlotDigitizer.Core.Tests.Wpf.Themes
+namespace PlotDigitizer.WPF.Tests.Themes
 {
 	/// <summary>
 	/// The range slider behind the colour filter. These tests exercise the range arithmetic,

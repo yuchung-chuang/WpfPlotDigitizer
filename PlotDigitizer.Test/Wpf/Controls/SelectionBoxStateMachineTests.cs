@@ -5,7 +5,7 @@ using PlotDigitizer.WPF;
 using System.Windows;
 using System.Windows.Input;
 
-namespace PlotDigitizer.Core.Tests.Wpf.Controls
+namespace PlotDigitizer.WPF.Tests.Controls
 {
 	/// <summary>
 	/// Drives the selection box state machine directly. The control is laid out first so that

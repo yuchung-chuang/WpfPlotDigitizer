@@ -3,7 +3,7 @@ using Emgu.CV.Structure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.ComponentModel;
 
-namespace PlotDigitizer.Core.Tests
+namespace PlotDigitizer.Core.Tests.Models
 {
     /// <summary>
     /// Tests the plain <see cref="Model"/> facade — auto-properties and

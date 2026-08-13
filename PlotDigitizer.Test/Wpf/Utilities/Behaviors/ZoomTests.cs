@@ -9,7 +9,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace PlotDigitizer.Core.Tests.Wpf.Utilities.Behaviors
+namespace PlotDigitizer.WPF.Tests.Utilities.Behaviors
 {
 	/// <summary>
 	/// The zoom behaviour attached to the editor image: the wheel scales the element, never below

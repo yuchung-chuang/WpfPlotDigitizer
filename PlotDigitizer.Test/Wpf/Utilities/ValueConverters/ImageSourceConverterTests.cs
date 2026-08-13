@@ -3,13 +3,12 @@ using Emgu.CV.Structure;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using PlotDigitizer.WPF;
 
 using System;
 using System.Globalization;
 using System.Windows.Media.Imaging;
 
-namespace PlotDigitizer.Core.Tests.Wpf.Utilities.ValueConverters
+namespace PlotDigitizer.WPF.Tests.Utilities.ValueConverters
 {
 	[TestClass]
 	public class ImageSourceConverterTests

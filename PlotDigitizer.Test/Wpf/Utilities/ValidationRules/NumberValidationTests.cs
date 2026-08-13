@@ -5,7 +5,7 @@ using PlotDigitizer.WPF;
 using System;
 using System.Globalization;
 
-namespace PlotDigitizer.Core.Tests.Wpf.Utilities.ValidationRules
+namespace PlotDigitizer.WPF.Tests.Utilities.ValidationRules
 {
 	/// <summary>
 	/// Guards the axis-limit text boxes: a blank box is allowed (it means "unset"), anything else

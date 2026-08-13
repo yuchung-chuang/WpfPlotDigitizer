@@ -1,11 +1,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using PlotDigitizer.WPF;
 
 using System;
 using System.Globalization;
 
-namespace PlotDigitizer.Core.Tests.Wpf.Utilities.ValueConverters
+namespace PlotDigitizer.WPF.Tests.Utilities.ValueConverters
 {
 	[TestClass]
 	public class DoubleToStringConverterTests

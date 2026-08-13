@@ -9,7 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace PlotDigitizer.Core.Tests.Wpf.Utilities.Behaviors
+namespace PlotDigitizer.WPF.Tests.Utilities.Behaviors
 {
 	/// <summary>
 	/// The pan and zoom behaviours both rely on every element carrying the exact same transform

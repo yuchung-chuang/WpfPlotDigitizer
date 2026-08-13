@@ -5,7 +5,7 @@ using Emgu.CV.Structure;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace PlotDigitizer.Core.Tests
+namespace PlotDigitizer.Core.Tests.Models
 {
     [TestClass]
     public class UpdatableSettingTests
