@@ -36,8 +36,6 @@ namespace PlotDigitizer.Web.Pages
 			}
 		}
 
-		public IActionResult OnGetView() => Partial("_AxisPageView", Model);
-
 		/// <summary>Re-runs automatic detection and returns the refreshed panel.</summary>
 		public IActionResult OnGetDetect()
 		{
