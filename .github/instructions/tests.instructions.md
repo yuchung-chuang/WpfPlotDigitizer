@@ -38,7 +38,7 @@ dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj --collect:"XPlat Code
 
 ## Naming and layout
 
-Name tests `Method_Scenario_ExpectedOutcome`. Mirror the source layout: `Services/`, `Models/UpdatableModelNodes/`, `Models/UpdatableSettingNodes/`, `ViewModels/`, `Utilities/`, plus `Integration/`, `EndToEnd/`, `Ui/`, and `Fakes/`. Keep the existing `PlotDigitizer.Core.Tests` namespace for non-UI tests and `PlotDigitizer.Core.UItests` for FlaUI tests.
+Name tests `Method_Scenario_ExpectedOutcome`. Mirror the source layout: `Services/`, `Models/UpdatableModelNodes/`, `Models/UpdatableSettingNodes/`, `ViewModels/`, `Utilities/`, plus `Integration/`, `EndToEnd/`, `Ui/`, and `Fakes/`. Keep the existing `PlotDigitizer.Core.Tests` namespace for non-UI tests and `PlotDigitizer.WPF.Tests.UI` for FlaUI tests.
 
 ## Loading image assets
 

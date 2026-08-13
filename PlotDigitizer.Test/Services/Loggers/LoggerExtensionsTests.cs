@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace PlotDigitizer.Core.Tests
+namespace PlotDigitizer.Core.Tests.Models
 {
     // -----------------------------------------------------------------------
     // Recording ILogger — captures the last call so tests can assert on it.

@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using PlotDigitizer.Core.Tests.Fakes;
 
-namespace PlotDigitizer.Core.Tests
+namespace PlotDigitizer.Core.Tests.Models
 {
     /// <summary>
     /// Tests for <see cref="DataNode"/>.

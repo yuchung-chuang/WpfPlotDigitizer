@@ -6,22 +6,6 @@ using System.ComponentModel;
 
 namespace PlotDigitizer.Core.Tests
 {
-    // -----------------------------------------------------------------------
-    // Stubs used only by PageServiceTests
-    // -----------------------------------------------------------------------
-
-    /// <summary>
-    /// Tracks Enter/Leave calls and exposes a counter so tests can verify calls.
-    /// </summary>
-    internal sealed class StubPage : ViewModelBase
-    {
-        public int EnterCount { get; private set; }
-        public int LeaveCount { get; private set; }
-
-        public override void Enter() => EnterCount++;
-        public override void Leave() => LeaveCount++;
-    }
-
     /// <summary>
     /// An IServiceProvider that returns instances out of a dictionary keyed by Type.
     /// </summary>

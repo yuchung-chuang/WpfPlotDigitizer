@@ -14,7 +14,7 @@ using System.Windows;
 using System.Windows.Threading;
 using System.Threading;
 
-namespace PlotDigitizer.Core.Tests
+namespace PlotDigitizer.Core.Tests.Models
 {
     [TestClass()]
     public class ImageServiceTests

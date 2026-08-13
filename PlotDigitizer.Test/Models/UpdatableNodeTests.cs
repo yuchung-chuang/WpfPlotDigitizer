@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace PlotDigitizer.Core.Tests
+namespace PlotDigitizer.Core.Tests.Models
 {
     /// <summary>
     /// Tests for the abstract <see cref="UpdatableNode"/> and <see cref="UpdatableNode{TData}"/>

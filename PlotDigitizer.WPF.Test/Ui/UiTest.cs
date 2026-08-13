@@ -11,7 +11,7 @@ using FlaUI.Core.WindowsAPI;
 using System.Diagnostics;
 using FlaUI.Core.AutomationElements;
 
-namespace PlotDigitizer.Core.UItests
+namespace PlotDigitizer.WPF.Tests.UI
 {
 	[TestClass()]
 	[TestCategory("UI")]
