@@ -346,3 +346,5 @@ healthchecksdb
 images/
 
 .editorconfig
+
+*/publish/*
