@@ -7,7 +7,7 @@
 A simple, powerful application that helps you digitize data from images.
 
 ![releases](https://img.shields.io/badge/release-v2.0-blue) 
-![platform](https://img.shields.io/badge/platform-Windows11-blue) 
+![platform](https://img.shields.io/badge/platform-Windows%20%7C%20Web-blue) 
 ![.net](https://img.shields.io/badge/.net-8.0-blue) 
 ![lanugage](https://img.shields.io/badge/C%23-12-blue)
 
@@ -19,7 +19,7 @@ A simple, powerful application that helps you digitize data from images.
 
 Windows installers and portable versions (single .exe file) can be found in [releases page](https://github.com/alex1392/WpfPlotDigitizer/releases). Legacy Windows (XP, 7, 8) requires .NET 8.0 runtime installed.
 
-Web version is available at [PlotDigitizer Web](https://plot-digitizer-g0embmcpc2deg5ah.francecentral-01.azurewebsites.net/FilterPage).
+Web version is available at [PlotDigitizer Web](https://plot-digitizer-g0embmcpc2deg5ah.francecentral-01.azurewebsites.net/).
 
 ## Use cases
 
