@@ -209,6 +209,9 @@ namespace PlotDigitizer.Core
 
         public AxisTextBox GetAxisTextBox(Image<Rgba, byte> image, RectangleD axis)
         {
+            if (image is null)
+                throw new ArgumentNullException(nameof(image));
+
             var textBox = new AxisTextBox();
             var topLeft = new PointD(axis.Left, axis.Top);
             var bottomRight = new PointD(axis.Right, axis.Bottom);
