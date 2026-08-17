@@ -6,16 +6,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Models\old\**" />
-	  <EmbeddedResource Remove="Models\old\**" />
-	  <None Remove="Models\old\**" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Compile Remove="Models\Enums\SaveType.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <None Remove="OCR\eng.traineddata" />
 	</ItemGroup>
 

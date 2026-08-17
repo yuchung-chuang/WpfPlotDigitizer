@@ -1,4 +1,4 @@
-﻿using Emgu.CV;
+using Emgu.CV;
 using Emgu.CV.Structure;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ namespace PlotDigitizer.Core
 		public virtual Image<Rgba, byte> InputImage { get; set; }
 		public virtual Image<Rgba, byte> CroppedImage { get; set; }
 		public virtual Image<Rgba, byte> FilteredImage { get; set; }
-		public virtual Image<Rgba, byte> EdittedImage { get; set; }
+		public virtual Image<Rgba, byte> EditedImage { get; set; }
 		public virtual IEnumerable<PointD> DataPoints { get; set; }
 		public virtual IEnumerable<PointD> Data { get; set; }
 

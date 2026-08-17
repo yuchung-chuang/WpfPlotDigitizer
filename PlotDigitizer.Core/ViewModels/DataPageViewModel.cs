@@ -1,4 +1,4 @@
-﻿using Emgu.CV;
+using Emgu.CV;
 using Emgu.CV.Structure;
 using Microsoft.Extensions.Logging;
 
@@ -20,7 +20,7 @@ namespace PlotDigitizer.Core
             None,
             Canceled,
             Failed,
-            Sucessful,
+            Successful,
         }
 
         #region Fields
@@ -52,7 +52,7 @@ namespace PlotDigitizer.Core
             set => setting.DataType = value ? DataType.Discrete : DataType.Continuous;
         }
 
-        public bool IsEnabled => Model != null && Model.EdittedImage != null;
+        public bool IsEnabled => Model != null && Model.EditedImage != null;
 
         public Model Model { get; }
 
@@ -98,7 +98,7 @@ namespace PlotDigitizer.Core
             logger?.LogInformation($"Entered DataPageViewModel with IsEnabled status: {IsEnabled}");
 
             if (!IsEnabled) {
-                logger?.LogWarning("DataPageViewModel is not enabled. Model or EdittedImage is null.");
+                logger?.LogWarning("DataPageViewModel is not enabled. Model or EditedImage is null.");
                 return;
             }
 
@@ -114,7 +114,7 @@ namespace PlotDigitizer.Core
                 return;
             }
 
-            Image = Model.EdittedImage.Copy();
+            Image = Model.EditedImage.Copy();
 
             try {
                 if (IsDiscrete) {
@@ -183,7 +183,7 @@ namespace PlotDigitizer.Core
                 logger?.LogInformation($"Export completed with result: {exportResult}");
 
                 switch (exportResult) {
-                    case ExportResults.Sucessful:
+                    case ExportResults.Successful:
                         messageBox.Show_OK("The data has been exported successfully.", "Notification");
                         logger?.LogInformation("Data export successful.");
                         break;
@@ -234,7 +234,7 @@ namespace PlotDigitizer.Core
                         }
 
                         logger?.LogInformation($"Data saved successfully to {fileName}.");
-                        return ExportResults.Sucessful;
+                        return ExportResults.Successful;
                     }
                     catch (Exception ex) {
                         logger?.LogError(ex, $"Error while saving data to file: {fileName}.");

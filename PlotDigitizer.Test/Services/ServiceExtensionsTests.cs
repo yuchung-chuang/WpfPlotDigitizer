@@ -169,11 +169,11 @@ namespace PlotDigitizer.Core.Tests.Models
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void AddModel_EdittedImageNode_RegisteredAsSingleton()
+        public void AddModel_EditedImageNode_RegisteredAsSingleton()
         {
             var sc = new ServiceCollection();
             sc.AddModel();
-            Assert.IsTrue(HasDescriptor(sc, typeof(EdittedImageNode), ServiceLifetime.Singleton));
+            Assert.IsTrue(HasDescriptor(sc, typeof(EditedImageNode), ServiceLifetime.Singleton));
         }
 
         [TestMethod]

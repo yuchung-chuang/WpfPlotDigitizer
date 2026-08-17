@@ -114,18 +114,18 @@ namespace PlotDigitizer.Core.Tests.ViewModels
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void IsEnabled_WhenEdittedImageIsNull_ReturnsFalse()
+        public void IsEnabled_WhenEditedImageIsNull_ReturnsFalse()
         {
-            model.EdittedImage = null;
+            model.EditedImage = null;
             Assert.IsFalse(vm.IsEnabled);
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void IsEnabled_WhenEdittedImageIsSet_ReturnsTrue()
+        public void IsEnabled_WhenEditedImageIsSet_ReturnsTrue()
         {
             using var img = new Image<Rgba, byte>(4, 4);
-            model.EdittedImage = img;
+            model.EditedImage = img;
             Assert.IsTrue(vm.IsEnabled);
         }
 
@@ -133,10 +133,10 @@ namespace PlotDigitizer.Core.Tests.ViewModels
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Enter_WhenEnabled_SetsImageToACopyOfEdittedImage()
+        public void Enter_WhenEnabled_SetsImageToACopyOfEditedImage()
         {
             using var img = new Image<Rgba, byte>(4, 4);
-            model.EdittedImage = img;
+            model.EditedImage = img;
             model.Data = Enumerable.Empty<PointD>();
 
             vm.Enter();
@@ -149,7 +149,7 @@ namespace PlotDigitizer.Core.Tests.ViewModels
         [TestCategory("Unit")]
         public void Enter_WhenDisabled_DoesNotSetImage()
         {
-            model.EdittedImage = null;
+            model.EditedImage = null;
 
             vm.Enter();
 

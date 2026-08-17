@@ -71,7 +71,7 @@ A Core change that breaks the desktop app is not a successful port.
 ```powershell
 dotnet build .\PlotDigitizer.Web\PlotDigitizer.Web.csproj
 dotnet build .\PlotDigitizer.WPF\PlotDigitizer.WPF.csproj
-dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj --filter "TestCategory!=UI"
+dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj
 dotnet run  --project .\PlotDigitizer.Web\PlotDigitizer.Web.csproj
 ```
 

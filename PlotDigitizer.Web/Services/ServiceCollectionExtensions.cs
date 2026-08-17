@@ -1,13 +1,10 @@
-﻿using Emgu.CV;
+using Emgu.CV;
 using Emgu.CV.Structure;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using PlotDigitizer.Core;
-
-using System;
-using System.IO;
 
 using WebModel = PlotDigitizer.Web.Models.Model;
 
@@ -29,7 +26,7 @@ namespace PlotDigitizer.Web.Services
 				.AddScoped<InputImageNode>()
 				.AddScoped<CroppedImageNode>()
 				.AddScoped<FilteredImageNode>()
-				.AddScoped<EdittedImageNode>()
+				.AddScoped<EditedImageNode>()
 				.AddScoped<DataPointsNode>()
 				.AddScoped<DataNode>()
 
@@ -61,29 +58,7 @@ namespace PlotDigitizer.Web.Services
 				.AddScoped(sp => (CollectingMessageBoxService)sp.GetRequiredService<IMessageBoxService>())
 
 				// Tesseract engines are expensive to construct and are stateless between calls.
-				.AddKeyedSingleton<IOcrService, OcrService>("Numerical")
-				.Configure<OcrSettings>("Numerical", settings => Bind(configuration, "Numerical", settings))
-				.AddKeyedSingleton<IOcrService, OcrService>("Text")
-				.Configure<OcrSettings>("Text", settings => Bind(configuration, "Text", settings));
-
-			static void Bind(IConfiguration configuration, string name, OcrSettings settings)
-			{
-				var section = configuration.GetSection("OCR").GetSection(name);
-				settings.DataPath = ResolveDataPath(section[nameof(settings.DataPath)]);
-				settings.Language = section[nameof(settings.Language)];
-				settings.WhiteList = section[nameof(settings.WhiteList)];
-			}
-
-			// The training data is copied next to the assembly, but a web host's working directory
-			// is not the output folder, so a relative path from configuration has to be anchored.
-			static string ResolveDataPath(string configured)
-			{
-				var path = string.IsNullOrWhiteSpace(configured) ? "OCR" : configured;
-				if (!Path.IsPathRooted(path)) {
-					path = Path.Combine(AppContext.BaseDirectory, path);
-				}
-				return path + Path.DirectorySeparatorChar;
-			}
+				.AddOcrServices(configuration);
 		}
 	}
 }

@@ -1,13 +1,13 @@
-﻿using Emgu.CV;
+using Emgu.CV;
 using Emgu.CV.Structure;
 
 namespace PlotDigitizer.Core
 {
-	public class EdittedImageNode : UpdatableNode<Image<Rgba, byte>>
+	public class EditedImageNode : UpdatableNode<Image<Rgba, byte>>
 	{
 		private readonly FilteredImageNode filteredImage;
 
-		public EdittedImageNode(FilteredImageNode filteredImage)
+		public EditedImageNode(FilteredImageNode filteredImage)
 		{
 			this.filteredImage = filteredImage;
 			DependsOn(filteredImage);

@@ -1,4 +1,4 @@
-﻿using Emgu.CV;
+using Emgu.CV;
 using Emgu.CV.Structure;
 
 using System;
@@ -8,17 +8,17 @@ namespace PlotDigitizer.Core
 {
 	public class DataPointsNode : UpdatableNode<IEnumerable<PointD>>
 	{
-		private readonly EdittedImageNode edittedImage;
+		private readonly EditedImageNode editedImage;
 		private readonly DataTypeNode dataType;
 		private readonly Dictionary<DataType, Func<Image<Rgba, byte>, IEnumerable<PointD>>> getPointsMethods;
 
-		public DataPointsNode(EdittedImageNode edittedImage, 
+		public DataPointsNode(EditedImageNode editedImage, 
 			DataTypeNode dataType,
 			IImageService imageService)
 		{
-			this.edittedImage = edittedImage;
+			this.editedImage = editedImage;
 			this.dataType = dataType;
-			DependsOn(edittedImage);
+			DependsOn(editedImage);
 			DependsOn(dataType);
 
 			getPointsMethods = [];
@@ -30,7 +30,7 @@ namespace PlotDigitizer.Core
 		{
 			if (!IsAllDependenciesUpdated())
 				return;
-			Data = getPointsMethods[dataType.Data](edittedImage.Data);
+			Data = getPointsMethods[dataType.Data](editedImage.Data);
 		}
 	}
 }

@@ -3,7 +3,7 @@
 ## Toolchain and commands
 
 - Use the .NET SDK selected by [global.json](../global.json): `8.0.0` with roll-forward enabled. The WPF application and test project target `net8.0-windows`; work from Windows.
-- The solution file references `WpfAppTemplate1\WpfAppTemplate1.csproj`, which is not present. Build the individual project you are changing rather than `PlotDigitizer.sln`.
+- There is no `.sln` file. A previous one referenced a project that no longer exists and was removed; build the individual project you are changing instead.
 
 ```powershell
 # Restore and build the main WPF application
@@ -17,13 +17,13 @@ dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj
 dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj --filter "FullyQualifiedName=PlotDigitizer.Core.Tests.QuickTest.TempFolderTest"
 ```
 
-`PlotDigitizer.Test` uses MSTest. Its FlaUI tests launch `PlotDigitizer.exe` and automate the WPF window, so run the complete suite only in an interactive Windows desktop session. Test image assets are copied to the test output directory and should be used for image-processing coverage.
+`PlotDigitizer.Test` uses MSTest for unit and integration tests. FlaUI desktop-automation tests live in the separate `PlotDigitizer.WPF.Test` project and launch `PlotDigitizer.exe`, so run that project only in an interactive Windows desktop session; `PlotDigitizer.Test` itself runs headless. Test image assets are copied to the test output directory and should be used for image-processing coverage.
 
-Tag new tests with `[TestCategory("Unit")]`, `"Integration"`, `"EndToEnd"`, or `"UI"` so the fast loop can skip desktop automation with `--filter "TestCategory!=UI"`.
+Tag new tests with `[TestCategory("Unit")]`, `"Integration"`, or `"EndToEnd"` in `PlotDigitizer.Test`, or `"UI"` in `PlotDigitizer.WPF.Test`.
 
 ## Testing and web-port assets
 
-Coverage is currently thin: only `EmguCvService`, `Setting.Load`, and one model-facade path are meaningfully tested, and `CroppedImageNodeTests` is a failing `Assert.Fail()` scaffold. Use these customizations rather than inventing an approach:
+Use these customizations rather than inventing an approach:
 
 - Agents: [unit-test-generator](agents/unit-test-generator.agent.md), [integration-test-generator](agents/integration-test-generator.agent.md), [e2e-test-generator](agents/e2e-test-generator.agent.md), [ui-test-generator](agents/ui-test-generator.agent.md), [web-port-architect](agents/web-port-architect.agent.md).
 - Prompts: `/generate-unit-tests`, `/generate-integration-tests`, `/generate-e2e-tests`, `/generate-ui-tests`, `/test-coverage-audit`, `/port-wpf-page-to-web`.
@@ -38,7 +38,7 @@ There is no mocking library in the test project; write hand-rolled fakes for the
 - `Model` and `Setting` expose application state through a lazy dependency graph. The normal data path is `InputImage` -> cropped axis region -> color-filtered image -> editable image -> discrete/continuous pixel points -> axis-transformed data. `UpdatableNode` dependencies invalidate downstream nodes; reading a model/setting property calls `GetUpdatedData()` and computes it only when stale.
 - `UpdatableModel` and `UpdatableSetting` relay node updates and invalidations as property notifications. `ServiceExtensions.AddModel()` registers the model, setting, and every graph node as singletons.
 - `PlotDigitizer.WPF` is the main client. `App.xaml.cs` composes Core with WPF implementations of service interfaces, OCR configuration from `appsettings.json`, and logging. `PageService` owns the fixed workflow `Load -> Axis -> Range -> Filter -> Edit -> Data`; the Edit view model and its undo/redo state are scoped and recreated when `FilteredImage` becomes outdated.
-- `PlotDigitizer.CLI` is a separate command-line frontend that reads an image and serialized setting, then exports CSV or tab-delimited data. `PlotDigitizer.Web` is a Razor Pages frontend that is still under development.
+- `PlotDigitizer.CLI` is a separate command-line frontend that reads an image and serialized setting, then exports CSV or tab-delimited data. `PlotDigitizer.Web` is a Razor Pages frontend that ports the same workflow, with all six steps implemented (see [web.instructions.md](instructions/web.instructions.md)).
 
 ## Repository-specific conventions
 

@@ -24,7 +24,7 @@ automation = new UIA3Automation();
 [TestCleanup] // always: app.Close(); app.Dispose(); automation.Dispose();
 ```
 
-Tag every test `[TestCategory("UI")]` so the fast suite can exclude it with `--filter "TestCategory!=UI"`. Put new tests in `PlotDigitizer.Test/Ui/`.
+Tag every test `[TestCategory("UI")]`. Put new tests in `PlotDigitizer.WPF.Test/Ui/`, the separate project holding all FlaUI desktop-automation tests (it requires an interactive Windows desktop session; `PlotDigitizer.Test` itself is headless and has no UI-category tests).
 
 ### Locate elements by automation id, verified against the XAML
 
