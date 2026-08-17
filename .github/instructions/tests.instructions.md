@@ -15,17 +15,17 @@ Use `[TestClass]`, `[TestMethod]`, `[TestInitialize]`, `[TestCleanup]`, and `[Da
 
 ## Categorize every new test
 
-Always add one category so the suite can be filtered. The desktop-automation tests cannot run headless, so this is what keeps the fast suite runnable.
+Always add one category so the suite can be filtered: `"Unit"`, `"Integration"`, or `"EndToEnd"`. Desktop-automation tests are `"UI"`-tagged, but they live in the separate `PlotDigitizer.WPF.Test` project (see below), not here, so `PlotDigitizer.Test` itself runs entirely headless.
 
 ```csharp
 [TestMethod]
-[TestCategory("Unit")]        // or "Integration", "EndToEnd", "UI"
+[TestCategory("Unit")]        // or "Integration", "EndToEnd"
 public void Undo_AfterSingleEdit_RestoresPreviousObject() { }
 ```
 
 ```powershell
-# Fast feedback loop: everything except desktop automation
-dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj --filter "TestCategory!=UI"
+# Run everything in this project - it's already headless, no filter needed
+dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj
 
 # One category, one class, or one test
 dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj --filter "TestCategory=Unit"
@@ -36,9 +36,11 @@ dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj --filter "FullyQualif
 dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj --collect:"XPlat Code Coverage"
 ```
 
+FlaUI desktop-automation tests (`[TestCategory("UI")]`) live in the separate `PlotDigitizer.WPF.Test` project, which requires an interactive Windows desktop session and cannot run headless. See [wpf-test.instructions.md](wpf-test.instructions.md) for its conventions.
+
 ## Naming and layout
 
-Name tests `Method_Scenario_ExpectedOutcome`. Mirror the source layout: `Services/`, `Models/UpdatableModelNodes/`, `Models/UpdatableSettingNodes/`, `ViewModels/`, `Utilities/`, plus `Integration/`, `EndToEnd/`, `Ui/`, and `Fakes/`. Keep the existing `PlotDigitizer.Core.Tests` namespace for non-UI tests and `PlotDigitizer.WPF.Tests.UI` for FlaUI tests.
+Name tests `Method_Scenario_ExpectedOutcome`. Mirror the source layout: `Services/`, `Models/UpdatableModelNodes/`, `Models/UpdatableSettingNodes/`, `ViewModels/`, `Utilities/`, plus `Integration/`, `EndToEnd/`, and `Fakes/`. Keep the existing `PlotDigitizer.Core.Tests` namespace.
 
 ## Loading image assets
 

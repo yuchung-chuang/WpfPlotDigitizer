@@ -56,16 +56,16 @@ namespace PlotDigitizer.Core.Tests.Models
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Model_SetEdittedImage_PropertyChangedRaised()
+        public void Model_SetEditedImage_PropertyChangedRaised()
         {
             var model = new Model();
             string raised = null;
             model.PropertyChanged += (s, e) => raised = e.PropertyName;
 
             using var img = new Image<Rgba, byte>(1, 1);
-            model.EdittedImage = img;
+            model.EditedImage = img;
 
-            Assert.AreEqual(nameof(Model.EdittedImage), raised);
+            Assert.AreEqual(nameof(Model.EditedImage), raised);
         }
 
         [TestMethod]

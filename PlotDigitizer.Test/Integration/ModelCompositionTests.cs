@@ -38,7 +38,7 @@ namespace PlotDigitizer.Core.Tests.Integration
 			var nodeTypes = new List<Type>
 			{
 				typeof(InputImageNode), typeof(CroppedImageNode), typeof(FilteredImageNode),
-				typeof(EdittedImageNode), typeof(DataPointsNode), typeof(DataNode),
+				typeof(EditedImageNode), typeof(DataPointsNode), typeof(DataNode),
 				typeof(AxisLocationNode), typeof(AxisTextBoxNode), typeof(AxisLimitNode),
 				typeof(AxisTitleNode), typeof(AxisLogBaseNode), typeof(FilterMinNode),
 				typeof(FilterMaxNode), typeof(DataTypeNode),

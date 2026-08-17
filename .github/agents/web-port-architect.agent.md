@@ -53,7 +53,7 @@ For state scoping, prefer session-scoped state over request-scoped, because the 
 ```powershell
 dotnet build .\PlotDigitizer.Web\PlotDigitizer.Web.csproj
 dotnet build .\PlotDigitizer.WPF\PlotDigitizer.WPF.csproj
-dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj --filter "TestCategory!=UI"
+dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj
 ```
 
 5. Verify the page actually renders by running the app and requesting the route, rather than assuming it works.

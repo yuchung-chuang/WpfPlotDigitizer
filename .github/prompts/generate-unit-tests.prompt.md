@@ -30,7 +30,7 @@ dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj --filter "ClassName~<
 5. **Confirm you did not break the suite:**
 
 ```powershell
-dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj --filter "TestCategory!=UI"
+dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj
 ```
 
 Report the behaviours covered, the commands you ran with pass/fail counts, and any defect you found. Do not change production code to make a test pass unless the change is the point of the task — report the defect instead.

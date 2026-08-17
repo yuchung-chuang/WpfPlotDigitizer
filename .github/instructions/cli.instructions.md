@@ -25,7 +25,6 @@ Because `Setting.Load` skips properties whose value is `default`, a setting file
 
 ## Constraints
 
-- Target framework is `net7.0-windows`, which is out of support and raises `NETSDK1138` on build. Prefer aligning it with the `net8.0-windows` used elsewhere over suppressing the warning, but treat that as a deliberate change.
 - The CLI registers `Model`/`Setting` explicitly and then calls `AddModel()`, which registers them again. The last registration wins for a single resolve, so leave the ordering alone unless you are deliberately cleaning up the composition root.
 - Error handling currently prompts on the console for a retry (`try again? (y/n)`) via `Console.ReadKey()`. Any automated test must avoid the failure path, or that call must be moved behind an abstraction first, otherwise the test will hang waiting for input.
 

@@ -27,7 +27,7 @@ Do the work yourself: move the code, wire it up, build both frontends, and verif
 ```powershell
 dotnet build .\PlotDigitizer.Web\PlotDigitizer.Web.csproj
 dotnet build .\PlotDigitizer.WPF\PlotDigitizer.WPF.csproj
-dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj --filter "TestCategory!=UI"
+dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj
 ```
 
 Then run the web app and request the route to confirm it actually renders.

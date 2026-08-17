@@ -20,7 +20,7 @@ There is no explicit "run the pipeline" call anywhere. Reading `model.Data` is w
 ## Current graph
 
 ```
-InputImage ─┬─> CroppedImage ──> FilteredImage ──> EdittedImage ─┬─> DataPoints ──> Data
+InputImage ─┬─> CroppedImage ──> FilteredImage ──> EditedImage ─┬─> DataPoints ──> Data
             │        ^                 ^                         │                  ^
 AxisLocation┘        │        FilterMin/FilterMax                │      AxisLimit ──┤
      │               │                                    DataType                  │

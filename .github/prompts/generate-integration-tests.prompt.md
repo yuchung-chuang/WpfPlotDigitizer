@@ -24,7 +24,7 @@ var provider = new ServiceCollection()
 3. **Cover the behaviour that only appears when components are combined:**
    - Every registered node, view model, `Model`, and `Setting` resolves successfully.
    - Lifetimes hold: `Model` is a singleton across resolves; `EditPageViewModel` differs across scopes.
-   - Invalidation propagates along `InputImage` -> `CroppedImage` -> `FilteredImage` -> `EdittedImage` -> `DataPoints` -> `Data`, and along `AxisLocation` -> `AxisTextBox` -> `AxisLimit`.
+   - Invalidation propagates along `InputImage` -> `CroppedImage` -> `FilteredImage` -> `EditedImage` -> `DataPoints` -> `Data`, and along `AxisLocation` -> `AxisTextBox` -> `AxisLimit`.
    - An unrelated change does *not* invalidate a node.
    - `PropertyChanged` and `PropertyOutdated` fire on the facades as the UI expects.
    - `PageService` navigation calls `Leave()` then `Enter()`, respects the `Pages` order and end boundaries, and disposes the Edit scope when `FilteredImage` goes outdated.
@@ -39,7 +39,7 @@ dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj --filter "TestCategor
 5. **Confirm the wider suite still passes:**
 
 ```powershell
-dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj --filter "TestCategory!=UI"
+dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj
 ```
 
 Report the commands you ran with pass/fail counts. If a test exposes a composition defect — for example `PlotDigitizer.Web` never registering `IImageService` — report it plainly instead of hiding it behind an extra registration in test setup.

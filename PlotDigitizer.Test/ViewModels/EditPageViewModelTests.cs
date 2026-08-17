@@ -315,7 +315,7 @@ namespace PlotDigitizer.Core.Tests.ViewModels
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Leave_WhenEnabled_WritesVmImageToModelEdittedImage()
+        public void Leave_WhenEnabled_WritesVmImageToModelEditedImage()
         {
             using var img = new Image<Rgba, byte>(4, 4);
             using var edited = new Image<Rgba, byte>(4, 4);
@@ -324,7 +324,7 @@ namespace PlotDigitizer.Core.Tests.ViewModels
 
             vm.Leave();
 
-            Assert.AreSame(edited, model.EdittedImage);
+            Assert.AreSame(edited, model.EditedImage);
         }
 
         [TestMethod]
@@ -337,7 +337,7 @@ namespace PlotDigitizer.Core.Tests.ViewModels
 
             vm.Leave();
 
-            Assert.IsNull(model.EdittedImage);
+            Assert.IsNull(model.EditedImage);
         }
 
         // ── EditService.PropertyChanged → UndoList/RedoList notifications ──

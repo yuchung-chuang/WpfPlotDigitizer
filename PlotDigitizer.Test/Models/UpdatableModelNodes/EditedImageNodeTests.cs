@@ -8,7 +8,7 @@ using PlotDigitizer.Core.Tests.Fakes;
 namespace PlotDigitizer.Core.Tests.Models
 {
     [TestClass]
-    public class EdittedImageNodeTests
+    public class EditedImageNodeTests
     {
         private FakeImageService imageService;
         private InputImageNode inputImage;
@@ -17,7 +17,7 @@ namespace PlotDigitizer.Core.Tests.Models
         private FilterMinNode filterMin;
         private FilterMaxNode filterMax;
         private FilteredImageNode filteredImage;
-        private EdittedImageNode edittedImage;
+        private EditedImageNode editedImage;
 
         [TestInitialize]
         public void OnTestInitialize()
@@ -29,11 +29,11 @@ namespace PlotDigitizer.Core.Tests.Models
             filterMin = new FilterMinNode(inputImage);
             filterMax = new FilterMaxNode(inputImage);
             filteredImage = new FilteredImageNode(croppedImage, filterMin, filterMax, imageService);
-            edittedImage = new EdittedImageNode(filteredImage);
+            editedImage = new EditedImageNode(filteredImage);
         }
 
         // ──────────────────────────────────────────────────────────────────
-        // Null filtered image yields null editted image
+        // Null filtered image yields null edited image
         // ──────────────────────────────────────────────────────────────────
 
         [TestMethod]
@@ -43,7 +43,7 @@ namespace PlotDigitizer.Core.Tests.Models
             // filteredImage.Data is null and is updated (force it)
             filteredImage.Data = null;
 
-            var result = edittedImage.GetUpdatedData();
+            var result = editedImage.GetUpdatedData();
 
             Assert.IsNull(result);
         }
@@ -59,11 +59,11 @@ namespace PlotDigitizer.Core.Tests.Models
             using var filterSource = new Image<Rgba, byte>(4, 4);
             filteredImage.Data = filterSource;
 
-            using var result = edittedImage.GetUpdatedData();
+            using var result = editedImage.GetUpdatedData();
 
             Assert.IsNotNull(result);
             Assert.AreNotSame(filterSource, result,
-                "EdittedImageNode must return a Copy(), not the same instance.");
+                "EditedImageNode must return a Copy(), not the same instance.");
         }
 
         [TestMethod]
@@ -73,9 +73,9 @@ namespace PlotDigitizer.Core.Tests.Models
             using var filterSource = new Image<Rgba, byte>(4, 4);
             filteredImage.Data = filterSource;
 
-            edittedImage.GetUpdatedData();
+            editedImage.GetUpdatedData();
 
-            Assert.IsTrue(edittedImage.IsUpdated);
+            Assert.IsTrue(editedImage.IsUpdated);
         }
 
         // ──────────────────────────────────────────────────────────────────
@@ -87,11 +87,11 @@ namespace PlotDigitizer.Core.Tests.Models
         public void GetUpdatedData_WhenFilteredImageIsStale_ReturnsNull()
         {
             // filteredImage is stale (no inputImage assigned), so IsAllDependenciesUpdated
-            // returns false and edittedImage should not update.
-            var result = edittedImage.GetUpdatedData();
+            // returns false and editedImage should not update.
+            var result = editedImage.GetUpdatedData();
 
             Assert.IsNull(result);
-            Assert.IsFalse(edittedImage.IsUpdated);
+            Assert.IsFalse(editedImage.IsUpdated);
         }
 
         // ──────────────────────────────────────────────────────────────────
@@ -105,8 +105,8 @@ namespace PlotDigitizer.Core.Tests.Models
             using var filterSource = new Image<Rgba, byte>(4, 4);
             filteredImage.Data = filterSource;
 
-            var first = edittedImage.GetUpdatedData();
-            var second = edittedImage.GetUpdatedData();
+            var first = editedImage.GetUpdatedData();
+            var second = editedImage.GetUpdatedData();
 
             // Both calls should return the same cached copy (not make a new copy each call)
             Assert.AreSame(first, second,
@@ -124,10 +124,10 @@ namespace PlotDigitizer.Core.Tests.Models
         {
             using var filterSource = new Image<Rgba, byte>(4, 4);
             filteredImage.Data = filterSource;
-            edittedImage.GetUpdatedData();
+            editedImage.GetUpdatedData();
 
             var outdatedRaised = false;
-            edittedImage.Outdated += (s, e) => outdatedRaised = true;
+            editedImage.Outdated += (s, e) => outdatedRaised = true;
 
             using var newFilter = new Image<Rgba, byte>(4, 4);
             filteredImage.Data = newFilter;
@@ -141,14 +141,14 @@ namespace PlotDigitizer.Core.Tests.Models
         {
             using var filterSource1 = new Image<Rgba, byte>(4, 4);
             filteredImage.Data = filterSource1;
-            var first = edittedImage.GetUpdatedData();
+            var first = editedImage.GetUpdatedData();
 
             using var filterSource2 = new Image<Rgba, byte>(4, 4);
             filteredImage.Data = filterSource2;
-            var second = edittedImage.GetUpdatedData();
+            var second = editedImage.GetUpdatedData();
 
             Assert.AreNotSame(first, second,
-                "After an upstream change, EdittedImageNode must produce a fresh copy.");
+                "After an upstream change, EditedImageNode must produce a fresh copy.");
             first?.Dispose();
             second?.Dispose();
         }

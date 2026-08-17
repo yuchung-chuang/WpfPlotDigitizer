@@ -34,22 +34,7 @@ namespace PlotDigitizer.WPF
 
             var services = new ServiceCollection()
                 .AddSingleton(configuration)
-                .AddKeyedSingleton<IOcrService, OcrService>("Numerical")
-                .Configure<OcrSettings>("Numerical", settings =>
-                {
-                    var section = configuration.GetSection("OCR").GetSection("Numerical");
-                    settings.DataPath = section[nameof(settings.DataPath)];
-                    settings.Language = section[nameof(settings.Language)];
-                    settings.WhiteList = section[nameof(settings.WhiteList)];
-                })
-                .AddKeyedSingleton<IOcrService, OcrService>("Text")
-                .Configure<OcrSettings>("Text", settings =>
-                {
-                    var section = configuration.GetSection("OCR").GetSection("Text");
-                    settings.DataPath = section[nameof(settings.DataPath)];
-                    settings.Language = section[nameof(settings.Language)];
-                    settings.WhiteList = section[nameof(settings.WhiteList)];
-                })
+                .AddOcrServices(configuration)
                 .AddTransient<IImageService, EmguCvService>()
                 .AddTransient<IDownloadService, DownloadService>()
                 .AddTransient<IMessageBoxService, MessageBoxService>()

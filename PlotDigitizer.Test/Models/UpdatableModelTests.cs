@@ -20,7 +20,7 @@ namespace PlotDigitizer.Core.Tests.Models
         private FilterMinNode filterMinNode;
         private FilterMaxNode filterMaxNode;
         private FilteredImageNode filteredImageNode;
-        private EdittedImageNode edittedImageNode;
+        private EditedImageNode editedImageNode;
         private DataTypeNode dataTypeNode;
         private DataPointsNode dataPointsNode;
         private AxisTextBoxNode axisTextBoxNode;
@@ -39,19 +39,19 @@ namespace PlotDigitizer.Core.Tests.Models
             filterMinNode = new FilterMinNode(inputImageNode);
             filterMaxNode = new FilterMaxNode(inputImageNode);
             filteredImageNode = new FilteredImageNode(croppedImageNode, filterMinNode, filterMaxNode, imageService);
-            edittedImageNode = new EdittedImageNode(filteredImageNode);
+            editedImageNode = new EditedImageNode(filteredImageNode);
             dataTypeNode = new DataTypeNode(inputImageNode);
-            dataPointsNode = new DataPointsNode(edittedImageNode, dataTypeNode, imageService);
+            dataPointsNode = new DataPointsNode(editedImageNode, dataTypeNode, imageService);
             axisTextBoxNode = new AxisTextBoxNode(axisLocationNode);
             axisLimitNode = new AxisLimitNode(axisTextBoxNode);
             axisLogBaseNode = new AxisLogBaseNode(inputImageNode);
-            dataNode = new DataNode(edittedImageNode, axisLimitNode, axisLogBaseNode, dataPointsNode, imageService);
+            dataNode = new DataNode(editedImageNode, axisLimitNode, axisLogBaseNode, dataPointsNode, imageService);
 
             model = new UpdatableModel(
                 inputImageNode,
                 croppedImageNode,
                 filteredImageNode,
-                edittedImageNode,
+                editedImageNode,
                 dataPointsNode,
                 dataNode);
         }
@@ -126,20 +126,20 @@ namespace PlotDigitizer.Core.Tests.Models
         }
 
         // ──────────────────────────────────────────────────────────────────
-        // EdittedImage property
+        // EditedImage property
         // ──────────────────────────────────────────────────────────────────
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void EdittedImage_WhenSet_RaisesPropertyChangedWithCorrectName()
+        public void EditedImage_WhenSet_RaisesPropertyChangedWithCorrectName()
         {
             string changedName = null;
             model.PropertyChanged += (s, e) => changedName = e.PropertyName;
 
             using var img = new Image<Rgba, byte>(4, 4);
-            model.EdittedImage = img;
+            model.EditedImage = img;
 
-            Assert.AreEqual(nameof(model.EdittedImage), changedName);
+            Assert.AreEqual(nameof(model.EditedImage), changedName);
         }
 
         // ──────────────────────────────────────────────────────────────────
@@ -201,7 +201,7 @@ namespace PlotDigitizer.Core.Tests.Models
         public void PropertyOutdated_WhenInputImageNodeBecomesOutdated_IsRelayedWithCorrectName()
         {
             // Assigning croppedImage invalidates the whole downstream chain
-            // (FilteredImage, EdittedImage, DataPoints, Data), so several PropertyOutdated
+            // (FilteredImage, EditedImage, DataPoints, Data), so several PropertyOutdated
             // events fire.  Collect all names; FilteredImage must be present.
             var outdatedNames = new System.Collections.Generic.List<string>();
             model.PropertyOutdated += (s, name) => outdatedNames.Add(name);

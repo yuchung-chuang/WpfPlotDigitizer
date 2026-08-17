@@ -13,18 +13,15 @@ namespace PlotDigitizer.Core.Tests.Models
     /// <summary>
     /// Tests for <see cref="DataNode"/>.
     ///
-    /// BUG DOCUMENTED: <see cref="DataNode"/> reads <c>edittedImage.Data.Size</c> inside
-    /// <c>Update()</c> but does NOT call <c>DependsOn(edittedImage)</c> in its constructor.
-    /// When <c>dataPoints.Data</c> is non-null and <c>edittedImage.Data</c> is null,
-    /// <c>Update()</c> throws <see cref="NullReferenceException"/> (see
-    /// <see cref="GetUpdatedData_WhenDataPointsNonNullAndEdittedImageDataNull_ThrowsNullReferenceException"/>).
-    /// Location: <c>PlotDigitizer.Core\Models\UpdatableModelNodes\DataNode.cs</c>, line 33 (missing null guard).
+    /// <see cref="DataNode"/> does not need an explicit <c>DependsOn(editedImage)</c> — it
+    /// already depends on <c>editedImage</c> transitively through <c>dataPoints</c>, so
+    /// invalidation cascades correctly. See
+    /// <see cref="Outdated_WhenEditedImageChanges_CascadesThroughDataPoints"/>.
     ///
-    /// NOTE — retraction of earlier bug claim: it was previously claimed that a change to
-    /// <c>edittedImage</c> does NOT invalidate <see cref="DataNode"/>. This was incorrect.
-    /// <see cref="DataNode"/> depends on <c>dataPoints</c>, and <c>dataPoints</c> depends on
-    /// <c>edittedImage</c>, so the invalidation does cascade transitively. See
-    /// <see cref="Outdated_WhenEdittedImageChanges_CascadesThroughDataPoints"/>.
+    /// <c>Update()</c> does guard against <c>editedImage.Data</c> being null (e.g. when the
+    /// image has been cleared) before reading <c>editedImage.Data.Size</c>, returning null
+    /// instead of throwing. See
+    /// <see cref="GetUpdatedData_WhenDataPointsNonNullAndEditedImageDataNull_ReturnsNull"/>.
     /// </summary>
     [TestClass]
     public class DataNodeTests
@@ -36,7 +33,7 @@ namespace PlotDigitizer.Core.Tests.Models
         private FilterMinNode filterMin;
         private FilterMaxNode filterMax;
         private FilteredImageNode filteredImage;
-        private EdittedImageNode edittedImage;
+        private EditedImageNode editedImage;
         private DataTypeNode dataType;
         private DataPointsNode dataPoints;
         private AxisTextBoxNode axisTextBox;
@@ -54,13 +51,13 @@ namespace PlotDigitizer.Core.Tests.Models
             filterMin = new FilterMinNode(inputImage);
             filterMax = new FilterMaxNode(inputImage);
             filteredImage = new FilteredImageNode(croppedImage, filterMin, filterMax, imageService);
-            edittedImage = new EdittedImageNode(filteredImage);
+            editedImage = new EditedImageNode(filteredImage);
             dataType = new DataTypeNode(inputImage);
-            dataPoints = new DataPointsNode(edittedImage, dataType, imageService);
+            dataPoints = new DataPointsNode(editedImage, dataType, imageService);
             axisTextBox = new AxisTextBoxNode(axisLocation);
             axisLimit = new AxisLimitNode(axisTextBox);
             axisLogBase = new AxisLogBaseNode(inputImage);
-            dataNode = new DataNode(edittedImage, axisLimit, axisLogBase, dataPoints, imageService);
+            dataNode = new DataNode(editedImage, axisLimit, axisLogBase, dataPoints, imageService);
         }
 
         // ──────────────────────────────────────────────────────────────────
@@ -84,7 +81,7 @@ namespace PlotDigitizer.Core.Tests.Models
         }
 
         // ──────────────────────────────────────────────────────────────────
-        // Happy path: dataPoints has data and edittedImage has data
+        // Happy path: dataPoints has data and editedImage has data
         // ──────────────────────────────────────────────────────────────────
 
         [TestMethod]
@@ -97,13 +94,13 @@ namespace PlotDigitizer.Core.Tests.Models
             var axLim = new RectangleD(0, 1, 10, 20);
             var logBase = new PointD(10, 10);
 
-            // edittedImage must be seeded BEFORE dataPoints so that the edittedImage.Updated
+            // editedImage must be seeded BEFORE dataPoints so that the editedImage.Updated
             // event (which invalidates dataPoints via DependsOn) fires before we mark
             // dataPoints updated by assigning dataPoints.Data.
             axisLimit.Data = axLim;
             axisLogBase.Data = logBase;
             using var img = new Image<Rgba, byte>(4, 4);
-            edittedImage.Data = img;
+            editedImage.Data = img;
             dataPoints.Data = points; // last: marks dataPoints Updated; nothing invalidates it after this
 
             var result = dataNode.GetUpdatedData();
@@ -124,7 +121,7 @@ namespace PlotDigitizer.Core.Tests.Models
             axisLimit.Data = axLim;
             axisLogBase.Data = logBase;
             using var img = new Image<Rgba, byte>(6, 8);
-            edittedImage.Data = img;
+            editedImage.Data = img;
             dataPoints.Data = points; // last
 
             dataNode.GetUpdatedData();
@@ -135,41 +132,41 @@ namespace PlotDigitizer.Core.Tests.Models
         }
 
         // ──────────────────────────────────────────────────────────────────
-        // BUG: NullReferenceException when dataPoints.Data is non-null but
-        //      edittedImage.Data is null (no null guard in DataNode.Update).
+        // editedImage.Data null (e.g. cleared) yields null result, no throw
         // ──────────────────────────────────────────────────────────────────
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetUpdatedData_WhenDataPointsNonNullAndEdittedImageDataNull_ThrowsNullReferenceException()
+        public void GetUpdatedData_WhenDataPointsNonNullAndEditedImageDataNull_ReturnsNull()
         {
-            // edittedImage.Data is null (default after construction — never assigned)
-            edittedImage.Data = null; // explicitly null and mark updated
+            // editedImage.Data is null (default after construction — never assigned)
+            editedImage.Data = null; // explicitly null and mark updated
 
             var points = new List<PointD> { new PointD(1, 2) };
             dataPoints.Data = points;
             axisLimit.Data = new RectangleD(0, 1, 10, 20);
             axisLogBase.Data = new PointD(10, 10);
 
-            // Current behaviour: NullReferenceException because Update() does
-            // edittedImage.Data.Size without a null guard.
-            Assert.ThrowsException<NullReferenceException>(() => dataNode.GetUpdatedData());
+            var result = dataNode.GetUpdatedData();
+
+            Assert.IsNull(result);
+            Assert.AreEqual(0, imageService.TransformDataCallCount);
         }
 
         // ──────────────────────────────────────────────────────────────────
-        // Invalidation cascades through dataPoints when edittedImage changes
+        // Invalidation cascades through dataPoints when editedImage changes
         // ──────────────────────────────────────────────────────────────────
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Outdated_WhenEdittedImageChanges_CascadesThroughDataPoints()
+        public void Outdated_WhenEditedImageChanges_CascadesThroughDataPoints()
         {
-            // Seed: edittedImage first, then dataPoints last so both are Updated.
+            // Seed: editedImage first, then dataPoints last so both are Updated.
             imageService.TransformDataResult = new List<PointD>();
             axisLimit.Data = new RectangleD(0, 1, 10, 20);
             axisLogBase.Data = new PointD(10, 10);
             using var img1 = new Image<Rgba, byte>(4, 4);
-            edittedImage.Data = img1;
+            editedImage.Data = img1;
             dataPoints.Data = new List<PointD> { new PointD(1, 2) };
 
             dataNode.GetUpdatedData(); // compute once: all three dependencies satisfied
@@ -178,16 +175,16 @@ namespace PlotDigitizer.Core.Tests.Models
             var outdatedRaised = false;
             dataNode.Outdated += (s, e) => outdatedRaised = true;
 
-            // Changing edittedImage fires edittedImage.Updated
-            // → dataPoints.OnOutdated() (DataPointsNode depends on edittedImage)
+            // Changing editedImage fires editedImage.Updated
+            // → dataPoints.OnOutdated() (DataPointsNode depends on editedImage)
             // → dataPoints.Outdated fires
             // → dataNode.OnOutdated() (DataNode depends on dataPoints)
             // → dataNode.Outdated fires
             using var img2 = new Image<Rgba, byte>(8, 8);
-            edittedImage.Data = img2;
+            editedImage.Data = img2;
 
             Assert.IsTrue(outdatedRaised,
-                "dataNode must become outdated when edittedImage changes, via the dataPoints dependency.");
+                "dataNode must become outdated when editedImage changes, via the dataPoints dependency.");
             Assert.IsFalse(dataNode.IsUpdated,
                 "dataNode.IsUpdated must be false after the cascade.");
         }
@@ -227,8 +224,8 @@ namespace PlotDigitizer.Core.Tests.Models
             axisLimit.Data = new RectangleD(0, 1, 10, 20);
             axisLogBase.Data = new PointD(10, 10);
             using var img = new Image<Rgba, byte>(4, 4);
-            edittedImage.Data = img;
-            dataPoints.Data = points; // last: edittedImage already Updated, so this survives
+            editedImage.Data = img;
+            dataPoints.Data = points; // last: editedImage already Updated, so this survives
 
             dataNode.GetUpdatedData();
             dataNode.GetUpdatedData();

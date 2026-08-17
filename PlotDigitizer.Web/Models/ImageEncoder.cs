@@ -1,4 +1,4 @@
-﻿using Emgu.CV;
+using Emgu.CV;
 using Emgu.CV.Structure;
 
 using System;
@@ -13,7 +13,7 @@ namespace PlotDigitizer.Web.Models
 		public const string Input = "input";
 		public const string Cropped = "cropped";
 		public const string Filtered = "filtered";
-		public const string Editted = "editted";
+		public const string Edited = "edited";
 		public const string Editor = "editor";
 		public const string Preview = "preview";
 	}

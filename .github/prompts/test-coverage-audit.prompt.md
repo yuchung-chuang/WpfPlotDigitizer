@@ -13,11 +13,11 @@ This is an analysis task. Do not write tests — produce the backlog that test g
 1. **Measure the current state.** Run the suite and collect coverage:
 
 ```powershell
-dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj --filter "TestCategory!=UI"
-dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj --collect:"XPlat Code Coverage" --filter "TestCategory!=UI"
+dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj
+dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj --collect:"XPlat Code Coverage"
 ```
 
-Report the real numbers, and count how many "tests" assert nothing — `QuickTest.TempFolderTest` asserts nothing and `CroppedImageNodeTests` is an `Assert.Fail()` scaffold, so headline counts overstate the true coverage.
+Report the real numbers, and count how many "tests" assert nothing — `QuickTest.TempFolderTest` asserts nothing, so headline counts overstate the true coverage. FlaUI UI-category tests live in the separate `PlotDigitizer.WPF.Test` project and require an interactive desktop session to run.
 
 2. **Map what exists to what is tested.** Enumerate public types in `PlotDigitizer.Core`, `PlotDigitizer.WPF`, `PlotDigitizer.CLI`, and `PlotDigitizer.Web`, and mark each as covered, partially covered, or untested. Remember that `ModelTests.cs` is excluded from compilation via `<Compile Remove>`, so anything it appears to cover is not actually running.
 

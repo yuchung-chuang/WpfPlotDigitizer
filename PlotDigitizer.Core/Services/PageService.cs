@@ -47,7 +47,6 @@ namespace PlotDigitizer.Core
 		public void Initialise()
 		{
 			NavigateTo(Pages[0]);
-			//CurrentPage = serviceProvider.GetRequiredService(Pages[0]) as ViewModelBase;
 
 			editPageScope = serviceScopeFactory.CreateScope();
 

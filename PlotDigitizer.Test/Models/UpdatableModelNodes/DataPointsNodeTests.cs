@@ -19,12 +19,12 @@ namespace PlotDigitizer.Core.Tests.Models
         private FilterMinNode filterMin;
         private FilterMaxNode filterMax;
         private FilteredImageNode filteredImage;
-        private EdittedImageNode edittedImage;
+        private EditedImageNode editedImage;
         private DataTypeNode dataType;
         private DataPointsNode dataPoints;
 
         /// <summary>
-        /// Kept alive for the duration of each test so that <see cref="EdittedImageNode"/>
+        /// Kept alive for the duration of each test so that <see cref="EditedImageNode"/>
         /// can call <c>filteredImage.Data?.Copy()</c> without accessing freed memory.
         /// Disposed in <see cref="OnTestCleanup"/>.
         /// </summary>
@@ -40,9 +40,9 @@ namespace PlotDigitizer.Core.Tests.Models
             filterMin = new FilterMinNode(inputImage);
             filterMax = new FilterMaxNode(inputImage);
             filteredImage = new FilteredImageNode(croppedImage, filterMin, filterMax, imageService);
-            edittedImage = new EdittedImageNode(filteredImage);
+            editedImage = new EditedImageNode(filteredImage);
             dataType = new DataTypeNode(inputImage);
-            dataPoints = new DataPointsNode(edittedImage, dataType, imageService);
+            dataPoints = new DataPointsNode(editedImage, dataType, imageService);
         }
 
         [TestCleanup]
@@ -50,10 +50,10 @@ namespace PlotDigitizer.Core.Tests.Models
 
         /// <summary>
         /// Seeds <see cref="filteredImage"/> with a live image so that
-        /// <see cref="EdittedImageNode"/> can copy it.  The image is stored in
+        /// <see cref="EditedImageNode"/> can copy it.  The image is stored in
         /// <see cref="seedImage"/> and disposed by <see cref="OnTestCleanup"/>.
         /// </summary>
-        private void SeedEdittedImage()
+        private void SeedEditedImage()
         {
             seedImage = new Image<Rgba, byte>(4, 4);
             filteredImage.Data = seedImage;
@@ -92,7 +92,7 @@ namespace PlotDigitizer.Core.Tests.Models
             var expected = new List<PointD> { new PointD(1, 2) };
             imageService.ContinuousPointsResult = expected;
 
-            SeedEdittedImage();
+            SeedEditedImage();
             dataType.Data = DataType.Continuous;
 
             var result = dataPoints.GetUpdatedData();
@@ -113,7 +113,7 @@ namespace PlotDigitizer.Core.Tests.Models
             var expected = new List<PointD> { new PointD(3, 4) };
             imageService.DiscretePointsResult = expected;
 
-            SeedEdittedImage();
+            SeedEditedImage();
             dataType.Data = DataType.Discrete;
 
             var result = dataPoints.GetUpdatedData();
@@ -131,7 +131,7 @@ namespace PlotDigitizer.Core.Tests.Models
         [TestCategory("Unit")]
         public void GetUpdatedData_AfterDataTypeChanges_Recomputes()
         {
-            SeedEdittedImage();
+            SeedEditedImage();
             dataType.Data = DataType.Continuous;
             dataPoints.GetUpdatedData();
 
@@ -143,14 +143,14 @@ namespace PlotDigitizer.Core.Tests.Models
         }
 
         // ──────────────────────────────────────────────────────────────────
-        // Recomputes when edittedImage changes
+        // Recomputes when editedImage changes
         // ──────────────────────────────────────────────────────────────────
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetUpdatedData_AfterEdittedImageChanges_Recomputes()
+        public void GetUpdatedData_AfterEditedImageChanges_Recomputes()
         {
-            SeedEdittedImage();
+            SeedEditedImage();
             dataType.Data = DataType.Continuous;
             dataPoints.GetUpdatedData();
 
@@ -169,7 +169,7 @@ namespace PlotDigitizer.Core.Tests.Models
         [TestCategory("Unit")]
         public void GetUpdatedData_CalledTwiceWithNoChange_DoesNotRecompute()
         {
-            SeedEdittedImage();
+            SeedEditedImage();
             dataType.Data = DataType.Continuous;
 
             dataPoints.GetUpdatedData();
@@ -186,7 +186,7 @@ namespace PlotDigitizer.Core.Tests.Models
         [TestCategory("Unit")]
         public void Outdated_WhenDataTypeChanges_IsRaised()
         {
-            SeedEdittedImage();
+            SeedEditedImage();
             dataType.Data = DataType.Continuous;
             dataPoints.GetUpdatedData();
 

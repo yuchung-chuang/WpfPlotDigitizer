@@ -34,7 +34,7 @@ namespace PlotDigitizer.Web.Pages
 				ImageKind.Input => model.InputImage,
 				ImageKind.Cropped => WorkflowService.HasAxisLocation(model.Setting) ? model.CroppedImage : null,
 				ImageKind.Filtered => WorkflowService.HasAxisLocation(model.Setting) ? model.FilteredImage : null,
-				ImageKind.Editted => WorkflowService.HasAxisLocation(model.Setting) ? model.EdittedImage : null,
+				ImageKind.Edited => WorkflowService.HasAxisLocation(model.Setting) ? model.EditedImage : null,
 				ImageKind.Editor => state.EditService.IsInitialised ? state.EditService.CurrentObject : null,
 				ImageKind.Preview => BuildPreview(state),
 				_ => null,
@@ -64,11 +64,11 @@ namespace PlotDigitizer.Web.Pages
 		private static Emgu.CV.Image<Emgu.CV.Structure.Rgba, byte> BuildPreview(DigitizerState state)
 		{
 			var model = state.Model;
-			if (!WorkflowService.HasAxisLocation(model.Setting) || model.EdittedImage is null) {
+			if (!WorkflowService.HasAxisLocation(model.Setting) || model.EditedImage is null) {
 				return null;
 			}
 
-			var preview = model.EdittedImage.Copy();
+			var preview = model.EditedImage.Copy();
 			var points = model.DataPoints;
 			if (points is null) {
 				return preview;

@@ -1,4 +1,4 @@
-﻿using Emgu.CV;
+using Emgu.CV;
 using Emgu.CV.Structure;
 
 using PlotDigitizer.Core;
@@ -19,11 +19,11 @@ namespace PlotDigitizer.Web.Models
 		public Model(InputImageNode inputImage,
 			CroppedImageNode croppedImage,
 			FilteredImageNode filteredImage,
-			EdittedImageNode edittedImage,
+			EditedImageNode editedImage,
 			DataPointsNode dataPoints,
 			DataNode data,
 			Setting setting)
-			: base(inputImage, croppedImage, filteredImage, edittedImage, dataPoints, data)
+			: base(inputImage, croppedImage, filteredImage, editedImage, dataPoints, data)
 		{
 			Setting = setting;
 
@@ -44,7 +44,7 @@ namespace PlotDigitizer.Web.Models
 
 		public string FilteredImageUrl => UrlFor(ImageKind.Filtered, FilteredImage);
 
-		public string EdittedImageUrl => UrlFor(ImageKind.Editted, EdittedImage);
+		public string EditedImageUrl => UrlFor(ImageKind.Edited, EditedImage);
 
 		public int VersionOf(string propertyName) =>
 			versions.TryGetValue(propertyName, out var version) ? version : 0;
@@ -67,7 +67,7 @@ namespace PlotDigitizer.Web.Models
 				ImageKind.Input => nameof(InputImage),
 				ImageKind.Cropped => nameof(CroppedImage),
 				ImageKind.Filtered => nameof(FilteredImage),
-				_ => nameof(EdittedImage),
+				_ => nameof(EditedImage),
 			};
 			return $"/image/{kind}?v={VersionOf(property)}";
 		}

@@ -1,4 +1,4 @@
-﻿using Emgu.CV;
+using Emgu.CV;
 using Emgu.CV.Structure;
 using Microsoft.Extensions.Logging;
 using System;
@@ -116,7 +116,7 @@ namespace PlotDigitizer.Core
                 return;
             }
 
-            Model.EdittedImage = Image;
+            Model.EditedImage = Image;
             logger?.LogInformation("Set the edited image to the model.");
         }
 

@@ -1,4 +1,4 @@
-﻿using Emgu.CV;
+using Emgu.CV;
 using Emgu.CV.Structure;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -81,7 +81,7 @@ namespace PlotDigitizer.Web.Services
 				return;
 			}
 
-			Model.EdittedImage = EditService.CurrentObject.Copy();
+			Model.EditedImage = EditService.CurrentObject.Copy();
 			committedEditIndex = EditService.Index;
 		}
 
@@ -131,7 +131,7 @@ namespace PlotDigitizer.Web.Services
 			yield return scope.ServiceProvider.GetRequiredService<InputImageNode>().Data;
 			yield return scope.ServiceProvider.GetRequiredService<CroppedImageNode>().Data;
 			yield return scope.ServiceProvider.GetRequiredService<FilteredImageNode>().Data;
-			yield return scope.ServiceProvider.GetRequiredService<EdittedImageNode>().Data;
+			yield return scope.ServiceProvider.GetRequiredService<EditedImageNode>().Data;
 		}
 	}
 }

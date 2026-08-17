@@ -1,6 +1,6 @@
-﻿@model PlotDigitizer.Web.Pages.DataPageModel
+@model PlotDigitizer.Web.Pages.DataPageModel
 @{
-	var image = Model.Model.EdittedImage;
+	var image = Model.Model.EditedImage;
 	var token = System.DateTime.UtcNow.Ticks;
 	var preview = Model.Data.Take(200).ToList();
 	string N(double value) => double.IsNaN(value)

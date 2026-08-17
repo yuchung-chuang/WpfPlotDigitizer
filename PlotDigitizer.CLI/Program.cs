@@ -36,7 +36,7 @@ namespace PlotDigitizer.CLI
 			var rootCommand = ConfigureCommand();
 
 			var services = new ServiceCollection()
-				.AddTransient<IImageService, ImageService>()
+				.AddTransient<IImageService, EmguCvService>()
 				.AddModel()
 				
 				.AddLogging(builder =>

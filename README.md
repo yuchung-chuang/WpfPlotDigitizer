@@ -11,8 +11,6 @@ A simple, powerful application that helps you digitize data from images.
 ![.net](https://img.shields.io/badge/.net-8.0-blue) 
 ![lanugage](https://img.shields.io/badge/C%23-12-blue)
 
-[![Build status](https://ci.appveyor.com/api/projects/status/github/alex1392/WpfPlotDigitizer?branch=master&svg=true)](https://ci.appveyor.com/project/alex1392/wpfplotdigitizer)
-
 ![license](https://img.shields.io/badge/license-MIT-blue)
 
 ## Install
@@ -20,6 +18,8 @@ A simple, powerful application that helps you digitize data from images.
 Windows installers and portable versions (single .exe file) can be found in [releases page](https://github.com/alex1392/WpfPlotDigitizer/releases). Legacy Windows (XP, 7, 8) requires .NET 8.0 runtime installed.
 
 Web version is available at [PlotDigitizer Web](https://plot-digitizer-g0embmcpc2deg5ah.francecentral-01.azurewebsites.net/).
+
+There is currently no installer project in this repo (the legacy Visual Studio Installer Projects `.vdproj` was removed, since it can only be built from full Visual Studio with that extension installed). A future Windows installer should use the [WiX Toolset](https://wixtoolset.org/) instead, which ships a `dotnet`-buildable SDK-style project and produces a real `.msi` without requiring Visual Studio.
 
 ## Use cases
 
