@@ -1,0 +1,1 @@
+dotnet publish .\PlotDigitizer.Web.csproj --configuration Release --runtime win-x86 --self-contained false --output .\publish\win-x86
