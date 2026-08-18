@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+    <link rel="stylesheet" href="app.css" />
+    <HeadOutlet @rendermode="InteractiveServer" />
+</head>
+<body>
+    <!--
+        App is the static "document" component: it always renders exactly once, as part of the
+        ordinary HTTP request, and never runs again once the browser opens the SignalR circuit.
+        Routes is the component actually marked with the interactive render mode below, so
+        Routes.razor (not this file) is where the session-id handoff across the
+        prerender/circuit boundary lives. See Routes.razor and Services/CircuitSessionKey.cs.
+    -->
+    <Routes @rendermode="InteractiveServer" />
+    <script src="_framework/blazor.web.js"></script>
+</body>
+</html>

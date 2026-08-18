@@ -1,0 +1,68 @@
+﻿@implements IDisposable
+@inject IHttpContextAccessor HttpContextAccessor
+@inject PersistentComponentState ApplicationState
+@inject CircuitSessionKey SessionKey
+
+<Router AppAssembly="typeof(Program).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="routeData" DefaultLayout="typeof(MainLayout)" />
+        <FocusOnNavigate RouteData="routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <PageTitle>Not found</PageTitle>
+        <LayoutView Layout="typeof(MainLayout)">
+            <p role="alert">Sorry, there's nothing at this address.</p>
+        </LayoutView>
+    </NotFound>
+</Router>
+
+@code {
+    // Routes, not App, is the component actually marked with an interactive render mode
+    // (`@rendermode="InteractiveServer"` is set where App uses <Routes ... />). That means Routes
+    // is the one that runs twice, in two different DI scopes: once during static prerendering as
+    // part of the ordinary HTTP request (HttpContext is real here), and again for real once the
+    // browser opens the SignalR circuit (HttpContext is never available there, even though this is
+    // still logically "the same" component). App itself only ever renders once, statically, so it
+    // cannot be used to bridge anything into the circuit's scope.
+    //
+    // A scoped service set during the first pass is not the instance the second pass resolves, so
+    // CircuitSessionKey is bridged across the two passes with PersistentComponentState, the
+    // framework's supported mechanism for exactly this handoff.
+    private PersistingComponentStateSubscription persistingSubscription;
+
+    protected override void OnInitialized()
+    {
+        persistingSubscription = ApplicationState.RegisterOnPersisting(PersistSessionId);
+
+        if (ApplicationState.TryTakeFromJson<string>("sessionId", out var restored) && restored is not null)
+        {
+            // Second pass: the interactive circuit is starting. Recover the id captured below.
+            SessionKey.Value = restored;
+            return;
+        }
+
+        // First pass: a real HttpContext is available because this is still an ordinary request.
+        var context = HttpContextAccessor.HttpContext;
+        if (context is null)
+        {
+            return;
+        }
+
+        // Touch the session so a Set-Cookie header goes out. ASP.NET Core never sends one until
+        // something is written, and every request would otherwise look like a brand new visitor.
+        if (string.IsNullOrEmpty(context.Session.GetString("plotdigitizer")))
+        {
+            context.Session.SetString("plotdigitizer", DateTimeOffset.UtcNow.ToString("O"));
+        }
+
+        SessionKey.Value = context.Session.Id;
+    }
+
+    private Task PersistSessionId()
+    {
+        ApplicationState.PersistAsJson("sessionId", SessionKey.Value);
+        return Task.CompletedTask;
+    }
+
+    public void Dispose() => persistingSubscription.Dispose();
+}

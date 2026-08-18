@@ -1,0 +1,18 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page">
+	<header class="page-header">
+		<h2>PlotDigitizer &mdash; Blazor spike</h2>
+		<nav>
+			<NavLink href="/" Match="NavLinkMatch.All">Load</NavLink>
+			<NavLink href="/filter">Filter</NavLink>
+		</nav>
+		<p class="text-muted">
+			A disposable, timeboxed evaluation of Blazor Server against the Razor Pages
+			<code>PlotDigitizer.Web</code> app. Only Load and Filter are implemented.
+		</p>
+	</header>
+	<main>
+		@Body
+	</main>
+</div>

@@ -1,0 +1,66 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@inject IDigitizerStateAccessor StateAccessor
+@inject ImageSourceService ImageSource
+
+<PageTitle>Load</PageTitle>
+
+<h1>Load</h1>
+<p class="text-muted">
+	Upload an image, then go to <a href="/filter">Filter</a>. This spike skips real axis
+	calibration: the whole uploaded image is treated as the region to filter.
+</p>
+
+<InputFile OnChange="OnFileSelectedAsync" accept="image/*" />
+
+@if (!string.IsNullOrEmpty(error))
+{
+	<p class="text-danger">@error</p>
+}
+
+@if (StateAccessor.Model.InputImage is not null)
+{
+	<p>
+		Loaded: @StateAccessor.Model.InputImage.Width &times; @StateAccessor.Model.InputImage.Height px
+	</p>
+	<img src="@imageUrl" alt="Uploaded plot" style="max-width: 500px;" />
+}
+
+@code {
+	private string? error;
+	private string imageUrl = "";
+
+	protected override void OnInitialized()
+	{
+		RefreshImageUrl();
+	}
+
+	private async Task OnFileSelectedAsync(InputFileChangeEventArgs e)
+	{
+		error = null;
+
+		var result = await ImageSource.FromUploadAsync(e.File);
+		if (!result.IsValid || result.Image is null) {
+			error = result.Error;
+			return;
+		}
+
+		var model = StateAccessor.Model;
+		model.InputImage = result.Image;
+
+		// No Axis page in this spike, so hand CroppedImageNode a full-frame region directly
+		// instead of leaving Setting.AxisLocation at its zero-size default, which would make
+		// CropImage throw.
+		StateAccessor.Setting.AxisLocation = new RectangleD(0, 0, result.Image.Width, result.Image.Height);
+
+		RefreshImageUrl();
+	}
+
+	private void RefreshImageUrl()
+	{
+		// A plain cache-busting counter is enough here: unlike the Razor Pages Model, this spike
+		// does not need per-node version tracking because the component re-renders its own markup
+		// (including this string) on every state change already.
+		imageUrl = $"/image/{ImageKind.Input}?t={DateTime.UtcNow.Ticks}";
+	}
+}

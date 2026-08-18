@@ -1,0 +1,38 @@
+html, body {
+	font-family: Segoe UI, Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+.page {
+	max-width: 960px;
+	margin: 0 auto;
+	padding: 1rem 1.5rem 3rem;
+}
+
+.page-header nav a {
+	margin-right: 1rem;
+}
+
+.page-header nav a.active {
+	font-weight: bold;
+}
+
+.filter-layout {
+	display: flex;
+	gap: 2rem;
+	flex-wrap: wrap;
+}
+
+.filter-controls label {
+	display: block;
+	margin-bottom: 0.35rem;
+}
+
+.text-danger {
+	color: #b00020;
+}
+
+.text-muted {
+	color: #6c757d;
+}

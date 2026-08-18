@@ -1,0 +1,93 @@
+﻿@page "/filter"
+@rendermode InteractiveServer
+@inject IDigitizerStateAccessor StateAccessor
+@using Emgu.CV.Structure
+@using System.Diagnostics
+
+<PageTitle>Filter</PageTitle>
+
+<h1>Filter</h1>
+
+@if (StateAccessor.Model.InputImage is null)
+{
+	<p>Upload an image on the <a href="/">Load</a> page first.</p>
+}
+else
+{
+	<p class="text-muted">
+		Every slider tick is applied and re-rendered immediately &mdash; unlike
+		<code>filterPage.js</code> in the Razor Pages app, there is no artificial debounce here, so
+		this is the page to drag hard on to compare update behaviour.
+	</p>
+
+	<div class="filter-layout">
+		<div class="filter-controls">
+			<h3>Min</h3>
+			<label>R <input type="range" min="0" max="255" @bind="minR" @bind:event="oninput" @bind:after="ApplyFilter" /> @minR</label>
+			<label>G <input type="range" min="0" max="255" @bind="minG" @bind:event="oninput" @bind:after="ApplyFilter" /> @minG</label>
+			<label>B <input type="range" min="0" max="255" @bind="minB" @bind:event="oninput" @bind:after="ApplyFilter" /> @minB</label>
+
+			<h3>Max</h3>
+			<label>R <input type="range" min="0" max="255" @bind="maxR" @bind:event="oninput" @bind:after="ApplyFilter" /> @maxR</label>
+			<label>G <input type="range" min="0" max="255" @bind="maxG" @bind:event="oninput" @bind:after="ApplyFilter" /> @maxG</label>
+			<label>B <input type="range" min="0" max="255" @bind="maxB" @bind:event="oninput" @bind:after="ApplyFilter" /> @maxB</label>
+
+			<p>
+				Server updates so far: <strong>@updateCount</strong><br />
+				Last recompute: <strong>@lastElapsedMs ms</strong>
+			</p>
+		</div>
+		<div class="filter-preview">
+			<img src="@imageUrl" alt="Filtered plot" style="max-width: 500px;" />
+		</div>
+	</div>
+}
+
+@code {
+	private int minR;
+	private int minG;
+	private int minB;
+	private int maxR = 254;
+	private int maxG = 254;
+	private int maxB = 254;
+	private int updateCount;
+	private long lastElapsedMs;
+	private string imageUrl = "";
+
+	protected override void OnInitialized()
+	{
+		var setting = StateAccessor.Setting;
+		var min = setting.FilterMin;
+		var max = setting.FilterMax;
+		minR = (int)min.Red;
+		minG = (int)min.Green;
+		minB = (int)min.Blue;
+		maxR = (int)max.Red;
+		maxG = (int)max.Green;
+		maxB = (int)max.Blue;
+		RefreshImageUrl();
+	}
+
+	private void ApplyFilter()
+	{
+		var stopwatch = Stopwatch.StartNew();
+
+		var setting = StateAccessor.Setting;
+		setting.FilterMin = new Rgba(minR, minG, minB, byte.MaxValue);
+		setting.FilterMax = new Rgba(maxR, maxG, maxB, byte.MaxValue);
+
+		// Force the recompute now, rather than waiting for the image endpoint's GET to trigger it
+		// lazily, so lastElapsedMs reflects the real Emgu InRange cost per drag tick instead of
+		// network/browser timing.
+		_ = StateAccessor.Model.FilteredImage;
+
+		updateCount++;
+		lastElapsedMs = stopwatch.ElapsedMilliseconds;
+		RefreshImageUrl();
+	}
+
+	private void RefreshImageUrl()
+	{
+		imageUrl = $"/image/{ImageKind.Filtered}?t={DateTime.UtcNow.Ticks}";
+	}
+}
