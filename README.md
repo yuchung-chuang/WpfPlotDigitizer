@@ -1,16 +1,15 @@
 # PlotDigitizer 
 
 <p align="center"> 
-  <img src="https://raw.githubusercontent.com/alex1392/WpfPlotDigitizer/master/WpfPlotDigitizer/app/resources/icon_digitizer.ico" alt="icon" width="200"/> 
+	<img src="demoResources/icon_digitizer.png" alt="icon" width="200"/>
 </p>
 
 A simple, powerful application that helps you digitize data from images.
 
-![releases](https://img.shields.io/badge/release-v2.0-blue) 
 ![platform](https://img.shields.io/badge/platform-Windows%20%7C%20Web-blue) 
+[![CI](https://github.com/yuchung-chuang/PlotDigitizer/actions/workflows/ci.yml/badge.svg)](https://github.com/yuchung-chuang/PlotDigitizer/actions/workflows/ci.yml)
+[![Web deployment](https://github.com/yuchung-chuang/PlotDigitizer/actions/workflows/web-cd.yml/badge.svg)](https://github.com/yuchung-chuang/PlotDigitizer/actions/workflows/web-cd.yml)
 ![.net](https://img.shields.io/badge/.net-8.0-blue) 
-![lanugage](https://img.shields.io/badge/C%23-12-blue)
-
 ![license](https://img.shields.io/badge/license-MIT-blue)
 
 ## Install
@@ -24,7 +23,7 @@ There is currently no installer project in this repo (the legacy Visual Studio I
 ## Use cases
 
 <p align="center"> 
-<img src="https://github.com/yuchung-chuang/PlotDigitizer/blob/v2/demoResources/schematics.png?raw=true" alt="Plot Digitizer Schematics" width="800" />
+<img src="demoResources/schematics.png" alt="Plot Digitizer Schematics" width="800" />
 </p>
 
 The data in journal articles or conference papers are usually published in the form of images, which creates a barrier for people who want to perform further statistical analysis. This application, Plot Digitizer, helps you extract data from any chart with ease, and includes advanced features such as OCR, editing, and filtering.
@@ -37,7 +36,7 @@ The data in journal articles or conference papers are usually published in the f
 	You can also manually adjust the location of the axes.
 
 	<p align="center"> 
-	<img src="https://github.com/yuchung-chuang/WpfPlotDigitizer/blob/v2/demoResources/axis%20page.png?raw=true" alt="Auto Get Axis" width="400" />
+	<img src="demoResources/axis%20page.png" alt="Auto Get Axis" width="400" />
 	</p>
 
 * **Auto detect axis limits**
@@ -47,7 +46,7 @@ The data in journal articles or conference papers are usually published in the f
 	Log-scale axis is supported as well.
 
 	<p align="center"> 
-	<img src="https://github.com/yuchung-chuang/WpfPlotDigitizer/blob/v2/demoResources/range%20page2.png?raw=true" alt="Auto Get Axis" width="400" />
+	<img src="demoResources/range%20page2.png" alt="Auto Get Axis" width="400" />
 	</p>
 
 * **Data filter by colors**
@@ -55,7 +54,7 @@ The data in journal articles or conference papers are usually published in the f
 	Considering there may be multiple data types in different colors, it could be useful to filter out the data you don't need.
 
 	<p align="center">
-	<img src="https://github.com/yuchung-chuang/WpfPlotDigitizer/blob/v2/demoResources/filter%20page.png?raw=true" alt="Filter Image" width="400">
+	<img src="demoResources/filter%20page.png" alt="Filter Image" width="400">
 	</p>
 	
 
@@ -73,7 +72,7 @@ The data in journal articles or conference papers are usually published in the f
 	* Clear border function
 
 	<p align="center">
-	<img src="https://github.com/yuchung-chuang/WpfPlotDigitizer/blob/v2/demoResources/edit%20page.png?raw=true" alt="Erase Image" width="400" />
+	<img src="demoResources/edit%20page.png" alt="Erase Image" width="400" />
 	</p>
 
 
@@ -83,12 +82,12 @@ The data in journal articles or conference papers are usually published in the f
 	
     * Continuous data: suitable for line chart or clustered data.
 	<p align="center">
-	<img src="https://github.com/yuchung-chuang/WpfPlotDigitizer/blob/v2/demoResources/data%20page.png?raw=true" alt="Adjust Data" width="400"/>
+	<img src="demoResources/data%20page.png" alt="Adjust Data" width="400"/>
 	</p>
 
 	* Discrete data: suitable for isolated data points, the centroid of each data point is captured. 
 	<p align="center">
-	<img src="https://github.com/yuchung-chuang/WpfPlotDigitizer/blob/v2/demoResources/discrete%20data.png?raw=true" alt="Adjust Data" width="400"/>
+	<img src="demoResources/discrete%20data.png" alt="Adjust Data" width="400"/>
 	</p>
 
 * **Modern UX design**
@@ -112,7 +111,7 @@ The data in journal articles or conference papers are usually published in the f
 	* online image (download from the image's Url address)
 
 	<p align="center"> 
-	<img src="https://github.com/yuchung-chuang/WpfPlotDigitizer/blob/v2/demoResources/load%20page.png?raw=true" alt="Load Image" width="400" />
+	<img src="demoResources/load%20page.png" alt="Load Image" width="400" />
 	</p>
 
 *  **Multiple export types**
@@ -127,7 +126,7 @@ PlotDigitizer uses a number of open source projects:
 
 ## Author : C. Y. C.
 
-<img  src="https://raw.githubusercontent.com/alex1392/WpfPlotDigitizer/master/WpfPlotDigitizer/app/resources/icon_cyc.png"  alt="cyc icon"  width="200"/>
+<img  src="demoResources/icon_cyc.png"  alt="cyc icon"  width="200"/>
 
 
 License
