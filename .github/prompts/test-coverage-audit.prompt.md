@@ -13,8 +13,8 @@ This is an analysis task. Do not write tests — produce the backlog that test g
 1. **Measure the current state.** Run the suite and collect coverage:
 
 ```powershell
-dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj
-dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj --collect:"XPlat Code Coverage"
+dotnet test .\PlotDigitizer.Core.Test\PlotDigitizer.Core.Test.csproj
+dotnet test .\PlotDigitizer.Core.Test\PlotDigitizer.Core.Test.csproj --collect:"XPlat Code Coverage"
 ```
 
 Report the real numbers, and count how many "tests" assert nothing — `QuickTest.TempFolderTest` asserts nothing, so headline counts overstate the true coverage. FlaUI UI-category tests live in the separate `PlotDigitizer.WPF.Test` project and require an interactive desktop session to run.

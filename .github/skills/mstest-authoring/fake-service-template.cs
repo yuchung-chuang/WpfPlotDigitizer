@@ -1,8 +1,8 @@
 // Template: hand-rolled fake for a PlotDigitizer.Core service interface.
-// There is no mocking library in PlotDigitizer.Test, so fakes are written by hand.
+// There is no mocking library in PlotDigitizer.Core.Test, so fakes are written by hand.
 //
 // Guidelines:
-//  - Put shared fakes in PlotDigitizer.Test/Fakes/ and mark them `internal sealed`.
+//  - Put shared fakes in PlotDigitizer.Core.Test/Fakes/ and mark them `internal sealed`.
 //  - Expose settable result properties so each test controls the return value.
 //  - Record call counts and last-received arguments so tests can assert on interactions.
 //  - Leave members a test does not need as NotImplementedException; that turns an

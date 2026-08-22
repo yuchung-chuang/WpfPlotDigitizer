@@ -34,8 +34,8 @@ var provider = new ServiceCollection()
 ```
 
 2. Drive the components through their public surface, then assert on the observable result.
-3. Tag every test `[TestCategory("Integration")]` and place it in `PlotDigitizer.Test/Integration/`.
-4. Run `dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj --filter "TestCategory=Integration"` and iterate.
+3. Tag every test `[TestCategory("Integration")]` and place it in `PlotDigitizer.Core.Test/Integration/`.
+4. Run `dotnet test .\PlotDigitizer.Core.Test\PlotDigitizer.Core.Test.csproj --filter "TestCategory=Integration"` and iterate.
 
 ## Priority targets
 

@@ -6,7 +6,7 @@ applyTo: "PlotDigitizer.WPF.Test/**"
 # PlotDigitizer.WPF.Test conventions
 
 This project holds every test that needs a real WPF runtime. It was split out of
-[PlotDigitizer.Test](../../PlotDigitizer.Test) so the main test project stays headless; see
+[PlotDigitizer.Core.Test](../../PlotDigitizer.Core.Test) so the main test project stays headless; see
 [tests.instructions.md](tests.instructions.md) for MSTest/fake/asset conventions shared with
 this project — they are not repeated here.
 
@@ -30,14 +30,14 @@ pattern for `Wpf/` tests.
 ## Shared fakes and assets, not duplicated
 
 This project does not maintain its own `Fakes/` or `Assets/` — its `.csproj` links them from
-`PlotDigitizer.Test` by path instead of copying them:
+`PlotDigitizer.Core.Test` by path instead of copying them:
 
 ```xml
-<Compile Include="..\PlotDigitizer.Test\Fakes\**\*.cs" Link="Fakes\%(RecursiveDir)%(Filename)%(Extension)" />
-<None Include="..\PlotDigitizer.Test\Assets\**\*" Link="Assets\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+<Compile Include="..\PlotDigitizer.Core.Test\Fakes\**\*.cs" Link="Fakes\%(RecursiveDir)%(Filename)%(Extension)" />
+<None Include="..\PlotDigitizer.Core.Test\Assets\**\*" Link="Assets\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
 ```
 
-Add a new fake or asset to `PlotDigitizer.Test` as usual; it becomes available here automatically
+Add a new fake or asset to `PlotDigitizer.Core.Test` as usual; it becomes available here automatically
 through the link. Do not copy-paste a fake or asset into this project.
 
 ## Running
@@ -53,5 +53,5 @@ dotnet test .\PlotDigitizer.WPF.Test\PlotDigitizer.WPF.Test.csproj --filter "Tes
 dotnet test .\PlotDigitizer.WPF.Test\PlotDigitizer.WPF.Test.csproj --filter "TestCategory!=UI"
 ```
 
-`PlotDigitizer.Test` itself has no `UI`-category tests and needs no filter — see
+`PlotDigitizer.Core.Test` itself has no `UI`-category tests and needs no filter — see
 [tests.instructions.md](tests.instructions.md).

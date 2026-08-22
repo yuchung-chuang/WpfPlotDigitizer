@@ -6,7 +6,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Include="..\PlotDigitizer.Test\Fakes\**\*.cs"
+		<Compile Include="..\PlotDigitizer.Core.Test\Fakes\**\*.cs"
 				 Link="Fakes\%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 
@@ -24,7 +24,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="..\PlotDigitizer.Test\Assets\**\*"
+		<None Include="..\PlotDigitizer.Core.Test\Assets\**\*"
 			  Link="Assets\%(RecursiveDir)%(Filename)%(Extension)"
 			  CopyToOutputDirectory="PreserveNewest" />
 	</ItemGroup>

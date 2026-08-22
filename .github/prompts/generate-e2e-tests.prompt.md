@@ -9,7 +9,7 @@ Generate end-to-end tests for: ${input:target:Surface to cover - Core pipeline, 
 
 Work through this sequence and do the work yourself.
 
-1. **Pick a fixture** from `PlotDigitizer.Test/Assets/`. Only add a new image if the existing ones cannot express the case — and if you do, register it with `CopyToOutputDirectory` in the test `csproj`, or it will never reach the output folder.
+1. **Pick a fixture** from `PlotDigitizer.Core.Test/Assets/`. Only add a new image if the existing ones cannot express the case — and if you do, register it with `CopyToOutputDirectory` in the test `csproj`, or it will never reach the output folder.
 
 2. **Drive the whole pipeline with nothing stubbed.** For the Core surface, compose the real container, assign `InputImage`, load a fully populated `Setting`, and read `Model.Data` — reading is what triggers the lazy computation. `ModelFacadeTests.ModelTest` is the reference example.
 
@@ -27,10 +27,10 @@ Work through this sequence and do the work yourself.
 
 6. **For the web surface**, note that `Microsoft.AspNetCore.Mvc.Testing` is not referenced. Propose that dependency change and wait for approval before adding it.
 
-7. **Place tests** in `PlotDigitizer.Test/EndToEnd/` with `[TestCategory("EndToEnd")]`, clean up temporary files and images in `[TestCleanup]`, then run:
+7. **Place tests** in `PlotDigitizer.Core.Test/EndToEnd/` with `[TestCategory("EndToEnd")]`, clean up temporary files and images in `[TestCleanup]`, then run:
 
 ```powershell
-dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj --filter "TestCategory=EndToEnd"
+dotnet test .\PlotDigitizer.Core.Test\PlotDigitizer.Core.Test.csproj --filter "TestCategory=EndToEnd"
 ```
 
 Report the fixtures used, the assertions chosen and why they are robust, the commands you ran with pass/fail counts, and the runtime.

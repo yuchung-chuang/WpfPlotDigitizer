@@ -1,9 +1,9 @@
 ---
 description: Testing conventions for the PlotDigitizer MSTest project.
-applyTo: "PlotDigitizer.Test/**"
+applyTo: "PlotDigitizer.Core.Test/**"
 ---
 
-# PlotDigitizer.Test conventions
+# PlotDigitizer.Core.Test conventions
 
 ## Framework and available packages
 
@@ -15,7 +15,7 @@ Use `[TestClass]`, `[TestMethod]`, `[TestInitialize]`, `[TestCleanup]`, and `[Da
 
 ## Categorize every new test
 
-Always add one category so the suite can be filtered: `"Unit"`, `"Integration"`, or `"EndToEnd"`. Desktop-automation tests are `"UI"`-tagged, but they live in the separate `PlotDigitizer.WPF.Test` project (see below), not here, so `PlotDigitizer.Test` itself runs entirely headless.
+Always add one category so the suite can be filtered: `"Unit"`, `"Integration"`, or `"EndToEnd"`. Desktop-automation tests are `"UI"`-tagged, but they live in the separate `PlotDigitizer.WPF.Test` project (see below), not here, so `PlotDigitizer.Core.Test` itself runs entirely headless.
 
 ```csharp
 [TestMethod]
@@ -25,15 +25,15 @@ public void Undo_AfterSingleEdit_RestoresPreviousObject() { }
 
 ```powershell
 # Run everything in this project - it's already headless, no filter needed
-dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj
+dotnet test .\PlotDigitizer.Core.Test\PlotDigitizer.Core.Test.csproj
 
 # One category, one class, or one test
-dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj --filter "TestCategory=Unit"
-dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj --filter "ClassName~EditServiceTests"
-dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj --filter "FullyQualifiedName=PlotDigitizer.Core.Tests.QuickTest.TempFolderTest"
+dotnet test .\PlotDigitizer.Core.Test\PlotDigitizer.Core.Test.csproj --filter "TestCategory=Unit"
+dotnet test .\PlotDigitizer.Core.Test\PlotDigitizer.Core.Test.csproj --filter "ClassName~EditServiceTests"
+dotnet test .\PlotDigitizer.Core.Test\PlotDigitizer.Core.Test.csproj --filter "FullyQualifiedName=PlotDigitizer.Core.Tests.QuickTest.TempFolderTest"
 
 # Coverage via the already-referenced coverlet collector
-dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj --collect:"XPlat Code Coverage"
+dotnet test .\PlotDigitizer.Core.Test\PlotDigitizer.Core.Test.csproj --collect:"XPlat Code Coverage"
 ```
 
 FlaUI desktop-automation tests (`[TestCategory("UI")]`) live in the separate `PlotDigitizer.WPF.Test` project, which requires an interactive Windows desktop session and cannot run headless. See [wpf-test.instructions.md](wpf-test.instructions.md) for its conventions.
@@ -44,7 +44,7 @@ Name tests `Method_Scenario_ExpectedOutcome`. Mirror the source layout: `Service
 
 ## Loading image assets
 
-Assets live in `Assets/` and are copied to the output directory by explicit `csproj` entries. **A new asset does not reach the output directory until you add a `CopyToOutputDirectory` entry for it in [PlotDigitizer.Test.csproj](../../PlotDigitizer.Test/PlotDigitizer.Test.csproj).**
+Assets live in `Assets/` and are copied to the output directory by explicit `csproj` entries. **A new asset does not reach the output directory until you add a `CopyToOutputDirectory` entry for it in [PlotDigitizer.Core.Test.csproj](../../PlotDigitizer.Core.Test/PlotDigitizer.Core.Test.csproj).**
 
 Existing tests load images through WPF pack URIs, which forces every test to construct a `System.Windows.Application` first:
 

@@ -1,11 +1,11 @@
 ---
 name: mstest-authoring
-description: Write and run MSTest tests for the PlotDigitizer solution, covering hand-rolled fakes, Emgu CV image assets, test categories, and targeted dotnet test filters. Use when adding or debugging tests in PlotDigitizer.Test.
+description: Write and run MSTest tests for the PlotDigitizer solution, covering hand-rolled fakes, Emgu CV image assets, test categories, and targeted dotnet test filters. Use when adding or debugging tests in PlotDigitizer.Core.Test.
 ---
 
 # Authoring MSTest tests for PlotDigitizer
 
-Use this when adding, running, or debugging tests in `PlotDigitizer.Test`.
+Use this when adding, running, or debugging tests in `PlotDigitizer.Core.Test`.
 
 ## Before you start
 
@@ -19,7 +19,7 @@ Use this when adding, running, or debugging tests in `PlotDigitizer.Test`.
 
 1. **Locate the behaviour.** Read the production code and its call sites. Tests must pin down what the code does, including quirks — several behaviours in this codebase are deliberate and surprising (see below).
 
-2. **Choose the level and category.** Every test in `PlotDigitizer.Test` gets exactly one:
+2. **Choose the level and category.** Every test in `PlotDigitizer.Core.Test` gets exactly one:
 
    | Category | Use for | Folder |
    | --- | --- | --- |
@@ -34,13 +34,13 @@ Use this when adding, running, or debugging tests in `PlotDigitizer.Test`.
 4. **Run the narrowest useful filter, then widen:**
 
 ```powershell
-dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj --filter "FullyQualifiedName=PlotDigitizer.Core.Tests.QuickTest.TempFolderTest"
-dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj --filter "ClassName~EditServiceTests"
-dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj --filter "TestCategory=Unit"
-dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj --collect:"XPlat Code Coverage"
+dotnet test .\PlotDigitizer.Core.Test\PlotDigitizer.Core.Test.csproj --filter "FullyQualifiedName=PlotDigitizer.Core.Tests.QuickTest.TempFolderTest"
+dotnet test .\PlotDigitizer.Core.Test\PlotDigitizer.Core.Test.csproj --filter "ClassName~EditServiceTests"
+dotnet test .\PlotDigitizer.Core.Test\PlotDigitizer.Core.Test.csproj --filter "TestCategory=Unit"
+dotnet test .\PlotDigitizer.Core.Test\PlotDigitizer.Core.Test.csproj --collect:"XPlat Code Coverage"
 ```
 
-`PlotDigitizer.Test` has no UI-category tests to filter out — it's already headless, so the full run is the standard local loop.
+`PlotDigitizer.Core.Test` has no UI-category tests to filter out — it's already headless, so the full run is the standard local loop.
 
 ## Loading image assets
 
@@ -58,7 +58,7 @@ if (!UriParser.IsKnownScheme("pack"))
 var image = new BitmapImage(new Uri(@"pack://siteoforigin:,,,/Assets/data.png")).ToBitmap().ToImage<Rgba, byte>();
 ```
 
-**A new asset only reaches the output directory once you add a `CopyToOutputDirectory` entry for it in `PlotDigitizer.Test.csproj`.** `Image<Rgba, byte>` holds unmanaged memory — dispose images you allocate, especially inside data-driven loops.
+**A new asset only reaches the output directory once you add a `CopyToOutputDirectory` entry for it in `PlotDigitizer.Core.Test.csproj`.** `Image<Rgba, byte>` holds unmanaged memory — dispose images you allocate, especially inside data-driven loops.
 
 ## Dependencies in tests
 
