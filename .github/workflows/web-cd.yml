@@ -1,4 +1,4 @@
-name: Web CD
+name: Web Deployment
 
 on:
   pull_request:
