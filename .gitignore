@@ -343,7 +343,7 @@ healthchecksdb
 
 .vscode/
 
-images/
+# images/
 
 .editorconfig
 
