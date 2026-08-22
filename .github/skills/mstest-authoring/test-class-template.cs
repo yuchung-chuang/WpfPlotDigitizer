@@ -1,5 +1,5 @@
 // Template: MSTest test class for PlotDigitizer.
-// Copy into PlotDigitizer.Test/<mirrored source folder>/ and adapt.
+// Copy into PlotDigitizer.Core.Test/<mirrored source folder>/ and adapt.
 //
 // Reminders:
 //  - Exactly one [TestCategory]: "Unit", "Integration", "EndToEnd", or "UI".

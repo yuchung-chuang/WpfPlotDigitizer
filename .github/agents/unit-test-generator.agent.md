@@ -27,11 +27,11 @@ Out of scope: anything spanning the DI graph (integration), the full image-to-da
 2. Enumerate the real branches: guard clauses, early returns, swapped arguments, `default` checks, null handling, and index arithmetic.
 3. Write one test per behaviour, named `Method_Scenario_ExpectedOutcome`, tagged `[TestCategory("Unit")]`.
 4. Use `[DataTestMethod]` + `[DataRow]` for value tables. The adapter also honours `[DataRow]` on a plain `[TestMethod]`, but `[DataTestMethod]` states the intent and matches the existing `ImageServiceTests`.
-5. Run `dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj --filter "ClassName~<YourTestClass>"` and iterate until green.
+5. Run `dotnet test .\PlotDigitizer.Core.Test\PlotDigitizer.Core.Test.csproj --filter "ClassName~<YourTestClass>"` and iterate until green.
 
 ## Dependencies
 
-There is no mocking library. Implement the Core interface directly as a fake in `PlotDigitizer.Test/Fakes/`, recording calls in public fields so tests can assert on them:
+There is no mocking library. Implement the Core interface directly as a fake in `PlotDigitizer.Core.Test/Fakes/`, recording calls in public fields so tests can assert on them:
 
 ```csharp
 internal sealed class FakeImageService : IImageService

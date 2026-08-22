@@ -9,7 +9,7 @@ on:
 
 env:
   DOTNET_VERSION: 8.0.x
-  TEST_PROJECT: PlotDigitizer.Test/PlotDigitizer.Test.csproj
+  TEST_PROJECT: PlotDigitizer.Core.Test/PlotDigitizer.Core.Test.csproj
 
 permissions:
   contents: read

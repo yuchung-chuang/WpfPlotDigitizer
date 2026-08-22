@@ -30,16 +30,16 @@ var provider = new ServiceCollection()
    - `PageService` navigation calls `Leave()` then `Enter()`, respects the `Pages` order and end boundaries, and disposes the Edit scope when `FilteredImage` goes outdated.
    - Web page model handlers return the expected `IActionResult` and mutate the shared `Setting`.
 
-4. **Place tests** in `PlotDigitizer.Test/Integration/` with `[TestCategory("Integration")]`, then run and iterate:
+4. **Place tests** in `PlotDigitizer.Core.Test/Integration/` with `[TestCategory("Integration")]`, then run and iterate:
 
 ```powershell
-dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj --filter "TestCategory=Integration"
+dotnet test .\PlotDigitizer.Core.Test\PlotDigitizer.Core.Test.csproj --filter "TestCategory=Integration"
 ```
 
 5. **Confirm the wider suite still passes:**
 
 ```powershell
-dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj
+dotnet test .\PlotDigitizer.Core.Test\PlotDigitizer.Core.Test.csproj
 ```
 
 Report the commands you ran with pass/fail counts. If a test exposes a composition defect — for example `PlotDigitizer.Web` never registering `IImageService` — report it plainly instead of hiding it behind an extra registration in test setup.

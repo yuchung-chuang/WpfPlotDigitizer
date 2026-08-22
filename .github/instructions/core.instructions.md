@@ -40,4 +40,4 @@ These are load-bearing and subtle; changing them silently breaks callers.
 - `RelayCommand<TParam>.Execute` silently does nothing when the parameter is not a `TParam`.
 - `PageService` disposes the Edit page scope when `Model.FilteredImage` becomes outdated, which is what discards undo history when the filter changes.
 
-Add or update a test in [PlotDigitizer.Test](../../PlotDigitizer.Test) whenever you change one of these.
+Add or update a test in [PlotDigitizer.Core.Test](../../PlotDigitizer.Core.Test) whenever you change one of these.

@@ -48,10 +48,10 @@ Pin an exact count only when the fixture is small and deliberately chosen, as `M
 
 ## Method
 
-1. Choose a fixture from `PlotDigitizer.Test/Assets/`. Add a new asset only when the existing ones cannot express the case, and register it with `CopyToOutputDirectory` in the test `csproj` — otherwise it never reaches the output folder.
-2. Tag tests `[TestCategory("EndToEnd")]` and place them in `PlotDigitizer.Test/EndToEnd/`.
+1. Choose a fixture from `PlotDigitizer.Core.Test/Assets/`. Add a new asset only when the existing ones cannot express the case, and register it with `CopyToOutputDirectory` in the test `csproj` — otherwise it never reaches the output folder.
+2. Tag tests `[TestCategory("EndToEnd")]` and place them in `PlotDigitizer.Core.Test/EndToEnd/`.
 3. Cover both `DataType.Discrete` and `DataType.Continuous`, and cover a log-scale axis via `AxisLogBase`.
-4. Run `dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj --filter "TestCategory=EndToEnd"` and iterate.
+4. Run `dotnet test .\PlotDigitizer.Core.Test\PlotDigitizer.Core.Test.csproj --filter "TestCategory=EndToEnd"` and iterate.
 
 ## Rules
 

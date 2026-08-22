@@ -11,15 +11,15 @@ dotnet restore .\PlotDigitizer.WPF\PlotDigitizer.WPF.csproj
 dotnet build .\PlotDigitizer.WPF\PlotDigitizer.WPF.csproj --no-restore
 
 # Run the complete MSTest project
-dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj
+dotnet test .\PlotDigitizer.Core.Test\PlotDigitizer.Core.Test.csproj
 
 # Run one test by fully qualified name
-dotnet test .\PlotDigitizer.Test\PlotDigitizer.Test.csproj --filter "FullyQualifiedName=PlotDigitizer.Core.Tests.QuickTest.TempFolderTest"
+dotnet test .\PlotDigitizer.Core.Test\PlotDigitizer.Core.Test.csproj --filter "FullyQualifiedName=PlotDigitizer.Core.Tests.QuickTest.TempFolderTest"
 ```
 
-`PlotDigitizer.Test` uses MSTest for unit and integration tests. FlaUI desktop-automation tests live in the separate `PlotDigitizer.WPF.Test` project and launch `PlotDigitizer.exe`, so run that project only in an interactive Windows desktop session; `PlotDigitizer.Test` itself runs headless. Test image assets are copied to the test output directory and should be used for image-processing coverage.
+`PlotDigitizer.Core.Test` uses MSTest for unit and integration tests. FlaUI desktop-automation tests live in the separate `PlotDigitizer.WPF.Test` project and launch `PlotDigitizer.exe`, so run that project only in an interactive Windows desktop session; `PlotDigitizer.Core.Test` itself runs headless. Test image assets are copied to the test output directory and should be used for image-processing coverage.
 
-Tag new tests with `[TestCategory("Unit")]`, `"Integration"`, or `"EndToEnd"` in `PlotDigitizer.Test`, or `"UI"` in `PlotDigitizer.WPF.Test`.
+Tag new tests with `[TestCategory("Unit")]`, `"Integration"`, or `"EndToEnd"` in `PlotDigitizer.Core.Test`, or `"UI"` in `PlotDigitizer.WPF.Test`.
 
 ## Testing and web-port assets
 

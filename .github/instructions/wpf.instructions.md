@@ -23,7 +23,7 @@ When you add a service that Core needs, define the interface in `PlotDigitizer.C
 
 ## Automation ids are a test contract
 
-The FlaUI tests in [PlotDigitizer.Test](../../PlotDigitizer.Test) locate elements by automation id, so ids are public API for tests. WPF exposes `x:Name` as the automation id automatically, and some elements set `AutomationProperties.AutomationId` explicitly.
+The FlaUI tests in [PlotDigitizer.Core.Test](../../PlotDigitizer.Core.Test) locate elements by automation id, so ids are public API for tests. WPF exposes `x:Name` as the automation id automatically, and some elements set `AutomationProperties.AutomationId` explicitly.
 
 Currently addressable ids include the `PlotDigitizer` main window; the navigation items `LoadPageItem`, `AxisPageItem`, `RangePageItem`, `FilterPageItem`, `EditPageItem`, `DataPageItem`; `filePath`; `XLabel`/`YLabel`; and the editor/toolbar buttons named with `x:Name` such as `BrowseButton`, `PasteButton`, `UndoButton`, `PencilButton`, `EraserButton`, `RectButton`, `PolyButton`, `exportButton`, `NextPageButton`, and `PrevPageButton`.
 
