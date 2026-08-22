@@ -1,0 +1,60 @@
+<Project Sdk="WixToolset.Sdk/4.0.4">
+
+  <PropertyGroup>
+    <OutputType>Package</OutputType>
+    <TargetName>PlotDigitizer-$(Platform)</TargetName>
+    <Platform Condition="'$(Platform)' == ''">x64</Platform>
+    <RuntimeIdentifier Condition="'$(Platform)' == 'x86'">win-x86</RuntimeIdentifier>
+    <RuntimeIdentifier Condition="'$(Platform)' == 'x64'">win-x64</RuntimeIdentifier>
+    <AppStageDir>$(MSBuildProjectDirectory)\obj\publish\$(Platform)</AppStageDir>
+    <PortableDir>$(MSBuildProjectDirectory)\bin\$(Configuration)\portable-x64</PortableDir>
+    <!-- Per-user installs keep file key paths; these ICEs only apply to registry-keyed components. -->
+    <SuppressIces>ICE38;ICE64;ICE91</SuppressIces>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="WixToolset.Heat" Version="4.0.4" />
+    <PackageReference Include="WixToolset.UI.wixext" Version="4.0.4" />
+  </ItemGroup>
+
+  <!-- Resolves the Source="SourceDir\..." paths that Heat emits. -->
+  <ItemGroup>
+    <BindPath Include="$(AppStageDir)" />
+  </ItemGroup>
+
+  <Target Name="PublishWpf" BeforeTargets="CoreCompile">
+    <RemoveDir Directories="$(AppStageDir)" />
+    <MakeDir Directories="$(AppStageDir)" />
+    <Exec Command="dotnet publish &quot;$(MSBuildProjectDirectory)\..\PlotDigitizer.WPF\PlotDigitizer.WPF.csproj&quot; --configuration $(Configuration) --runtime $(RuntimeIdentifier) --self-contained false --output &quot;$(AppStageDir)&quot;" />
+  </Target>
+
+  <Target Name="GenerateHarvest" BeforeTargets="CoreCompile" DependsOnTargets="PublishWpf">
+    <MakeDir Directories="$(MSBuildProjectDirectory)\$(IntermediateOutputPath)" />
+    <HeatDirectory
+        Directory="$(AppStageDir)"
+        ComponentGroupName="PublishedFiles"
+        DirectoryRefId="INSTALLFOLDER"
+        OutputFile="$(MSBuildProjectDirectory)\$(IntermediateOutputPath)PublishedFiles.wxs"
+        SuppressRootDirectory="true"
+        SuppressRegistry="true"
+        SuppressCom="true"
+        AutogenerateGuids="true"
+        ToolPath="$(NuGetPackageRoot)wixtoolset.heat\4.0.4\tools\net472\x86\">
+      <Output TaskParameter="OutputFile" ItemName="Compile" />
+    </HeatDirectory>
+  </Target>
+
+  <Target Name="PublishPortableX64" DependsOnTargets="PublishWpf" Condition="'$(Platform)' == 'x64'" AfterTargets="Build">
+    <RemoveDir Directories="$(PortableDir)" />
+    <ItemGroup>
+      <PortableFiles Include="$(AppStageDir)\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(PortableFiles)" DestinationFiles="@(PortableFiles->'$(PortableDir)\%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
+
+  <Target Name="BuildAllArtifacts">
+    <MSBuild Projects="$(MSBuildProjectFullPath)" Properties="Platform=x86" Targets="Build" />
+    <MSBuild Projects="$(MSBuildProjectFullPath)" Properties="Platform=x64" Targets="Build" />
+  </Target>
+
+</Project>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix
+  xmlns="http://wixtoolset.org/schemas/v4/wxs"
+  xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+  <Package
+      Name="PlotDigitizer"
+      Manufacturer="PlotDigitizer"
+      Version="1.0.0.0"
+      UpgradeCode="D1E58CE8-3C2C-4E79-A4AE-2B2A3D0B6C4B"
+      Scope="perUser"
+      InstallerVersion="500">
+
+    <SummaryInformation Description="PlotDigitizer Windows desktop application" />
+    <MajorUpgrade DowngradeErrorMessage="A newer version of PlotDigitizer is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+    <UI>
+      <ui:WixUI Id="WixUI_InstallDir" InstallDirectory="INSTALLFOLDER" />
+    </UI>
+    <WixVariable Id="WixUILicenseRtf" Value="License.rtf" />
+
+    <Feature Id="MainFeature" Title="PlotDigitizer" Level="1">
+      <ComponentGroupRef Id="PublishedFiles" />
+      <ComponentRef Id="ApplicationShortcut" />
+    </Feature>
+  </Package>
+
+  <Fragment>
+    <StandardDirectory Id="LocalAppDataFolder">
+      <Directory Id="INSTALLFOLDER" Name="PlotDigitizer" />
+    </StandardDirectory>
+  </Fragment>
+
+  <Fragment>
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Component Id="ApplicationShortcut">
+        <Shortcut
+            Id="PlotDigitizerStartMenuShortcut"
+            Name="PlotDigitizer"
+            Description="Digitize data from plot images"
+            Target="[INSTALLFOLDER]PlotDigitizer.exe"
+            WorkingDirectory="INSTALLFOLDER" />
+        <RemoveFolder Id="RemovePlotDigitizerStartMenuFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\PlotDigitizer" Name="Installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </StandardDirectory>
+  </Fragment>
+</Wix>

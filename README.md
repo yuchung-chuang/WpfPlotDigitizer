@@ -18,8 +18,6 @@ Windows installers and portable versions (single .exe file) can be found in [rel
 
 Web version is available at [PlotDigitizer Web](https://plot-digitizer-g0embmcpc2deg5ah.francecentral-01.azurewebsites.net/).
 
-There is currently no installer project in this repo (the legacy Visual Studio Installer Projects `.vdproj` was removed, since it can only be built from full Visual Studio with that extension installed). A future Windows installer should use the [WiX Toolset](https://wixtoolset.org/) instead, which ships a `dotnet`-buildable SDK-style project and produces a real `.msi` without requiring Visual Studio.
-
 ## Use cases
 
 <p align="center"> 
