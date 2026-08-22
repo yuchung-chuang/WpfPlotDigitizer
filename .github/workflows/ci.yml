@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   test:
-    name: Test Core and WPF
+    name: Core Tests 
     runs-on: windows-latest
 
     steps:
@@ -34,13 +34,10 @@ jobs:
       - name: Build Core
         run: dotnet build PlotDigitizer.Core/PlotDigitizer.Core.csproj --configuration Release --no-restore
 
-      - name: Build WPF
-        run: dotnet build PlotDigitizer.WPF/PlotDigitizer.WPF.csproj --configuration Release --no-restore
-
       - name: Build test project
         run: dotnet build ${{ env.TEST_PROJECT }} --configuration Release --no-restore
 
-      - name: Run Core and WPF tests
+      - name: Run Core tests
         run: dotnet test ${{ env.TEST_PROJECT }} --configuration Release --no-restore --no-build --logger "trx;LogFileName=test-results.trx"
 
       - name: Upload test results
