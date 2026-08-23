@@ -348,3 +348,11 @@ healthchecksdb
 .editorconfig
 
 */publish/*
+
+# Per-figure working directories produced by the chart digitizing skills
+.digitize/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/

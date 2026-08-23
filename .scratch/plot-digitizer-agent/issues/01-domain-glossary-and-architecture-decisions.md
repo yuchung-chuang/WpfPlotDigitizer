@@ -17,21 +17,21 @@ Version control must ignore the per-image working directories that every later t
 
 **Blocked by:** None — can start immediately.
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] A domain glossary exists at the repository root and is a glossary only — no implementation
+- [x] A domain glossary exists at the repository root and is a glossary only — no implementation
       detail, no specification content, no scratch notes.
-- [ ] The glossary defines: plot area, series, series style, marker, mask layer, extraction,
+- [x] The glossary defines: plot area, series, series style, marker, mask layer, extraction,
       working directory, overlay, confidence, diagnostic.
-- [ ] The glossary defines the four noise terms with non-overlapping boundaries: background is area
+- [x] The glossary defines the four noise terms with non-overlapping boundaries: background is area
       fill and shaded bands rather than ink; grid lines are regularly spaced thin lines aligned to
       ticks; annotation is any text or arrow overlaid on the chart; border is the plot frame plus
       tick marks.
-- [ ] The glossary states that the legend is inspected during analysis as a protected region and
+- [x] The glossary states that the legend is inspected during analysis as a protected region and
       removed before data extraction.
-- [ ] An architecture decision record captures the choice of an agentic skill framework over
+- [x] An architecture decision record captures the choice of an agentic skill framework over
       extending the existing .NET pipeline, naming the alternatives considered and why they lost.
-- [ ] A second architecture decision record captures the Python plus file-based artifact contract,
+- [x] A second architecture decision record captures the Python plus file-based artifact contract,
       including why bulk coordinate data must never travel through the agent's context.
-- [ ] Per-image working directories are ignored by version control.
-- [ ] No existing .NET project is modified.
+- [x] Per-image working directories are ignored by version control.
+- [x] No existing .NET project is modified.
