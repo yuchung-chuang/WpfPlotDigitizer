@@ -10,16 +10,25 @@ exists to fix is confident, plausible, wrong numbers.
 
 **Blocked by:** 02 — Artifact contract, router skill, and shared toolkit.
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] A chart overview skill group is discoverable and describes when the agent should reach for it.
-- [ ] Running the overview against an image writes the chart classification section of the
+- [x] A chart overview skill group is discoverable and describes when the agent should reach for it.
+- [x] Running the overview against an image writes the chart classification section of the
       extraction document and produces a downscaled preview the agent can view.
-- [ ] Panel candidates are detected and counted.
-- [ ] The support verdict distinguishes supported single-panel figures from figures that must be
+- [x] Panel candidates are detected and counted.
+- [x] The support verdict distinguishes supported single-panel figures from figures that must be
       declined, and records the reason for a decline as a diagnostic.
-- [ ] A multi-panel composite from the corpus is reported as unsupported with its panel count.
-- [ ] A figure with multiple offset vertical axes is reported as unsupported.
-- [ ] A simple single-series scatter plot from the corpus is reported as supported.
-- [ ] The overlay marks the detected panel regions on the original image.
-- [ ] A confidence and any diagnostics are recorded for the classification.
+- [x] A multi-panel composite from the corpus is reported as unsupported with its panel count.
+- [x] A figure with multiple offset vertical axes is reported as unsupported.
+- [x] A simple single-series scatter plot from the corpus is reported as supported.
+- [x] The overlay marks the detected panel regions on the original image.
+- [x] A confidence and any diagnostics are recorded for the classification.
+
+**Deviation.** Detecting offset secondary axes by measurement alone proved unreliable: counting
+long vertical lines declines a legitimate plot that draws an axis through the origin, and filtering
+those lines by tick marks misses thin and inward-drawn ticks. Rather than ship a heuristic that
+produces false declines, the script reports the evidence — panel count, long lines, and which of
+them carry ticks — and leaves `supported` unset on a single-panel figure until the agent reads the
+preview and declares. Panel count remains an automatic decline because it measures reliably. This
+keeps the criterion satisfied through the agent rather than the script, which is what a fully
+agentic design implies.

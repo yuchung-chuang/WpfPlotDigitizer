@@ -14,8 +14,13 @@ origin at the top left.
 
   "image":   { "path": "...", "name": "...", "width": 0, "height": 0, "sha256": "..." },
 
-  "chart":   { "type": "scatter", "panel_count": 1, "supported": true,
-               "reason": null, "confidence": 0.9 },
+  "chart":   { "type": "scatter", "panel_count": 1,
+               "panels": [ { "x": 0, "y": 0, "width": 0, "height": 0 } ],
+               "supported": true, "reason": null,
+               "axis_lines": { "vertical": [122.0], "horizontal": [589.0],
+                               "vertical_candidates": [122.0, 834.0],
+                               "horizontal_candidates": [35.0, 589.0] },
+               "confidence": 0.85 },
 
   "plot_area": { "x": 0, "y": 0, "width": 0, "height": 0,
                  "method": "corner-probe", "confidence": 0.8 },
@@ -73,7 +78,8 @@ something claimed by a series. Re-adding a layer under an existing name replaces
 **Protected regions are honoured by every filter.** The legend is protected as soon as it is found,
 because it must survive long enough to be read, and is masked out later during segmentation.
 
-**`supported: false` needs a `reason`.** That is what a decline is.
+**`supported` is three-valued.** `true` and `false` are verdicts somebody reached; `null` means no
+one has looked yet. A `false` verdict needs a `reason` — that is what a decline is.
 
 **Confidence is per-section and per-stage**, in `[0, 1]`. It records how much an operation trusted
 itself at the moment it ran; nothing recomputes it later.
