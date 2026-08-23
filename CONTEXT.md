@@ -111,3 +111,16 @@ _Avoid_: Warning, error, log entry
 To identify a figure as beyond the supported scope and refuse it, with a reason. A decline is a
 successful outcome; silently producing wrong numbers is not.
 _Avoid_: Fail, reject, skip
+
+**Ground truth**:
+The real numbers behind a figure, recorded by hand, against which an extraction can be measured.
+_Avoid_: Expected data, gold data, reference
+
+**Score**:
+How far an extraction sits from ground truth, in axis units divided by the axis range so that
+figures of different scales compare on equal terms.
+_Avoid_: Accuracy, error rate, grade
+
+**Tolerance**:
+The score at or below which an extraction is considered good enough.
+_Avoid_: Threshold, limit, margin

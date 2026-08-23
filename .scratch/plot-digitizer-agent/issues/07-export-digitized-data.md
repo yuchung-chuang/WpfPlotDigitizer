@@ -12,18 +12,22 @@ need no export work at all.
 
 **Blocked by:** 05 — Read the axis scale; 06 — Extract a single point series.
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] An export skill group is discoverable and describes the output artifacts.
-- [ ] Running export projects every series' pixel coordinates into data units using the fitted axis
+- [x] An export skill group is discoverable and describes the output artifacts.
+- [x] Running export projects every series' pixel coordinates into data units using the fitted axis
       mapping.
-- [ ] Logarithmic and reversed axes project correctly.
-- [ ] A tidy table is produced with a series column, so multiple series need no format change.
-- [ ] Per-series files are produced as well as the combined table.
-- [ ] The extraction document is exported complete with confidences, diagnostics and the stage log.
-- [ ] Bulk arrays remain in sidecar files and are not inlined into the exported document.
-- [ ] Axis titles and units, where known, appear in the export.
-- [ ] Exporting when no axis fit exists fails as a reported diagnostic rather than producing
+- [x] Logarithmic and reversed axes project correctly.
+- [x] A tidy table is produced with a series column, so multiple series need no format change.
+- [x] Per-series files are produced as well as the combined table.
+- [x] The extraction document is exported complete with confidences, diagnostics and the stage log.
+- [x] Bulk arrays remain in sidecar files and are not inlined into the exported document.
+- [x] Axis titles and units, where known, appear in the export.
+- [x] Exporting when no axis fit exists fails as a reported diagnostic rather than producing
       meaningless numbers.
-- [ ] A simple scatter plot from the corpus exports values that match the chart when spot-checked
+- [x] A simple scatter plot from the corpus exports values that match the chart when spot-checked
       against its printed tick labels.
+
+**Note.** The projection maths moved into the shared toolkit rather than living in this script,
+because verification and scoring both need the same mapping and the inverse of it. Written for any
+number of series from the start, so the multi-series tickets need no export work.

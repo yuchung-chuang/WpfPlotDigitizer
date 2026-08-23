@@ -9,19 +9,21 @@ reason**. A figure that produces confident wrong numbers is the only real failur
 precisely the flaw this project exists to fix.
 
 **Blocked by:** 08 — Verify an extraction visually; 14 — Remove error bars; 18 — Extract multiple
-point series; 19 — Extract line series.
+point series; 19 — Extract line series; 22 — Corpus scoreboard.
 
 **Status:** ready-for-agent
 
 - [ ] Every image in the corpus is processed and its outcome recorded.
 - [ ] Each record states the outcome, the series found, the confidence, and any diagnostics raised.
+- [ ] Every figure with ground truth beside it carries a measured median error and a pass or fail,
+      not an opinion.
 - [ ] Verification overlays are kept for every image so the results can be reviewed by eye.
 - [ ] Figures that were declined are listed separately from figures that failed, with the reason for
       each decline.
 - [ ] The multi-panel composite and the multiple-offset-axis figure are confirmed as declined rather
       than mangled.
-- [ ] No figure produces high-confidence output that the overlay shows to be wrong.
+- [ ] No figure produces high-confidence output that the overlay or the score shows to be wrong.
 - [ ] Recurring failure patterns are written up as candidate follow-up work rather than fixed
       ad hoc inside this ticket.
-- [ ] The findings note which parts of the deferred work — the review interface, the synthetic
-      corpus and its accuracy metric — the results now justify building.
+- [ ] The findings note whether the deferred work — the review interface and the synthetic corpus —
+      is now justified by the results.

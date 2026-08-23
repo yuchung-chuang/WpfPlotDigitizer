@@ -360,47 +360,50 @@ target corpus would be dead on arrival, because it has no legend at all.
 
 ## Testing Decisions
 
-There is **no automated test suite for this work, by explicit decision.** The user will evaluate
-each increment personally against real images and may halt the project if quality is inadequate.
-Building a harness before knowing whether the approach works at all would be effort spent on the
-wrong thing. This is recorded as a deliberate trade, not an oversight, and it carries a known cost:
-a change to one script can silently break another and nothing will catch it.
+**Ground truth now exists and changes this section.** Thirteen figures in the corpus have a
+hand-authored CSV of their real numbers beside them, sharing the figure's name. That is an oracle,
+and it replaces the earlier position that correctness could only be judged by eye.
 
-What replaces a suite:
+- **The seam is still the script command line.** Every operation is exercised the way the agent
+  exercises it: run the script against a real figure with a working directory, then inspect the
+  files it produced. There is deliberately no second seam inside the shared toolkit.
+- **The metric is the median error in axis units divided by the axis range**, so figures spanning
+  millions and figures spanning zero to one are judged alike. The 95th percentile is reported
+  alongside it, because a good median with a bad tail means a few points went badly wrong and that
+  is a different defect. Coverage — the fraction of truth points with an extracted point inside
+  tolerance — catches the case where a series is largely missing rather than merely imprecise.
+- **Passing is a median under 0.5% of the axis range.** Adjustable, but that is the bar.
+- **Series are matched to truth series by best overall pairing**, not by label, so a correct
+  extraction that named its series differently still scores correctly.
+- **A score is not a confidence.** Confidence is what an operation believed about itself while it
+  ran; a score is what the numbers turned out to be. Both are recorded and they are not
+  interchangeable.
+- **The overlay remains the check for the other seventeen figures**, which have no ground truth. It
+  is weaker, but it catches gross failures, and it is what diagnoses *which stage* a bad score came
+  from — truth points landing on the markers while the score is poor means the axis fit is right and
+  extraction is at fault.
+- **Ground truth is hand-made and must be parsed defensively.** The files are spreadsheets a person
+  laid out: series in column blocks separated by blank columns, a block sometimes sharing one X
+  column across several Y columns, uncertainty columns mixed in, the X column not always first, and
+  in at least one file the chart's Y axis listed first. The loader decides by evidence — the
+  monotonic column is X, headers matching deviation or error are uncertainty, a name above a single
+  column names that series — and it reports every judgement it made so the agent can overrule it.
+  Transposed files are detected by comparing the truth's ranges against the fitted axes.
+- **A ground-truthed figure is the place to tune.** Settle parameters where the error is measurable,
+  then carry them to figures that have none. Prior art in the repository is the MSTest project,
+  which is irrelevant here — different language, different seam, and its subject is out of scope.
 
-- **The seam is the script command line.** Every operation is exercised the same way the agent
-  exercises it: run the script against a real image with a working directory, then inspect the files
-  it produced. This is the highest available seam and the only one — there is deliberately no second
-  seam at the helper-package level, because a helper that is only reachable through a script is not
-  worth a separate contract.
-- **A good check at this seam is a behavioural one**: given this image, did the script write a valid
-  extraction document, produce an overlay, and report a confidence consistent with what the overlay
-  shows? Internal structure — which function computed the mask, how the clustering is implemented —
-  is explicitly not checked, because all of it will change during tuning.
-- **The overlay is the assertion.** Correctness at this stage is a human looking at an annotated
-  image and agreeing. Every ticket's acceptance criterion is phrased that way: named image, expected
-  visible result.
-- **The corpus is the test set.** The repository's image folder holds the target figures, spanning
-  trivial single-series plots through multi-series overlapping scatter to unsupported multi-panel
-  composites. A final ticket runs every image and records per-image findings.
-- **Prior art is limited and mostly a warning.** The existing MSTest project tests the .NET pipeline
-  and is irrelevant here — different language, different seam, and its subject is out of scope. Its
-  one transferable habit is that image assets are copied next to the tests and referenced by
-  relative path; the Python scripts should likewise reference corpus images by repository-relative
-  path rather than absolute.
-
-Deferred, and expected to become the real suite later: a **synthetic corpus** — charts rendered from
-known input arrays, so ground truth is exact and free — scored on median and 95th-percentile
-absolute error in axis units normalised by axis range, plus series count and point recall. Only
-once the skills exist and the user has judged the approach worth continuing.
+Still deferred: a **synthetic corpus** of charts rendered from known arrays, which would give
+unlimited ground truth for free. Worth building once the hand-labelled figures stop finding new
+failures.
 
 ## Out of Scope
 
 - **The review and approval UI.** Results must eventually be presented to the user for review and
   approval, but nothing is built for it in this work. The verification overlay is the interim
   review surface.
-- **The synthetic corpus, the accuracy metric, and any regression harness.** Deferred by decision.
-- **Hand-labelled ground truth** for any image.
+- **The synthetic corpus.** Charts rendered from known arrays to give unlimited free ground truth.
+  Deferred until the hand-labelled figures stop finding new failures.
 - **All existing .NET projects.** Core, WPF, Web, CLI, Blazor and their tests are untouched. No
   integration between the framework and the desktop or web applications; no consumption of the
   extraction document by the existing editor.

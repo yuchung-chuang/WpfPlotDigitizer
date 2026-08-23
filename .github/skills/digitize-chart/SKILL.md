@@ -31,6 +31,15 @@ secondary axes, a bar chart — gets reported as declined, with the reason. Conf
 are the failure this framework exists to prevent. Producing none is a success; producing bad ones is
 not.
 
+**Score against ground truth whenever it exists.** Some figures in `images/` have a hand-authored
+CSV of the real numbers beside them, with the same name. When one is there, finish by scoring the
+export against it — a measured error beats an opinion about an overlay, and it is the only way to
+tell whether a parameter change helped or hurt. Check before you start:
+
+```
+Test-Path ("images/<figure>.csv")
+```
+
 ## Running a script
 
 Every script takes `--image` and an optional `--workdir`, and is run with `uv`, which fetches its own
@@ -75,9 +84,18 @@ A rough order, not a required one:
 4. **Segment the data** — find the legend, profile each series style, split the plot into one mask
    per series.
 5. **Extract** — markers into points, curves into ordered polylines.
-6. **Review and export** — reproject the data over the figure, check it by eye, write the table.
+6. **Export** — project into data units and write the table.
+7. **Review** — reproject over the figure and check by eye, and score against ground truth when the
+   figure has any.
 
 Each group is its own discoverable skill; read the one whose job matches what you need next.
+
+## Tuning against a score
+
+When a figure has ground truth, you have a real feedback loop rather than an impression. Change one
+parameter, re-run extraction and export, re-score, and keep the change only if the median error
+fell. Work on a ground-truthed figure first, settle the parameters there, then carry them to figures
+that have none.
 
 ## When a script reports low confidence
 

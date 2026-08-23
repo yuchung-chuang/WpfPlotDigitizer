@@ -63,6 +63,12 @@ origin at the top left.
   "diagnostics": [ { "stage": "remove-grid-lines", "severity": "warning",
                      "message": "...", "region": null } ],
 
+  "score": { "truth_file": "figure.csv", "tolerance": 0.005,
+             "passed": 2, "of": 3, "worst_median": 0.0131,
+             "series": [ { "series": "s1", "truth": "As-welded",
+                           "median": 0.0021, "p95": 0.0074, "coverage": 0.86,
+                           "n_truth": 49, "n_extracted": 47 } ] },
+
   "stages": [ { "name": "locate-plot-area", "script": "locate_plot_area.py",
                 "ran_at": "2026-08-23T10:00:00+00:00", "confidence": 0.8, "summary": "..." } ]
 }
@@ -85,6 +91,11 @@ one has looked yet. A `false` verdict needs a `reason` — that is what a declin
 
 **Confidence is per-section and per-stage**, in `[0, 1]`. It records how much an operation trusted
 itself at the moment it ran; nothing recomputes it later.
+
+**`score` is present only when the figure has ground truth beside it.** Errors there are fractions
+of the axis range, not data units, so they compare across figures. It is a measurement, not a
+confidence — confidence is what an operation believed about itself, a score is what the numbers
+turned out to be.
 
 ## Using it from a script
 
