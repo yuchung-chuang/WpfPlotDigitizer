@@ -13,17 +13,24 @@ misread digit surfaces as a bad fit instead of a plausible wrong answer.
 
 **Blocked by:** 04 — Locate the plot area.
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Running the crop step produces an upscaled image of the tick-label regions for each axis,
+- [x] Running the crop step produces an upscaled image of the tick-label regions for each axis,
       grouped so the agent can tell which label sits at which pixel position.
-- [ ] Vertical axis labels are presented in a readable orientation.
-- [ ] The agent can submit label values with their pixel anchors, and the fit is computed and stored
+- [x] Vertical axis labels are presented in a readable orientation.
+- [x] The agent can submit label values with their pixel anchors, and the fit is computed and stored
       in the axes section of the extraction document.
-- [ ] Each axis records its minimum, maximum, scale type, log base where applicable, reversal flag,
+- [x] Each axis records its minimum, maximum, scale type, log base where applicable, reversal flag,
       pixel anchors, fit residual and confidence.
-- [ ] A logarithmic axis is detected from tick spacing and not assumed.
-- [ ] A reversed axis produces correct values rather than mirrored ones.
-- [ ] A large fit residual is recorded as a diagnostic warning the agent to re-read the labels.
-- [ ] Axis titles and units, when the agent supplies them, are stored alongside the numbers.
-- [ ] The overlay marks the located label regions and the fitted anchors on the original image.
+- [x] A logarithmic axis is detected from tick spacing and not assumed.
+- [x] A reversed axis produces correct values rather than mirrored ones.
+- [x] A large fit residual is recorded as a diagnostic warning the agent to re-read the labels.
+- [x] Axis titles and units, when the agent supplies them, are stored alongside the numbers.
+- [x] The overlay marks the located label regions and the fitted anchors on the original image.
+
+**Verified.** On `data.png` the crop step found 11 x ticks and 12 y ticks and produced a composite
+image pairing every pixel position with its label; those labels were read straight off the crop and
+fed back, giving `x = -4.013 .. 6.013` over px 85..834 and `y = -4.020 .. 7.010` over px 567..18 —
+the reversed y axis handled correctly, residual zero, and limits extrapolated to the frame rather
+than stopping at the outermost tick. The crop being genuinely readable was the criterion that
+mattered most, and it is.

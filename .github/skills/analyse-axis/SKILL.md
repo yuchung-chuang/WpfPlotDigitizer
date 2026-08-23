@@ -59,3 +59,41 @@ method, so the extraction says a human-or-agent judgement was used.
 
 Both candidate boxes are always recorded under `plot_area.candidates`, so you can switch to the
 rejected one without re-running anything.
+
+## Reading the scale
+
+Two steps, because **you** read the numbers — there is no OCR here, and your eyes are better than
+one.
+
+**First, crop the labels:**
+
+```
+uv run .github/skills/analyse-axis/read_axis_scale.py --image images/<figure>.png
+```
+
+This finds the tick marks on each edge, finds the text beside each one, and writes a single composite
+image per axis into `crops/` pairing every pixel position with its label — vertical-axis labels
+rotated so they read horizontally. **Open those crops and read them.**
+
+**Then hand back what you read:**
+
+```
+uv run .github/skills/analyse-axis/read_axis_scale.py --image images/<figure>.png \
+  --x "86=-4,833=6" --y "19=7,566=-4" --x-title "time" --y-title "voltage" --y-unit "V"
+```
+
+Each pair is `pixel=value`. Two per axis is enough; give more and they are fitted by least squares.
+The fit extrapolates to the plot-area edges, so the stored minimum and maximum are the axis limits,
+not the outermost ticks.
+
+**Log axes are detected, not assumed.** Both a linear and a log fit are tried and the log one wins
+only when it is clearly better. Force it with `--x-scale log --x-log-base 10` when a figure has too
+few ticks to tell.
+
+**Reversed axes fall out of the fit** and are recorded with a `reversed` flag, so an axis whose
+values decrease left to right comes out right instead of mirrored.
+
+**Watch the residual.** It is reported per axis in pixels and in data units. A residual of roughly
+zero means your reading was consistent; a large one almost always means a misread digit — a `5` read
+as `6`, or a minus sign missed — and raises a warning. Re-read the crop rather than accepting it.
+

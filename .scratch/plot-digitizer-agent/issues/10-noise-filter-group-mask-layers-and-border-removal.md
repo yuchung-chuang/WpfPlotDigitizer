@@ -17,18 +17,28 @@ itself, and the tick marks, following the flood-fill approach already used in th
 
 **Blocked by:** 04 — Locate the plot area.
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] A noise filtering skill group is discoverable and documents the mask-layer contract, the
+- [x] A noise filtering skill group is discoverable and documents the mask-layer contract, the
       union into a combined mask, and the per-layer overlay colouring.
-- [ ] The group document defines the four noise categories using the glossary's boundaries so two
+- [x] The group document defines the four noise categories using the glossary's boundaries so two
       filters never claim the same pixels.
-- [ ] Each filter writes a separate named mask layer and records it in the extraction document with
+- [x] Each filter writes a separate named mask layer and records it in the extraction document with
       its kind and pixel count.
-- [ ] A combined mask is derived by union and regenerated whenever a layer is added or removed.
-- [ ] Any single layer can be dropped or re-run with different parameters without affecting others.
-- [ ] Protected regions recorded in the extraction document are never removed by any filter.
-- [ ] The overlay renders each mask layer in a distinct colour over the original image.
-- [ ] Border removal strips the plot frame and tick marks from a framed corpus plot without touching
+- [x] A combined mask is derived by union and regenerated whenever a layer is added or removed.
+- [x] Any single layer can be dropped or re-run with different parameters without affecting others.
+- [x] Protected regions recorded in the extraction document are never removed by any filter.
+- [x] The overlay renders each mask layer in a distinct colour over the original image.
+- [x] Border removal strips the plot frame and tick marks from a framed corpus plot without touching
       data near the edges.
-- [ ] Running border removal twice produces the same result rather than eroding further.
+- [x] Running border removal twice produces the same result rather than eroding further.
+
+**Verified.** On `data.png` the filter claimed 12,354 px of frame and 569 px of tick stubs across 19
+stubs, wrote `masks/border.png`, and rebuilt `masks/plot_mask.png`. The cross-ticket contract was
+confirmed working end to end: with no filter run, point extraction reported "raw plot area - no
+noise mask yet"; after the filter ran, the same unmodified script reported "masks/plot_mask.png
+minus 1 noise layer(s)". That is the property the whole non-destructive design exists for.
+
+**Ruling recorded.** An axis drawn through the origin is *not* border — it does not bound the plot
+area — so `clear_border` leaves it and it is treated as an annotation. Documented in the group
+skill so the four sibling filters stay consistent.
