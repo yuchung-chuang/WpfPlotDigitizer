@@ -20,25 +20,25 @@ renders a trivial overlay, and prints a one-line summary.
 
 **Blocked by:** 01 — Domain glossary and architecture decisions.
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] A router skill is discoverable by the editor and describes the working directory layout, the
+- [x] A router skill is discoverable by the editor and describes the working directory layout, the
       extraction document, and the mandatory overlay-viewing rule.
-- [ ] The router explicitly states that the agent chooses its own order of operations.
-- [ ] The router documents how to check the script runner is installed and what to do if it is not.
-- [ ] The extraction document schema is written down, covering image identity, chart classification,
+- [x] The router explicitly states that the agent chooses its own order of operations.
+- [x] The router documents how to check the script runner is installed and what to do if it is not.
+- [x] The extraction document schema is written down, covering image identity, chart classification,
       plot area, axes, legend, protected regions, mask layers, series, diagnostics and a stage log.
-- [ ] The schema records that bulk coordinate arrays live in per-series sidecar files and the
+- [x] The schema records that bulk coordinate arrays live in per-series sidecar files and the
       document holds only counts and references.
-- [ ] A shared toolkit provides working-directory resolution, extraction document load, save and
+- [x] A shared toolkit provides working-directory resolution, extraction document load, save and
       validation, mask layer input and output, and overlay rendering.
-- [ ] Every script that will ever be written can bootstrap the toolkit without a virtual environment
+- [x] Every script that will ever be written can bootstrap the toolkit without a virtual environment
       or an install step, and all scripts declare an identical dependency set so one cached
       environment serves them all.
-- [ ] The toolkit's failure convention is in place: operations return a value, a confidence between
+- [x] The toolkit's failure convention is in place: operations return a value, a confidence between
       zero and one, and a list of structured diagnostics carrying severity, stage, message and an
       optional pixel region. Expected conditions never raise.
-- [ ] A self-check script runs against a corpus image, creates the working directory, writes a valid
+- [x] A self-check script runs against a corpus image, creates the working directory, writes a valid
       extraction document, renders an overlay, and prints a short summary.
-- [ ] Running the self-check twice on the same image is safe and does not corrupt existing state.
-- [ ] The skill folder is self-contained and imports nothing from outside the skills directory.
+- [x] Running the self-check twice on the same image is safe and does not corrupt existing state.
+- [x] The skill folder is self-contained and imports nothing from outside the skills directory.
