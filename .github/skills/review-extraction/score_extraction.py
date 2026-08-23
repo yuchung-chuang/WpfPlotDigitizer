@@ -65,11 +65,17 @@ def main() -> int:
         result.fail(f"axis {' and '.join(missing)} has no fit; score needs data units")
         return finish(workdir, extraction, STAGE, Path(__file__).name, result, ["nothing to score"])
 
-    truth = load_truth(truth_file)
+    axes = extraction.data["axes"]
+    if not (_title(axes, "x") or _title(axes, "y")):
+        result.warn(
+            "the axis fit has no titles, so truth columns cannot be matched by header; "
+            "re-run read_axis_scale.py with --x-title and --y-title read from the figure"
+        )
+
+    truth = load_truth(truth_file, _title(axes, "x"), _title(axes, "y"))
     for note in truth.notes:
         result.warn(f"ground truth: {note}")
 
-    axes = extraction.data["axes"]
     _orient_truth(truth, axes, result, args.swap_truth_axes)
     extracted = _extracted_series(workdir, extraction, axes, result)
     if not extracted or not truth.series:
@@ -80,8 +86,10 @@ def main() -> int:
     pairs, cost = _match(truth_points, [points for _, points in extracted])
 
     scores, lines = [], []
+    owner = _truth_owner(truth_points)
     for truth_index, extracted_index in pairs:
         report = _score_pair(truth_points[truth_index], extracted[extracted_index][1], args.tolerance)
+        report["purity"] = _purity(extracted[extracted_index][1], owner, truth_index)
         report["truth"] = truth.series[truth_index].label
         report["series"] = extracted[extracted_index][0]["id"]
         scores.append(report)
@@ -93,10 +101,10 @@ def main() -> int:
     for report in sorted(scores, key=lambda r: -r["median"]):
         verdict = "PASS" if report["median"] <= args.tolerance else "FAIL"
         lines.append(
-            f"{verdict}  {report['series']:>4s} vs {report['truth'][:26]:26s} "
+            f"{verdict}  {report['series']:>4s} vs {report['truth'][:24]:24s} "
             f"median {report['median'] * 100:6.2f}%  p95 {report['p95'] * 100:6.2f}%  "
-            f"covered {report['coverage'] * 100:5.1f}%  ({report['n_truth']} truth, "
-            f"{report['n_extracted']} extracted)"
+            f"covered {report['coverage'] * 100:5.1f}%  pure {report['purity'] * 100:5.1f}%  "
+            f"({report['n_truth']} truth, {report['n_extracted']} extracted)"
         )
 
     unmatched_truth = len(truth.series) - len(pairs)
@@ -112,22 +120,58 @@ def main() -> int:
         "passed": len(passed),
         "of": len(scores),
         "worst_median": round(float(worst), 6),
+        "series_expected": len(truth.series),
+        "series_found": len(extracted),
+        "mean_purity": round(float(np.mean([r["purity"] for r in scores])), 4) if scores else 0.0,
         "series": [{k: v for k, v in report.items() if k != "errors"} for report in scores],
     }
 
     overlay = _draw(image, truth, extracted, axes).save(workdir.overlay_path(STAGE))
-    lines.insert(0, f"verdict     {len(passed)} of {len(scores)} series within {args.tolerance * 100:.2f}% of range")
-    lines.insert(1, f"truth       {truth_file.name}  ({len(truth.series)} series)")
+    segmentation = (
+        f"{len(extracted)} found of {len(truth.series)} expected, "
+        f"mean purity {extraction.data['score']['mean_purity'] * 100:.1f}%"
+    )
+    lines.insert(0, f"localisation {len(passed)} of {len(scores)} series within {args.tolerance * 100:.2f}% of range")
+    lines.insert(1, f"segmentation {segmentation}")
+    lines.insert(2, f"truth        {truth_file.name}")
     return finish(workdir, extraction, STAGE, Path(__file__).name, result, lines, overlay)
 
 
+def _truth_owner(truth_points: list[np.ndarray]):
+    """A lookup from any point in the plane to the truth series nearest to it."""
+    stacked = np.vstack([points for points in truth_points if points.size])
+    labels = np.concatenate(
+        [np.full(points.shape[0], index) for index, points in enumerate(truth_points) if points.size]
+    )
+    return cKDTree(stacked), labels
+
+
+def _purity(extracted: np.ndarray, owner, truth_index: int) -> float:
+    """Fraction of an extracted series' points whose nearest truth point is in the matched series.
+
+    This is the segmentation measure: a series can be perfectly located and still be wrong if it is
+    carrying another series' points.
+    """
+    tree, labels = owner
+    if extracted.size == 0:
+        return 0.0
+    _, nearest = tree.query(extracted)
+    return float((labels[nearest] == truth_index).mean())
+
+
+def _title(axes: dict, name: str) -> str | None:
+    return (axes.get(name) or {}).get("title")
+
+
 def _orient_truth(truth, axes: dict, result: Result, mode: str) -> None:
-    """A hand-made truth file may list the chart's Y axis first. Detect that rather than trust it."""
+    """Last resort when no axis titles were available to match the columns by header."""
     if mode == "no":
         return
     if mode == "yes":
         _swap(truth)
         result.note("ground truth axes swapped as instructed")
+        return
+    if any(truth.axis_titles):
         return
 
     upright = sum(_inside(s.x, axes["x"]) + _inside(s.y, axes["y"]) for s in truth.series)
@@ -135,8 +179,8 @@ def _orient_truth(truth, axes: dict, result: Result, mode: str) -> None:
     if swapped > upright * 1.2:
         _swap(truth)
         result.warn(
-            "ground truth columns are transposed relative to the chart; swapped them. "
-            "Pass --swap-truth-axes no if that is wrong"
+            "no axis titles, so the truth columns were matched by value range instead and came out "
+            "transposed; supply axis titles to resolve this by header"
         )
 
 

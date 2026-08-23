@@ -14,17 +14,32 @@ uv run .github/skills/review-extraction/score_extraction.py --image images/<figu
 
 Run it after `export_data.py`, because scoring compares data units, not pixels.
 
+**Fit the axis scale with `--x-title` and `--y-title` first.** The truth file's columns are matched
+to the chart's axes **by header**, so the titles you read off the figure are what tells the scorer
+which column is X. There is no rule that the first column is X — several of these files put Y
+first. Without titles the scorer falls back to guessing from value ranges and says so.
+
 ## What the score means
 
-Errors are measured in **axis units normalised by the axis range**, so a figure spanning millions
-and one spanning 0 to 1 are judged on the same scale. For each ground-truth point the nearest
-extracted point is found, and that distance is the error.
+Two things are measured, and they fail differently.
+
+**Localisation** — how far the extracted points sit from the truth. Errors are in **axis units
+normalised by the axis range**, so a figure spanning millions and one spanning 0 to 1 are judged on
+the same scale. For each ground-truth point the nearest extracted point is found, and that distance
+is the error.
+
+**Segmentation** — whether the series were separated correctly. Reported as how many series were
+found against how many the truth holds, plus **purity**: the fraction of an extracted series' points
+whose nearest truth point actually belongs to the series it was matched to. A series can be
+perfectly located and still be wrong if it is carrying another series' points, and purity is what
+catches that.
 
 | Column | Meaning |
 | --- | --- |
 | `median` | Half the truth points are closer than this. The headline number |
 | `p95` | The tail. A good median with a bad p95 means a few points went badly wrong |
 | `covered` | Fraction of truth points with an extracted point inside tolerance |
+| `pure` | Fraction of this series' points that belong to it. Low means series were merged |
 | counts | Truth points and extracted points — a large gap means points were missed or invented |
 
 **Passing is a median under 0.5% of the axis range**, adjustable with `--tolerance`. Series are
@@ -44,17 +59,23 @@ at it before changing anything, because the number alone does not say *which* st
 
 ## Ground truth is hand-made, so check the parse
 
-These files are spreadsheets a person laid out, not a designed format: series sit in column blocks
-separated by blank columns, one block may share an X column across several Y columns, uncertainty
-columns are mixed in, and the X column is not always first. The loader works this out by evidence
-and **reports what it decided** — read those notes:
+These files are spreadsheets a person laid out, not a designed format. Two layouts appear:
+**blocks** of columns separated by blank columns, and **long format** where a text column names the
+series and two numeric columns hold the values. Within a block one X column may be shared by several
+Y columns, uncertainty columns are mixed in, and the X column is not always first.
 
-- *"blocks disagree about which column is X"* — check the axes against the figure.
+The loader works this out and **reports every judgement it made** — read those notes:
+
+- *"long format: N series named by the 'Group' column"* — expected for a tidy file.
 - *"one X shared by N Y columns"* — expected for a table of several series against a common X.
-- *"ground truth columns are transposed relative to the chart"* — the file lists the chart's Y axis
-  first. It is swapped automatically; pass `--swap-truth-axes no` if that was wrong.
+- *"blocks disagree about which column is X"* — you did not supply axis titles, so it guessed from
+   monotonicity and the guess was inconsistent. Fit the axis scale with titles and re-run.
+- *"'...' is named in the file but carries no data points"* — a series the author described some
+   other way, such as a fitted line given only as its equation. It cannot be scored.
+- *"N series share the label"* — two blocks named the same thing.
 
-Point at a differently-named file with `--truth <path>`.
+Point at a differently-named file with `--truth <path>`, and override the column matching with
+`--swap-truth-axes yes|no` if the headers are too different from the axis titles to match.
 
 ## When there is no ground truth
 

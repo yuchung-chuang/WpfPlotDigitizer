@@ -37,6 +37,7 @@ class Truth:
     path: Path
     series: list[TruthSeries] = field(default_factory=list)
     notes: list[str] = field(default_factory=list)
+    axis_titles: tuple[str | None, str | None] = (None, None)
 
     def __len__(self) -> int:
         return len(self.series)
@@ -46,7 +47,8 @@ def truth_path_for(image: Path) -> Path:
     return image.with_suffix(".csv")
 
 
-def load_truth(path: Path) -> Truth:
+def load_truth(path: Path, x_title: str | None = None, y_title: str | None = None) -> Truth:
+    """Read a truth file. Supply the chart's axis titles and the columns are matched to them."""
     with path.open(newline="", encoding="utf-8-sig") as handle:
         grid = [row for row in csv.reader(handle)]
     if not grid:
@@ -55,21 +57,40 @@ def load_truth(path: Path) -> Truth:
     width = max(len(row) for row in grid)
     grid = [row + [""] * (width - len(row)) for row in grid]
 
-    truth = Truth(path)
+    truth = Truth(path, axis_titles=(x_title, y_title))
     for block in _column_blocks(grid, width):
-        truth.series.extend(_series_in_block(grid, block, truth.notes))
+        truth.series.extend(_series_in_block(grid, block, truth))
     if not truth.series:
         truth.notes.append("no numeric columns found")
+    _note_declared_but_empty(grid, truth)
     _warn_about_ambiguity(truth)
     return truth
 
 
+def _note_declared_but_empty(grid: list[list[str]], truth: Truth) -> None:
+    """A name in the top row with no points behind it - a fitted line given only as an equation."""
+    labels = {series.label.strip().lower() for series in truth.series}
+    described = " ".join(series.source for series in truth.series).lower()
+    for cell in {cell.strip() for cell in grid[0] if cell.strip()}:
+        bare = cell.lower()
+        if bare in labels or bare in described or LABEL_KEY.match(cell) or bare == "group":
+            continue
+        if _number(cell) is None:
+            truth.notes.append(f"'{cell}' is named in the file but carries no data points")
+
+
 def _warn_about_ambiguity(truth: Truth) -> None:
-    """Surface the two ways this parse goes wrong, so the agent checks rather than trusts."""
+    """Surface the ways this parse goes wrong, so the agent checks rather than trusts."""
     names = [series.label for series in truth.series]
     for name in sorted(set(names)):
         if names.count(name) > 1:
             truth.notes.append(f"{names.count(name)} series share the label '{name}'")
+
+    if not any(truth.axis_titles):
+        truth.notes.append(
+            "no axis titles supplied, so the X column was guessed from monotonicity; "
+            "fit the axis scale with --x-title and --y-title to resolve it by header"
+        )
 
     x_names = {_bare(series.source.split(" vs ")[0]) for series in truth.series}
     if len(x_names) > 1:
@@ -100,7 +121,8 @@ def _column_blocks(grid: list[list[str]], width: int) -> list[list[int]]:
     return blocks
 
 
-def _series_in_block(grid: list[list[str]], columns: list[int], notes: list[str]) -> list[TruthSeries]:
+def _series_in_block(grid: list[list[str]], columns: list[int], truth: Truth) -> list[TruthSeries]:
+    notes = truth.notes
     first_data = _first_data_row(grid, columns)
     if first_data is None:
         return []
@@ -110,11 +132,11 @@ def _series_in_block(grid: list[list[str]], columns: list[int], notes: list[str]
     block_label = _block_label(grid, columns, header_row)
 
     values = {col: _column_values(grid, col, first_data) for col in columns}
-    numeric = [col for col in columns if np.isfinite(values[col]).sum() >= 2]
+    numeric = [col for col in columns if np.isfinite(values[col]).any()]
     if len(numeric) < 2:
         return []
 
-    tidy = _tidy_series(grid, columns, numeric, values, headers, first_data, notes)
+    tidy = _tidy_series(grid, columns, numeric, values, headers, first_data, truth)
     if tidy is not None:
         return tidy
 
@@ -123,7 +145,7 @@ def _series_in_block(grid: list[list[str]], columns: list[int], notes: list[str]
     if len(measured) < 2:
         return []
 
-    x_col = _x_column(measured, values)
+    x_col = _x_column(measured, values, headers, truth.axis_titles)
     y_cols = [col for col in measured if col != x_col]
 
     series = []
@@ -174,10 +196,45 @@ def _column_values(grid: list[list[str]], col: int, first_data: int) -> np.ndarr
     return np.array([_number(row[col]) for row in grid[first_data:]], dtype=float)
 
 
-def _x_column(measured: list[int], values: dict[int, np.ndarray]) -> int:
-    """The independent variable is the monotonic one - position is not reliable in these files."""
+def _x_column(
+    measured: list[int],
+    values: dict[int, np.ndarray],
+    headers: dict[int, str],
+    axis_titles: tuple[str | None, str | None],
+) -> int:
+    """Which column is the horizontal axis.
+
+    There is no positional rule in these files, so the header is the evidence: match it against the
+    chart's axis titles. Monotonicity is only a fallback for when no titles were supplied, and it is
+    unreliable - on an S-N curve both columns are monotonic.
+    """
+    x_title, y_title = axis_titles
+    if x_title or y_title:
+        scored = [
+            (_similarity(headers[col], x_title) - _similarity(headers[col], y_title), col)
+            for col in measured
+        ]
+        best = max(scored)
+        if best[0] > 0:
+            return best[1]
+
     ranked = sorted(measured, key=lambda col: (-_monotonicity(values[col]), measured.index(col)))
     return ranked[0]
+
+
+def _similarity(header: str, title: str | None) -> float:
+    """Token overlap between a column header and an axis title, ignoring units and punctuation."""
+    if not title or not header:
+        return 0.0
+    left, right = _tokens(header), _tokens(title)
+    if not left or not right:
+        return 0.0
+    return len(left & right) / len(left | right)
+
+
+def _tokens(text: str) -> set[str]:
+    bare = re.sub(r"\(.*?\)|\[.*?\]", " ", text.lower())
+    return {word for word in re.split(r"[^a-z0-9]+", bare) if len(word) > 1}
 
 
 def _monotonicity(column: np.ndarray) -> float:
@@ -202,18 +259,16 @@ def _tidy_series(
     values: dict[int, np.ndarray],
     headers: dict[int, str],
     first_data: int,
-    notes: list[str],
+    truth: Truth,
 ) -> list[TruthSeries] | None:
-    """Long format: one text column naming the series, then X and Y.
-
-    Column order is trustworthy here, unlike the block layout, so X is simply the first numeric
-    column rather than whichever one looks monotonic.
-    """
+    """Long format: one text column naming the series, plus an X and a Y column."""
     text = [col for col in columns if col not in numeric and _mostly_text(grid, col, first_data)]
     if len(text) != 1 or len(numeric) != 2:
         return None
 
-    group_col, x_col, y_col = text[0], numeric[0], numeric[1]
+    group_col = text[0]
+    x_col = _x_column(numeric, values, headers, truth.axis_titles)
+    y_col = next(col for col in numeric if col != x_col)
     groups = [row[group_col].strip() for row in grid[first_data:]]
     x, y = values[x_col], values[y_col]
 
@@ -224,7 +279,9 @@ def _tidy_series(
             series.append(
                 TruthSeries(name, x[keep], y[keep], None, source=f"{headers[x_col]} vs {headers[y_col]}")
             )
-    notes.append(f"long format: {len(series)} series named by the '{headers[group_col] or 'first'}' column")
+    truth.notes.append(
+        f"long format: {len(series)} series named by the '{headers[group_col] or 'first'}' column"
+    )
     return series
 
 
