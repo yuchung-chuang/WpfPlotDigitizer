@@ -8,13 +8,17 @@ filter must lean on that rather than on thinness alone.
 
 **Blocked by:** 10 — Noise filter group, mask layers, and border removal.
 
-**Status:** ready-for-agent
+**Status:** needs tuning - grid mask is mechanically complete
 
-- [ ] Running the filter writes a grid-line mask layer and records its pixel count.
-- [ ] Detection uses regular spacing and alignment with known tick positions, not thinness alone.
-- [ ] Both major and minor grids are handled, including grids on one axis only.
-- [ ] Dotted and dashed grids are detected, not just solid ones.
+- [x] Running the filter writes a grid-line mask layer and records its pixel count.
+- [x] Detection uses regular spacing and alignment with known tick positions, not thinness alone.
+- [x] Both major and minor grids are handled, including grids on one axis only.
+- [x] Dotted and dashed grids are detected, not just solid ones.
 - [ ] A thin line data series in a gridded corpus plot survives the filter, and the overlay makes it
       obvious whether it did.
-- [ ] Aggressiveness is adjustable so the agent can re-run when the overlay shows over-removal.
-- [ ] A gridded screenshot from the corpus comes out clean.
+- [x] Aggressiveness is adjustable so the agent can re-run when the overlay shows over-removal.
+- [x] A gridded screenshot from the corpus comes out clean.
+
+**Verified.** `131309.png` produces a separate grid mask with 46 horizontal and 30 vertical rules;
+the overlay shows the lattice while leaving the plotted curves visible. Thin data-line survival
+against a similarly spaced adversarial series remains open.

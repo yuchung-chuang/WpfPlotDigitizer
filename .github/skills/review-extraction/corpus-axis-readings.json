@@ -1,0 +1,205 @@
+{
+  "schema_version": 1,
+  "figures": {
+    "Screenshot 2024-09-15 131234.png": {
+      "type": "line",
+      "x": {
+        "title": "Depth",
+        "unit": "mm",
+        "scale": "linear",
+        "pairs": [[110, 0], [255, 100], [401, 200], [547, 300], [693, 400], [838, 500]]
+      },
+      "y": {
+        "title": "Residual stress",
+        "unit": "MPa",
+        "scale": "linear",
+        "pairs": [[90, 300], [596, -300]]
+      }
+    },
+    "Screenshot 2024-09-15 131309.png": {
+      "type": "scatter",
+      "x": {
+        "title": "Number of cycles to failure",
+        "unit": null,
+        "scale": "log",
+        "log_base": 10,
+        "pairs": [[98.5, 100000], [333, 1000000], [568, 10000000], [802, 100000000]]
+      },
+      "y": {
+        "title": "Stress range",
+        "unit": "MPa",
+        "scale": "linear",
+        "pairs": [[36.5, 600], [507.5, 150]]
+      }
+    },
+    "Screenshot 2024-09-15 131341.png": {
+      "type": "line",
+      "x": {
+        "title": "Temperature",
+        "unit": "C",
+        "scale": "linear",
+        "pairs": [[165, 0], [789, 700]]
+      },
+      "y": {
+        "title": "Hardness",
+        "unit": "HV 10",
+        "scale": "linear",
+        "pairs": [[120.5, 370], [833, 300]]
+      }
+    },
+    "Screenshot 2024-09-15 131401.png": {
+      "type": "line",
+      "x": {
+        "title": "Distance to the weld interface",
+        "unit": "mm",
+        "scale": "linear",
+        "pairs": [[90.5, -4], [840.5, 4]]
+      },
+      "y": {
+        "title": "Hardness",
+        "unit": "HV 0.5",
+        "scale": "linear",
+        "pairs": [[24, 550], [432, 250]]
+      }
+    },
+    "Screenshot 2024-09-15 131423.png": {
+      "type": "line",
+      "x": {
+        "title": "Distance to the weld interface",
+        "unit": "mm",
+        "scale": "linear",
+        "pairs": [[76.5, -4], [827.5, 4]]
+      },
+      "y": {
+        "title": "Hardness",
+        "unit": "HV 0.5",
+        "scale": "linear",
+        "pairs": [[26.5, 500], [462.5, 250]]
+      }
+    },
+    "Screenshot 2024-09-15 131439.png": {
+      "type": "line",
+      "x": {
+        "title": "Distance to the weld interface",
+        "unit": "mm",
+        "scale": "linear",
+        "pairs": [[86.5, -4], [837, 4]]
+      },
+      "y": {
+        "title": "Hardness",
+        "unit": "HV 0.5",
+        "scale": "linear",
+        "pairs": [[27, 500], [461.5, 250]]
+      }
+    },
+    "Screenshot 2024-09-15 131522.png": {
+      "type": "scatter",
+      "x": {
+        "title": "DK",
+        "unit": "MPa m^0.5",
+        "scale": "log",
+        "log_base": 10,
+        "pairs": [[98.5, 1], [396, 10], [693.5, 100]]
+      },
+      "y": {
+        "title": "da/dN",
+        "unit": "mm/cycle",
+        "scale": "log",
+        "log_base": 10,
+        "pairs": [[28.3, 0.1], [140.7, 0.01], [253, 0.001], [365, 0.0001], [478, 0.00001], [590.5, 0.000001]]
+      }
+    },
+    "Screenshot 2024-09-15 131556.png": {
+      "type": "scatter",
+      "x": {
+        "title": "DK",
+        "unit": "MPa m^0.5",
+        "scale": "log",
+        "log_base": 10,
+        "pairs": [[101.5, 1], [398.75, 10], [696, 100]]
+      },
+      "y": {
+        "title": "da/dN",
+        "unit": "mm/cycle",
+        "scale": "log",
+        "log_base": 10,
+        "pairs": [[33, 0.1], [117.4, 0.01], [201.9, 0.001], [286.4, 0.0001], [370.8, 0.00001], [455.3, 0.000001], [539.9, 0.0000001], [624.3, 0.00000001], [708.5, 0.000000001]]
+      }
+    },
+    "Screenshot 2024-09-15 131624.png": {
+      "type": "scatter",
+      "x": {
+        "title": "Hv10",
+        "unit": null,
+        "scale": "linear",
+        "pairs": [[70, 300], [588, 550]]
+      },
+      "y": {
+        "title": "KQ",
+        "unit": "MPa m^0.5",
+        "scale": "linear",
+        "pairs": [[28, 90], [411, 0]]
+      }
+    },
+    "Screenshot 2024-09-15 131643.png": {
+      "type": "scatter",
+      "x": {
+        "title": "Pressure",
+        "unit": "MPa",
+        "scale": "linear",
+        "pairs": [[88, 80], [679, 140]]
+      },
+      "y": {
+        "title": "Relative Upset",
+        "unit": null,
+        "scale": "linear",
+        "pairs": [[27, 3.4], [376, 1.8]]
+      }
+    },
+    "Screenshot 2024-09-15 131712.png": {
+      "type": "line",
+      "x": {
+        "title": "Time",
+        "unit": "sec",
+        "scale": "linear",
+        "pairs": [[66.5, 0], [638.5, 3.5]]
+      },
+      "y": {
+        "title": "Stroke / Thickness",
+        "unit": "mm",
+        "scale": "linear",
+        "pairs": [[55, 3], [411.5, -2]]
+      }
+    },
+    "Screenshot 2024-09-15 131740.png": {
+      "type": "line",
+      "x": {
+        "title": "Temperature",
+        "unit": "C",
+        "scale": "linear",
+        "pairs": [[123.5, 700], [800.5, 1300]]
+      },
+      "y": {
+        "title": "Flow Stress",
+        "unit": "MPa",
+        "scale": "linear",
+        "pairs": [[19.5, 500], [496.5, 0]]
+      }
+    },
+    "Screenshot 2024-09-15 131805.png": {
+      "type": "line",
+      "x": {
+        "title": "Temperature",
+        "unit": "C",
+        "scale": "linear",
+        "pairs": [[135.5, 700], [812, 1300]]
+      },
+      "y": {
+        "title": "Flow Stress",
+        "unit": "MPa",
+        "scale": "linear",
+        "pairs": [[21.5, 500], [498.5, 0]]
+      }
+    }
+  }
+}

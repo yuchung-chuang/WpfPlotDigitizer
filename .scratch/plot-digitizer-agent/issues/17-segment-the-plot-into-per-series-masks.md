@@ -20,19 +20,23 @@ silently reconciled.
 **Blocked by:** 10 — Noise filter group, mask layers, and border removal; 16 — Identify series
 styles from swatches.
 
-**Status:** ready-for-agent
+**Status:** needs tuning — distinct-colour segmentation is mechanically complete
 
-- [ ] Running segmentation writes one mask layer per discovered series and a series entry per mask.
-- [ ] Clustering runs and produces sensible series when no legend was found.
-- [ ] When a legend was found, discovered clusters are matched to legend entries and inherit their
+- [x] Running segmentation writes one mask layer per discovered series and a series entry per mask.
+- [x] Clustering runs and produces sensible series when no legend was found.
+- [x] When a legend was found, discovered clusters are matched to legend entries and inherit their
       labels.
-- [ ] A mismatch between cluster count and legend entry count is recorded as a diagnostic and
+- [x] A mismatch between cluster count and legend entry count is recorded as a diagnostic and
       lowers confidence.
-- [ ] Colour clustering operates in a perceptually uniform space.
+- [x] Colour clustering operates in a perceptually uniform space.
 - [ ] Series sharing a colour but differing in marker shape are separated.
-- [ ] Series sharing a marker shape but differing in colour are separated.
-- [ ] The legend region is excluded from the segmented plot region.
-- [ ] Regions already claimed by noise mask layers are excluded.
-- [ ] The agent can merge two clusters or split one, and the change is recorded.
-- [ ] The overlay renders each series mask in a distinct colour over the original image.
-- [ ] The three heavily overlapping series in the hysteresis corpus plot are separated correctly.
+- [x] Series sharing a marker shape but differing in colour are separated.
+- [x] The legend region is excluded from the segmented plot region.
+- [x] Regions already claimed by noise mask layers are excluded.
+- [x] The agent can merge two clusters or split one, and the change is recorded.
+- [x] The overlay renders each series mask in a distinct colour over the original image.
+- [x] The three heavily overlapping series in the hysteresis corpus plot are separated correctly.
+
+**Verified.** The hysteresis corpus figure yields three masks for CF, CF300_30, and CF600_180;
+the overlay separates the black square, red circle, and blue triangle series and leaves the legend
+out of the candidate region. Same-colour marker-shape separation remains the next tuning item.

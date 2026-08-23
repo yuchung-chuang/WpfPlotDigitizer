@@ -12,14 +12,19 @@ error bar belongs to.
 
 **Blocked by:** 10 — Noise filter group, mask layers, and border removal.
 
-**Status:** ready-for-agent
+**Status:** needs tuning - capped vertical bars verified
 
-- [ ] Running the filter writes an error-bar mask layer and records its pixel count.
-- [ ] Vertical and horizontal error bars are both detected.
-- [ ] Capped and uncapped whiskers are both detected.
-- [ ] The marker at the centre of an error bar survives.
+- [x] Running the filter writes an error-bar mask layer and records its pixel count.
+- [x] Vertical error bars are detected.
+- [ ] Horizontal error bars are detected.
+- [x] Capped whiskers are detected.
+- [ ] Uncapped whiskers are detected.
+- [x] The marker at the centre of an error bar survives.
 - [ ] Asymmetric error bars are handled.
 - [ ] A thin line data series is not mistaken for a whisker.
-- [ ] Detected error-bar extents are recorded, so the uncertainty could be exported later.
-- [ ] The corpus plot carrying error bars comes out with whiskers gone and markers intact, and the
+- [x] Detected error-bar extents are recorded, so the uncertainty could be exported later.
+- [x] The corpus plot carrying error bars comes out with whiskers gone and markers intact, and the
       extracted centroids visibly sit on the markers.
+
+**Verified.** `131341.png` records 107 capped vertical error-bar extents; its overlay shows blue
+claims on whiskers and visible marker centres. Thin-line false-positive resistance remains open.

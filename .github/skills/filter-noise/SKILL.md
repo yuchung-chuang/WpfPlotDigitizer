@@ -70,3 +70,45 @@ to the axes is being eaten.
 **Look at the overlay** and check that the tinted pixels are all things you wanted gone. Then re-run
 extraction — it picks up the new combined mask automatically. If a series got thinner, drop the
 layer you suspect and compare.
+
+## Removing grid lines
+
+```
+uv run .github/skills/filter-noise/remove_grid_lines.py --image images/<figure>.png
+```
+
+The grid filter looks for long, low-contrast runs whose positions form a linear lattice or a
+repeated logarithmic pattern. `--contrast` and `--spacing-tolerance` control how aggressively it
+claims them. Major and minor rules on either axis are written to `masks/grid-lines.png`; use
+`--drop` to compare extraction without this layer.
+
+## Removing background areas
+
+```
+uv run .github/skills/filter-noise/remove_background.py --image images/<figure>.png
+```
+
+This filter claims only large smooth regions whose colour differs from the page, using local image
+residual to leave marker and line edges intact. `--tolerance` and `--edge-residual` are adjustable;
+the dominant page colour and chosen thresholds are recorded in the extraction.
+
+## Removing annotations
+
+```
+uv run .github/skills/filter-noise/remove_annotations.py --image images/<figure>.png
+```
+
+Compact in-plot text boxes and arrows with a geometric arrowhead are claimed as
+`masks/annotations.png`. Marker-sized regions, protected legends, and other protected regions are
+spared. `--join` and `--min-width` tune text grouping; `--drop` removes the layer.
+
+## Removing error bars
+
+```
+uv run .github/skills/filter-noise/remove_error_bars.py --image images/<figure>.png
+```
+
+Short thin horizontal or vertical components are claimed as `masks/error-bars.png`, with a disk
+around each estimated centre spared so the marker survives. `--min-length`, `--max-length`, and
+`--marker-radius` tune the geometry. Detected extents are recorded under `error_bars` for later
+uncertainty export.

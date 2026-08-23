@@ -9,6 +9,36 @@ Run this after locating the plot area, and after the noise filters if the figure
 Extraction reads `masks/plot_mask.png` automatically when it exists and falls back to the raw plot
 area when it does not — so filtering first improves the result without changing how you call this.
 
+## Finding the legend
+
+Before extracting a multi-series figure, locate its boxed legend and preserve its entries:
+
+```
+uv run .github/skills/segment-data/find_legend.py --image images/<figure>.png
+```
+
+After reading the label crops, record the names explicitly, for example
+`--label 0=CF --label 1=CF300_30 --label 2=CF600_180`.
+
+The script searches the full figure, so legends inside the plot area and in the margins are both
+eligible. It records the box and one swatch/label pair per entry, writes upscaled crops under
+`crops/`, and protects the legend from noise filters. A missing legend is an ordinary low-confidence
+result; unsupervised segmentation does not depend on it.
+
+## Segmenting multiple series
+
+Once the plot area, legend, and styles are ready, write one mask per discovered series:
+
+```
+uv run .github/skills/segment-data/segment_series.py --image images/<figure>.png
+```
+
+Clustering uses CIELAB pixels in the plot area, excludes protected regions and noise layers, and
+matches discovered colours to profiled legend entries. Use `--clusters N` when the legend is absent
+or its count is not the expected number. Record a human correction with `--merge A,B` or
+`--split A`; the operation is retained in the stage history and lowers confidence when the result
+does not agree with the legend count.
+
 ## Extracting marker positions
 
 ```
@@ -21,20 +51,24 @@ no cross both mean the parameters need moving.
 How it works, and therefore what to tune:
 
 1. **Opening erases connecting lines while markers survive** — a line is thinner than a marker, so a
-   morphological opening removes one and keeps the other. `--opening-radius` is the disk radius.
+   morphological opening removes one and keeps the other. `--radius` is the disk radius.
    Raise it when line segments are becoming points; lower it when small markers are vanishing.
 2. **Contour centroids give sub-pixel positions**, with a fallback for single-pixel blobs whose
    moments are degenerate.
 3. **Area outliers are discarded** — a blob far from the median marker area is a merge or a
-   fragment, not a data point. `--outlier-z` is the threshold. Raise it to keep more, lower it to be
-   stricter. The summary reports how many were discarded.
+   fragment, not a data point. `--z-threshold` is the threshold. Raise it to keep more, lower it to
+   be stricter. The summary reports how many were discarded.
+4. **Oversized components are split with distance-transform watershed** — the most common blob
+   area estimates one marker, then local distance peaks divide touching markers before the area
+   check. The raw oversized-component warning remains, because a saturated cloud is still an
+   undercount risk.
 
 ## Reading the result
 
 | Line | Meaning |
 | --- | --- |
 | `points` | Kept, and discarded as area outliers |
-| `area` | Median marker area and the kept range — a sanity check on `--outlier-z` |
+| `area` | Median marker area and the kept range — a sanity check on `--z-threshold` |
 | `opening` | The radius used and how much ink it erased |
 | `ink source` | Whether a noise mask was used or the raw plot area |
 
@@ -43,14 +77,14 @@ They are still **pixels** — projecting them into data units is the export step
 
 ## Dense and overlapping scatter
 
-When markers overlap heavily the count is an **undercount**, because merged markers form one blob.
-The script raises a warning when it sees blobs far above the median area, and that warning is the
-signal to check the overlay rather than trust the number.
+When markers overlap heavily the count can still be an **undercount**, because merged markers may
+have no separable distance peaks. The script raises a warning when raw blobs remain far above the
+modal marker area, and that is the signal to check the overlay rather than trust the number.
 
 If large parts of a dense cloud come out empty:
 
-- Lower `--opening-radius` to 0 or 1, since opening thins an already-merged mass further.
-- Raise `--outlier-z` substantially, because in a merged cloud the *merges* dominate and the
+- Lower `--radius` to 0 or 1, since opening thins an already-merged mass further.
+- Raise `--z-threshold` substantially, because in a merged cloud the *merges* dominate and the
   z-score rejects the real data.
 - Accept that a saturated region cannot be recovered marker by marker, and say so in the extraction
   rather than reporting a confident count.

@@ -13,17 +13,21 @@ cannot destroy it before it has been read.
 
 **Blocked by:** 04 — Locate the plot area.
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Running legend detection writes the legend section of the extraction document with the box,
+- [x] Running legend detection writes the legend section of the extraction document with the box,
       per-entry swatch boxes and per-entry label boxes.
-- [ ] Legends inside the plot area are found.
-- [ ] Legends outside the plot area, including in the margin, are found.
-- [ ] Vertically stacked and horizontally arranged legends are both handled.
-- [ ] Upscaled crops of the label regions are produced for the agent to read.
-- [ ] Swatch crops are produced separately from label crops.
-- [ ] The legend box is recorded as a protected region.
-- [ ] A figure with no legend reports that cleanly with low confidence and no diagnostics implying
+- [x] Legends inside the plot area are found.
+- [x] Legends outside the plot area, including in the margin, are found.
+- [x] Vertically stacked and horizontally arranged legends are both handled.
+- [x] Upscaled crops of the label regions are produced for the agent to read.
+- [x] Swatch crops are produced separately from label crops.
+- [x] The legend box is recorded as a protected region.
+- [x] A figure with no legend reports that cleanly with low confidence and no diagnostics implying
       failure, because most of the corpus has no legend.
-- [ ] The overlay marks the legend box and each entry on the original image.
-- [ ] The multi-series corpus plot with a boxed in-plot legend yields the correct number of entries.
+- [x] The overlay marks the legend box and each entry on the original image.
+- [x] The multi-series corpus plot with a boxed in-plot legend yields the correct number of entries.
+
+**Verified.** `131643.png` yields two vertically stacked entries and `131712.png` yields three
+horizontally arranged entries. Both overlays and representative label crops were inspected. A
+legend-free figure reports an ordinary low-confidence result.

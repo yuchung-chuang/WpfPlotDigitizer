@@ -14,6 +14,29 @@ uv run .github/skills/review-extraction/score_extraction.py --image images/<figu
 
 Run it after `export_data.py`, because scoring compares data units, not pixels.
 
+To perform the visual closing check after export, use:
+
+```
+uv run .github/skills/review-extraction/verify_extraction.py --image images/<figure>.png
+```
+
+Verification reads each `points_data` sidecar, projects it through the recorded axis fit, measures
+the mean distance to visible ink inside the plot area, and writes a distinct-colour overlay. A
+large distance is reported as an axis-fit or extraction diagnostic; view the overlay before
+declaring the extraction complete.
+
+To run the reproducible baseline over every figure with checked-in ground truth, use:
+
+```
+uv run .github/skills/review-extraction/score_corpus.py
+```
+
+The command replays the axis readings in `corpus-axis-readings.json`, creates a fresh generated
+workspace for each figure, and writes the commit-friendly report to
+`.scratch/plot-digitizer-agent/corpus-scoreboard.md`. It sorts figures by filename, records the
+source hash of every pipeline skill, and reports a crashed figure as a failed row so one bad image
+does not hide the rest of the corpus.
+
 **Fit the axis scale with `--x-title` and `--y-title` first.** The truth file's columns are matched
 to the chart's axes **by header**, so the titles you read off the figure are what tells the scorer
 which column is X. There is no rule that the first column is X — several of these files put Y

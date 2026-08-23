@@ -14,13 +14,18 @@ every run would make the scoreboard unusable.
 
 **Blocked by:** 21 — Score an extraction against ground truth.
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Axis readings per figure are stored in a checked-in file, so a scoreboard run needs no agent.
-- [ ] One command runs every figure that has ground truth and prints one row per figure: series
+- [x] Axis readings per figure are stored in a checked-in file, so a scoreboard run needs no agent.
+- [x] One command runs every figure that has ground truth and prints one row per figure: series
       count, median error, 95th percentile, coverage, and pass or fail.
-- [ ] A total line reports how many series passed out of how many.
-- [ ] Results are written to a file that can be committed, so a `git diff` shows which numbers moved.
-- [ ] A figure that crashes is reported as a failure row rather than stopping the run.
-- [ ] The scoreboard records which skill versions produced it, so a change can be attributed.
-- [ ] Running it twice without changing anything produces the same numbers.
+- [x] A total line reports how many series passed out of how many.
+- [x] Results are written to a file that can be committed, so a `git diff` shows which numbers moved.
+- [x] A figure that crashes is reported as a failure row rather than stopping the run.
+- [x] The scoreboard records which skill versions produced it, so a change can be attributed.
+- [x] Running it twice without changing anything produces the same numbers.
+
+**Verified.** `score_corpus.py` runs all 13 truth-bearing figures, writes
+`corpus-scoreboard.md`, records SHA-256 prefixes for the baseline skill scripts, and isolates the
+`131556` scorer crash as one failed row. The baseline currently passes 0 of 69 parsed series; the
+report is deterministic across repeated runs.

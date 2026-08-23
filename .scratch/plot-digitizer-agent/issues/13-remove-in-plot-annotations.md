@@ -8,16 +8,20 @@ legend, which is a protected region because a later ticket needs to read it.
 
 **Blocked by:** 10 — Noise filter group, mask layers, and border removal.
 
-**Status:** ready-for-agent
+**Status:** needs tuning - text masking is conservative; arrow cases remain open
 
-- [ ] Running the filter writes an annotation mask layer and records its pixel count.
+- [x] Running the filter writes an annotation mask layer and records its pixel count.
 - [ ] Text inside the plot area is detected regardless of orientation.
 - [ ] Arrows and leader lines are detected.
-- [ ] The legend is never removed by this filter, whether or not it has been located yet.
-- [ ] Any region recorded as protected is left untouched.
-- [ ] Dense clusters of small markers are not mistaken for text.
-- [ ] A corpus plot carrying an in-plot equation label comes out with the text gone and the data
+- [x] The legend is never removed by this filter, whether or not it has been located yet.
+- [x] Any region recorded as protected is left untouched.
+- [x] Dense clusters of small markers are not mistaken for text.
+- [x] A corpus plot carrying an in-plot equation label comes out with the text gone and the data
       intact.
+
+**Verified.** `131624.png` claims the equation and in-plot labels as glyph pixels, leaves the
+protected legend untouched, and does not tint marker-sized components. Arrow detection remains
+gated on a geometric arrowhead and needs a corpus example.
 # 13 — Remove in-plot annotations
 
 **What to build:** Text and arrows drawn over the chart stop being digitized as data points.

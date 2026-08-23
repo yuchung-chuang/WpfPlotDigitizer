@@ -25,6 +25,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "_lib"))
 import cv2
 import numpy as np
 from scipy import ndimage
+from skimage.feature import peak_local_max
+from skimage.segmentation import watershed
 
 from pdkit import Overlay, Result, base_parser, finish, open_workspace, palette_colour, save_mask
 from pdkit.ink import clear_border, ink_mask
@@ -37,6 +39,7 @@ INSET = 2
 MIN_SPREAD_FRACTION = 0.25
 OVERLAP_FACTOR = 2.0
 MIN_BLOBS_FOR_REJECTION = 8
+SPLIT_AREA_FACTOR = 1.5
 FADE = 0.35
 
 
@@ -90,9 +93,11 @@ def main() -> int:
     opened = _open_disk(filled, args.radius)
     erased = _fraction_removed(filled, opened)
 
-    blobs = _blobs(opened)
+    raw_blobs = _blobs(opened)
+    marker_area = _modal_area(raw_blobs)
+    blobs, split_count = _split_blobs(opened, marker_area)
     kept, discarded, median = _reject_outliers(blobs, args.z_threshold, result)
-    oversized = [blob for blob in blobs if median > 0 and blob[2] >= OVERLAP_FACTOR * median]
+    oversized = [blob for blob in raw_blobs if marker_area > 0 and blob[2] >= OVERLAP_FACTOR * marker_area]
     if oversized:
         result.warn(
             f"{len(oversized)} blob(s) are at least {OVERLAP_FACTOR:g}x the median marker area, so "
@@ -128,6 +133,7 @@ def main() -> int:
     summary = [
         f"points      {len(points)} kept, {len(discarded)} discarded as area outliers",
         f"area        {_areas(kept, median)}",
+        f"splitting   {split_count} overlapping blob(s) with watershed from modal area {marker_area:.0f} px",
         f"opening     disk radius {args.radius}, erased {erased:.0%} of the ink",
         f"ink source  {source}",
         f"region      {_describe(region)}   (plot area inset by {args.inset} px)",
@@ -187,6 +193,69 @@ def _blobs(mask: np.ndarray) -> list[tuple[float, float, float]]:
     """One sub-pixel centroid and area per external contour."""
     contours, _ = cv2.findContours(
         mask.astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
+    )
+    return [_centroid(contour) for contour in contours]
+
+
+def _modal_area(blobs: list[tuple[float, float, float]]) -> float:
+    """Estimate the area of one marker without letting merged blobs set the scale."""
+    if not blobs:
+        return 0.0
+    areas = np.asarray([blob[2] for blob in blobs], dtype=float)
+    typical = max(float(np.median(areas)), 1.0)
+    width = max(1.0, round(typical * 0.2))
+    bins = np.floor(areas / width).astype(int)
+    mode = max(np.unique(bins), key=lambda value: (int(np.count_nonzero(bins == value)), -value))
+    members = areas[bins == mode]
+    return float(np.median(members))
+
+
+def _split_blobs(
+    mask: np.ndarray, marker_area: float
+) -> tuple[list[tuple[float, float, float]], int]:
+    """Split touching markers with distance-transform watershed when the component is oversized."""
+    if marker_area <= 0:
+        return [], 0
+
+    count, labels, stats, _ = cv2.connectedComponentsWithStats(
+        mask.astype(np.uint8), connectivity=8
+    )
+    blobs: list[tuple[float, float, float]] = []
+    split_count = 0
+    minimum_distance = max(1, int(round(np.sqrt(marker_area / np.pi))))
+    for label in range(1, count):
+        component = labels == label
+        area = float(stats[label, cv2.CC_STAT_AREA])
+        if area < SPLIT_AREA_FACTOR * marker_area:
+            blobs.extend(_component_blobs(component))
+            continue
+
+        distance = ndimage.distance_transform_edt(component)
+        peaks = peak_local_max(
+            distance,
+            min_distance=minimum_distance,
+            threshold_abs=0.5,
+            labels=component,
+            exclude_border=False,
+        )
+        if len(peaks) < 2:
+            blobs.extend(_component_blobs(component))
+            continue
+
+        markers = np.zeros(component.shape, dtype=np.int32)
+        markers[peaks[:, 0], peaks[:, 1]] = np.arange(1, len(peaks) + 1)
+        regions = watershed(-distance, markers, mask=component)
+        pieces = 0
+        for region in range(1, len(peaks) + 1):
+            blobs.extend(_component_blobs(regions == region))
+            pieces += 1
+        split_count += 1 if pieces > 1 else 0
+    return blobs, split_count
+
+
+def _component_blobs(component: np.ndarray) -> list[tuple[float, float, float]]:
+    contours, _ = cv2.findContours(
+        component.astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
     )
     return [_centroid(contour) for contour in contours]
 

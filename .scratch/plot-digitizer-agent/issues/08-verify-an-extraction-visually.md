@@ -9,17 +9,21 @@ overlay *is* the test, and it must be good enough to judge by eye.
 
 **Blocked by:** 07 — Export digitized data.
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] A review skill group is discoverable and states that the agent must view the verification
+- [x] A review skill group is discoverable and states that the agent must view the verification
       overlay before declaring the digitization complete.
-- [ ] Running verification reads the exported data values, projects them back through the axis
+- [x] Running verification reads the exported data values, projects them back through the axis
       mapping into pixels, and draws them on the original image.
-- [ ] Each series is drawn distinctly so they can be told apart.
-- [ ] A summary reports the point count per series and the mean distance between each reprojected
+- [x] Each series is drawn distinctly so they can be told apart.
+- [x] A summary reports the point count per series and the mean distance between each reprojected
       point and the nearest ink in the plot area.
-- [ ] A large reprojection error is reported as a diagnostic identifying the likely stage at fault.
-- [ ] Deliberately corrupting the axis fit produces a visibly wrong overlay and a raised error
+- [x] A large reprojection error is reported as a diagnostic identifying the likely stage at fault.
+- [x] Deliberately corrupting the axis fit produces a visibly wrong overlay and a raised error
       figure, confirming the check actually detects failure.
-- [ ] The simple scatter plot from the corpus verifies cleanly. **Milestone: one chart digitized end
+- [x] The simple scatter plot from the corpus verifies cleanly. **Milestone: one chart digitized end
       to end.**
+
+**Verified.** `131643.png` was exported and reprojected with distinct overlay points. A normal
+run reports the point-to-ink distance; changing the X-axis fit to a deliberately shifted mapping
+raises the configured error diagnostic and changes the overlay visibly.

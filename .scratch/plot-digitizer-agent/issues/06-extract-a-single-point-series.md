@@ -15,7 +15,7 @@ script's results without anyone editing it.
 
 **Blocked by:** 04 — Locate the plot area.
 
-**Status:** needs tuning — mechanically complete, quality not yet acceptable
+**Status:** needs tuning — watershed improves dense clouds, quality not yet acceptable
 
 - [x] A data segmentation skill group is discoverable and describes point extraction.
 - [x] Running extraction on a supported plot writes a series entry to the extraction document with
@@ -46,4 +46,9 @@ dividing their area by that mode — or use distance-transform watershed to sepa
 before taking centroids. Both are standard and neither needs new dependencies. The median area of
 2 px reported on the Inseam figure also suggests the ink threshold is fragmenting anti-aliased
 markers, which is worth checking before anything else.
+
+**Update.** Distance-transform watershed now estimates the modal single-marker area and splits
+oversized components before outlier rejection. The default run increased `data.png` to 982 points
+and `Inseam-v-Height-Graph.jpg` to 858 points; both overlays follow the visible cloud more closely.
+The figures remain saturated and undercounted, so the final visual-correctness criterion stays open.
 - [ ] A simple single-series scatter plot from the corpus yields a visually correct point set.

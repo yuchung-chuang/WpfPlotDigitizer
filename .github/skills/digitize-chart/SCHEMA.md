@@ -39,7 +39,12 @@ origin at the top left.
     "entries": [ { "index": 0,
                    "swatch": { "x": 0, "y": 0, "width": 0, "height": 0 },
                    "label_box": { "x": 0, "y": 0, "width": 0, "height": 0 },
-                   "label": "CF300" } ],
+                   "label": "CF300",
+                   "style": { "colour_lab": [54.2, 80.1, 69.9],
+                              "colour_rgb": [220, 30, 40],
+                              "marker": "circle", "filled": true, "marker_size": 7,
+                              "line_style": "none", "line_width": 0,
+                              "kind": "point", "confidence": 0.85 } } ],
     "confidence": 0.7
   },
 
