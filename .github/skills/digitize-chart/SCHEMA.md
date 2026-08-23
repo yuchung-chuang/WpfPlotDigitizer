@@ -23,7 +23,9 @@ origin at the top left.
                "confidence": 0.85 },
 
   "plot_area": { "x": 0, "y": 0, "width": 0, "height": 0,
-                 "method": "corner-probe", "confidence": 0.8 },
+                 "method": "agreement", "confidence": 0.9,
+                 "candidates": { "corner_probe": { "x": 0, "y": 0, "width": 0, "height": 0 },
+                                 "line_frame":   { "x": 0, "y": 0, "width": 0, "height": 0 } } },
 
   "axes": {
     "x": { "min": 0, "max": 10, "scale": "linear", "log_base": null, "reversed": false,

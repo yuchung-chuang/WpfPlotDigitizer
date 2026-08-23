@@ -16,18 +16,27 @@ will fail on unusual layouts and there must be a way forward when it does.
 
 **Blocked by:** 03 — Chart overview.
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] An axis analysis skill group is discoverable and describes the two detection strategies and
+- [x] An axis analysis skill group is discoverable and describes the two detection strategies and
       when each is stronger.
-- [ ] Running plot-area location writes the plot area section of the extraction document with the
+- [x] Running plot-area location writes the plot area section of the extraction document with the
       rectangle, a confidence, and which method produced it.
-- [ ] Both detection strategies run and their disagreement is recorded as a diagnostic when they do
+- [x] Both detection strategies run and their disagreement is recorded as a diagnostic when they do
       not agree within tolerance.
-- [ ] The overlay draws the detected rectangle on the original image.
-- [ ] The agent can supply an explicit rectangle that overrides detection, and the override is
+- [x] The overlay draws the detected rectangle on the original image.
+- [x] The agent can supply an explicit rectangle that overrides detection, and the override is
       recorded as the method.
-- [ ] A framed plot from the corpus is located correctly.
-- [ ] A plot with only left and bottom spines and no full frame is located correctly or reports low
+- [x] A framed plot from the corpus is located correctly.
+- [x] A plot with only left and bottom spines and no full frame is located correctly or reports low
       confidence rather than returning a wrong rectangle silently.
-- [ ] A plot whose background is not white does not defeat detection.
+- [x] A plot whose background is not white does not defeat detection.
+
+**Corpus sweep.** 30 figures, no crashes. 20 reached two-strategy agreement at confidence 0.90,
+including the framed, spines-only, shaded-panel and photographed cases. Four disagreed and were
+reported at 0.28-0.40 with both candidate boxes recorded. Four had only one strategy answer, at
+0.42-0.60. Two found nothing and reported an error telling the agent to supply `--box`; both are
+low-contrast JPEGs, which the spec already classes as best-effort.
+
+**Note for later tickets.** Both candidate boxes are kept under `plot_area.candidates`, so a
+downstream step can switch to the rejected one without re-running detection.

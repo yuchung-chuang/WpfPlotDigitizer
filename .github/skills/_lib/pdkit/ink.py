@@ -34,6 +34,73 @@ def ink_mask(image: np.ndarray, tolerance: int = 40) -> np.ndarray:
     return difference > tolerance
 
 
+def outline_mask(image: np.ndarray, tolerance: int = 40, step: int = 8) -> np.ndarray:
+    """Ink, plus the boundary of every area fill.
+
+    A panel drawn as a pale shaded rectangle rather than a framed one carries no ink at its edge,
+    so anything looking for the plot boundary sees nothing without the fill's outline. `step` is
+    the smallest brightness step that counts as a boundary, low enough for a faint panel wash.
+    """
+    grey = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
+    gradient = cv2.morphologyEx(grey, cv2.MORPH_GRADIENT, kernel)
+    return ink_mask(image, tolerance) | (gradient > step)
+
+
+def clear_border(mask: np.ndarray) -> np.ndarray:
+    """Drop every component touching the edge of the mask.
+
+    A figure's own outer border swallows everything inside it into one component; removing it
+    exposes the structure that was really wanted.
+    """
+    binary = (np.asarray(mask) > 0).astype(np.uint8)
+    count, labels = cv2.connectedComponents(binary, connectivity=8)
+    if count <= 1:
+        return binary > 0
+    touching = np.unique(
+        np.concatenate([labels[0, :], labels[-1, :], labels[:, 0], labels[:, -1]])
+    )
+    keep = np.ones(count, dtype=bool)
+    keep[touching[touching > 0]] = False
+    keep[0] = False
+    return keep[labels]
+
+
+def run_coverage(
+    mask: np.ndarray, direction: str, length: int, coverage: float = 0.95
+) -> np.ndarray:
+    """True where a run of `length` pixels heading `direction` is at least `coverage` ink.
+
+    Accepting most of a run rather than all of it is what lets a probe follow an axis line across
+    the gaps where a curve, a tick label or a compression artefact interrupts it.
+    """
+    field = (np.asarray(mask) > 0).astype(np.int32)
+    axis = 1 if direction in ("right", "left") else 0
+    backwards = direction in ("left", "up")
+    if backwards:
+        field = field[:, ::-1] if axis == 1 else field[::-1, :]
+
+    span = int(max(1, min(length, field.shape[axis])))
+    pad = list(field.shape)
+    pad[axis] = 1
+    cumulative = np.concatenate([np.zeros(pad, np.int32), field.cumsum(axis=axis)], axis=axis)
+    totals = (
+        cumulative[:, span:] - cumulative[:, :-span]
+        if axis == 1
+        else cumulative[span:, :] - cumulative[:-span, :]
+    )
+
+    covered = np.zeros(field.shape, dtype=bool)
+    enough = totals >= coverage * span
+    if axis == 1:
+        covered[:, : enough.shape[1]] = enough
+    else:
+        covered[: enough.shape[0], :] = enough
+    if backwards:
+        covered = covered[:, ::-1] if axis == 1 else covered[::-1, :]
+    return covered
+
+
 def long_runs(mask: np.ndarray, axis: int, min_length: int) -> np.ndarray:
     """Keep only ink belonging to an unbroken run of at least `min_length` along `axis`."""
     length = max(int(min_length), 2)
@@ -44,6 +111,22 @@ def long_runs(mask: np.ndarray, axis: int, min_length: int) -> np.ndarray:
     )
     binary = (mask > 0).astype(np.uint8) * 255
     return cv2.morphologyEx(binary, cv2.MORPH_OPEN, kernel) > 0
+
+
+def covered_runs(
+    mask: np.ndarray, axis: int, min_length: int, coverage: float = 0.95
+) -> np.ndarray:
+    """`long_runs` for lines that data crosses: a run may be `coverage` ink rather than all ink.
+
+    A frame edge or a grid line interrupted by a marker sitting on it is still one line, and an
+    unbroken-run test throws it away.
+    """
+    length = max(int(min_length), 2)
+    starts = run_coverage(mask, "right" if axis == 1 else "down", length, coverage)
+    kernel = np.ones((1, length) if axis == 1 else (length, 1), np.uint8)
+    anchor = (length - 1, 0) if axis == 1 else (0, length - 1)
+    spread = cv2.dilate(starts.astype(np.uint8), kernel, anchor=anchor) > 0
+    return spread & (np.asarray(mask) > 0)
 
 
 def line_clusters(lines: np.ndarray, axis: int, gap: int = 3) -> list[dict]:
