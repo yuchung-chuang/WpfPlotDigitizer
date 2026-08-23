@@ -114,6 +114,10 @@ def _series_in_block(grid: list[list[str]], columns: list[int], notes: list[str]
     if len(numeric) < 2:
         return []
 
+    tidy = _tidy_series(grid, columns, numeric, values, headers, first_data, notes)
+    if tidy is not None:
+        return tidy
+
     uncertainty = [col for col in numeric if UNCERTAINTY.search(headers[col])]
     measured = [col for col in numeric if col not in uncertainty]
     if len(measured) < 2:
@@ -189,6 +193,46 @@ def _monotonicity(column: np.ndarray) -> float:
 def _nearest_uncertainty(y_col: int, uncertainty: list[int]) -> int | None:
     following = [col for col in uncertainty if col > y_col]
     return min(following) if following else None
+
+
+def _tidy_series(
+    grid: list[list[str]],
+    columns: list[int],
+    numeric: list[int],
+    values: dict[int, np.ndarray],
+    headers: dict[int, str],
+    first_data: int,
+    notes: list[str],
+) -> list[TruthSeries] | None:
+    """Long format: one text column naming the series, then X and Y.
+
+    Column order is trustworthy here, unlike the block layout, so X is simply the first numeric
+    column rather than whichever one looks monotonic.
+    """
+    text = [col for col in columns if col not in numeric and _mostly_text(grid, col, first_data)]
+    if len(text) != 1 or len(numeric) != 2:
+        return None
+
+    group_col, x_col, y_col = text[0], numeric[0], numeric[1]
+    groups = [row[group_col].strip() for row in grid[first_data:]]
+    x, y = values[x_col], values[y_col]
+
+    series = []
+    for name in dict.fromkeys(group for group in groups if group):
+        keep = np.array([group == name for group in groups]) & np.isfinite(x) & np.isfinite(y)
+        if keep.any():
+            series.append(
+                TruthSeries(name, x[keep], y[keep], None, source=f"{headers[x_col]} vs {headers[y_col]}")
+            )
+    notes.append(f"long format: {len(series)} series named by the '{headers[group_col] or 'first'}' column")
+    return series
+
+
+def _mostly_text(grid: list[list[str]], col: int, first_data: int) -> bool:
+    cells = [row[col].strip() for row in grid[first_data:] if row[col].strip()]
+    if not cells:
+        return False
+    return sum(1 for cell in cells if _number(cell) is None) > 0.8 * len(cells)
 
 
 def _column_label(grid: list[list[str]], col: int, header_row: int | None) -> str:
