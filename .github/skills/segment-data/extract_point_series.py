@@ -40,6 +40,12 @@ MIN_SPREAD_FRACTION = 0.25
 OVERLAP_FACTOR = 2.0
 MIN_BLOBS_FOR_REJECTION = 8
 SPLIT_AREA_FACTOR = 1.5
+EDGE_MARKER_AREA_FRACTION = 0.25
+EDGE_MARKER_AREA_FACTOR = 4.0
+EDGE_MARKER_MIN_SPAN_FRACTION = 0.6
+EDGE_MARKER_MAX_SPAN_FACTOR = 1.5
+EDGE_MARKER_MIN_VISIBLE_AREA_FRACTION = 0.15
+EDGE_MARKER_MAX_CLIPPED_SPAN_FRACTION = 0.85
 FADE = 0.35
 
 
@@ -96,7 +102,7 @@ def main() -> int:
         ink &= ~noise
     source = f"{workdir.relative(source_mask_path(workdir, extraction, args.series_id, args.mask))}" if source_mask is not None else noise_source
 
-    filled = ndimage.binary_fill_holes(clear_border(ink))
+    filled = ndimage.binary_fill_holes(_clear_border(ink))
     opened = _open_disk(filled, args.radius)
     erased = _fraction_removed(filled, opened)
 
@@ -225,6 +231,55 @@ def _fraction_removed(before: np.ndarray, after: np.ndarray) -> float:
     return 1.0 - int(np.count_nonzero(after)) / total
 
 
+def _clear_border(mask: np.ndarray) -> np.ndarray:
+    """Remove the plot border while retaining marker-sized components clipped by one plot edge."""
+    binary = np.asarray(mask) > 0
+    count, labels, stats, _ = cv2.connectedComponentsWithStats(binary.astype(np.uint8), 8)
+    if count <= 1:
+        return binary
+
+    edge_labels = set(
+        np.unique(np.concatenate([labels[0, :], labels[-1, :], labels[:, 0], labels[:, -1]])).tolist()
+    )
+    interior = [label for label in range(1, count) if label not in edge_labels]
+    if not interior:
+        return clear_border(binary)
+
+    typical_area = float(np.median([stats[label, cv2.CC_STAT_AREA] for label in interior]))
+    typical_span = float(
+        np.median(
+            [
+                max(stats[label, cv2.CC_STAT_WIDTH], stats[label, cv2.CC_STAT_HEIGHT])
+                for label in interior
+            ]
+        )
+    )
+    cleaned = clear_border(binary)
+    minimum_area = EDGE_MARKER_AREA_FRACTION * typical_area
+    maximum_area = EDGE_MARKER_AREA_FACTOR * typical_area
+    for label in edge_labels:
+        if label == 0 or label >= count:
+            continue
+        area = stats[label, cv2.CC_STAT_AREA]
+        width = stats[label, cv2.CC_STAT_WIDTH]
+        height = stats[label, cv2.CC_STAT_HEIGHT]
+        touches = [
+            np.any(labels[0, :] == label),
+            np.any(labels[-1, :] == label),
+            np.any(labels[:, 0] == label),
+            np.any(labels[:, -1] == label),
+        ]
+        if sum(touches) != 1:
+            continue
+        visible_span = width if touches[0] or touches[1] else height
+        if (
+            minimum_area <= area <= maximum_area
+            and EDGE_MARKER_MIN_SPAN_FRACTION * typical_span <= visible_span <= EDGE_MARKER_MAX_SPAN_FACTOR * typical_span
+        ):
+            cleaned |= labels == label
+    return cleaned
+
+
 def _blobs(mask: np.ndarray) -> list[tuple[float, float, float]]:
     """One sub-pixel centroid and area per external contour."""
     contours, _ = cv2.findContours(
@@ -263,7 +318,7 @@ def _split_blobs(
         component = labels == label
         area = float(stats[label, cv2.CC_STAT_AREA])
         if area < SPLIT_AREA_FACTOR * marker_area:
-            blobs.extend(_component_blobs(component))
+            blobs.extend(_component_blobs(component, marker_area))
             continue
 
         distance = ndimage.distance_transform_edt(component)
@@ -275,7 +330,7 @@ def _split_blobs(
             exclude_border=False,
         )
         if len(peaks) < 2:
-            blobs.extend(_component_blobs(component))
+            blobs.extend(_component_blobs(component, marker_area))
             continue
 
         markers = np.zeros(component.shape, dtype=np.int32)
@@ -283,20 +338,26 @@ def _split_blobs(
         regions = watershed(-distance, markers, mask=component)
         pieces = 0
         for region in range(1, len(peaks) + 1):
-            blobs.extend(_component_blobs(regions == region))
+            blobs.extend(_component_blobs(regions == region, marker_area))
             pieces += 1
         split_count += 1 if pieces > 1 else 0
     return blobs, split_count
 
 
-def _component_blobs(component: np.ndarray) -> list[tuple[float, float, float]]:
+def _component_blobs(
+    component: np.ndarray, expected_area: float
+) -> list[tuple[float, float, float]]:
     contours, _ = cv2.findContours(
         component.astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
     )
-    return [_centroid(contour) for contour in contours]
+    return [_centroid(contour, component.shape, expected_area) for contour in contours]
 
 
-def _centroid(contour: np.ndarray) -> tuple[float, float, float]:
+def _centroid(
+    contour: np.ndarray,
+    shape: tuple[int, int] | None = None,
+    expected_area: float | None = None,
+) -> tuple[float, float, float]:
     """The moment centroid, falling back to the mean of the outline when the moments vanish.
 
     Ported from the desktop client, degenerate case included: a single pixel or a one-pixel-wide
@@ -306,8 +367,48 @@ def _centroid(contour: np.ndarray) -> tuple[float, float, float]:
     moments = cv2.moments(contour)
     points = contour.reshape(-1, 2).astype(float)
     if moments["m00"] > 0:
-        return moments["m10"] / moments["m00"], moments["m01"] / moments["m00"], moments["m00"]
-    return float(points[:, 0].mean()), float(points[:, 1].mean()), float(len(points))
+        x = moments["m10"] / moments["m00"]
+        y = moments["m01"] / moments["m00"]
+        area = moments["m00"]
+    else:
+        x = float(points[:, 0].mean())
+        y = float(points[:, 1].mean())
+        area = float(len(points))
+    if shape is not None and expected_area is not None:
+        x, y = _uncropped_centroid(contour, x, y, shape, area, expected_area)
+    return x, y, area
+
+
+def _uncropped_centroid(
+    contour: np.ndarray,
+    x: float,
+    y: float,
+    shape: tuple[int, int],
+    area: float,
+    expected_area: float,
+) -> tuple[float, float]:
+    """Estimate the centre of a marker clipped by one edge of the extraction crop."""
+    left, top, width, height = cv2.boundingRect(contour)
+    touches = [top == 0, top + height == shape[0], left == 0, left + width == shape[1]]
+    if sum(touches) != 1 or area < EDGE_MARKER_MIN_VISIBLE_AREA_FRACTION * expected_area:
+        return float(x), float(y)
+
+    expected_span = max(2.0, 2.0 * np.sqrt(expected_area / np.pi))
+    if (touches[0] or touches[1]) and width > height:
+        if not (
+            EDGE_MARKER_MIN_SPAN_FRACTION * expected_span <= width <= EDGE_MARKER_MAX_SPAN_FACTOR * expected_span
+            and height <= EDGE_MARKER_MAX_CLIPPED_SPAN_FRACTION * expected_span
+        ):
+            return float(x), float(y)
+        y = top + (width - 1) / 2
+    elif (touches[2] or touches[3]) and height > width:
+        if not (
+            EDGE_MARKER_MIN_SPAN_FRACTION * expected_span <= height <= EDGE_MARKER_MAX_SPAN_FACTOR * expected_span
+            and width <= EDGE_MARKER_MAX_CLIPPED_SPAN_FRACTION * expected_span
+        ):
+            return float(x), float(y)
+        x = left + (height - 1) / 2
+    return float(x), float(y)
 
 
 def _reject_outliers(

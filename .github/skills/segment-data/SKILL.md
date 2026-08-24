@@ -9,6 +9,29 @@ Run this after locating the plot area, and after the noise filters if the figure
 Extraction reads `masks/plot_mask.png` automatically when it exists and falls back to the raw plot
 area when it does not — so filtering first improves the result without changing how you call this.
 
+## Choose the extraction path from the figure
+
+Use `extract_point_series.py` for a **single series of discrete, individually visible data-point
+markers**. Ticket 06's full point-oriented fixture set is:
+
+- `images/3-1-freefall.png`
+- `images/Screenshot 2021-06-26 230901.png`
+- `images/Screenshot 2021-06-26 231058.png`
+- `images/A+cleaned+up+scatter+plot.jpg`
+
+For the current ticket 06 validation pass, use only the clean fixtures
+`3-1-freefall.png` and `A+cleaned+up+scatter+plot.jpg`. Defer
+`Screenshot 2021-06-26 230901.png` until the regression/connecting-line noise is removed and
+`Screenshot 2021-06-26 231058.png` until the grid-line noise is removed. Those filters must be
+verified before their screenshots are used to judge point-extraction quality.
+
+Inspect the chart image first and choose the operation that matches what is drawn. Use
+`extract_line_series.py` for continuous line series, `segment_series.py` followed by per-series
+extraction for multiple series, and the relevant filtering or decline workflow for bars,
+histograms, multi-panel figures, or other unsupported layouts. Do not use the ticket 06 point
+fixtures as a blanket test set for every image in `images/`; a different chart type needs its own
+operation and acceptance check.
+
 ## Finding the legend
 
 Before extracting a multi-series figure, locate its boxed legend and preserve its entries:

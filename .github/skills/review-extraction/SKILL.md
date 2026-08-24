@@ -51,6 +51,10 @@ normalised by the axis range**, so a figure spanning millions and one spanning 0
 the same scale. For each ground-truth point the nearest extracted point is found, and that distance
 is the error.
 
+Scoring uses each series' exported `points_data` sidecar, which contains the extracted centroids or
+line samples. The optional `support_points_data` sidecar contains cleaned mask pixels for visual
+support and is not the extracted series; it must not be used to judge point counts or localisation.
+
 **Segmentation** — whether the series were separated correctly. Reported as how many series were
 found against how many the truth holds, plus **purity**: the fraction of an extracted series' points
 whose nearest truth point actually belongs to the series it was matched to. A series can be

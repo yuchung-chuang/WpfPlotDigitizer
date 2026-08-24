@@ -209,7 +209,7 @@ def _inside(values: np.ndarray, axis: dict) -> float:
 def _extracted_series(workdir, extraction, axes: dict, result: Result) -> list[tuple[dict, np.ndarray]]:
     series = []
     for entry in extraction.data["series"]:
-        reference = entry.get("support_points_data") or entry.get("points_data")
+        reference = entry.get("points_data")
         if not reference:
             result.warn(f"series {entry['id']} is not exported yet; run export_data.py")
             continue
