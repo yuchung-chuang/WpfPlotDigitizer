@@ -7,13 +7,13 @@
         "title": "Depth",
         "unit": "mm",
         "scale": "linear",
-        "pairs": [[110, 0], [255, 100], [401, 200], [547, 300], [693, 400], [838, 500]]
+          "pairs": [[110, 0], [838, 500]]
       },
       "y": {
         "title": "Residual stress",
         "unit": "MPa",
         "scale": "linear",
-        "pairs": [[90, 300], [596, -300]]
+          "pairs": [[90, 300], [596, -300]]
       }
     },
     "Screenshot 2024-09-15 131309.png": {
@@ -44,7 +44,7 @@
         "title": "Hardness",
         "unit": "HV 10",
         "scale": "linear",
-        "pairs": [[120.5, 370], [833, 300]]
+          "pairs": [[34, 370], [624, 300]]
       }
     },
     "Screenshot 2024-09-15 131401.png": {
@@ -128,11 +128,12 @@
     },
     "Screenshot 2024-09-15 131624.png": {
       "type": "scatter",
+      "plot_area": [70, 28, 622, 383],
       "x": {
         "title": "Hv10",
         "unit": null,
         "scale": "linear",
-        "pairs": [[70, 300], [588, 550]]
+        "pairs": [[70, 300], [692, 550]]
       },
       "y": {
         "title": "KQ",
@@ -153,7 +154,7 @@
         "title": "Relative Upset",
         "unit": null,
         "scale": "linear",
-        "pairs": [[27, 3.4], [376, 1.8]]
+        "pairs": [[27, 3.4], [388, 1.8]]
       }
     },
     "Screenshot 2024-09-15 131712.png": {
@@ -173,6 +174,7 @@
     },
     "Screenshot 2024-09-15 131740.png": {
       "type": "line",
+      "truth_scale": {"y": 100},
       "x": {
         "title": "Temperature",
         "unit": "C",
@@ -188,6 +190,7 @@
     },
     "Screenshot 2024-09-15 131805.png": {
       "type": "line",
+      "truth_scale": {"y": 100},
       "x": {
         "title": "Temperature",
         "unit": "C",

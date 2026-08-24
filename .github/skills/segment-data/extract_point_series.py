@@ -48,6 +48,11 @@ def main() -> int:
     parser.add_argument("--series-id", default="s1", help="id recorded in the extraction (default %(default)s)")
     parser.add_argument("--label", default=None, help="what the legend calls this series")
     parser.add_argument(
+        "--mask",
+        default=None,
+        help="series mask to extract (default: the mask already recorded for --series-id)",
+    )
+    parser.add_argument(
         "--radius",
         type=int,
         default=OPENING_RADIUS,
@@ -84,10 +89,12 @@ def main() -> int:
         return finish(workdir, extraction, STAGE, Path(__file__).name, result, ["plot area  too small"])
 
     crop = _crop(image, region)
-    noise, source = _noise(workdir, extraction, region, result)
-    ink = ink_mask(crop)
+    source_mask = _source_mask(workdir, extraction, args.series_id, args.mask, region)
+    noise, noise_source = _noise(workdir, extraction, region, result)
+    ink = source_mask if source_mask is not None else ink_mask(crop)
     if noise is not None:
         ink &= ~noise
+    source = f"{workdir.relative(source_mask_path(workdir, extraction, args.series_id, args.mask))}" if source_mask is not None else noise_source
 
     filled = ndimage.binary_fill_holes(clear_border(ink))
     opened = _open_disk(filled, args.radius)
@@ -113,19 +120,28 @@ def main() -> int:
     points = [(x + region["x"], y + region["y"]) for x, y, _ in kept]
     sidecar = workdir.points / f"{args.series_id}-pixel.csv"
     _write_points(sidecar, points)
+    support_sidecar = workdir.points / f"{args.series_id}-support-pixel.csv"
+    _write_points(
+        support_sidecar,
+        [(float(x + region["x"]), float(y + region["y"])) for y, x in np.column_stack(np.nonzero(opened))],
+    )
 
-    mask_path = workdir.masks / f"series-{args.series_id}.png"
+    existing = _series_entry(extraction, args.series_id)
+    mask_path = workdir.masks / f"points-{args.series_id}.png" if source_mask is not None else workdir.masks / f"series-{args.series_id}.png"
     pixels = save_mask(mask_path, _placed(opened, region, image.shape[:2]))
-    extraction.add_mask_layer(f"series-{args.series_id}", "series", workdir.relative(mask_path), pixels)
+    if source_mask is None or not existing:
+        extraction.add_mask_layer(f"series-{args.series_id}", "series", workdir.relative(mask_path), pixels)
 
     result.confidence = _confidence(kept, discarded, oversized, noise is not None)
     extraction.upsert_series(
         args.series_id,
-        label=args.label,
+        label=args.label if args.label is not None else (existing or {}).get("label"),
         kind="point",
-        mask=workdir.relative(mask_path),
+        mask=(existing or {}).get("mask") or workdir.relative(mask_path),
         points_pixel=workdir.relative(sidecar),
+        support_points_pixel=workdir.relative(support_sidecar),
         point_count=len(points),
+        support_point_count=int(opened.sum()),
         confidence=result.confidence,
     )
 
@@ -138,6 +154,7 @@ def main() -> int:
         f"ink source  {source}",
         f"region      {_describe(region)}   (plot area inset by {args.inset} px)",
         f"series      {args.series_id}  ->  {workdir.relative(sidecar)}",
+        f"support     {workdir.relative(support_sidecar)}  {int(opened.sum())} cleaned marker pixels",
     ]
     return finish(workdir, extraction, STAGE, Path(__file__).name, result, summary, overlay)
 
@@ -154,6 +171,25 @@ def _inset(area: dict, inset: int, shape: tuple[int, int]) -> dict:
 
 def _crop(image: np.ndarray, region: dict) -> np.ndarray:
     return image[region["y"] : region["y"] + region["height"], region["x"] : region["x"] + region["width"]]
+
+
+def _series_entry(extraction, series_id: str) -> dict | None:
+    return next((entry for entry in extraction.data["series"] if entry.get("id") == series_id), None)
+
+
+def source_mask_path(workdir, extraction, series_id: str, explicit: str | None) -> Path | None:
+    reference = explicit or (_series_entry(extraction, series_id) or {}).get("mask")
+    if not reference:
+        return None
+    path = workdir.path / reference
+    return path if path.exists() else None
+
+
+def _source_mask(workdir, extraction, series_id: str, explicit: str | None, region: dict) -> np.ndarray | None:
+    path = source_mask_path(workdir, extraction, series_id, explicit)
+    if path is None:
+        return None
+    return _crop(load_mask(path), region)
 
 
 def _noise(workdir, extraction, region: dict, result: Result) -> tuple[np.ndarray | None, str]:

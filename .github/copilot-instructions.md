@@ -2,6 +2,10 @@
 
 ## Toolchain and commands
 
+- `rg` is not installed in this Windows environment. Use built-in PowerShell commands for search:
+	`Get-ChildItem -Recurse -File | Select-String -Pattern "..."` for content and
+	`Get-ChildItem -Recurse -File` for file listing.
+
 - Use the .NET SDK selected by [global.json](../global.json): `8.0.0` with roll-forward enabled. The WPF application and test project target `net8.0-windows`; work from Windows.
 - There is no `.sln` file. A previous one referenced a project that no longer exists and was removed; build the individual project you are changing instead.
 

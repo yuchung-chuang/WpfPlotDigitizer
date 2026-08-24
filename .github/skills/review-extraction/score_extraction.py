@@ -50,6 +50,8 @@ def main() -> int:
         default="auto",
         help="whether the truth file's X column is the chart's Y axis (default %(default)s)",
     )
+    parser.add_argument("--truth-x-factor", type=float, default=1.0, help="multiply truth X values before scoring")
+    parser.add_argument("--truth-y-factor", type=float, default=1.0, help="multiply truth Y values before scoring")
     args = parser.parse_args()
 
     workdir, extraction, image = open_workspace(args)
@@ -73,6 +75,14 @@ def main() -> int:
         )
 
     truth = load_truth(truth_file, _title(axes, "x"), _title(axes, "y"))
+    if args.truth_x_factor != 1.0 or args.truth_y_factor != 1.0:
+        for series in truth.series:
+            series.x *= args.truth_x_factor
+            series.y *= args.truth_y_factor
+        result.warn(
+            f"ground truth values scaled for chart units: X x{args.truth_x_factor:g}, "
+            f"Y x{args.truth_y_factor:g}"
+        )
     for note in truth.notes:
         result.warn(f"ground truth: {note}")
 
@@ -139,10 +149,11 @@ def main() -> int:
 
 def _truth_owner(truth_points: list[np.ndarray]):
     """A lookup from any point in the plane to the truth series nearest to it."""
-    stacked = np.vstack([points for points in truth_points if points.size])
-    labels = np.concatenate(
-        [np.full(points.shape[0], index) for index, points in enumerate(truth_points) if points.size]
-    )
+    available = [(index, points) for index, points in enumerate(truth_points) if points.size]
+    if not available:
+        return None
+    stacked = np.vstack([points for _, points in available])
+    labels = np.concatenate([np.full(points.shape[0], index) for index, points in available])
     return cKDTree(stacked), labels
 
 
@@ -152,9 +163,9 @@ def _purity(extracted: np.ndarray, owner, truth_index: int) -> float:
     This is the segmentation measure: a series can be perfectly located and still be wrong if it is
     carrying another series' points.
     """
-    tree, labels = owner
-    if extracted.size == 0:
+    if owner is None or extracted.size == 0:
         return 0.0
+    tree, labels = owner
     _, nearest = tree.query(extracted)
     return float((labels[nearest] == truth_index).mean())
 
@@ -198,7 +209,7 @@ def _inside(values: np.ndarray, axis: dict) -> float:
 def _extracted_series(workdir, extraction, axes: dict, result: Result) -> list[tuple[dict, np.ndarray]]:
     series = []
     for entry in extraction.data["series"]:
-        reference = entry.get("points_data")
+        reference = entry.get("support_points_data") or entry.get("points_data")
         if not reference:
             result.warn(f"series {entry['id']} is not exported yet; run export_data.py")
             continue
@@ -235,6 +246,22 @@ def _median_distance(truth: np.ndarray, extracted: np.ndarray) -> float:
 
 
 def _score_pair(truth: np.ndarray, extracted: np.ndarray, tolerance: float) -> dict:
+    if truth.size == 0:
+        return {
+            "median": float("inf"),
+            "p95": float("inf"),
+            "coverage": 0.0,
+            "n_truth": 0,
+            "n_extracted": int(extracted.shape[0]),
+        }
+    if extracted.size == 0:
+        return {
+            "median": float("inf"),
+            "p95": float("inf"),
+            "coverage": 0.0,
+            "n_truth": int(truth.shape[0]),
+            "n_extracted": 0,
+        }
     distances, _ = cKDTree(extracted).query(truth)
     return {
         "median": float(np.median(distances)),

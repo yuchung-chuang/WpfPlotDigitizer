@@ -195,26 +195,45 @@ def _entries(image: np.ndarray, box: dict) -> list[tuple[dict, dict]]:
         ).any(axis=0)
         columns = _runs(columns, gap=max(8, int(round(width * 0.025))))
         if len(columns) > 1:
-            return [_entry_boxes(box, row, column) for column in columns for row in rows]
-    return [_entry_boxes(box, row, None) for row in rows]
+            return [_entry_boxes(box, row, column, inner) for column in columns for row in rows]
+    return [_entry_boxes(box, row, None, inner) for row in rows]
 
 
-def _entry_boxes(box: dict, row: np.ndarray, column: np.ndarray | None) -> tuple[dict, dict]:
+def _entry_boxes(
+    box: dict, row: np.ndarray, column: np.ndarray | None, ink: np.ndarray
+) -> tuple[dict, dict]:
     x, y, width, height = (int(round(box[key])) for key in ("x", "y", "width", "height"))
     top, bottom = int(row[0]), int(row[-1]) + 1
     left = int(column[0]) if column is not None else 0
     right = int(column[-1]) + 1 if column is not None else width - 2 * ENTRY_PADDING
-    entry_x = x + ENTRY_PADDING + left
-    entry_width = max(1, right - left)
     entry_y = y + ENTRY_PADDING + top
     entry_height = max(1, bottom - top)
-    swatch_width = min(
-        VERTICAL_SWATCH_WIDTH if column is None else HORIZONTAL_SWATCH_WIDTH,
-        max(1, entry_width // 2),
-    )
-    swatch = rect(entry_x, entry_y, swatch_width, entry_height)
-    label_x = min(entry_x + swatch_width + LABEL_GAP, x + width - 1)
-    label = rect(label_x, entry_y, max(1, entry_x + entry_width - label_x), entry_height)
+    inner_top = min(bottom, top + 2)
+    inner_bottom = max(inner_top, bottom - 2)
+    row_ink = ink[inner_top:inner_bottom, left:right].any(axis=0)
+    if not row_ink.any():
+        row_ink = ink[top:bottom, left:right].any(axis=0)
+    runs = _runs(row_ink, gap=2)
+    if len(runs) >= 2:
+        label_left = int(runs[1][0])
+        entry_x = x + ENTRY_PADDING + left
+        entry_right = x + ENTRY_PADDING + right
+        label_x = min(entry_x + label_left, x + width - 1)
+        minimum = VERTICAL_SWATCH_WIDTH if column is None else HORIZONTAL_SWATCH_WIDTH
+        swatch_x = entry_x
+        swatch_end = min(entry_right, max(entry_x + minimum, label_x - LABEL_GAP))
+    else:
+        entry_x = x + ENTRY_PADDING + left
+        entry_width = max(1, right - left)
+        swatch_width = min(
+            VERTICAL_SWATCH_WIDTH if column is None else HORIZONTAL_SWATCH_WIDTH,
+            max(1, entry_width // 2),
+        )
+        swatch_x = entry_x
+        swatch_end = entry_x + swatch_width
+        label_x = min(swatch_end + LABEL_GAP, x + width - 1)
+    swatch = rect(swatch_x, entry_y, max(1, swatch_end - swatch_x), entry_height)
+    label = rect(label_x, entry_y, max(1, x + ENTRY_PADDING + right - label_x), entry_height)
     return swatch, label
 
 

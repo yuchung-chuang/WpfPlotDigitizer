@@ -83,8 +83,7 @@ def _profile(image: np.ndarray, box: dict) -> dict:
     mask = ink_mask(crop)
     colour_lab, colour_rgb = _colour(crop, mask)
     line_mask = _line_mask(mask)
-    marker_mask = _marker_region(mask, line_mask)
-    marker, filled, marker_size, marker_confidence = _marker(marker_mask)
+    marker, filled, marker_size, marker_confidence = _marker(mask, line_mask)
     line_style, line_width, line_confidence = _line(line_mask, mask)
     has_marker = marker != "none"
     has_line = line_style != "none"
@@ -125,41 +124,70 @@ def _marker_region(mask: np.ndarray, line_mask: np.ndarray) -> np.ndarray:
     return mask
 
 
-def _marker(mask: np.ndarray) -> tuple[str, bool | None, int, float]:
+def _marker(mask: np.ndarray, line_mask: np.ndarray) -> tuple[str, bool | None, int, float]:
     if not mask.any():
         return "none", None, 0, 0.25
-    count, labels, stats, _ = cv2.connectedComponentsWithStats(mask.astype(np.uint8), connectivity=8)
-    if count <= 1:
-        return "none", None, 0, 0.25
-    label = 1 + int(np.argmax(stats[1:, cv2.CC_STAT_AREA]))
-    x, y, box_width, box_height, _ = stats[label]
-    if stats[label, cv2.CC_STAT_AREA] < MIN_MARKER_AREA:
+    columns = mask.sum(axis=0)
+    peak = int(np.argmax(columns))
+    baseline = float(np.median(columns))
+    marker_columns = columns >= max(2.0, baseline + 1.0)
+    runs = _runs(np.flatnonzero(marker_columns))
+    run = next((candidate for candidate in runs if candidate[0] <= peak <= candidate[-1]), None)
+    if run is None or run.size == 0:
         return "none", None, 0, 0.5
-    if x > 0.7 * mask.shape[1] and x + box_width >= mask.shape[1]:
+    left = max(0, int(run[0]) - 2)
+    right = min(mask.shape[1], int(run[-1]) + 3)
+    local = mask[:, left:right]
+    local_line = line_mask[:, left:right]
+    rows = np.flatnonzero(local.any(axis=1))
+    if rows.size == 0:
         return "none", None, 0, 0.5
-    clipped = labels[y : y + box_height, x : x + box_width] == label
-    filled_mask = nd_fill(clipped)
+    local = local[rows[0] : rows[-1] + 1]
+    local_line = local_line[rows[0] : rows[-1] + 1]
+    line_rows = local_line.sum(axis=1) >= max(3, 0.7 * local_line.shape[1])
+    local[line_rows] = False
+    local = cv2.morphologyEx(local.astype(np.uint8), cv2.MORPH_CLOSE, np.ones((5, 1), np.uint8)) > 0
+    if int(local.sum()) < MIN_MARKER_AREA:
+        return "none", None, 0, 0.5
+    ys, xs = np.nonzero(local)
+    clipped = local[ys.min() : ys.max() + 1, xs.min() : xs.max() + 1]
     fill_ratio = float(clipped.mean())
-    filled_ratio = float(clipped.sum() / max(filled_mask.sum(), 1))
-    filled = filled_ratio > 0.62 or fill_ratio > 0.48
-    if _is_cross(clipped):
+    centre_y, centre_x = (dimension // 2 for dimension in clipped.shape)
+    centre = clipped[
+        max(0, centre_y - 1) : min(clipped.shape[0], centre_y + 2),
+        max(0, centre_x - 1) : min(clipped.shape[1], centre_x + 2),
+    ]
+    filled = fill_ratio > 0.7 or float(centre.mean()) > 0.35
+    contours, _ = cv2.findContours(clipped.astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    contour = max(contours, key=cv2.contourArea, default=None)
+    vertices = 0
+    circularity = 0.0
+    radial_variation = 1.0
+    if contour is not None and len(contour) >= 3:
+        perimeter = cv2.arcLength(contour, True)
+        area = cv2.contourArea(contour)
+        circularity = 4 * np.pi * area / max(perimeter * perimeter, 1.0)
+        moments = cv2.moments(contour)
+        if moments["m00"]:
+            centre = np.array([moments["m10"] / moments["m00"], moments["m01"] / moments["m00"]])
+            distances = np.linalg.norm(contour.reshape(-1, 2) - centre, axis=1)
+            radial_variation = float(distances.std() / max(distances.mean(), 1.0))
+        vertices = len(cv2.approxPolyDP(contour, 0.08 * perimeter, True)) if perimeter else 0
+    if vertices == 4 and contour is not None and len(contour) <= 4:
+        marker = "diamond" if _rotated_quad(contour) else "square"
+    elif circularity > 0.78 and radial_variation < 0.15:
+        marker = "circle"
+    elif vertices == 3:
+        marker = "triangle"
+    elif vertices == 4:
+        marker = "diamond" if _rotated_quad(contour) else "square"
+    elif vertices >= 8 and _star_like(clipped):
+        marker = "star"
+    elif _is_cross(clipped):
         marker = "cross"
     else:
-        contours, _ = cv2.findContours(clipped.astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        contour = max(contours, key=cv2.contourArea, default=None)
-        vertices = 0
-        if contour is not None and len(contour) >= 3:
-            perimeter = cv2.arcLength(contour, True)
-            vertices = len(cv2.approxPolyDP(contour, 0.08 * perimeter, True)) if perimeter else 0
-        if vertices == 3:
-            marker = "triangle"
-        elif vertices == 4:
-            marker = "diamond" if _rotated_quad(contour) else "square"
-        elif vertices >= 8 and _star_like(clipped):
-            marker = "star"
-        else:
-            marker = "circle"
-    size = int(round((box_width + box_height) / 2))
+        marker = "circle"
+    size = int(round((clipped.shape[1] + clipped.shape[0]) / 2))
     return marker, bool(filled), size, 0.75 if marker in MARKERS else 0.4
 
 

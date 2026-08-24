@@ -587,8 +587,8 @@ def _fit(pairs: list[tuple[float, float]], span: tuple[float, float], name: str,
     confidence = _confidence(chosen["residual"], pixel_span, len(pairs))
 
     fit = {
-        "min": round(ends[low], 6),
-        "max": round(ends[high], 6),
+        "min": _axis_value(ends[low], scale),
+        "max": _axis_value(ends[high], scale),
         "scale": scale,
         "log_base": base if scale == "log" else None,
         "reversed": bool(chosen["slope"] < 0) if name == "x" else bool(chosen["slope"] > 0),
@@ -603,6 +603,13 @@ def _fit(pairs: list[tuple[float, float]], span: tuple[float, float], name: str,
     }
     _check(fit, chosen["residual"], pixel_span, name, result)
     return fit
+
+
+def _axis_value(value: float, scale: str) -> float:
+    """Keep small logarithmic limits positive instead of rounding them to zero."""
+    if scale == "log":
+        return float(f"{value:.12g}")
+    return round(value, 6)
 
 
 def _least_squares(transformed: np.ndarray, pixels: np.ndarray) -> dict:

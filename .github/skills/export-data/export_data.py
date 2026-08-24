@@ -72,6 +72,13 @@ def main() -> int:
         per_series = export / f"{entry['id']}-data.csv"
         _write_points(per_series, axes, x, y, args.decimals)
         entry["points_data"] = f"export/{per_series.name}"
+        support_pixels = _read_support_pixels(workdir, entry, result)
+        if support_pixels is not None:
+            support_x = to_data(support_pixels[:, 0], axes["x"])
+            support_y = to_data(support_pixels[:, 1], axes["y"])
+            support_file = export / f"{entry['id']}-support-data.csv"
+            _write_points(support_file, axes, support_x, support_y, args.decimals)
+            entry["support_points_data"] = f"export/{support_file.name}"
         rows.extend((label, round(a, args.decimals), round(b, args.decimals)) for a, b in zip(x, y))
         exported += 1
 
@@ -107,6 +114,19 @@ def _read_pixels(workdir, entry: dict, result: Result) -> np.ndarray | None:
         result.warn(f"series {entry['id']} has no points")
         return None
     return points
+
+
+def _read_support_pixels(workdir, entry: dict, result: Result) -> np.ndarray | None:
+    reference = entry.get("support_points_pixel")
+    if not reference:
+        return None
+    path = workdir.path / reference
+    if not path.exists():
+        result.warn(f"series {entry['id']} support points file is missing: {reference}")
+        return None
+    points = np.genfromtxt(path, delimiter=",", skip_header=1, usecols=(0, 1))
+    points = np.atleast_2d(points)
+    return points if points.size else None
 
 
 def _write_points(path: Path, axes: dict, x, y, decimals: int) -> None:

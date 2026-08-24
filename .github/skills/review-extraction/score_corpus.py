@@ -16,6 +16,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -37,7 +38,10 @@ PIPELINE = (
     ("analyse-axis", "locate_plot_area.py"),
     ("analyse-axis", "read_axis_scale.py"),
     ("filter-noise", "clear_border.py"),
-    ("segment-data", "extract_point_series.py"),
+    ("segment-data", "find_legend.py"),
+    ("segment-data", "profile_series_styles.py"),
+    ("segment-data", "segment_series.py"),
+    ("segment-data", "extract_series.py"),
     ("export-data", "export_data.py"),
     ("review-extraction", "score_extraction.py"),
 )
@@ -164,6 +168,7 @@ def _score_figure(
                 text=True,
                 encoding="utf-8",
                 errors="replace",
+                env={**os.environ, "PYTHONIOENCODING": "utf-8"},
             )
             log.append(_log_command(command, completed))
             if completed.returncode:
@@ -223,10 +228,17 @@ def _stage_command(
                 command.extend([f"--{name}-unit", axis["unit"]])
             if axis.get("log_base") is not None:
                 command.extend([f"--{name}-log-base", _number(axis["log_base"])])
-    elif filename == "extract_point_series.py":
-        command.extend(["--series-id", "baseline"])
+    elif filename == "locate_plot_area.py" and entry.get("plot_area"):
+        command.extend(["--box", ",".join(_number(value) for value in entry["plot_area"])])
+    elif filename == "extract_series.py":
+        command.extend(["--step", "2"])
     elif filename == "score_extraction.py":
         command.extend(["--truth", str(truth_file), "--tolerance", _number(tolerance)])
+        scale = entry.get("truth_scale") or {}
+        if scale.get("x") is not None:
+            command.extend(["--truth-x-factor", _number(scale["x"])])
+        if scale.get("y") is not None:
+            command.extend(["--truth-y-factor", _number(scale["y"])])
     return command
 
 
