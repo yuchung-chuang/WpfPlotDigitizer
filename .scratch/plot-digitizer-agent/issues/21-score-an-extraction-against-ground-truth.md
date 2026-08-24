@@ -14,6 +14,29 @@ it must survive ground-truth files that a person laid out by hand rather than a 
 
 **Status:** done
 
+**Verification fixture order (exact image/CSV matches first).**
+
+1. `images/3-1-freefall.png` with `images/3-1-freefall.csv`, then
+      `images/A+cleaned+up+scatter+plot.jpg` with `images/A+cleaned+up+scatter+plot.CSV` - minimal
+      single-series score checks.
+2. `images/Screenshot 2021-06-26 230901.png` with
+      `images/Screenshot 2021-06-26 230901.csv`, and `images/Screenshot 2021-06-26 231058.png` with
+      `images/Screenshot 2021-06-26 231058.csv` - score only after their annotation/grid and point or
+      series extraction prerequisites are available.
+3. Score the 13 exact 2024 pairs after the multi-series pipeline is ready:
+      `images/Screenshot 2024-09-15 131234.png`, `images/Screenshot 2024-09-15 131309.png`,
+      `images/Screenshot 2024-09-15 131341.png`, `images/Screenshot 2024-09-15 131401.png`,
+      `images/Screenshot 2024-09-15 131423.png`, `images/Screenshot 2024-09-15 131439.png`,
+      `images/Screenshot 2024-09-15 131522.png`, `images/Screenshot 2024-09-15 131556.png`,
+      `images/Screenshot 2024-09-15 131624.png`, `images/Screenshot 2024-09-15 131643.png`,
+      `images/Screenshot 2024-09-15 131712.png`, `images/Screenshot 2024-09-15 131740.png` and
+      `images/Screenshot 2024-09-15 131805.png`, each paired with its same-stem `.csv` file.
+
+`images/3-2-freefall-mimimum.png` has no same-stem truth file. Conversely,
+`images/3-1-freefall-minimum.csv` has no matching image because its stem differs from the image's
+number and spelling; keep it as an explicitly unmatched truth-file diagnostic rather than silently
+pairing it.
+
 - [x] Ground truth is found automatically beside the figure, sharing the figure's name, and a
       different file can be pointed at explicitly.
 - [x] A figure with no ground truth is reported as such and the run stops cleanly, since most of the

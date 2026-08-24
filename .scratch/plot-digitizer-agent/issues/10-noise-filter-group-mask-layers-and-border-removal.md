@@ -19,6 +19,21 @@ itself, and the tick marks, following the flood-fill approach already used in th
 
 **Status:** done
 
+**Verification fixture order (minimal requirements first).**
+
+1. `images/3-1-freefall.png` - clean closed frame; verify that frame and tick masks are removed
+      without touching the edge marker.
+2. `images/3-2-freefall-mimimum.png` and `images/Screenshot 2021-06-26 231058.png` - framed
+      marker plots where border removal is checked before the separate grid filter.
+3. `images/Hysteresis-loop-of-cobalt-ferrite-samples-CF-CF300_30-and-CF600_180.png` and
+      `images/Screenshot 2021-06-26 230901.png` - heavier framed plots with in-plot ink; use for
+      border-only mask inspection before annotation or series extraction.
+4. `images/linegraph-3.png`, `images/A+cleaned+up+scatter+plot.jpg`, `images/rplot.png`,
+      `images/Graph-1.jpg` and `images/Inseam-v-Height-Graph.jpg` - open-spine controls; confirm that
+      a missing border is not invented and record low confidence when appropriate.
+5. The single-panel 2024 screenshot fixtures can be used as later border regressions, but only
+      after tickets 14, 17 and 18 have their relevant marker and line preservation checks.
+
 - [x] A noise filtering skill group is discoverable and documents the mask-layer contract, the
       union into a combined mask, and the per-layer overlay colouring.
 - [x] The group document defines the four noise categories using the glossary's boundaries so two

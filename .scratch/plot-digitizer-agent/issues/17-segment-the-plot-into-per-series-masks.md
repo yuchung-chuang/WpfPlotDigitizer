@@ -22,6 +22,33 @@ styles from swatches.
 
 **Status:** needs tuning — distinct-colour segmentation is mechanically complete
 
+**Verification fixture order (minimal requirements first).**
+
+1. `images/Screenshot 2024-09-15 131643.png` - two same-color marker families distinguished by
+      open-circle versus open-triangle shape; a small, readable separation case.
+2. `images/Screenshot 2024-09-15 131740.png` and `images/Screenshot 2024-09-15 131805.png` -
+      two-series open/filled square and circle variants with connecting lines.
+3. `images/Hysteresis-loop-of-cobalt-ferrite-samples-CF-CF300_30-and-CF600_180.png` - the primary
+      three-series overlap case with distinct color and marker signatures.
+4. `images/rnaseqdedemo_19.png`, `images/zivEp.png` and `images/Graph-1.jpg` - colored clusters
+      with legends, increasing density and an outside legend/colorbar.
+5. `images/Screenshot 2021-06-26 230901.png` - two same-color square/circle series with lines and
+      annotations; run after ticket 13 for a meaningful preservation check.
+6. `images/Screenshot 2024-09-15 131234.png`, `images/Screenshot 2024-09-15 131309.png`,
+      `images/Screenshot 2024-09-15 131341.png`, `images/Screenshot 2024-09-15 131401.png`,
+      `images/Screenshot 2024-09-15 131423.png`, `images/Screenshot 2024-09-15 131439.png`,
+      `images/Screenshot 2024-09-15 131522.png`, `images/Screenshot 2024-09-15 131556.png`,
+      `images/Screenshot 2024-09-15 131624.png` and `images/Screenshot 2024-09-15 131712.png` -
+      larger multi-series regressions after their relevant noise filters, legend styles and any line
+      or annotation handling are available.
+7. `images/Inseam-v-Height-Graph.jpg` and `images/data.png` - dense-cloud stress cases; measure
+      purity and undercount diagnostics rather than expecting complete point recovery.
+
+The multi-panel `images/scatter_and_hist_border.png` and multiple-axis
+`images/Offset_Multiple_Y_Axes_Plot_of_YBCO_Superconductor_Growth_Study.png` and
+`images/VLObject-2561-031201081203.png` are decline controls from ticket 03, not segmentation
+acceptance fixtures.
+
 - [x] Running segmentation writes one mask layer per discovered series and a series entry per mask.
 - [x] Clustering runs and produces sensible series when no legend was found.
 - [x] When a legend was found, discovered clusters are matched to legend entries and inherit their

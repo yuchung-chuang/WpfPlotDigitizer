@@ -61,6 +61,27 @@ adjudication.
 
 **Status:** fully completed and tested
 
+**Additional verification order (after the required fixtures above).**
+
+1. `images/3-1-freefall.png`, `images/A+cleaned+up+scatter+plot.jpg`,
+   `images/3-2-freefall-mimimum.png`, `images/linegraph-3.png` and `images/rplot.png` - clean
+   closed-frame and open-spine baselines.
+2. `images/Hysteresis-loop-of-cobalt-ferrite-samples-CF-CF300_30-and-CF600_180.png`,
+   `images/Screenshot 2021-06-26 230901.png`, `images/Graph-1.jpg` and
+   `images/Inseam-v-Height-Graph.jpg` - framed, annotated or dense single-panel cases where the
+   candidate must still stay within the data region.
+3. `images/Screenshot 2024-09-15 131234.png`, `images/Screenshot 2024-09-15 131309.png`,
+   `images/Screenshot 2024-09-15 131341.png`, `images/Screenshot 2024-09-15 131401.png`,
+   `images/Screenshot 2024-09-15 131423.png`, `images/Screenshot 2024-09-15 131439.png`,
+   `images/Screenshot 2024-09-15 131522.png`, `images/Screenshot 2024-09-15 131556.png`,
+   `images/Screenshot 2024-09-15 131624.png`, `images/Screenshot 2024-09-15 131643.png`,
+   `images/Screenshot 2024-09-15 131712.png`, `images/Screenshot 2024-09-15 131740.png` and
+   `images/Screenshot 2024-09-15 131805.png` - multi-series single-panel regression boxes.
+4. `images/Offset_Multiple_Y_Axes_Plot_of_YBCO_Superconductor_Growth_Study.png`,
+   `images/VLObject-2561-031201081203.png` and `images/scatter_and_hist_border.png` are overview
+   decline controls, not successful plot-area fixtures: the first two have multiple offset axes and
+   the last is multi-panel.
+
 - [x] An axis analysis skill group is discoverable and describes the two detection strategies and
       when each is stronger.
 - [x] Running plot-area location writes the plot area section of the extraction document with the

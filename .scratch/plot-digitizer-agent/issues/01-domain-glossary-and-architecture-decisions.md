@@ -19,6 +19,10 @@ Version control must ignore the per-image working directories that every later t
 
 **Status:** done
 
+**Image verification:** No image fixture applies. This ticket is limited to repository vocabulary,
+architecture records and version-control configuration; image-based verification begins with ticket
+02.
+
 - [x] A domain glossary exists at the repository root and is a glossary only — no implementation
       detail, no specification content, no scratch notes.
 - [x] The glossary defines: plot area, series, series style, marker, mask layer, extraction,

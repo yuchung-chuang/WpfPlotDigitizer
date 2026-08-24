@@ -15,6 +15,17 @@ applicable to this skill.
 
 **Status:** needs tuning - grid mask is mechanically complete
 
+**Verification fixtures (scope locked; minimal fixture first).**
+
+1. `images/3-2-freefall-mimimum.png` - sparse diamond markers with regular grid lines; verify the
+      grid mask leaves every marker intact.
+2. `images/Screenshot 2021-06-26 231058.png` - the second and more realistic scoped fixture; verify
+      the grid mask, extraction overlay and point count together.
+
+No other image in `images/` is an acceptance fixture for this ticket. Other grid-bearing figures
+are reserved for their owning multi-feature tickets or for the corpus pass after this filter is
+verified.
+
 - [x] Running the filter writes a grid-line mask layer and records its pixel count.
 - [x] Detection uses regular spacing and alignment with known tick positions, not thinness alone.
 - [x] Both major and minor grids are handled, including grids on one axis only.

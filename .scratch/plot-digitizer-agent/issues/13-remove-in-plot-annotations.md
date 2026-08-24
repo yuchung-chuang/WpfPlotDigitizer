@@ -10,6 +10,23 @@ legend, which is a protected region because a later ticket needs to read it.
 
 **Status:** needs tuning - text masking is conservative; arrow cases remain open
 
+**Verification fixture order (minimal requirements first).**
+
+1. `images/3-1-freefall.png` - negative control; titles and axis labels outside the plot area must
+      remain untouched and must not be claimed as in-plot annotations.
+2. `images/Screenshot 2021-06-26 230901.png` - in-plot labels, fit annotations and downward arrows;
+      inspect the annotation mask after ticket 04, then check data preservation after series isolation.
+3. `images/Screenshot 2024-09-15 131624.png` - in-plot equation/group labels and dashed ellipses;
+      run after tickets 15-17 so the legend is protected and the marker series can be checked.
+4. `images/Screenshot 2024-09-15 131401.png` - region labels and directional arrows over three
+      curves; full preservation requires the grid, segmentation and extraction prerequisites.
+5. `images/Screenshot 2024-09-15 131712.png` - phase labels and arrows over a mixed point/line
+      figure; run only after tickets 17-19 so the oscillation stroke is not mistaken for annotation.
+
+The corpus has no clean rotated-text-only fixture and no separate arrow-only fixture. The first
+fixture is therefore a required false-positive control, while the remaining cases are multi-feature
+regressions rather than minimal tests.
+
 - [x] Running the filter writes an annotation mask layer and records its pixel count.
 - [ ] Text inside the plot area is detected regardless of orientation.
 - [ ] Arrows and leader lines are detected.

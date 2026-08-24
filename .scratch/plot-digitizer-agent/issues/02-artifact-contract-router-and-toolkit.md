@@ -22,6 +22,11 @@ renders a trivial overlay, and prints a one-line summary.
 
 **Status:** done
 
+**Verification fixture order (minimal requirements first).**
+
+1. `images/3-1-freefall.png` - simplest closed-frame, single-panel chart; verifies working-directory initialization, extraction-document creation, image identity, trivial overlay rendering, and repeat-safe state handling.
+2. `images/A+cleaned+up+scatter+plot.jpg` - open-spine single-panel chart; verifies that the artifact contract remains image-layout agnostic before axis and extraction skills are involved.
+
 - [x] A router skill is discoverable by the editor and describes the working directory layout, the
       extraction document, and the mandatory overlay-viewing rule.
 - [x] The router explicitly states that the agent chooses its own order of operations.

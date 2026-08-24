@@ -15,6 +15,23 @@ misread digit surfaces as a bad fit instead of a plausible wrong answer.
 
 **Status:** done
 
+**Verification fixture order (minimal requirements first).**
+
+1. `images/3-1-freefall.png`, `images/A+cleaned+up+scatter+plot.jpg`, `images/rplot.png`,
+      `images/linegraph-3.png` and `images/3-2-freefall-mimimum.png` - linear axes with readable titles,
+      units and ticks.
+2. `images/data.png` - reversed-axis regression case, using the already located plot area and
+      supplied tick anchors.
+3. `images/Screenshot 2024-09-15 131423.png` - logarithmic horizontal axis; then
+      `images/Screenshot 2024-09-15 131522.png` - logarithmic horizontal and vertical axes. These
+      require only ticket 04 plus the agent's tick readings, not series segmentation.
+4. `images/rnaseqdedemo_19.png` and `images/zivEp.png` - titles containing `log10` or `log2` as
+      negative controls: transformed data labels alone must not cause a false logarithmic-axis fit.
+5. `images/VLObject-2561-031201081203.png` and
+      `images/Offset_Multiple_Y_Axes_Plot_of_YBCO_Superconductor_Growth_Study.png` - axis-fit
+      diagnostics only after ticket 03 has identified their multiple-axis layouts; they are not
+      supported full-chart verification fixtures.
+
 - [x] Running the crop step produces an upscaled image of the tick-label regions for each axis,
       grouped so the agent can tell which label sits at which pixel position.
 - [x] Vertical axis labels are presented in a readable orientation.

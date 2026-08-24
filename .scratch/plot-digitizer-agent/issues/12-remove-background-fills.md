@@ -10,6 +10,19 @@ others. A large uniform or smoothly varying region is background; a stroke is no
 
 **Status:** needs tuning - uniform panel fills verified
 
+**Verification fixture order (minimal requirements first).**
+
+1. `images/unnamed-chunk-9-1.png` - uniform gray panel with two colored marker series; verify the
+	panel is claimed while both data colors survive.
+2. `images/zivEp.png` - non-white gray plotting panel with two colored point groups and an outside
+	colorbar; verify the colorbar is outside the plot-area mask and the data remains.
+3. `images/scatter_and_hist_border.png` - gray-free composite control only after ticket 03 has
+	declined it; do not use it as a background-filter acceptance result because it is multi-panel.
+
+The corpus has no dedicated smooth-gradient or alternating-band image. Those two acceptance cases
+remain unverified until a suitable fixture is added; the two shaded-panel images above are the
+minimal available corpus tests.
+
 - [x] Running the filter writes a background mask layer and records its pixel count.
 - [ ] Uniform fills, smooth gradients and alternating or shaded bands are all detected.
 - [x] A non-white page background is handled as readily as a white one.

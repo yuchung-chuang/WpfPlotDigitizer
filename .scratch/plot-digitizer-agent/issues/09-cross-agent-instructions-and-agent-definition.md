@@ -11,6 +11,16 @@ workflow's shape is known produces instructions that are wrong.
 
 **Status:** ready-for-agent
 
+**Verification fixture order (minimal requirements first).**
+
+1. `images/3-1-freefall.png` - the canonical no-prerequisite end-to-end walkthrough after the root
+      instructions are followed: overview, plot area, axis fit, point extraction, export and visual
+      verification.
+2. `images/A+cleaned+up+scatter+plot.jpg` and `images/rplot.png` - open-spine and open-marker
+      variants that confirm the instructions do not assume a closed frame.
+3. `images/3-2-freefall-mimimum.png` and `images/Screenshot 2021-06-26 231058.png` - follow-up
+      walkthroughs only after ticket 11's grid filter is verified.
+
 - [ ] A root instructions document readable by any agent describes the digitization framework, the
       working directory layout, the artifact contract and the mandatory overlay rule.
 - [ ] It states that the agent chooses its own order of operations.

@@ -16,6 +16,34 @@ intersection.
 
 **Status:** ready-for-agent
 
+**Verification fixture order (minimal requirements first).**
+
+1. `images/linegraph-3.png` - one solid, unmarked line in a clean single-panel plot; the first
+      ordered-polyline and sampling-density check.
+2. `images/Screenshot 2024-09-15 131740.png`, `images/Screenshot 2024-09-15 131805.png` and
+      `images/Screenshot 2024-09-15 131643.png` - short two-series lines with visible markers, useful
+      for confirming that line tracing and point extraction remain distinct.
+3. `images/Screenshot 2021-06-26 230901.png` - solid and dashed curves with markers; use for gap
+      bridging and annotation exclusion after tickets 13 and 17.
+4. `images/Hysteresis-loop-of-cobalt-ferrite-samples-CF-CF300_30-and-CF600_180.png` - overlapping
+      non-function curves and loop traversal; use for direction continuity at crossings and ambiguous
+      endpoints after segmentation.
+5. `images/Screenshot 2024-09-15 131712.png` - mixed point series, an oscillation stroke and phase
+      annotations; run after tickets 13, 17 and 18 to check that only the intended line is traced.
+6. `images/Screenshot 2024-09-15 131234.png`, `images/Screenshot 2024-09-15 131309.png`,
+   `images/Screenshot 2024-09-15 131401.png`, `images/Screenshot 2024-09-15 131423.png`,
+   `images/Screenshot 2024-09-15 131439.png`, `images/Screenshot 2024-09-15 131522.png` and
+   `images/Screenshot 2024-09-15 131556.png` - larger multi-line regressions after per-series
+   segmentation and any required error-bar filtering.
+7. `images/Inseam-v-Height-Graph.jpg` - fitted lines over dense point clouds; a late stress case for
+      line-mask isolation, not a point-count acceptance fixture.
+
+`images/3-1-freefall.png`, `images/3-2-freefall-mimimum.png`,
+`images/A+cleaned+up+scatter+plot.jpg`, `images/rplot.png`, `images/rnaseqdedemo_19.png`,
+`images/zivEp.png`, `images/Graph-1.jpg` and `images/Screenshot 2021-06-26 231058.png` are
+point-only or scatter-oriented controls and should not be routed to line extraction. The composite
+and multiple-axis images from ticket 03 are decline controls.
+
 - [ ] Running line extraction over a line series mask produces an ordered sequence of pixel
       coordinates.
 - [ ] The sequence is written to a sidecar file and the series is recorded as a line kind.

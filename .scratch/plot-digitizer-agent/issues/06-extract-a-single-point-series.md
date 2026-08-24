@@ -23,15 +23,30 @@ data-point markers. The full acceptance fixture set is:
 - `images/Screenshot 2021-06-26 231058.png`
 - `images/A+cleaned+up+scatter+plot.jpg`
 
-For the current validation pass, use only `3-1-freefall.png` and
-`A+cleaned+up+scatter+plot.jpg`. Defer `Screenshot 2021-06-26 230901.png` until regression and
-connecting-line noise removal is complete, and defer `Screenshot 2021-06-26 231058.png` until
-grid-line removal is complete. Use the point-extraction operation on comparable discrete-marker
+For the initial validation pass, use only `3-1-freefall.png` and
+`A+cleaned+up+scatter+plot.jpg`. The two screenshot fixtures were checked subsequently, after
+regression and connecting-line noise removal, and after grid-line removal, respectively. Use the
+point-extraction operation on comparable discrete-marker
 charts; route continuous line series, multi-series figures, bars, histograms, and other layouts to
 their dedicated operation or ticket. Dense or saturated point clouds such as `data.png` and
 `Inseam-v-Height-Graph.jpg` are exploratory stress cases only.
 
 **Status:** fully completed and tested — all listed acceptance fixtures were checked and produce visually correct point sets
+
+**Verification fixture order (minimal requirements first).**
+
+1. `images/3-1-freefall.png` and `images/A+cleaned+up+scatter+plot.jpg` - clean, individually
+      visible marker baselines with no legend or required noise filter.
+2. `images/rplot.png` - an additional sparse, open-marker single-series regression case.
+3. `images/3-2-freefall-mimimum.png` - a sparse marker case with regular grid lines; run after
+      ticket 11 so the grid mask is part of the extraction input.
+4. `images/Screenshot 2021-06-26 231058.png` - a single marker series with grid lines; run after
+      ticket 11 and compare the overlay against the markers.
+5. `images/Screenshot 2021-06-26 230901.png` - a regression-only case containing two marker
+      styles, connecting lines and in-plot annotations; use after the relevant border, annotation and
+      series-isolation work rather than treating it as a minimal single-series input.
+6. `images/data.png` and `images/Inseam-v-Height-Graph.jpg` - dense-cloud stress cases only; use
+      the undercount diagnostic and do not treat their counts as acceptance results.
 
 - [x] A data segmentation skill group is discoverable and describes point extraction.
 - [x] Running extraction on a supported plot writes a series entry to the extraction document with
@@ -51,8 +66,8 @@ their dedicated operation or ticket. Dense or saturated point clouds such as `da
 `100.0%` coverage with `0.14%` median error and `0.14%` p95 error. The cleaned scatter produced 19
 points and scored `100.0%` coverage with `0.21%` median error and `0.25%` p95 error. Both are below
 the `0.50%` acceptance tolerance, and both overlays place the extracted points on the truth
-markers. The two screenshot fixtures remain deferred until their respective noise filters are
-complete.
+markers. The two screenshot fixtures were subsequently checked after their respective noise
+filters were complete, as recorded in the verification fixture order above.
 
 **Exploratory stress case — not an acceptance outcome.** Every mechanism works and the plumbing is
 right, but the default parameters badly under-extract saturated point clouds. On `data.png` it kept

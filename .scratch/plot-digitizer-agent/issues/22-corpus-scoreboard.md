@@ -16,6 +16,28 @@ every run would make the scoreboard unusable.
 
 **Status:** done
 
+**Verification fixture order.** The scoreboard should be checked from the smallest scoreable case to
+the full truth-bearing corpus, while the generated report still includes every exact image/CSV pair.
+
+1. `images/3-1-freefall.png` with `images/3-1-freefall.csv`, then
+      `images/A+cleaned+up+scatter+plot.jpg` with `images/A+cleaned+up+scatter+plot.CSV` - minimal
+      point-extraction and axis-fit regressions.
+2. `images/Screenshot 2021-06-26 230901.png` and `images/Screenshot 2021-06-26 231058.png` with
+      their same-stem CSV files - the first requires annotation/series handling and the second grid
+      filtering, so they follow the foundational rows.
+3. The 13 2024 pairs, in filename order: `images/Screenshot 2024-09-15 131234.png`,
+      `images/Screenshot 2024-09-15 131309.png`, `images/Screenshot 2024-09-15 131341.png`,
+      `images/Screenshot 2024-09-15 131401.png`, `images/Screenshot 2024-09-15 131423.png`,
+      `images/Screenshot 2024-09-15 131439.png`, `images/Screenshot 2024-09-15 131522.png`,
+      `images/Screenshot 2024-09-15 131556.png`, `images/Screenshot 2024-09-15 131624.png`,
+      `images/Screenshot 2024-09-15 131643.png`, `images/Screenshot 2024-09-15 131712.png`,
+      `images/Screenshot 2024-09-15 131740.png` and `images/Screenshot 2024-09-15 131805.png`.
+      Run these only after tickets 14, 17, 18 and 19 cover the features present in each figure.
+
+The alternate `images/3-1-freefall-minimum.csv` is intentionally excluded from the automatic
+scoreboard until an image with the exact same stem exists. Non-truth images, including
+`images/3-2-freefall-mimimum.png`, remain corpus-pass fixtures but do not produce scoreboard rows.
+
 - [x] Axis readings per figure are stored in a checked-in file, so a scoreboard run needs no agent.
 - [x] One command runs every figure that has ground truth and prints one row per figure: series
       count, median error, 95th percentile, coverage, and pass or fail.
