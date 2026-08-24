@@ -31,7 +31,7 @@ charts; route continuous line series, multi-series figures, bars, histograms, an
 their dedicated operation or ticket. Dense or saturated point clouds such as `data.png` and
 `Inseam-v-Height-Graph.jpg` are exploratory stress cases only.
 
-**Status:** done — the clean discrete-marker fixtures produce visually correct point sets
+**Status:** fully completed and tested — all listed acceptance fixtures were checked and produce visually correct point sets
 
 - [x] A data segmentation skill group is discoverable and describes point extraction.
 - [x] Running extraction on a supported plot writes a series entry to the extraction document with
