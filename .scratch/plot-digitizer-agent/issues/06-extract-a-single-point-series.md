@@ -31,7 +31,14 @@ charts; route continuous line series, multi-series figures, bars, histograms, an
 their dedicated operation or ticket. Dense or saturated point clouds such as `data.png` and
 `Inseam-v-Height-Graph.jpg` are exploratory stress cases only.
 
-**Status:** fully completed and tested — all listed acceptance fixtures were checked and produce visually correct point sets
+**Status:** in progress — the `230901` acceptance fixture still produces noisy, undercounted output
+
+**Latest verification failure:** `images/Screenshot 2021-06-26 230901.png` produced 1,412
+centroids and 167 discarded blobs, with the overlay marking connecting curves and in-plot text
+instead of only the discrete markers. The script returned success only because it reported the
+undercount warning; this fixture does not currently satisfy the visually correct point-set
+criterion. `images/Screenshot 2021-06-26 231058.png` produced 4 points after grid removal and
+passed its command-level check.
 
 **Verification fixture order (minimal requirements first).**
 

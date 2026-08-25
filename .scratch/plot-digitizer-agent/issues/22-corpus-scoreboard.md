@@ -14,7 +14,13 @@ every run would make the scoreboard unusable.
 
 **Blocked by:** 21 — Score an extraction against ground truth.
 
-**Status:** done
+**Status:** in progress — the latest corpus scoreboard fails 14 figures
+
+**Latest verification failure:** `score_corpus.py` completed with exit code 1 and reported 29 of
+69 series passed across 14 failed figures. Failures include missing axis readings for the older
+2021/clean fixtures and accuracy or coverage failures in multiple 2024 multi-series fixtures. The
+report was written to `.digitize/verification-scoreboard-20260824/corpus-scoreboard.md`; no
+implementation changes were made.
 
 **Verification fixture order.** The scoreboard should be checked from the smallest scoreable case to
 the full truth-bearing corpus, while the generated report still includes every exact image/CSV pair.

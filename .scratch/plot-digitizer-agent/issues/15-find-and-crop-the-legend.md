@@ -13,7 +13,13 @@ cannot destroy it before it has been read.
 
 **Blocked by:** 04 — Locate the plot area.
 
-**Status:** done
+**Status:** in progress — legend-free controls produce false-positive legend boxes
+
+**Latest verification failure:** `images/3-1-freefall.png`,
+`images/3-2-freefall-mimimum.png`, `images/linegraph-3.png` and `images/rplot.png` were reported
+with faux legend boxes covering the plot area instead of the expected ordinary low-confidence
+no-legend result. Required legend-bearing cases still returned the expected entry counts for the
+hysteresis, margin, Inseam and 2024 screenshot fixtures.
 
 **Verification fixture order (minimal requirements first).**
 
