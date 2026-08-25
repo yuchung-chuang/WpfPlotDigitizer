@@ -14,18 +14,20 @@ directory, loading and saving the extraction document with validation, reading a
 layers, rendering overlays onto a copy of the original image, and the common conventions for
 command-line arguments and the short summary each script prints.
 
-The self-check is what makes this ticket verifiable on its own: run it against an image and it
-initialises a working directory, writes a valid extraction document recording the image identity,
-renders a trivial overlay, and prints a one-line summary.
+The self-check is what makes this ticket verifiable on its own: run it against a generated minimal
+image and it initialises a working directory, writes a valid extraction document recording the image
+identity, renders a trivial overlay, and prints a one-line summary.
 
 **Blocked by:** 01 — Domain glossary and architecture decisions.
 
-**Status:** done
+**Status:** fully completed and tested
 
-**Verification fixture order (minimal requirements first).**
+**Contract self-check.**
 
-1. `images/3-1-freefall.png` - simplest closed-frame, single-panel chart; verifies working-directory initialization, extraction-document creation, image identity, trivial overlay rendering, and repeat-safe state handling.
-2. `images/A+cleaned+up+scatter+plot.jpg` - open-spine single-panel chart; verifies that the artifact contract remains image-layout agnostic before axis and extraction skills are involved.
+`test_check_setup.py` creates a 16x12 generated PNG and invokes `check_setup.py` twice in a temporary
+working directory. This verifies working-directory initialization, extraction-document creation,
+image identity, trivial overlay rendering, dependency imports, and repeat-safe state handling. No
+corpus image is required; ticket 02 has no chart-analysis or accuracy verification requirement.
 
 - [x] A router skill is discoverable by the editor and describes the working directory layout, the
       extraction document, and the mandatory overlay-viewing rule.
@@ -43,7 +45,8 @@ renders a trivial overlay, and prints a one-line summary.
 - [x] The toolkit's failure convention is in place: operations return a value, a confidence between
       zero and one, and a list of structured diagnostics carrying severity, stage, message and an
       optional pixel region. Expected conditions never raise.
-- [x] A self-check script runs against a corpus image, creates the working directory, writes a valid
-      extraction document, renders an overlay, and prints a short summary.
-- [x] Running the self-check twice on the same image is safe and does not corrupt existing state.
+- [x] A self-check script runs against a generated minimal image, creates the working directory,
+      writes a valid extraction document, renders an overlay, and prints a short summary.
+- [x] `test_check_setup.py` runs the self-check twice on the generated image and confirms that the
+      extraction document and overlay remain valid.
 - [x] The skill folder is self-contained and imports nothing from outside the skills directory.
