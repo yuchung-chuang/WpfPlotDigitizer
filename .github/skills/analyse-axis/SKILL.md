@@ -169,3 +169,31 @@ values decrease left to right comes out right instead of mirrored.
 zero means your reading was consistent; a large one almost always means a misread digit — a `5` read
 as `6`, or a minus sign missed — and raises a warning. Re-read the crop rather than accepting it.
 
+## Multiple axes on one figure
+
+A figure with several horizontal or vertical axes — an offset multi-Y-axis plot, for instance — is
+fitted the same way, once per axis, but a plain `--x`/`--y` call always overwrites the same default
+slot. Name every axis beyond the first with `--x-id`/`--y-id` so each fit is kept independently:
+
+```
+uv run .github/skills/analyse-axis/read_axis_scale.py --image images/<figure>.png \
+  --y "66=100,111=10,156=1,201=0.1,245=0.01,290=0.001,334=0.0001" --y-scale log --y-log-base 10 \
+  --y-id green-pressure --y-colour "0,150,0" --y-title "Deposition pressure" --y-unit Torr
+```
+
+```
+uv run .github/skills/analyse-axis/read_axis_scale.py --image images/<figure>.png \
+  --y "110=790,200=780,289=770" --y-id red-temperature --y-colour "200,0,0" \
+  --y-title "Annealing temperature" --y-unit K
+```
+
+Each named fit is stored under `axes.secondary`, alongside `axes.x`/`axes.y`, so a later call for one
+axis never disturbs an earlier one. `--x-id`/`--y-id` is a free-form identifier you choose — the same
+convention `inspect_chart.py --unresolved-axis` already uses — and `--x-colour`/`--y-colour` records
+the RGB colour that identifies the axis and its series, for use once a series is associated with it.
+Fit and store every axis you can read; a mapping left unresolved does not block the others.
+
+**This stores the mapping, not the routing.** Export, verification and scoring still project every
+series through the single default `axes.x`/`axes.y` mapping. Associating a specific series with one
+of these named secondary axes is the job of the multi-series extraction skill, not this one.
+

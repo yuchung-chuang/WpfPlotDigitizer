@@ -76,6 +76,20 @@ def main() -> int:
         )
         parser.add_argument(f"--{name}-title", default=None, help=f"the {name} axis title")
         parser.add_argument(f"--{name}-unit", default=None, help=f"the {name} axis unit")
+        parser.add_argument(
+            f"--{name}-id",
+            default=None,
+            metavar="AXIS_ID",
+            help=f"name this {name} mapping instead of overwriting the default one; a figure's "
+            f"other {name} axes are unaffected and each is kept under this id",
+        )
+        parser.add_argument(
+            f"--{name}-colour",
+            type=_colour_argument,
+            default=None,
+            metavar="R,G,B",
+            help=f"the colour that identifies this {name} axis, for later association with a series",
+        )
     parser.add_argument(
         "--crop",
         action="store_true",
@@ -140,6 +154,19 @@ def _pairs_argument(text: str) -> list[tuple[float, float]]:
     if len(pairs) < 2:
         raise argparse.ArgumentTypeError("an axis needs at least two pixel=value pairs")
     return pairs
+
+
+def _colour_argument(text: str) -> list[int]:
+    parts = text.replace(" ", "").split(",")
+    if len(parts) != 3:
+        raise argparse.ArgumentTypeError("expected R,G,B")
+    try:
+        values = [int(part) for part in parts]
+    except ValueError as error:
+        raise argparse.ArgumentTypeError("expected three integers") from error
+    if any(not 0 <= value <= 255 for value in values):
+        raise argparse.ArgumentTypeError("each channel must be 0..255")
+    return values
 
 
 # -- finding the ticks and the text beside them ----------------------------
@@ -541,6 +568,7 @@ def _fit_axes(
         pairs = getattr(args, name)
         if pairs is None:
             continue
+        axis_id = getattr(args, f"{name}_id")
         span = (box["x"], box["x"] + box["width"]) if name == "x" else (
             box["y"] + box["height"],
             box["y"],
@@ -548,9 +576,10 @@ def _fit_axes(
         fit = _fit(pairs, span, name, args, result)
         fit["title"] = getattr(args, f"{name}_title")
         fit["unit"] = getattr(args, f"{name}_unit")
-        extraction.data["axes"][name] = fit
+        fit["colour"] = getattr(args, f"{name}_colour")
+        extraction.set_axis(name, fit, axis_id)
         fits[name] = fit
-        lines.extend(_describe(name, fit))
+        lines.extend(_describe(name, fit, axis_id))
     missing = [name for name in ("x", "y") if getattr(args, name) is None]
     if missing:
         result.warn(f"no values given for the {' and '.join(missing)} axis; it was left unfitted")
@@ -671,11 +700,18 @@ def _check(fit: dict, residual: float, pixel_span: float, name: str, result: Res
         result.warn(f"the {name} axis is logarithmic but its fitted minimum is not positive")
 
 
-def _describe(name: str, fit: dict) -> list[str]:
+def _describe(name: str, fit: dict, axis_id: str | None = None) -> list[str]:
     scale = fit["scale"] + (f" base {fit['log_base']:g}" if fit["log_base"] else "")
     titled = " ".join(part for part in (fit["title"], f"[{fit['unit']}]" if fit["unit"] else "") if part)
+    colour = fit.get("colour")
+    identity = " ".join(
+        part
+        for part in (f"id={axis_id}" if axis_id else None, f"rgb{tuple(colour)}" if colour else None)
+        if part
+    )
+    heading = f"{name} axis" + (f" [{identity}]" if identity else "")
     return [
-        f"{name} axis      {fit['min']:g} .. {fit['max']:g} over px "
+        f"{heading}      {fit['min']:g} .. {fit['max']:g} over px "
         f"{fit['pixel_min']:.0f} .. {fit['pixel_max']:.0f}   {scale}"
         + ("   reversed" if fit["reversed"] else ""),
         f"{name} fit       {len(fit['anchors'])} anchors   residual {fit['residual']:.2f} px "
@@ -687,7 +723,8 @@ def _describe(name: str, fit: dict) -> list[str]:
 def _store_labels(args, extraction, result: Result) -> None:
     """Titles and units survive a run that only re-fits, and a crop-only run that supplies them."""
     for name in ("x", "y"):
-        entry = extraction.data["axes"].get(name)
+        axis_id = getattr(args, f"{name}_id")
+        entry = extraction.get_axis(name, axis_id)
         for field in ("title", "unit"):
             value = getattr(args, f"{name}_{field}")
             if value is None:

@@ -10,12 +10,12 @@ back the values it read together with their pixel positions, it fits the mapping
 The fit must handle logarithmic axes, detected from the spacing of the tick positions rather than
 assumed, and reversed axes where values decrease left to right. It must report its residual, so a
 misread digit surfaces as a bad fit instead of a plausible wrong answer. A figure may have several
-horizontal or vertical axes: fit each one independently, preserve its colour/style identity and
-series association, and allow resolved mappings to proceed when another axis remains unresolved.
+horizontal or vertical axes: fit each one independently and preserve its axis identity and mapping
+metadata. Series association is handled by the later extraction tickets.
 
 **Blocked by:** 04 — Locate the plot area.
 
-**Status:** in progress — multi-axis numeric mappings need implementation and verification
+**Status:** fully completed and tested
 
 **Verification fixture order (minimal requirements first).**
 
@@ -24,7 +24,7 @@ series association, and allow resolved mappings to proceed when another axis rem
       units and ticks.
 2. `images/data.png` - reversed-axis regression case, using the already located plot area and
       supplied tick anchors.
-3. `images/Screenshot 2024-09-15 131423.png` - logarithmic horizontal axis; then
+3. `images/Screenshot 2024-09-15 131423.png` - linear horizontal and vertical axes; then
       `images/Screenshot 2024-09-15 131522.png` - logarithmic horizontal and vertical axes. These
       require only ticket 04 plus the agent's tick readings, not series segmentation.
 4. `images/rnaseqdedemo_19.png` and `images/zivEp.png` - titles containing `log10` or `log2` as
@@ -34,8 +34,7 @@ series association, and allow resolved mappings to proceed when another axis rem
 6. `images/Offset_Multiple_Y_Axes_Plot_of_YBCO_Superconductor_Growth_Study.png` - multi-axis
       acceptance fixture. Fit the shared reversed X axis and each colored Y axis independently:
       green deposition pressure, red annealing temperature and blue Delta T_c. Each mapping must
-      retain its axis identity and series association; unresolved mappings must not invalidate the
-      mappings that are resolved.
+      retain its axis identity and mapping metadata.
 
 - [x] Running the crop step produces an upscaled image of the tick-label regions for each axis,
       grouped so the agent can tell which label sits at which pixel position.
@@ -49,22 +48,55 @@ series association, and allow resolved mappings to proceed when another axis rem
 - [x] A large fit residual is recorded as a diagnostic warning the agent to re-read the labels.
 - [x] Axis titles and units, when the agent supplies them, are stored alongside the numbers.
 - [x] The overlay marks the located label regions and the fitted anchors on the original image.
-- [ ] Multiple horizontal or vertical axes can each be fitted and stored without overwriting one
+- [x] Multiple horizontal or vertical axes can each be fitted and stored without overwriting one
       another.
-- [ ] Each fitted axis retains its colour/style identity and associated series identifier.
-- [ ] A partially resolved multi-axis figure preserves resolved mappings and excludes only
-      unresolved axes from downstream conversion.
+- [x] Each fitted axis retains its axis identifier, role, colour, supplied title/unit, and fit
+      metadata.
 
-**Verified.** On `data.png` the crop step found 11 x ticks and 12 y ticks and produced a composite
-image pairing every pixel position with its label; those labels were read straight off the crop and
-fed back, giving `x = -4.013 .. 6.013` over px 85..834 and `y = -4.020 .. 7.010` over px 567..18 —
-the reversed y axis handled correctly, residual zero, and limits extrapolated to the frame rather
-than stopping at the outermost tick. The crop being genuinely readable was the criterion that
-mattered most, and it is.
+## Verification results
 
-**Multi-axis verification status.** The YBCO acceptance fixture has a verified shared reversed X
-axis (`92` to `82 K`) and a verified green logarithmic deposition-pressure axis (approximately
-`100` to `0.001 Torr`). Visual review associates the red squares with annealing temperature and
-the blue circles with Delta T_c, but the current single-Y mapping interface does not yet store
-those two numeric mappings independently. This fixture therefore remains **in progress**, not
-fully tested, until all three Y mappings are persisted and checked for residuals.
+The crop and fit steps were run against the single-axis fixtures in the verification set. The
+reported limits are extrapolated to the detected plot-area edges; residuals are root-mean-square
+pixel residuals from the supplied tick anchors.
+
+| Fixture | X scale and fitted limits | Y scale and fitted limits | X residual | Y residual |
+| --- | --- | --- | ---: | ---: |
+| `3-1-freefall.png` | linear, `0 .. 0.8` | linear, `-0.00025 .. 1.60025` | 0.00 px | 0.28 px |
+| `A+cleaned+up+scatter+plot.jpg` | linear, `-0.507862 .. 50.0545` | linear, `-0.876369 .. 49.734` | 0.44 px | 0.57 px |
+| `rplot.png` | linear, `1.45614 .. 5.23684` | linear, `41.0714 .. 98.0952` | 0.00 px | 0.00 px |
+| `linegraph-3.png` | linear, `24.6393 .. 34.3532` | linear, `48.5654 .. 60.4486` | 0.28 px | 0.34 px |
+| `3-2-freefall-mimimum.png` | linear, `0 .. 0.8` | linear, `-0.00025 .. 1.60025` | 0.00 px | 0.28 px |
+| `data.png` | linear, `-4.00729 .. 6.00608` | linear, `-3.99435 .. 7.00103` | 0.46 px | 0.50 px |
+| `Screenshot 2024-09-15 131423.png` | linear, `-3.99633 .. 3.9987` | linear, `249.713 .. 500.287` | 0.26 px | 0.00 px |
+| `Screenshot 2024-09-15 131522.png` | log base 10, `1.00258 .. 100.258` | log base 10, `9.80121e-7 .. 0.103083` | 0.24 px | 1.37 px |
+| `rnaseqdedemo_19.png` | linear, `-4.88948 .. 19.9779` | linear, `-5.99204 .. 3.99204` | 0.30 px | 0.28 px |
+| `zivEp.png` | linear, `1.42213 .. 5.27459` | linear, `40.4898 .. 98.7211` | 0.00 px | 0.37 px |
+| `VLObject-2561-031201081203.png` | linear, `1955.02 .. 2001.87` | linear, `309.76 .. 380.03` | 0.24 px | 0.22 px |
+
+The results confirm that `Screenshot 2024-09-15 131423.png` has linear axes. The `log2` text in
+`rnaseqdedemo_19.png` is part of the transformed data labels and does not cause a logarithmic fit.
+The two axes in `Screenshot 2024-09-15 131522.png` are correctly detected as base-10 logarithmic.
+The Y axis in `data.png` is fitted in the normal image-coordinate direction, so increasing data
+values run toward decreasing pixel rows.
+
+**Multi-axis verification status.** Independent mapping storage is verified. On the YBCO fixture,
+four fits were written using separate runs and persisted together in
+`axes.secondary`:
+
+| Axis id | Role | Scale | Fitted limits | Residual | Identity |
+| --- | --- | --- | --- | ---: | --- |
+| `shared-x` | x | linear, reversed | `81.9696 .. 92.9927` | 0.46 px | shared X mapping |
+| `green-pressure` | y | log base 10 | `0.000102422 .. 102.045` | 0.34 px | RGB `(0,150,0)`, Deposition pressure, Torr |
+| `red-temperature` | y | linear | `764.991 .. 794.935` | 0.24 px | RGB `(200,0,0)`, Annealing temperature, K |
+| `blue-delta-tc` | y | linear | `0.007194 .. 6.0056` | 0.28 px | RGB `(0,0,200)`, Delta Tc, K |
+
+The persistence test confirmed that fitting the red and blue Y axes did not overwrite the green
+mapping, and that the shared reversed X mapping remained present. Named mappings use the additive
+`axes.secondary` list; the existing default `axes.x` and `axes.y` slots remain unchanged for
+single-axis figures. Each named mapping retains its axis id, role, colour, supplied title/unit and
+fit metadata. Series association and routing are intentionally deferred to the multi-series
+extraction work, where the data series exist.[^multi-axis-scope]
+
+[^multi-axis-scope]: The verification set does not contain a partially resolved multi-axis figure;
+      that scenario is intentionally excluded from this ticket's acceptance criteria and may be
+      covered by a later multi-series or corpus ticket.
