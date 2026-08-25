@@ -101,10 +101,10 @@ target corpus would be dead on arrival, because it has no legend at all.
    without spending my whole context budget on one high-resolution PNG.
 8. As an agent, I want to know how many panels a figure contains, so that I can tell a single plot
    from a composite before I waste effort on the wrong region.
-9. As an agent, I want the framework to flag figures that are out of scope, so that I decline them
-   loudly instead of emitting confident nonsense.
-10. As a researcher, I want to be told "this is a three-panel figure and I only handle single
-    panels" rather than receiving silently wrong numbers, so that I can trust the output I do get.
+9. As an agent, I want the framework to flag figures or panels that are unresolved, so that I
+  decline them loudly instead of emitting confident nonsense.
+10. As a researcher, I want a multi-panel figure enumerated into independent panel contexts rather
+   than receiving silently wrong numbers from one panel's axes being applied to all panels.
 
 **Finding the axes**
 
@@ -344,10 +344,19 @@ target corpus would be dead on arrival, because it has no legend at all.
 
 ### Scope of chart support
 
-- **In scope:** single-panel figures with one X/Y axis pair, linear or logarithmic, carrying any
-  number of scatter and/or line series, with error bars detected and excluded.
-- **Detected and declined, never silently mangled:** multi-panel composites, multiple offset Y axes,
-  and secondary axes.
+- **In scope:** independently resolved panels with one X/Y axis pair, linear or logarithmic,
+  carrying any number of scatter and/or line series, with error bars detected and excluded.
+- **Detected and held for panel-specific processing:** multi-panel composites. Each panel must have
+  its own plot area, axes, legend and series state before extraction or export.
+- **Supported when independently resolved:** multiple horizontal or vertical axes whose colours or
+  other stable styles provide a best-effort, sufficiently confident association between each data
+  series and one axis mapping. The evidence and association must remain attached to the series
+  through extraction and export.
+- **Partially supported:** figures where the main axes are established but one or more
+  series-to-axis associations cannot be established reliably. Those axes and associated series are
+  held out, while resolvable axes and series continue through extraction and export.
+- **Detected and declined, never silently mangled:** figures where the main axes cannot be
+  established, or whose overall layout is otherwise unsupported.
 - **Best effort only:** photographed or heavily JPEG-compressed charts.
 
 ### Delivery shape
@@ -408,8 +417,11 @@ failures.
   integration between the framework and the desktop or web applications; no consumption of the
   extraction document by the existing editor.
 - **Bar charts, histograms and stacked bars.**
-- **Extraction from multi-panel figures and figures with multiple or offset Y axes.** These are
-  detected and declined only.
+- **Extraction from figures with unresolved multiple or offset axes.** Figures with multiple
+  horizontal or vertical axes are in scope when the main axes can be established: independent
+  mappings and colour/style-based series associations are carried forward, while unresolved axes
+  and their series are excluded. Multi-panel extraction is supported through independent panel
+  contexts rather than one shared mapping.
 - **Pie charts, ternary plots, polar plots, 3-D plots and any non-Cartesian chart.**
 - **Any LLM provider integration**, API key handling, response caching or cost management.
 - **Packaging the skills for distribution** to other repositories. They are built self-contained so

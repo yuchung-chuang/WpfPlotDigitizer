@@ -33,6 +33,7 @@ STAGE = "inspect-chart"
 PREVIEW_MAX_EDGE = 768
 MIN_PANEL_AREA_FRACTION = 0.06
 FIGURE_BORDER_FRACTION = 0.9
+FIGURE_BORDER_MARGIN_FRACTION = 0.08
 FRAME_RUN_FRACTION = 0.06
 AXIS_LINE_FRACTION = 0.5
 
@@ -50,7 +51,14 @@ def main() -> int:
         default=None,
         help="record your verdict after reading the preview",
     )
-    parser.add_argument("--reason", default=None, help="why you declared it unsupported")
+    parser.add_argument("--reason", default=None, help="explain the support decision")
+    parser.add_argument(
+        "--unresolved-axis",
+        action="append",
+        default=[],
+        metavar="AXIS_ID",
+        help="axis identifier whose association remains unresolved; repeat for multiple axes",
+    )
     parser.add_argument(
         "--min-panel-area",
         type=float,
@@ -77,8 +85,14 @@ def main() -> int:
         "type": args.type,
         "panel_count": len(panels),
         "panels": panels,
+        "panel_contexts": [
+            {"id": index + 1, "box": panel, "extraction_ready": len(panels) == 1}
+            for index, panel in enumerate(panels)
+        ],
         "supported": supported,
         "reason": reason,
+        "unresolved_axes": args.unresolved_axis,
+        "partial_support": supported is True and bool(args.unresolved_axis),
         "axis_lines": axis_lines,
         "confidence": round(result.confidence, 3),
     }
@@ -94,6 +108,7 @@ def main() -> int:
         f"{len(axis_lines['vertical_candidates'])} and "
         f"{len(axis_lines['horizontal_candidates'])} long lines)",
         f"supported   {verdict}" + (f" - {reason}" if reason else ""),
+        f"unresolved  {', '.join(args.unresolved_axis) if args.unresolved_axis else 'none'}",
         f"type        {args.type or 'unset - pass --type once you have read the preview'}",
         f"preview     {workdir.display(preview)}   <-- read the figure here",
     ]
@@ -116,11 +131,26 @@ def _find_panels(ink: np.ndarray, min_area_fraction: float) -> list[dict]:
         area = w * h
         if area < min_area_fraction * figure_area:
             continue
-        if area > FIGURE_BORDER_FRACTION * figure_area:
+        if area > FIGURE_BORDER_FRACTION * figure_area or _looks_like_figure_border(
+            x, y, w, h, width, height
+        ):
             continue  # the figure's own border, not a panel
         boxes.append(rect(x, y, w, h))
 
     return _drop_nested(sorted(boxes, key=lambda b: -b["width"] * b["height"]))
+
+
+def _looks_like_figure_border(
+    x: int, y: int, width: int, height: int, figure_width: int, figure_height: int
+) -> bool:
+    """Reject a decorative frame that nearly surrounds the whole figure."""
+    margin = FIGURE_BORDER_MARGIN_FRACTION
+    return (
+        x <= margin * figure_width
+        and y <= margin * figure_height
+        and x + width >= (1 - margin) * figure_width
+        and y + height >= (1 - margin) * figure_height
+    )
 
 
 def _drop_nested(boxes: list[dict]) -> list[dict]:
@@ -185,9 +215,12 @@ def _verdict(args, panels: list[dict], result: Result) -> tuple[bool | None, str
         result.note(f"verdict declared from the preview: {args.declare}")
         return supported, args.reason
     if len(panels) > 1:
-        reason = f"{len(panels)} panels; only single-panel figures are supported"
+        reason = (
+            f"{len(panels)} panels detected; review each panel and use panel-specific axes "
+            "before extraction"
+        )
         result.warn(reason)
-        return False, reason
+        return None, reason
     result.warn(
         "read the preview, then re-run with --declare to record whether this figure has a single "
         "X and Y axis pair and no offset secondary axes"
