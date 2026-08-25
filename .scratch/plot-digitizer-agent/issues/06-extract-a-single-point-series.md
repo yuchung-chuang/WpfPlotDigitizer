@@ -33,13 +33,6 @@ their dedicated operation or ticket. Dense or saturated point clouds such as `da
 
 **Status:** in progress — the `230901` acceptance fixture still produces noisy, undercounted output
 
-**Latest verification failure:** `images/Screenshot 2021-06-26 230901.png` produced 1,412
-centroids and 167 discarded blobs, with the overlay marking connecting curves and in-plot text
-instead of only the discrete markers. The script returned success only because it reported the
-undercount warning; this fixture does not currently satisfy the visually correct point-set
-criterion. `images/Screenshot 2021-06-26 231058.png` produced 4 points after grid removal and
-passed its command-level check.
-
 **Verification fixture order (minimal requirements first).**
 
 1. `images/3-1-freefall.png` and `images/A+cleaned+up+scatter+plot.jpg` - clean, individually
@@ -69,12 +62,20 @@ passed its command-level check.
 - [x] The overlay draws the extracted centroids over the original image.
 - [x] At least one acceptance fixture above yields a visually correct discrete point set.
 
-**Verified against the supplied ground truth.** `3-1-freefall.png` produced 11 points and scored
-`100.0%` coverage with `0.14%` median error and `0.14%` p95 error. The cleaned scatter produced 19
-points and scored `100.0%` coverage with `0.21%` median error and `0.25%` p95 error. Both are below
-the `0.50%` acceptance tolerance, and both overlays place the extracted points on the truth
-markers. The two screenshot fixtures were subsequently checked after their respective noise
-filters were complete, as recorded in the verification fixture order above.
+**Verified against the supplied ground truth.**
+
+| Fixture | Points | Coverage | Median error | P95 error | Result |
+| --- | ---: | ---: | ---: | ---: | --- |
+| `3-1-freefall.png` | 11 | 100.0% | 0.14% | 0.14% | PASS |
+| `A+cleaned+up+scatter+plot.jpg` | 19 | 100.0% | 0.21% | 0.25% | PASS |
+| `Screenshot 2021-06-26 231058.png` | 4 | n/a | n/a | n/a | PASS: command-level check after grid removal |
+| `Screenshot 2021-06-26 230901.png` | 1,412 | n/a | n/a | n/a | FAIL: noisy and undercounted; 167 blobs discarded |
+
+Both fixtures are below the `0.50%` acceptance tolerance, and both overlays place the extracted
+points on the truth markers. `231058.png` produced four points after grid removal and passed its
+command-level check. `230901.png` produced centroid marks across connecting curves and in-plot text
+instead of only the discrete markers, so it does not satisfy the visually correct point-set
+criterion.
 
 **Exploratory stress case — not an acceptance outcome.** Every mechanism works and the plumbing is
 right, but the default parameters badly under-extract saturated point clouds. On `data.png` it kept
@@ -85,17 +86,7 @@ into large blobs which the area z-score then rejects as outliers. The warning di
 so the undercount is reported rather than silent, but these images are not used to decide ticket 06
 completion.
 
-**Future dense-cloud work (outside this ticket).** The area z-score is the wrong tool inside a
-saturated cloud, because there the merges *are* the population and the z-score rejects the genuine
-markers instead. Try estimating the modal single-marker area first, then splitting blobs by
-dividing their area by that mode — or use distance-transform watershed to separate touching markers
-before taking centroids. Both are standard and neither needs new dependencies. The median area of
-2 px reported on the Inseam figure also suggests the ink threshold is fragmenting anti-aliased
-markers, which is worth checking in a future dense-cloud extraction ticket.
-
-**Update.** Distance-transform watershed now estimates the modal single-marker area and splits
-oversized components before outlier rejection. The default run increased `data.png` to 982 points
-and `Inseam-v-Height-Graph.jpg` to 858 points; both overlays follow the visible cloud more closely.
-The figures remain saturated and undercounted, so they remain stress cases rather than acceptance
-fixtures. The discrete-marker fixtures above still determine the final visual-correctness
-criterion.
+**Dense-cloud scope note.** Distance-transform watershed improved the exploratory results to 982
+points on `data.png` and 858 points on `Inseam-v-Height-Graph.jpg`, but both saturated figures
+remain undercounted. They are stress cases only and do not determine ticket completion; the clean,
+individually visible marker fixtures above determine the acceptance result.
