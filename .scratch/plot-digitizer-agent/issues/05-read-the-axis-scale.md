@@ -9,11 +9,13 @@ back the values it read together with their pixel positions, it fits the mapping
 
 The fit must handle logarithmic axes, detected from the spacing of the tick positions rather than
 assumed, and reversed axes where values decrease left to right. It must report its residual, so a
-misread digit surfaces as a bad fit instead of a plausible wrong answer.
+misread digit surfaces as a bad fit instead of a plausible wrong answer. A figure may have several
+horizontal or vertical axes: fit each one independently, preserve its colour/style identity and
+series association, and allow resolved mappings to proceed when another axis remains unresolved.
 
 **Blocked by:** 04 — Locate the plot area.
 
-**Status:** done
+**Status:** in progress — multi-axis numeric mappings need implementation and verification
 
 **Verification fixture order (minimal requirements first).**
 
@@ -27,10 +29,13 @@ misread digit surfaces as a bad fit instead of a plausible wrong answer.
       require only ticket 04 plus the agent's tick readings, not series segmentation.
 4. `images/rnaseqdedemo_19.png` and `images/zivEp.png` - titles containing `log10` or `log2` as
       negative controls: transformed data labels alone must not cause a false logarithmic-axis fit.
-5. `images/VLObject-2561-031201081203.png` and
-      `images/Offset_Multiple_Y_Axes_Plot_of_YBCO_Superconductor_Growth_Study.png` - axis-fit
-      diagnostics only after ticket 03 has identified their multiple-axis layouts; they are not
-      supported full-chart verification fixtures.
+5. `images/VLObject-2561-031201081203.png` - single-panel control with two colored line series
+      sharing one X/Y mapping; retain as a normal axis-fit regression.
+6. `images/Offset_Multiple_Y_Axes_Plot_of_YBCO_Superconductor_Growth_Study.png` - multi-axis
+      acceptance fixture. Fit the shared reversed X axis and each colored Y axis independently:
+      green deposition pressure, red annealing temperature and blue Delta T_c. Each mapping must
+      retain its axis identity and series association; unresolved mappings must not invalidate the
+      mappings that are resolved.
 
 - [x] Running the crop step produces an upscaled image of the tick-label regions for each axis,
       grouped so the agent can tell which label sits at which pixel position.
@@ -44,6 +49,11 @@ misread digit surfaces as a bad fit instead of a plausible wrong answer.
 - [x] A large fit residual is recorded as a diagnostic warning the agent to re-read the labels.
 - [x] Axis titles and units, when the agent supplies them, are stored alongside the numbers.
 - [x] The overlay marks the located label regions and the fitted anchors on the original image.
+- [ ] Multiple horizontal or vertical axes can each be fitted and stored without overwriting one
+      another.
+- [ ] Each fitted axis retains its colour/style identity and associated series identifier.
+- [ ] A partially resolved multi-axis figure preserves resolved mappings and excludes only
+      unresolved axes from downstream conversion.
 
 **Verified.** On `data.png` the crop step found 11 x ticks and 12 y ticks and produced a composite
 image pairing every pixel position with its label; those labels were read straight off the crop and
@@ -51,3 +61,10 @@ fed back, giving `x = -4.013 .. 6.013` over px 85..834 and `y = -4.020 .. 7.010`
 the reversed y axis handled correctly, residual zero, and limits extrapolated to the frame rather
 than stopping at the outermost tick. The crop being genuinely readable was the criterion that
 mattered most, and it is.
+
+**Multi-axis verification status.** The YBCO acceptance fixture has a verified shared reversed X
+axis (`92` to `82 K`) and a verified green logarithmic deposition-pressure axis (approximately
+`100` to `0.001 Torr`). Visual review associates the red squares with annealing temperature and
+the blue circles with Delta T_c, but the current single-Y mapping interface does not yet store
+those two numeric mappings independently. This fixture therefore remains **in progress**, not
+fully tested, until all three Y mappings are persisted and checked for residuals.

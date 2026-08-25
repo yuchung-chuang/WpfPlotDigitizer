@@ -42,7 +42,8 @@ intersection.
 `images/A+cleaned+up+scatter+plot.jpg`, `images/rplot.png`, `images/rnaseqdedemo_19.png`,
 `images/zivEp.png`, `images/Graph-1.jpg` and `images/Screenshot 2021-06-26 231058.png` are
 point-only or scatter-oriented controls and should not be routed to line extraction. The composite
-and multiple-axis images from ticket 03 are decline controls.
+image requires independent panel contexts, while the multiple-axis images require axis-to-series
+association before line extraction.
 
 - [ ] Running line extraction over a line series mask produces an ordered sequence of pixel
       coordinates.

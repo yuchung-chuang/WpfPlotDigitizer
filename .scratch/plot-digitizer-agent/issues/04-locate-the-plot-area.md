@@ -79,7 +79,7 @@ adjudication.
    `images/Screenshot 2024-09-15 131805.png` - multi-series single-panel regression boxes.
 4. `images/Offset_Multiple_Y_Axes_Plot_of_YBCO_Superconductor_Growth_Study.png`,
    `images/VLObject-2561-031201081203.png` and `images/scatter_and_hist_border.png` are overview
-   decline controls, not successful plot-area fixtures: the first two have multiple offset axes and
+   controls, not successful plot-area fixtures: the first two require independent axis mappings and
    the last is multi-panel.
 
 - [x] An axis analysis skill group is discoverable and describes the two detection strategies and

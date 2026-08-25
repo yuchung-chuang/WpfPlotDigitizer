@@ -42,10 +42,11 @@ order, retaining an outcome, confidence, diagnostics and verification overlay fo
       Use tickets 14 and 13 before the error-bar and annotation cases, and ticket 19 for the mixed
       line figures. The first three entries in this list are repeated from step 3 intentionally as
       part of the small-to-large regression progression.
-5. **Expected declines.** Finally process `images/scatter_and_hist_border.png`,
+5. **Panel and axis-association controls.** Finally process `images/scatter_and_hist_border.png`,
       `images/Offset_Multiple_Y_Axes_Plot_of_YBCO_Superconductor_Growth_Study.png` and
-      `images/VLObject-2561-031201081203.png`. Record the first as a multi-panel decline and the last
-      two as multiple-offset-axis declines; do not emit digitized data for them.
+      `images/VLObject-2561-031201081203.png`. Record the first as independent panel contexts. For
+      the last two, preserve a digitization path when coloured axes can be associated with their
+      series; decline only any axis or series whose association remains unresolved.
 
 This inventory covers all 30 image files in `images/`. The 2024 screenshot set in step 4 is
 intentionally listed after the minimal cases even though several files are individually supported:
@@ -59,8 +60,9 @@ not cheap first checks.
 - [ ] Verification overlays are kept for every image so the results can be reviewed by eye.
 - [ ] Figures that were declined are listed separately from figures that failed, with the reason for
       each decline.
-- [ ] The multi-panel composite and the multiple-offset-axis figure are confirmed as declined rather
-      than mangled.
+- [ ] The multi-panel composite is processed through independent panel contexts, and multiple-axis
+      figures are digitized when colour-based series associations are unambiguous or declined when
+      they are unresolved.
 - [ ] No figure produces high-confidence output that the overlay or the score shows to be wrong.
 - [ ] Recurring failure patterns are written up as candidate follow-up work rather than fixed
       ad hoc inside this ticket.
