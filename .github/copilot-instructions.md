@@ -6,6 +6,8 @@
 - Use the .NET SDK selected by [global.json](../global.json) for .NET projects. There is no solution
   file, so build or test the individual project being changed.
 - Preserve existing project lifetimes, public contracts, and user changes. Follow [.editorconfig](../.editorconfig).
+- Do not run `git diff --check` after every edit. Run it only immediately before a commit or pull
+  request, or when the user explicitly asks for it.
 
 ## Scoped instructions
 
